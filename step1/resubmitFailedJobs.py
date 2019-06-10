@@ -2,8 +2,8 @@
 
 import os,sys,pickle
 
-inputDir = '/user_data/jlee/chargedHiggs/CMSSW_7_4_7/src/FOR_EPS2017/slimmers/step1_htb_SFs/LJMet80X_1lep_Dec1417_step1_njetCrr_condorLogs/'
-inputRdir = '/mnt/hadoop/users/jlee/LJMet80X_1lep_040317/'
+inputDir = '/uscms_data/d3/jblee/FourTops/CMSSW_9_4_6_patch1/src/TTTT/step1/'
+inputRdir = '/eos/uscms/store/user/jblee/LJMet94X_1lep_013019_step1/'
 
 shifts = [x for x in os.walk(inputDir).next()[1]]
 samplesDone = {}
