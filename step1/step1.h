@@ -1294,7 +1294,10 @@ step1::step1(TString inputFileName, TString outputFileName) : inputTree(0), inpu
   isTTincMtt1000toInf = outputFileName.Contains("Mtt1000toInf");
 
   std::cout<<"Opening file: "<<inputFileName<<std::endl;
-  inputFile=TFile::Open(inputFileName);
+  if(!(inputFile=TFile::Open(inputFileName))){
+    std::cout<<"WARNING! File doesn't exist! Exiting" << std::endl;
+    exit(1);
+  }
 //  inputTree=(TTree*)inputFile->Get("ljmet/ljmet");
 //  if(inputTree->GetEntries()==0) std::cout<<"WARNING! Found 0 events in the tree!!!!"<<std::endl;;
   

@@ -82,7 +82,10 @@ void step1::Loop(TString inTreeName, TString outTreeName )
   // Turn on input tree branches
   // ----------------------------------------------------------------------------
   inputTree=(TTree*)inputFile->Get(inTreeName+"/"+inTreeName);
-  if(inputTree->GetEntries()==0) std::cout<<"WARNING! Found 0 events in the tree!!!!"<<std::endl;;
+  if(inputTree->GetEntries()==0) {
+    std::cout<<"WARNING! Found 0 events in the tree!!!!"<<std::endl;;
+    exit(1);
+  }
   Init(inputTree);
 
    if (inputTree == 0) return;
