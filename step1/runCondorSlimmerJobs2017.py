@@ -2,7 +2,7 @@ import os,shutil,datetime,time,sys
 import getpass
 from glob import glob
 from ROOT import *
-execfile("./EOSSafeUtils.py")
+execfile("/uscms_data/d3/jmanagan/EOSSafeUtils.py")
 
 start_time = time.time()
 
@@ -48,7 +48,7 @@ for sample in dirList:
   tmpcount = 0
   runlist = EOSlistdir(inputDir+sample+'/'+finalStateYear+'/')
   if len(runlist)>1: 
-    print "Please check this sample %s! Or put it into special MC list. "%(sample)
+    print "Please check this sample %s! --If over one samples have same name or there are failed job folders. May put it into special MC list. "%(sample)
     continue 
     
   for run in runlist :
@@ -95,7 +95,7 @@ Queue 1"""%dict)
         print count, "jobs submitted!!!"
 #        break
 
-# special MC which have ext
+# special MC which have ext and data Double*, MuonEG
 spdirList = [
 #'TTWW_TuneCP5_13TeV-madgraph-pythia8'
 ]
@@ -151,8 +151,8 @@ Queue 1"""%dict)
 #        break
 
 # data
-datadirList = [
-'SingleElectron'
+datadirList = [ ## ONLY DATA Single* or EGamma, OTHER data go to spdirList 
+#'SingleElectron'
 ]
 
 
@@ -176,13 +176,14 @@ for sample in datadirList:
         count += 1
         tmpcount += 1
         era = (rootfiles[i].split('_')[0])[-1]
+        runyear = 'Run2017' if 'Run2017' in rootfiles[i] else 'Run2018' 
         idlist = (rootfiles[i].split('.')[0]).split('_')[-1]+' '
         for j in range(i+1,i+20):
             if j >= len(rootfiles): continue
 	    idlist += (rootfiles[j].split('.')[0]).split('_')[-1]+' '
         idlist = idlist.strip()
         print idlist
-        dict={'RUNDIR':runDir, 'POST':runDirPost, 'ERA': era, 'INPATHSUFFIX':pathsuffix, 'CONDORDIR':condorDir, 'INPUTDIR':inDir, 'FILENAME':sample, 'CMSSWBASE':relbase, 'OUTPUTDIR':outDir, 'LIST':idlist, 'ID':tmpcount}
+        dict={'RUNDIR':runDir, 'POST':runDirPost, 'RUNYEAR': runyear, 'ERA': era, 'INPATHSUFFIX':pathsuffix, 'CONDORDIR':condorDir, 'INPUTDIR':inDir, 'FILENAME':sample, 'CMSSWBASE':relbase, 'OUTPUTDIR':outDir, 'LIST':idlist, 'ID':tmpcount}
         jdfName=condorDir+'/%(FILENAME)s/%(FILENAME)s_%(ID)s.job'%dict
         print jdfName
         jdf=open(jdfName,'w')
@@ -197,7 +198,7 @@ Output = %(FILENAME)s_%(ID)s.out
 Error = %(FILENAME)s_%(ID)s.err
 Log = %(FILENAME)s_%(ID)s.log
 Notification = Never
-Arguments = "%(FILENAME)sRun2017%(ERA)s %(FILENAME)s%(ERA)s %(INPUTDIR)s/%(FILENAME)s/%(INPATHSUFFIX)s %(OUTPUTDIR)s/%(FILENAME)s '%(LIST)s'"
+Arguments = "%(FILENAME)s%(RUNYEAR)s%(ERA)s %(FILENAME)s%(ERA)s %(INPUTDIR)s/%(FILENAME)s/%(INPATHSUFFIX)s %(OUTPUTDIR)s/%(FILENAME)s '%(LIST)s'"
 Queue 1"""%dict)
         jdf.close()
         os.chdir('%s/%s'%(condorDir,sample))

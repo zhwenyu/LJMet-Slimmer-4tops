@@ -96,7 +96,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    inputTree->SetBranchStatus("event_CommonCalc",1);
    inputTree->SetBranchStatus("run_CommonCalc",1);
    inputTree->SetBranchStatus("lumi_CommonCalc",1);
-   inputTree->SetBranchStatus("nPV_MultiLepCalc",1);
+//   inputTree->SetBranchStatus("nPV_MultiLepCalc",1);
    inputTree->SetBranchStatus("nTrueInteractions_MultiLepCalc",1);
    inputTree->SetBranchStatus("MCWeight_MultiLepCalc",1);
    inputTree->SetBranchStatus("LHEweightids_MultiLepCalc",1);
@@ -120,13 +120,13 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    inputTree->SetBranchStatus("elEnergy_MultiLepCalc",1);
 //   inputTree->SetBranchStatus("elMVAValue_MultiLepCalc",1);
    inputTree->SetBranchStatus("elMiniIso_MultiLepCalc",1);
-   inputTree->SetBranchStatus("elIsTightBarrel_MultiLepCalc",1);
-   inputTree->SetBranchStatus("elIsMediumBarrel_MultiLepCalc",1);
-   inputTree->SetBranchStatus("elIsLooseBarrel_MultiLepCalc",1);
-   inputTree->SetBranchStatus("elIsVetoBarrel_MultiLepCalc",1);
-   inputTree->SetBranchStatus("elIsMediumEndCap_MultiLepCalc",1);
-   inputTree->SetBranchStatus("elIsLooseEndCap_MultiLepCalc",1);
-   inputTree->SetBranchStatus("elIsVetoEndCap_MultiLepCalc",1);
+//   inputTree->SetBranchStatus("elIsTightBarrel_MultiLepCalc",1);
+//   inputTree->SetBranchStatus("elIsMediumBarrel_MultiLepCalc",1);
+//   inputTree->SetBranchStatus("elIsLooseBarrel_MultiLepCalc",1);
+//   inputTree->SetBranchStatus("elIsVetoBarrel_MultiLepCalc",1);
+//   inputTree->SetBranchStatus("elIsMediumEndCap_MultiLepCalc",1);
+//   inputTree->SetBranchStatus("elIsLooseEndCap_MultiLepCalc",1);
+//   inputTree->SetBranchStatus("elIsVetoEndCap_MultiLepCalc",1);
    inputTree->SetBranchStatus("elMother_id_MultiLepCalc",1);
    inputTree->SetBranchStatus("elMother_pt_MultiLepCalc",1);
    inputTree->SetBranchStatus("elMother_eta_MultiLepCalc",1);
@@ -265,7 +265,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    inputTree->SetBranchStatus("topbPt_TTbarMassCalc",1);
    inputTree->SetBranchStatus("topbID_TTbarMassCalc",1);
 
-   inputTree->SetBranchStatus("isTT_TTbarMassCalc",1);
+//   inputTree->SetBranchStatus("isTT_TTbarMassCalc",1);
    
   // ----------------------------------------------------------------------------
   // Create output tree and define branches
@@ -281,7 +281,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    outputTree->Branch("event_CommonCalc",&event_CommonCalc,"event_CommonCalc/L");
    outputTree->Branch("run_CommonCalc",&run_CommonCalc,"run_CommonCalc/I");
    outputTree->Branch("lumi_CommonCalc",&lumi_CommonCalc,"lumi_CommonCalc/I");
-   outputTree->Branch("nPV_MultiLepCalc",&nPV_MultiLepCalc,"nPV_MultiLepCalc/I");
+//   outputTree->Branch("nPV_MultiLepCalc",&nPV_MultiLepCalc,"nPV_MultiLepCalc/I");
    outputTree->Branch("nTrueInteractions_MultiLepCalc",&nTrueInteractions_MultiLepCalc,"nTrueInteractions_MultiLepCalc/I");
    outputTree->Branch("isElectron",&isElectron,"isElectron/I");
    outputTree->Branch("isMuon",&isMuon,"isMuon/I");
@@ -297,7 +297,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    outputTree->Branch("HTSF_PolUp",&HTSF_PolUp,"HTSF_PolUp/F");
    outputTree->Branch("HTSF_PolDn",&HTSF_PolDn,"HTSF_PolDn/F");
    outputTree->Branch("ttbarMass_TTbarMassCalc",&ttbarMass_TTbarMassCalc,"ttbarMass_TTbarMassCalc/D");
-   outputTree->Branch("isTT_TTbarMassCalc",&isTT_TTbarMassCalc,"isTT_TTbarMassCalc/I");
+//   outputTree->Branch("isTT_TTbarMassCalc",&isTT_TTbarMassCalc,"isTT_TTbarMassCalc/I");
    outputTree->Branch("corr_met_MultiLepCalc",&corr_met_MultiLepCalc,"corr_met_MultiLepCalc/D");
    outputTree->Branch("corr_met_phi_MultiLepCalc",&corr_met_phi_MultiLepCalc,"corr_met_phi_MultiLepCalc/D");
    outputTree->Branch("leptonPt_MultiLepCalc",&leptonPt_MultiLepCalc,"leptonPt_MultiLepCalc/F");
@@ -352,14 +352,14 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    outputTree->Branch("muNumberOfMothers_MultiLepCalc",&muNumberOfMothers_MultiLepCalc);            
 
    outputTree->Branch("elPt_MultiLepCalc",&elPt_MultiLepCalc);
-   outputTree->Branch("elIsTightBarrel_MultiLepCalc",&elIsTightBarrel_MultiLepCalc,"elIsTightBarrel_MultiLepCalc/F");
-   outputTree->Branch("elIsMediumBarrel_MultiLepCalc",&elIsMediumBarrel_MultiLepCalc,"elIsMediumBarrel_MultiLepCalc/F");
-   outputTree->Branch("elIsLooseBarrel_MultiLepCalc",&elIsLooseBarrel_MultiLepCalc,"elIsLooseBarrel_MultiLepCalc/F");
-   outputTree->Branch("elIsVetoBarrel_MultiLepCalc",&elIsVetoBarrel_MultiLepCalc,"elIsVetoBarrel_MultiLepCalc/F");
-   outputTree->Branch("elIsTightEndCap_MultiLepCalc",&elIsTightEndCap_MultiLepCalc,"elIsTightEndCap_MultiLepCalc/F");
-   outputTree->Branch("elIsMediumEndCap_MultiLepCalc",&elIsMediumEndCap_MultiLepCalc,"elIsMediumEndCap_MultiLepCalc/F");
-   outputTree->Branch("elIsLooseEndCap_MultiLepCalc",&elIsLooseEndCap_MultiLepCalc,"elIsLooseEndCap_MultiLepCalc/F");
-   outputTree->Branch("elIsVetoEndCap_MultiLepCalc",&elIsVetoEndCap_MultiLepCalc,"elIsVetoEndCap_MultiLepCalc/F");
+//   outputTree->Branch("elIsTightBarrel_MultiLepCalc",&elIsTightBarrel_MultiLepCalc,"elIsTightBarrel_MultiLepCalc/F");
+//   outputTree->Branch("elIsMediumBarrel_MultiLepCalc",&elIsMediumBarrel_MultiLepCalc,"elIsMediumBarrel_MultiLepCalc/F");
+//   outputTree->Branch("elIsLooseBarrel_MultiLepCalc",&elIsLooseBarrel_MultiLepCalc,"elIsLooseBarrel_MultiLepCalc/F");
+//   outputTree->Branch("elIsVetoBarrel_MultiLepCalc",&elIsVetoBarrel_MultiLepCalc,"elIsVetoBarrel_MultiLepCalc/F");
+//   outputTree->Branch("elIsTightEndCap_MultiLepCalc",&elIsTightEndCap_MultiLepCalc,"elIsTightEndCap_MultiLepCalc/F");
+//   outputTree->Branch("elIsMediumEndCap_MultiLepCalc",&elIsMediumEndCap_MultiLepCalc,"elIsMediumEndCap_MultiLepCalc/F");
+//   outputTree->Branch("elIsLooseEndCap_MultiLepCalc",&elIsLooseEndCap_MultiLepCalc,"elIsLooseEndCap_MultiLepCalc/F");
+//   outputTree->Branch("elIsVetoEndCap_MultiLepCalc",&elIsVetoEndCap_MultiLepCalc,"elIsVetoEndCap_MultiLepCalc/F");
    outputTree->Branch("elMother_id_MultiLepCalc",&elMother_id_MultiLepCalc);
    outputTree->Branch("elMother_pt_MultiLepCalc",&elMother_pt_MultiLepCalc);
    outputTree->Branch("elMother_eta_MultiLepCalc",&elMother_eta_MultiLepCalc);

@@ -13,7 +13,7 @@ void testStep1(){
   
   step1 t(inputFile,outputFile);
   
-  if ( inputFile.Contains("Run2017") ) 
+  if ( inputFile.Contains("Run2017") || inputFile.Contains("Run2018") || inputFile.Contains("Single") || inputFile.Contains("Double") || inputFile.Contains("MuonEG") || inputFile.Contains("EGamma") ) 
     { t.Loop("ljmet", "ljmet"); }
 
   else {
