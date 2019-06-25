@@ -92,12 +92,12 @@ Notification = Never
 Arguments = "%(FILENAME)s%(RUNYEAR)s%(ERA)s %(FILENAME)s_%(DATETIME)s %(INPUTDIR)s/%(FILENAME)s/%(INPATHSUFFIX)s %(OUTPUTDIR)s/%(FILENAME)s '%(LIST)s'"
 Queue 1"""%dict)
         jdf.close()
-#        os.chdir('%s/%s'%(condorDir,sample))
-#        os.system('condor_submit %(FILENAME)s_%(ID)s.job'%dict)
-#        os.system('sleep 0.5')                                
-#        os.chdir('%s'%(runDir))
+        os.chdir('%s/%s'%(condorDir,sample))
+        os.system('condor_submit %(FILENAME)s_%(ID)s.job'%dict)
+        os.system('sleep 0.5')                                
+        os.chdir('%s'%(runDir))
         print count, "jobs submitted!!!"
-        break
+#        break
 
 
 print("--- %s minutes ---" % (round(time.time() - start_time, 2)/60))
