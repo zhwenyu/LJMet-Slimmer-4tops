@@ -385,7 +385,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    outputTree->Branch("muIsMediumPrompt_MultiLepCalc",&muIsMediumPrompt_MultiLepCalc);
    outputTree->Branch("muIsTight_MultiLepCalc",&muIsTight_MultiLepCalc);
 
-   outputTree->Branch("muPt_MultiLepCalc",&muPt_MultiLepCalc);
+//   outputTree->Branch("muPt_MultiLepCalc",&muPt_MultiLepCalc);
 //   outputTree->Branch("muMother_id_MultiLepCalc",&muMother_id_MultiLepCalc);
 //   outputTree->Branch("muMother_pt_MultiLepCalc",&muMother_pt_MultiLepCalc);
 //   outputTree->Branch("muMother_eta_MultiLepCalc",&muMother_eta_MultiLepCalc);
@@ -393,7 +393,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
 //   outputTree->Branch("muMother_energy_MultiLepCalc",&muMother_energy_MultiLepCalc);         
 //   outputTree->Branch("muNumberOfMothers_MultiLepCalc",&muNumberOfMothers_MultiLepCalc);            
 
-   outputTree->Branch("elPt_MultiLepCalc",&elPt_MultiLepCalc);
+//   outputTree->Branch("elPt_MultiLepCalc",&elPt_MultiLepCalc);
 //   outputTree->Branch("elIsTightBarrel_MultiLepCalc",&elIsTightBarrel_MultiLepCalc,"elIsTightBarrel_MultiLepCalc/F");
 //   outputTree->Branch("elIsMediumBarrel_MultiLepCalc",&elIsMediumBarrel_MultiLepCalc,"elIsMediumBarrel_MultiLepCalc/F");
 //   outputTree->Branch("elIsLooseBarrel_MultiLepCalc",&elIsLooseBarrel_MultiLepCalc,"elIsLooseBarrel_MultiLepCalc/F");
