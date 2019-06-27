@@ -194,6 +194,9 @@ public :
    Int_t           nTightMuons_CommonCalc;
    Int_t           nTrueInteractions_MultiLepCalc;
    Int_t           run_CommonCalc;
+   Int_t           nLooseElectrons_CommonCalc;
+   Int_t           topNAK4_HOTTaggerCalc;
+   Int_t           topNtops_HOTTaggerCalc;
    Long64_t        event_CommonCalc;
 //   Double_t        AK4HT_jerdn_MultiLepCalc;
 //   Double_t        AK4HT_jerup_MultiLepCalc;
@@ -226,6 +229,14 @@ public :
    Double_t        theJetLeadPt_JetSubCalc;
    Double_t        theJetSubLeadPt_JetSubCalc;
    Double_t        ttbarMass_TTbarMassCalc;
+   Double_t        L1NonPrefiringProbDown_CommonCalc;
+   Double_t        L1NonPrefiringProbUp_CommonCalc;
+   Double_t        L1NonPrefiringProb_CommonCalc;
+   Double_t        LHEweightorig_MultiLepCalc;
+   Double_t        corr_metmod_MultiLepCalc;
+   Double_t        corr_metmod_phi_MultiLepCalc;
+   Double_t        metmod_MultiLepCalc;
+   Double_t        metmod_phi_MultiLepCalc;
    vector<int>     *AK4JetBTag_bSFdn_MultiLepCalc;
    vector<int>     *AK4JetBTag_bSFup_MultiLepCalc;
    vector<int>     *AK4JetBTag_lSFdn_MultiLepCalc;
@@ -337,6 +348,17 @@ public :
    vector<int>     *viSelMCTriggersMu_MultiLepCalc;
    vector<int>     *viSelTriggersEl_MultiLepCalc;
    vector<int>     *viSelTriggersMu_MultiLepCalc;
+   vector<int>     *NewPDFids_MultiLepCalc;
+   vector<int>     *elIsMVATight80_MultiLepCalc;
+   vector<int>     *elIsMVATight90_MultiLepCalc;
+   vector<int>     *elIsMVATightIso80_MultiLepCalc;
+   vector<int>     *elIsMVATightIso90_MultiLepCalc;
+   vector<int>     *genTtbarId_TTbarMassCalc;
+   vector<int>     *theJetAK8SDSubjetBTag_JetSubCalc; 
+   vector<int>     *topJet1Index_HOTTaggerCalc;
+   vector<int>     *topJet2Index_HOTTaggerCalc;
+   vector<int>     *topJet3Index_HOTTaggerCalc;
+
    vector<double>  *AK4JetBDeepCSVb_MultiLepCalc;
    vector<double>  *AK4JetBDeepCSVbb_MultiLepCalc;
    vector<double>  *AK4JetBDeepCSVc_MultiLepCalc;
@@ -357,10 +379,10 @@ public :
 //   vector<double>  *AK8JetCSV_BestCalc;
    vector<double>  *AK8JetCSV_MultiLepCalc;
    vector<double>  *AK8JetEnergy_BestCalc;
-   vector<double>  *AK8JetEnergy_jerdn_MultiLepCalc;
-   vector<double>  *AK8JetEnergy_jerup_MultiLepCalc;
-   vector<double>  *AK8JetEnergy_jesdn_MultiLepCalc;
-   vector<double>  *AK8JetEnergy_jesup_MultiLepCalc;
+//   vector<double>  *AK8JetEnergy_jerdn_MultiLepCalc;
+//   vector<double>  *AK8JetEnergy_jerup_MultiLepCalc;
+//   vector<double>  *AK8JetEnergy_jesdn_MultiLepCalc;
+//   vector<double>  *AK8JetEnergy_jesup_MultiLepCalc;
    vector<double>  *AK8JetEnergy_MultiLepCalc;
    vector<double>  *AK8JetEta_BestCalc;
    vector<double>  *AK8JetEta_MultiLepCalc;
@@ -624,7 +646,6 @@ public :
    vector<double>  *theJetAK8NjettinessTau3_JetSubCalc;
    vector<double>  *theJetAK8Phi_JetSubCalc;
    vector<double>  *theJetAK8Pt_JetSubCalc;
-   vector<double>  *theJetAK8SDSubjetBTag_JetSubCalc;
    vector<double>  *theJetAK8SDSubjetCSVb_JetSubCalc;
    vector<double>  *theJetAK8SDSubjetCSVbb_JetSubCalc;
    vector<double>  *theJetAK8SDSubjetCSVc_JetSubCalc;
@@ -671,6 +692,30 @@ public :
    vector<double>  *topbEta_TTbarMassCalc;
    vector<double>  *topbPhi_TTbarMassCalc;
    vector<double>  *topbPt_TTbarMassCalc;
+   vector<double>  *AK8JetDoubleB_MultiLepCalc;
+   vector<double>  *NewPDFweightsBase_MultiLepCalc;
+   vector<double>  *NewPDFweights_MultiLepCalc;
+   vector<double>  *decorr_C_DeepAK8Calc;
+   vector<double>  *dnn_C_DeepAK8Calc;
+   vector<double>  *elIsLoose_MultiLepCalc;
+   vector<double>  *elIsMedium_MultiLepCalc;
+   vector<double>  *elIsTight_MultiLepCalc;
+   vector<double>  *elIsVeto_MultiLepCalc;
+   vector<double>  *topBestGenEnergy_HOTTaggerCalc;
+   vector<double>  *topBestGenEta_HOTTaggerCalc;
+   vector<double>  *topBestGenPhi_HOTTaggerCalc;
+   vector<double>  *topBestGenPt_HOTTaggerCalc;
+   vector<double>  *topDRmax_HOTTaggerCalc;
+   vector<double>  *topDThetaMax_HOTTaggerCalc;
+   vector<double>  *topDThetaMin_HOTTaggerCalc;
+   vector<double>  *topDiscriminator_HOTTaggerCalc;
+   vector<double>  *topEta_HOTTaggerCalc;
+   vector<double>  *topMass_HOTTaggerCalc;
+   vector<double>  *topNconstituents_HOTTaggerCalc;
+   vector<double>  *topPhi_HOTTaggerCalc;
+   vector<double>  *topPt_HOTTaggerCalc;
+   vector<double>  *topType_HOTTaggerCalc;
+
 //   vector<string>  *electron_hltfilters_MultiLepCalc;
 //   vector<string>  *muon_hltfilters_MultiLepCalc;
    vector<string>  *vsSelMCTriggersEl_MultiLepCalc;
@@ -1208,6 +1253,50 @@ public :
    TBranch        *b_vsSelMCTriggersMu_MultiLepCalc;   //!
    TBranch        *b_vsSelTriggersEl_MultiLepCalc;   //!
    TBranch        *b_vsSelTriggersMu_MultiLepCalc;   //!
+   TBranch        *b_nLooseElectrons_CommonCalc;   //!
+   TBranch        *b_topNAK4_HOTTaggerCalc;   //!
+   TBranch        *b_topNtops_HOTTaggerCalc;   //!
+   TBranch        *b_L1NonPrefiringProbDown_CommonCalc;   //!
+   TBranch        *b_L1NonPrefiringProbUp_CommonCalc;   //!
+   TBranch        *b_L1NonPrefiringProb_CommonCalc;   //!
+   TBranch        *b_LHEweightorig_MultiLepCalc;   //!
+   TBranch        *b_corr_metmod_MultiLepCalc;   //!
+   TBranch        *b_corr_metmod_phi_MultiLepCalc;   //!
+   TBranch        *b_metmod_MultiLepCalc;   //!
+   TBranch        *b_metmod_phi_MultiLepCalc;   //!
+   TBranch        *b_NewPDFids_MultiLepCalc;   //!
+   TBranch        *b_elIsMVATight80_MultiLepCalc;   //!
+   TBranch        *b_elIsMVATight90_MultiLepCalc;   //!
+   TBranch        *b_elIsMVATightIso80_MultiLepCalc;   //!
+   TBranch        *b_elIsMVATightIso90_MultiLepCalc;   //!
+   TBranch        *b_genTtbarId_TTbarMassCalc;   //!
+   TBranch        *b_topJet1Index_HOTTaggerCalc;   //!
+   TBranch        *b_topJet2Index_HOTTaggerCalc;   //!
+   TBranch        *b_topJet3Index_HOTTaggerCalc;   //!
+   TBranch        *b_AK8JetDoubleB_MultiLepCalc;   //!
+   TBranch        *b_NewPDFweightsBase_MultiLepCalc;   //!
+   TBranch        *b_NewPDFweights_MultiLepCalc;   //!
+   TBranch        *b_decorr_C_DeepAK8Calc;   //!
+   TBranch        *b_dnn_C_DeepAK8Calc;   //!
+   TBranch        *b_elIsLoose_MultiLepCalc;   //!
+   TBranch        *b_elIsMedium_MultiLepCalc;   //!
+   TBranch        *b_elIsTight_MultiLepCalc;   //!
+   TBranch        *b_elIsVeto_MultiLepCalc;   //!
+   TBranch        *b_topBestGenEnergy_HOTTaggerCalc;   //!
+   TBranch        *b_topBestGenEta_HOTTaggerCalc;   //!
+   TBranch        *b_topBestGenPhi_HOTTaggerCalc;   //!
+   TBranch        *b_topBestGenPt_HOTTaggerCalc;   //!
+   TBranch        *b_topDRmax_HOTTaggerCalc;   //!
+   TBranch        *b_topDThetaMax_HOTTaggerCalc;   //!
+   TBranch        *b_topDThetaMin_HOTTaggerCalc;   //!
+   TBranch        *b_topDiscriminator_HOTTaggerCalc;   //!
+   TBranch        *b_topEta_HOTTaggerCalc;   //!
+   TBranch        *b_topMass_HOTTaggerCalc;   //!
+   TBranch        *b_topNconstituents_HOTTaggerCalc;   //!
+   TBranch        *b_topPhi_HOTTaggerCalc;   //!
+   TBranch        *b_topPt_HOTTaggerCalc;   //!
+   TBranch        *b_topType_HOTTaggerCalc;   //!
+
  
    step1(TString inputFileName, TString outputFileName);
    virtual ~step1();
@@ -1794,6 +1883,39 @@ void step1::Init(TTree *tree)
    vsSelMCTriggersMu_MultiLepCalc = 0;
    vsSelTriggersEl_MultiLepCalc = 0;
    vsSelTriggersMu_MultiLepCalc = 0;
+   NewPDFids_MultiLepCalc = 0;
+   elIsMVATight80_MultiLepCalc = 0;
+   elIsMVATight90_MultiLepCalc = 0;
+   elIsMVATightIso80_MultiLepCalc = 0;
+   elIsMVATightIso90_MultiLepCalc = 0;
+   genTtbarId_TTbarMassCalc = 0;
+   topJet1Index_HOTTaggerCalc = 0;
+   topJet2Index_HOTTaggerCalc = 0;
+   topJet3Index_HOTTaggerCalc = 0;
+   AK8JetDoubleB_MultiLepCalc = 0;
+   NewPDFweightsBase_MultiLepCalc = 0;
+   NewPDFweights_MultiLepCalc = 0;
+   decorr_C_DeepAK8Calc = 0;
+   dnn_C_DeepAK8Calc = 0;
+   elIsLoose_MultiLepCalc = 0;
+   elIsMedium_MultiLepCalc = 0;
+   elIsTight_MultiLepCalc = 0;
+   elIsVeto_MultiLepCalc = 0;
+   topBestGenEnergy_HOTTaggerCalc = 0;
+   topBestGenEta_HOTTaggerCalc = 0;
+   topBestGenPhi_HOTTaggerCalc = 0;
+   topBestGenPt_HOTTaggerCalc = 0;
+   topDRmax_HOTTaggerCalc = 0;
+   topDThetaMax_HOTTaggerCalc = 0;
+   topDThetaMin_HOTTaggerCalc = 0;
+   topDiscriminator_HOTTaggerCalc = 0;
+   topEta_HOTTaggerCalc = 0;
+   topMass_HOTTaggerCalc = 0;
+   topNconstituents_HOTTaggerCalc = 0;
+   topPhi_HOTTaggerCalc = 0;
+   topPt_HOTTaggerCalc = 0;
+   topType_HOTTaggerCalc = 0;
+
    // Set branch addresses and branch pointers
    if (!tree) return;
    inputTree = tree;
@@ -2329,6 +2451,50 @@ void step1::Init(TTree *tree)
    inputTree->SetBranchAddress("vsSelMCTriggersMu_MultiLepCalc", &vsSelMCTriggersMu_MultiLepCalc, &b_vsSelMCTriggersMu_MultiLepCalc);
    inputTree->SetBranchAddress("vsSelTriggersEl_MultiLepCalc", &vsSelTriggersEl_MultiLepCalc, &b_vsSelTriggersEl_MultiLepCalc);
    inputTree->SetBranchAddress("vsSelTriggersMu_MultiLepCalc", &vsSelTriggersMu_MultiLepCalc, &b_vsSelTriggersMu_MultiLepCalc);
+   inputTree->SetBranchAddress("nLooseElectrons_CommonCalc", &nLooseElectrons_CommonCalc, &b_nLooseElectrons_CommonCalc);
+   inputTree->SetBranchAddress("L1NonPrefiringProbDown_CommonCalc", &L1NonPrefiringProbDown_CommonCalc, &b_L1NonPrefiringProbDown_CommonCalc);
+   inputTree->SetBranchAddress("L1NonPrefiringProbUp_CommonCalc", &L1NonPrefiringProbUp_CommonCalc, &b_L1NonPrefiringProbUp_CommonCalc);
+   inputTree->SetBranchAddress("L1NonPrefiringProb_CommonCalc", &L1NonPrefiringProb_CommonCalc, &b_L1NonPrefiringProb_CommonCalc);
+   inputTree->SetBranchAddress("LHEweightorig_MultiLepCalc", &LHEweightorig_MultiLepCalc, &b_LHEweightorig_MultiLepCalc);
+   inputTree->SetBranchAddress("corr_metmod_MultiLepCalc", &corr_metmod_MultiLepCalc, &b_corr_metmod_MultiLepCalc);
+   inputTree->SetBranchAddress("corr_metmod_phi_MultiLepCalc", &corr_metmod_phi_MultiLepCalc, &b_corr_metmod_phi_MultiLepCalc);
+   inputTree->SetBranchAddress("metmod_MultiLepCalc", &metmod_MultiLepCalc, &b_metmod_MultiLepCalc);
+   inputTree->SetBranchAddress("metmod_phi_MultiLepCalc", &metmod_phi_MultiLepCalc, &b_metmod_phi_MultiLepCalc);
+   inputTree->SetBranchAddress("NewPDFids_MultiLepCalc", &NewPDFids_MultiLepCalc, &b_NewPDFids_MultiLepCalc);
+   inputTree->SetBranchAddress("elIsMVATight80_MultiLepCalc", &elIsMVATight80_MultiLepCalc, &b_elIsMVATight80_MultiLepCalc);
+   inputTree->SetBranchAddress("elIsMVATight90_MultiLepCalc", &elIsMVATight90_MultiLepCalc, &b_elIsMVATight90_MultiLepCalc);
+   inputTree->SetBranchAddress("elIsMVATightIso80_MultiLepCalc", &elIsMVATightIso80_MultiLepCalc, &b_elIsMVATightIso80_MultiLepCalc);
+   inputTree->SetBranchAddress("elIsMVATightIso90_MultiLepCalc", &elIsMVATightIso90_MultiLepCalc, &b_elIsMVATightIso90_MultiLepCalc);
+   inputTree->SetBranchAddress("genTtbarId_TTbarMassCalc", &genTtbarId_TTbarMassCalc, &b_genTtbarId_TTbarMassCalc);
+   inputTree->SetBranchAddress("topNAK4_HOTTaggerCalc", &topNAK4_HOTTaggerCalc, &b_topNAK4_HOTTaggerCalc);
+   inputTree->SetBranchAddress("topNtops_HOTTaggerCalc", &topNtops_HOTTaggerCalc, &b_topNtops_HOTTaggerCalc);
+   inputTree->SetBranchAddress("topJet1Index_HOTTaggerCalc", &topJet1Index_HOTTaggerCalc, &b_topJet1Index_HOTTaggerCalc);
+   inputTree->SetBranchAddress("topJet2Index_HOTTaggerCalc", &topJet2Index_HOTTaggerCalc, &b_topJet2Index_HOTTaggerCalc);
+   inputTree->SetBranchAddress("topJet3Index_HOTTaggerCalc", &topJet3Index_HOTTaggerCalc, &b_topJet3Index_HOTTaggerCalc);
+   inputTree->SetBranchAddress("AK8JetDoubleB_MultiLepCalc", &AK8JetDoubleB_MultiLepCalc, &b_AK8JetDoubleB_MultiLepCalc);
+   inputTree->SetBranchAddress("NewPDFweightsBase_MultiLepCalc", &NewPDFweightsBase_MultiLepCalc, &b_NewPDFweightsBase_MultiLepCalc);
+   inputTree->SetBranchAddress("NewPDFweights_MultiLepCalc", &NewPDFweights_MultiLepCalc, &b_NewPDFweights_MultiLepCalc);
+   inputTree->SetBranchAddress("decorr_C_DeepAK8Calc", &decorr_C_DeepAK8Calc, &b_decorr_C_DeepAK8Calc);
+   inputTree->SetBranchAddress("dnn_C_DeepAK8Calc", &dnn_C_DeepAK8Calc, &b_dnn_C_DeepAK8Calc);
+   inputTree->SetBranchAddress("elIsLoose_MultiLepCalc", &elIsLoose_MultiLepCalc, &b_elIsLoose_MultiLepCalc);
+   inputTree->SetBranchAddress("elIsMedium_MultiLepCalc", &elIsMedium_MultiLepCalc, &b_elIsMedium_MultiLepCalc);
+   inputTree->SetBranchAddress("elIsTight_MultiLepCalc", &elIsTight_MultiLepCalc, &b_elIsTight_MultiLepCalc);
+   inputTree->SetBranchAddress("elIsVeto_MultiLepCalc", &elIsVeto_MultiLepCalc, &b_elIsVeto_MultiLepCalc);
+   inputTree->SetBranchAddress("topBestGenEnergy_HOTTaggerCalc", &topBestGenEnergy_HOTTaggerCalc, &b_topBestGenEnergy_HOTTaggerCalc);
+   inputTree->SetBranchAddress("topBestGenEta_HOTTaggerCalc", &topBestGenEta_HOTTaggerCalc, &b_topBestGenEta_HOTTaggerCalc);
+   inputTree->SetBranchAddress("topBestGenPhi_HOTTaggerCalc", &topBestGenPhi_HOTTaggerCalc, &b_topBestGenPhi_HOTTaggerCalc);
+   inputTree->SetBranchAddress("topBestGenPt_HOTTaggerCalc", &topBestGenPt_HOTTaggerCalc, &b_topBestGenPt_HOTTaggerCalc);
+   inputTree->SetBranchAddress("topDRmax_HOTTaggerCalc", &topDRmax_HOTTaggerCalc, &b_topDRmax_HOTTaggerCalc);
+   inputTree->SetBranchAddress("topDThetaMax_HOTTaggerCalc", &topDThetaMax_HOTTaggerCalc, &b_topDThetaMax_HOTTaggerCalc);
+   inputTree->SetBranchAddress("topDThetaMin_HOTTaggerCalc", &topDThetaMin_HOTTaggerCalc, &b_topDThetaMin_HOTTaggerCalc);
+   inputTree->SetBranchAddress("topDiscriminator_HOTTaggerCalc", &topDiscriminator_HOTTaggerCalc, &b_topDiscriminator_HOTTaggerCalc);
+   inputTree->SetBranchAddress("topEta_HOTTaggerCalc", &topEta_HOTTaggerCalc, &b_topEta_HOTTaggerCalc);
+   inputTree->SetBranchAddress("topMass_HOTTaggerCalc", &topMass_HOTTaggerCalc, &b_topMass_HOTTaggerCalc);
+   inputTree->SetBranchAddress("topNconstituents_HOTTaggerCalc", &topNconstituents_HOTTaggerCalc, &b_topNconstituents_HOTTaggerCalc);
+   inputTree->SetBranchAddress("topPhi_HOTTaggerCalc", &topPhi_HOTTaggerCalc, &b_topPhi_HOTTaggerCalc);
+   inputTree->SetBranchAddress("topPt_HOTTaggerCalc", &topPt_HOTTaggerCalc, &b_topPt_HOTTaggerCalc);
+   inputTree->SetBranchAddress("topType_HOTTaggerCalc", &topType_HOTTaggerCalc, &b_topType_HOTTaggerCalc);
+
    Notify();
 }
 
