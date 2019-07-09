@@ -53,6 +53,7 @@ public :
    // Fixed size dimensions of array or collections stored in the TTree if any.
 
    // NEW BRANCHES
+   Int_t           isHTgt500Njetge9;
    Int_t           isElectron;
    Int_t           isMuon;
    Int_t           MCPastTrigger;

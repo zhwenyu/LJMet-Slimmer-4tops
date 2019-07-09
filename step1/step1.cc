@@ -418,6 +418,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    outputTree->Branch("topPt_HOTTaggerCalc",&topPt_HOTTaggerCalc);
    outputTree->Branch("topType_HOTTaggerCalc",&topType_HOTTaggerCalc);
 
+   outputTree->Branch("isHTgt500Njetge9",&isHTgt500Njetge9,"isHTgt500Njetge9/I");
    outputTree->Branch("BJetLeadPt",&BJetLeadPt,"BJetLeadPt/F");
    outputTree->Branch("WJetLeadPt",&WJetLeadPt,"WJetLeadPt/F");
    outputTree->Branch("TJetLeadPt",&TJetLeadPt,"TJetLeadPt/F");     
@@ -756,6 +757,20 @@ void step1::Loop(TString inTreeName, TString outTreeName )
       if(isTTincMtt700to1000 && (ttbarMass_TTbarMassCalc < 700. || ttbarMass_TTbarMassCalc >= 1000.)) continue;
       if(isTTincMtt1000toInf && ttbarMass_TTbarMassCalc < 1000.) continue;
 
+      // ----------------------------------------------------------------------------
+      // Assign bool depending on gen level HT and Jet multiplicity for ttbar sample stitching
+      // ----------------------------------------------------------------------------
+      // HT calculated from jets with pT>30 and |eta|<2.4 > 500 GeV
+      // Jet multiplicity (jet pT>30) >= 9
+      isHTgt500Njetge9 = 0;
+      double genHT = 0;
+      int Ngenjet = 0;
+      for(unsigned int ijet=0; ijet < genJetPt_MultiLepCalc->size(); ijet++){
+	if(genJetPt_MultiLepCalc->at(ijet) > 30) Ngenjet+=1;
+	if(genJetPt_MultiLepCalc->at(ijet) > 30 && fabs(genJetEta_MultiLepCalc->at(ijet)) < 2.4) genHT+=genJetPt_MultiLepCalc->at(ijet);
+      }
+      if(genHT>500 && Ngenjet>=9) {isHTgt500Njetge9 = 1;}
+      
       // ----------------------------------------------------------------------------
       // Assign as electron or muon event
       // ----------------------------------------------------------------------------
