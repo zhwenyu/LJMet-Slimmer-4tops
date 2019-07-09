@@ -96,12 +96,15 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    inputTree->SetBranchStatus("event_CommonCalc",1);
    inputTree->SetBranchStatus("run_CommonCalc",1);
    inputTree->SetBranchStatus("lumi_CommonCalc",1);
-//   inputTree->SetBranchStatus("nPV_MultiLepCalc",1);
    inputTree->SetBranchStatus("nTrueInteractions_MultiLepCalc",1);
    inputTree->SetBranchStatus("MCWeight_MultiLepCalc",1);
    inputTree->SetBranchStatus("LHEweightids_MultiLepCalc",1);
    inputTree->SetBranchStatus("LHEweights_MultiLepCalc",1);
+   inputTree->SetBranchStatus("NewPDFweights_MultiLepCalc",1);
    inputTree->SetBranchStatus("HTfromHEPUEP_MultiLepCalc",1);
+   inputTree->SetBranchStatus("L1NonPrefiringProb_CommonCalc",1);
+   inputTree->SetBranchStatus("L1NonPrefiringProbUp_CommonCalc",1);
+   inputTree->SetBranchStatus("L1NonPrefiringProbDown_CommonCalc",1);
    
    //triggers
    inputTree->SetBranchStatus("vsSelMCTriggersEl_MultiLepCalc",1);
@@ -113,47 +116,25 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    inputTree->SetBranchStatus("vsSelTriggersMu_MultiLepCalc",1);
    inputTree->SetBranchStatus("viSelTriggersMu_MultiLepCalc",1);
    
-   //electrons **** ADD MORE/NEW ID BRANCHES *****
+   //electrons
    inputTree->SetBranchStatus("elPt_MultiLepCalc",1);
    inputTree->SetBranchStatus("elEta_MultiLepCalc",1);
    inputTree->SetBranchStatus("elPhi_MultiLepCalc",1);
    inputTree->SetBranchStatus("elEnergy_MultiLepCalc",1);
-//   inputTree->SetBranchStatus("elMVAValue_MultiLepCalc",1);
-   inputTree->SetBranchStatus("elMiniIso_MultiLepCalc",1);
-//   inputTree->SetBranchStatus("elIsTightBarrel_MultiLepCalc",1);
-//   inputTree->SetBranchStatus("elIsMediumBarrel_MultiLepCalc",1);
-//   inputTree->SetBranchStatus("elIsLooseBarrel_MultiLepCalc",1);
-//   inputTree->SetBranchStatus("elIsVetoBarrel_MultiLepCalc",1);
-//   inputTree->SetBranchStatus("elIsMediumEndCap_MultiLepCalc",1);
-//   inputTree->SetBranchStatus("elIsLooseEndCap_MultiLepCalc",1);
-//   inputTree->SetBranchStatus("elIsVetoEndCap_MultiLepCalc",1);
-//   inputTree->SetBranchStatus("elMother_id_MultiLepCalc",1);
-//   inputTree->SetBranchStatus("elMother_pt_MultiLepCalc",1);
-//   inputTree->SetBranchStatus("elMother_eta_MultiLepCalc",1);
-//   inputTree->SetBranchStatus("elMother_phi_MultiLepCalc",1);
-//   inputTree->SetBranchStatus("elMother_energy_MultiLepCalc",1);
-//   inputTree->SetBranchStatus("elNumberOfMothers_MultiLepCalc",1);   
+   inputTree->SetBranchStatus("elMiniIso_MultiLepCalc",1);  
    
-   //muons  **** ADD MORE/NEW ID BRANCHES *****
+   //muons
    inputTree->SetBranchStatus("muPt_MultiLepCalc",1);
    inputTree->SetBranchStatus("muEta_MultiLepCalc",1);
    inputTree->SetBranchStatus("muPhi_MultiLepCalc",1);
    inputTree->SetBranchStatus("muEnergy_MultiLepCalc",1);
-   inputTree->SetBranchStatus("muMiniIso_MultiLepCalc",1);
-   inputTree->SetBranchStatus("muIsTight_MultiLepCalc",1);
-   inputTree->SetBranchStatus("muIsMedium_MultiLepCalc",1);
-   inputTree->SetBranchStatus("muIsMediumPrompt_MultiLepCalc",1);
-   inputTree->SetBranchStatus("muIsLoose_MultiLepCalc",1);
-//   inputTree->SetBranchStatus("muMother_id_MultiLepCalc",1);   
-//   inputTree->SetBranchStatus("muMother_pt_MultiLepCalc",1);   
-//   inputTree->SetBranchStatus("muMother_eta_MultiLepCalc",1);   
-//   inputTree->SetBranchStatus("muMother_phi_MultiLepCalc",1);   
-//   inputTree->SetBranchStatus("muMother_energy_MultiLepCalc",1);   
-//   inputTree->SetBranchStatus("muNumberOfMothers_MultiLepCalc",1);   
+   inputTree->SetBranchStatus("muMiniIso_MultiLepCalc",1);  
    
    //missing et
    inputTree->SetBranchStatus("corr_met_MultiLepCalc",1);
    inputTree->SetBranchStatus("corr_met_phi_MultiLepCalc",1);
+   inputTree->SetBranchStatus("corr_metmod_MultiLepCalc",1);
+   inputTree->SetBranchStatus("corr_metmod_phi_MultiLepCalc",1);
 
    //boosted truth
    inputTree->SetBranchStatus("HadronicVHtPt_JetSubCalc",1);
@@ -188,7 +169,6 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    inputTree->SetBranchStatus("genJetEta_MultiLepCalc",1);
    inputTree->SetBranchStatus("genJetPhi_MultiLepCalc",1);
    inputTree->SetBranchStatus("genJetEnergy_MultiLepCalc",1);
-   inputTree->SetBranchStatus("genTtbarIdCategory_TTbarMassCalc",1);
 
    //JetSubCalc
    inputTree->SetBranchStatus("theJetHFlav_JetSubCalc",1);
@@ -218,24 +198,6 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    inputTree->SetBranchStatus("theJetAK8SoftDrop_JMSdn_JetSubCalc",1);
    inputTree->SetBranchStatus("theJetAK8SoftDrop_JMRup_JetSubCalc",1);
    inputTree->SetBranchStatus("theJetAK8SoftDrop_JMRdn_JetSubCalc",1);
-
-   //DeepAK8
-   inputTree->SetBranchStatus("dnn_B_DeepAK8Calc",1);
-   inputTree->SetBranchStatus("dnn_J_DeepAK8Calc",1);
-   inputTree->SetBranchStatus("dnn_W_DeepAK8Calc",1);
-   inputTree->SetBranchStatus("dnn_Z_DeepAK8Calc",1);
-   inputTree->SetBranchStatus("dnn_H_DeepAK8Calc",1);
-   inputTree->SetBranchStatus("dnn_largest_DeepAK8Calc",1);
-   inputTree->SetBranchStatus("decorr_largest_DeepAK8Calc",1);
-   inputTree->SetBranchStatus("dnn_T_DeepAK8Calc",1);
-   inputTree->SetBranchStatus("decorr_B_DeepAK8Calc",1);
-   inputTree->SetBranchStatus("decorr_J_DeepAK8Calc",1);
-   inputTree->SetBranchStatus("decorr_W_DeepAK8Calc",1);
-   inputTree->SetBranchStatus("decorr_Z_DeepAK8Calc",1);
-   inputTree->SetBranchStatus("decorr_H_DeepAK8Calc",1);
-   inputTree->SetBranchStatus("decorr_T_DeepAK8Calc",1);
-
-   //JetSubCalc
    inputTree->SetBranchStatus("maxProb_JetSubCalc",1);
    
    //top
@@ -265,29 +227,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    inputTree->SetBranchStatus("topbPt_TTbarMassCalc",1);
    inputTree->SetBranchStatus("topbID_TTbarMassCalc",1);
 
-//   inputTree->SetBranchStatus("isTT_TTbarMassCalc",1);
-   inputTree->SetBranchStatus("nLooseElectrons_CommonCalc",1);
-   inputTree->SetBranchStatus("L1NonPrefiringProbDown_CommonCalc",1);
-   inputTree->SetBranchStatus("L1NonPrefiringProbUp_CommonCalc",1);
-   inputTree->SetBranchStatus("L1NonPrefiringProb_CommonCalc",1);
-   inputTree->SetBranchStatus("LHEweightorig_MultiLepCalc",1);
-   inputTree->SetBranchStatus("corr_metmod_MultiLepCalc",1);
-   inputTree->SetBranchStatus("corr_metmod_phi_MultiLepCalc",1);
-   inputTree->SetBranchStatus("metmod_MultiLepCalc",1);
-   inputTree->SetBranchStatus("metmod_phi_MultiLepCalc",1);
-   inputTree->SetBranchStatus("NewPDFids_MultiLepCalc",1);
-   inputTree->SetBranchStatus("elIsMVATight80_MultiLepCalc",1);
-   inputTree->SetBranchStatus("elIsMVATight90_MultiLepCalc",1);
-   inputTree->SetBranchStatus("elIsMVATightIso80_MultiLepCalc",1);
-   inputTree->SetBranchStatus("elIsMVATightIso90_MultiLepCalc",1);
-   inputTree->SetBranchStatus("AK8JetDoubleB_MultiLepCalc",1);
-   inputTree->SetBranchStatus("NewPDFweightsBase_MultiLepCalc",1); 
-   inputTree->SetBranchStatus("NewPDFweights_MultiLepCalc",1);
-   inputTree->SetBranchStatus("elIsLoose_MultiLepCalc",1);
-   inputTree->SetBranchStatus("elIsMedium_MultiLepCalc", 1);
-   inputTree->SetBranchStatus("elIsTight_MultiLepCalc",1);
-   inputTree->SetBranchStatus("elIsVeto_MultiLepCalc",1);
-   inputTree->SetBranchStatus("genTtbarId_TTbarMassCalc",1);
+   //HOTTaggerCalc
    inputTree->SetBranchStatus("topJet1Index_HOTTaggerCalc",1);
    inputTree->SetBranchStatus("topJet2Index_HOTTaggerCalc",1);
    inputTree->SetBranchStatus("topJet3Index_HOTTaggerCalc",1);
@@ -318,36 +258,69 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    TTree *outputTree = new TTree(outTreeName, outTreeName);
 
 
-
-   // ***** EVERY NEW BRANCH NEEDS A LINE HERE ****
+   //Common
    outputTree->Branch("event_CommonCalc",&event_CommonCalc,"event_CommonCalc/L");
    outputTree->Branch("run_CommonCalc",&run_CommonCalc,"run_CommonCalc/I");
    outputTree->Branch("lumi_CommonCalc",&lumi_CommonCalc,"lumi_CommonCalc/I");
-//   outputTree->Branch("nPV_MultiLepCalc",&nPV_MultiLepCalc,"nPV_MultiLepCalc/I");
    outputTree->Branch("nTrueInteractions_MultiLepCalc",&nTrueInteractions_MultiLepCalc,"nTrueInteractions_MultiLepCalc/I");
    outputTree->Branch("isElectron",&isElectron,"isElectron/I");
    outputTree->Branch("isMuon",&isMuon,"isMuon/I");
    outputTree->Branch("MCPastTrigger",&MCPastTrigger,"MCPastTrigger/I");
    outputTree->Branch("DataPastTrigger",&DataPastTrigger,"DataPastTrigger/I");
+   outputTree->Branch("L1NonPrefiringProb_CommonCalc",&L1NonPrefiringProb_CommonCalc,"L1NonPrefiringProb_CommonCalc/D");
+   outputTree->Branch("L1NonPrefiringProbUp_CommonCalc",&L1NonPrefiringProbUp_CommonCalc,"L1NonPrefiringProbUp_CommonCalc/D");
+   outputTree->Branch("L1NonPrefiringProbDown_CommonCalc",&L1NonPrefiringProbDown_CommonCalc,"L1NonPrefiringProbDown_CommonCalc/D");
+   
+   //weights
    outputTree->Branch("MCWeight_MultiLepCalc",&MCWeight_MultiLepCalc,"MCWeight_MultiLepCalc/D");
    outputTree->Branch("renormWeights",&renormWeights);
    outputTree->Branch("pdfWeights",&pdfWeights);
+   outputTree->Branch("pdfNewWeights",&pdfNewWeights);
+   outputTree->Branch("pdfNewNominalWeight",&pdfNewNominalWeight,"pdfNewNominalWeight/F");
    outputTree->Branch("pileupWeight",&pileupWeight,"pileupWeight/F");
    outputTree->Branch("pileupWeightUp",&pileupWeightUp,"pileupWeightUp/F");
    outputTree->Branch("pileupWeightDown",&pileupWeightDown,"pileupWeightDown/F");
    outputTree->Branch("HTSF_Pol",&HTSF_Pol,"HTSF_Pol/F");
    outputTree->Branch("HTSF_PolUp",&HTSF_PolUp,"HTSF_PolUp/F");
    outputTree->Branch("HTSF_PolDn",&HTSF_PolDn,"HTSF_PolDn/F");
+   outputTree->Branch("topPtWeight13TeV",&topPtWeight13TeV,"topPtWeight13TeV/F");          
+   outputTree->Branch("EGammaGsfSF",&EGammaGsfSF,"EGammaGsfSF/F");
+   outputTree->Branch("lepIdSF",&lepIdSF,"lepIdSF/F");
+   
+   //ttbar generator
    outputTree->Branch("ttbarMass_TTbarMassCalc",&ttbarMass_TTbarMassCalc,"ttbarMass_TTbarMassCalc/D");
-//   outputTree->Branch("isTT_TTbarMassCalc",&isTT_TTbarMassCalc,"isTT_TTbarMassCalc/I");
+   outputTree->Branch("genTopPt",&genTopPt,"genTopPt/F");
+   outputTree->Branch("genAntiTopPt",&genAntiTopPt,"genAntiTopPt/F");
+   outputTree->Branch("topEnergy_TTbarMassCalc",&topEnergy_TTbarMassCalc);
+   outputTree->Branch("topEta_TTbarMassCalc",&topEta_TTbarMassCalc);
+   outputTree->Branch("topMass_TTbarMassCalc",&topMass_TTbarMassCalc);
+   outputTree->Branch("topPhi_TTbarMassCalc",&topPhi_TTbarMassCalc);   
+   outputTree->Branch("topPt_TTbarMassCalc",&topPt_TTbarMassCalc);      
+   outputTree->Branch("topID_TTbarMassCalc",&topID_TTbarMassCalc);
+   outputTree->Branch("topWEnergy_TTbarMassCalc",&topWEnergy_TTbarMassCalc);
+   outputTree->Branch("topWEta_TTbarMassCalc",&topWEta_TTbarMassCalc);
+   outputTree->Branch("topWPhi_TTbarMassCalc",&topWPhi_TTbarMassCalc);
+   outputTree->Branch("topWPt_TTbarMassCalc",&topWPt_TTbarMassCalc);   
+   outputTree->Branch("topWID_TTbarMassCalc",&topWID_TTbarMassCalc);      
+   outputTree->Branch("topbEnergy_TTbarMassCalc",&topbEnergy_TTbarMassCalc);
+   outputTree->Branch("topbEta_TTbarMassCalc",&topbEta_TTbarMassCalc);
+   outputTree->Branch("topbPhi_TTbarMassCalc",&topbPhi_TTbarMassCalc);
+   outputTree->Branch("topbPt_TTbarMassCalc",&topbPt_TTbarMassCalc);   
+   outputTree->Branch("topbID_TTbarMassCalc",&topbID_TTbarMassCalc);
+   
+   //leptons
    outputTree->Branch("corr_met_MultiLepCalc",&corr_met_MultiLepCalc,"corr_met_MultiLepCalc/D");
    outputTree->Branch("corr_met_phi_MultiLepCalc",&corr_met_phi_MultiLepCalc,"corr_met_phi_MultiLepCalc/D");
+   outputTree->Branch("corr_metmod_MultiLepCalc",&corr_metmod_MultiLepCalc,"corr_metmod_MultiLepCalc/D");
+   outputTree->Branch("corr_metmod_phi_MultiLepCalc",&corr_metmod_phi_MultiLepCalc,"corr_metmod_phi_MultiLepCalc/D");
    outputTree->Branch("leptonPt_MultiLepCalc",&leptonPt_MultiLepCalc,"leptonPt_MultiLepCalc/F");
    outputTree->Branch("leptonEta_MultiLepCalc",&leptonEta_MultiLepCalc,"leptonEta_MultiLepCalc/F");
    outputTree->Branch("leptonPhi_MultiLepCalc",&leptonPhi_MultiLepCalc,"leptonPhi_MultiLepCalc/F");
    outputTree->Branch("leptonEnergy_MultiLepCalc",&leptonEnergy_MultiLepCalc,"leptonEnergy_MultiLepCalc/F");
-   outputTree->Branch("leptonMVAValue_MultiLepCalc",&leptonMVAValue_MultiLepCalc,"leptonMVAValue_MultiLepCalc/F");
    outputTree->Branch("leptonMiniIso_MultiLepCalc",&leptonMiniIso_MultiLepCalc,"leptonMiniIso_MultiLepCalc/F");
+   outputTree->Branch("MT_lepMet",&MT_lepMet,"MT_lepMet/F");
+
+   // AK4
    outputTree->Branch("theJetPt_JetSubCalc_PtOrdered",&theJetPt_JetSubCalc_PtOrdered);
    outputTree->Branch("theJetEta_JetSubCalc_PtOrdered",&theJetEta_JetSubCalc_PtOrdered);
    outputTree->Branch("theJetPhi_JetSubCalc_PtOrdered",&theJetPhi_JetSubCalc_PtOrdered);
@@ -359,96 +332,19 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    outputTree->Branch("theJetHFlav_JetSubCalc_PtOrdered",&theJetHFlav_JetSubCalc_PtOrdered);
    outputTree->Branch("theJetPFlav_JetSubCalc_PtOrdered",&theJetPFlav_JetSubCalc_PtOrdered);
    outputTree->Branch("theJetBTag_JetSubCalc_PtOrdered",&theJetBTag_JetSubCalc_PtOrdered);
-   outputTree->Branch("BJetLeadPt",&BJetLeadPt,"BJetLeadPt/F");
-   outputTree->Branch("WJetLeadPt",&WJetLeadPt,"WJetLeadPt/F");
-   outputTree->Branch("TJetLeadPt",&TJetLeadPt,"TJetLeadPt/F");
    outputTree->Branch("AK4HTpMETpLepPt",&AK4HTpMETpLepPt,"AK4HTpMETpLepPt/F");
    outputTree->Branch("AK4HT",&AK4HT,"AK4HT/F");
    outputTree->Branch("NJets_JetSubCalc",&NJets_JetSubCalc,"NJets_JetSubCalc/I");
    outputTree->Branch("NJetsCSV_JetSubCalc",&NJetsCSV_JetSubCalc,"NJetsCSV_JetSubCalc/I");
    outputTree->Branch("NJetsCSVwithSF_JetSubCalc",&NJetsCSVwithSF_JetSubCalc,"NJetsCSVwithSF_JetSubCalc/I");
-   outputTree->Branch("topPt",&topPt,"topPt/F");
-   outputTree->Branch("topPtGen",&topPtGen,"topPtGen/F");
-   outputTree->Branch("topMass",&topMass,"topMass/F");
    outputTree->Branch("minMleppBjet",&minMleppBjet,"minMleppBjet/F");
    outputTree->Branch("minMleppJet",&minMleppJet,"mixnMleppJet/F");
-   outputTree->Branch("genTopPt",&genTopPt,"genTopPt/F");
-   outputTree->Branch("genAntiTopPt",&genAntiTopPt,"genAntiTopPt/F");
-   outputTree->Branch("topPtWeight13TeV",&topPtWeight13TeV,"topPtWeight13TeV/F");
    outputTree->Branch("minDR_lepJet",&minDR_lepJet,"minDR_lepJet/F");
    outputTree->Branch("ptRel_lepJet",&ptRel_lepJet,"ptRel_lepJet/F");
-   outputTree->Branch("MT_lepMet",&MT_lepMet,"MT_lepMet/F");
    outputTree->Branch("deltaR_lepJets",&deltaR_lepJets);
    outputTree->Branch("deltaR_lepBJets",&deltaR_lepBJets);
-   outputTree->Branch("muIsLoose_MultiLepCalc",&muIsLoose_MultiLepCalc);
-   outputTree->Branch("muIsMedium_MultiLepCalc",&muIsMedium_MultiLepCalc);
-   outputTree->Branch("muIsMediumPrompt_MultiLepCalc",&muIsMediumPrompt_MultiLepCalc);
-   outputTree->Branch("muIsTight_MultiLepCalc",&muIsTight_MultiLepCalc);
 
-//   outputTree->Branch("muPt_MultiLepCalc",&muPt_MultiLepCalc);
-//   outputTree->Branch("muMother_id_MultiLepCalc",&muMother_id_MultiLepCalc);
-//   outputTree->Branch("muMother_pt_MultiLepCalc",&muMother_pt_MultiLepCalc);
-//   outputTree->Branch("muMother_eta_MultiLepCalc",&muMother_eta_MultiLepCalc);
-//   outputTree->Branch("muMother_phi_MultiLepCalc",&muMother_phi_MultiLepCalc);
-//   outputTree->Branch("muMother_energy_MultiLepCalc",&muMother_energy_MultiLepCalc);         
-//   outputTree->Branch("muNumberOfMothers_MultiLepCalc",&muNumberOfMothers_MultiLepCalc);            
-
-//   outputTree->Branch("elPt_MultiLepCalc",&elPt_MultiLepCalc);
-//   outputTree->Branch("elIsTightBarrel_MultiLepCalc",&elIsTightBarrel_MultiLepCalc,"elIsTightBarrel_MultiLepCalc/F");
-//   outputTree->Branch("elIsMediumBarrel_MultiLepCalc",&elIsMediumBarrel_MultiLepCalc,"elIsMediumBarrel_MultiLepCalc/F");
-//   outputTree->Branch("elIsLooseBarrel_MultiLepCalc",&elIsLooseBarrel_MultiLepCalc,"elIsLooseBarrel_MultiLepCalc/F");
-//   outputTree->Branch("elIsVetoBarrel_MultiLepCalc",&elIsVetoBarrel_MultiLepCalc,"elIsVetoBarrel_MultiLepCalc/F");
-//   outputTree->Branch("elIsTightEndCap_MultiLepCalc",&elIsTightEndCap_MultiLepCalc,"elIsTightEndCap_MultiLepCalc/F");
-//   outputTree->Branch("elIsMediumEndCap_MultiLepCalc",&elIsMediumEndCap_MultiLepCalc,"elIsMediumEndCap_MultiLepCalc/F");
-//   outputTree->Branch("elIsLooseEndCap_MultiLepCalc",&elIsLooseEndCap_MultiLepCalc,"elIsLooseEndCap_MultiLepCalc/F");
-//   outputTree->Branch("elIsVetoEndCap_MultiLepCalc",&elIsVetoEndCap_MultiLepCalc,"elIsVetoEndCap_MultiLepCalc/F");
-//   outputTree->Branch("elMother_id_MultiLepCalc",&elMother_id_MultiLepCalc);
-//   outputTree->Branch("elMother_pt_MultiLepCalc",&elMother_pt_MultiLepCalc);
-//   outputTree->Branch("elMother_eta_MultiLepCalc",&elMother_eta_MultiLepCalc);
-//   outputTree->Branch("elMother_phi_MultiLepCalc",&elMother_phi_MultiLepCalc);
-//   outputTree->Branch("elMother_energy_MultiLepCalc",&elMother_energy_MultiLepCalc);         
-//   outputTree->Branch("elNumberOfMothers_MultiLepCalc",&elNumberOfMothers_MultiLepCalc);            
-
-   outputTree->Branch("EGammaGsfSF",&EGammaGsfSF,"EGammaGsfSF/F");
-   outputTree->Branch("lepIdSF",&lepIdSF,"lepIdSF/F");
-
-   outputTree->Branch("HadronicVHtID_JetSubCalc",&HadronicVHtID_JetSubCalc);
-   outputTree->Branch("HadronicVHtPt_JetSubCalc",&HadronicVHtPt_JetSubCalc);
-   outputTree->Branch("HadronicVHtEta_JetSubCalc",&HadronicVHtEta_JetSubCalc);
-   outputTree->Branch("HadronicVHtPhi_JetSubCalc",&HadronicVHtPhi_JetSubCalc);
-   outputTree->Branch("HadronicVHtEnergy_JetSubCalc",&HadronicVHtEnergy_JetSubCalc);
-
-   outputTree->Branch("theJetAK8Pt_JetSubCalc_PtOrdered",&theJetAK8Pt_JetSubCalc_PtOrdered);
-   outputTree->Branch("theJetAK8Eta_JetSubCalc_PtOrdered",&theJetAK8Eta_JetSubCalc_PtOrdered);
-   outputTree->Branch("theJetAK8Phi_JetSubCalc_PtOrdered",&theJetAK8Phi_JetSubCalc_PtOrdered);
-   outputTree->Branch("theJetAK8Mass_JetSubCalc_PtOrdered",&theJetAK8Mass_JetSubCalc_PtOrdered);
-   outputTree->Branch("theJetAK8Energy_JetSubCalc_PtOrdered",&theJetAK8Energy_JetSubCalc_PtOrdered);
-   outputTree->Branch("theJetAK8SoftDropRaw_JetSubCalc_PtOrdered",&theJetAK8SoftDropRaw_JetSubCalc_PtOrdered);
-   outputTree->Branch("theJetAK8SoftDropCorr_JetSubCalc_PtOrdered",&theJetAK8SoftDropCorr_JetSubCalc_PtOrdered);
-   outputTree->Branch("theJetAK8SoftDrop_JetSubCalc_PtOrdered",&theJetAK8SoftDrop_JetSubCalc_PtOrdered);
-   outputTree->Branch("theJetAK8SoftDrop_JetSubCalc_JMRup_PtOrdered",&theJetAK8SoftDrop_JetSubCalc_JMRup_PtOrdered);
-   outputTree->Branch("theJetAK8SoftDrop_JetSubCalc_JMRdn_PtOrdered",&theJetAK8SoftDrop_JetSubCalc_JMRdn_PtOrdered);
-   outputTree->Branch("theJetAK8SoftDrop_JetSubCalc_JMSup_PtOrdered",&theJetAK8SoftDrop_JetSubCalc_JMSup_PtOrdered);
-   outputTree->Branch("theJetAK8SoftDrop_JetSubCalc_JMSdn_PtOrdered",&theJetAK8SoftDrop_JetSubCalc_JMSdn_PtOrdered);
-   outputTree->Branch("theJetAK8NjettinessTau1_JetSubCalc_PtOrdered",&theJetAK8NjettinessTau1_JetSubCalc_PtOrdered);
-   outputTree->Branch("theJetAK8NjettinessTau2_JetSubCalc_PtOrdered",&theJetAK8NjettinessTau2_JetSubCalc_PtOrdered);
-   outputTree->Branch("theJetAK8NjettinessTau3_JetSubCalc_PtOrdered",&theJetAK8NjettinessTau3_JetSubCalc_PtOrdered);
-   outputTree->Branch("theJetAK8Wmatch_JetSubCalc_PtOrdered",&theJetAK8Wmatch_JetSubCalc_PtOrdered);
-   outputTree->Branch("theJetAK8Tmatch_JetSubCalc_PtOrdered",&theJetAK8Tmatch_JetSubCalc_PtOrdered);
-   outputTree->Branch("theJetAK8MatchedPt_JetSubCalc_PtOrdered",&theJetAK8MatchedPt_JetSubCalc_PtOrdered);
-   outputTree->Branch("theJetAK8Indx_Wtagged",&theJetAK8Indx_Wtagged);
-   
-   outputTree->Branch("BJetLeadPt",&BJetLeadPt,"BJetLeadPt/F");
-   outputTree->Branch("WJetLeadPt",&WJetLeadPt,"WJetLeadPt/F");
-   outputTree->Branch("TJetLeadPt",&TJetLeadPt,"TJetLeadPt/F");
-   outputTree->Branch("NJetsAK8_JetSubCalc",&NJetsAK8_JetSubCalc,"NJetsAK8_JetSubCalc/I");
-   outputTree->Branch("NPuppiWtagged_0p55",&NPuppiWtagged_0p55,"NPuppiWtagged_0p55/I");
-   outputTree->Branch("NPuppiWtagged_0p55_notTtagged",&NPuppiWtagged_0p55_notTtagged,"NPuppiWtagged_0p55_notTtagged/I");
-   outputTree->Branch("NJetsTtagged_0p81",&NJetsTtagged_0p81,"NJetsTtagged_0p81/I");
-   outputTree->Branch("minDR_leadAK8otherAK8",&minDR_leadAK8otherAK8,"minDR_leadAK8otherAK8/F");
-   outputTree->Branch("minDR_lepAK8",&minDR_lepAK8,"minDR_lepAK8/F");
-   outputTree->Branch("deltaR_lepAK8s",&deltaR_lepAK8s);
-
+   // AK4 gen
    outputTree->Branch("genPt_MultiLepCalc",&genPt_MultiLepCalc);
    outputTree->Branch("genEta_MultiLepCalc",&genEta_MultiLepCalc);
    outputTree->Branch("genPhi_MultiLepCalc",&genPhi_MultiLepCalc);
@@ -462,62 +358,58 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    outputTree->Branch("genIndex_MultiLepCalc",&genIndex_MultiLepCalc);
    outputTree->Branch("genMotherID_MultiLepCalc",&genMotherID_MultiLepCalc);
    outputTree->Branch("genMotherIndex_MultiLepCalc",&genMotherIndex_MultiLepCalc);
-   outputTree->Branch("genTtbarIdCategory_TTbarMassCalc",&genTtbarIdCategory_TTbarMassCalc);
 
+   // jet truth
+   outputTree->Branch("HadronicVHtID_JetSubCalc",&HadronicVHtID_JetSubCalc);
+   outputTree->Branch("HadronicVHtPt_JetSubCalc",&HadronicVHtPt_JetSubCalc);
+   outputTree->Branch("HadronicVHtEta_JetSubCalc",&HadronicVHtEta_JetSubCalc);
+   outputTree->Branch("HadronicVHtPhi_JetSubCalc",&HadronicVHtPhi_JetSubCalc);
+   outputTree->Branch("HadronicVHtEnergy_JetSubCalc",&HadronicVHtEnergy_JetSubCalc);
+   outputTree->Branch("theJetAK8Wmatch_JetSubCalc_PtOrdered",&theJetAK8Wmatch_JetSubCalc_PtOrdered);
+   outputTree->Branch("theJetAK8Tmatch_JetSubCalc_PtOrdered",&theJetAK8Tmatch_JetSubCalc_PtOrdered);
+   outputTree->Branch("theJetAK8MatchedPt_JetSubCalc_PtOrdered",&theJetAK8MatchedPt_JetSubCalc_PtOrdered);
 
-   outputTree->Branch("topEnergy_TTbarMassCalc",&topEnergy_TTbarMassCalc);
-   outputTree->Branch("topEta_TTbarMassCalc",&topEta_TTbarMassCalc);
-   outputTree->Branch("topMass_TTbarMassCalc",&topMass_TTbarMassCalc);
-   outputTree->Branch("topPhi_TTbarMassCalc",&topPhi_TTbarMassCalc);   
-   outputTree->Branch("topPt_TTbarMassCalc",&topPt_TTbarMassCalc);      
-   outputTree->Branch("topID_TTbarMassCalc",&topID_TTbarMassCalc);         
+   // AK8
+   outputTree->Branch("NJetsAK8_JetSubCalc",&NJetsAK8_JetSubCalc,"NJetsAK8_JetSubCalc/I");
+   outputTree->Branch("theJetAK8Pt_JetSubCalc_PtOrdered",&theJetAK8Pt_JetSubCalc_PtOrdered);
+   outputTree->Branch("theJetAK8Eta_JetSubCalc_PtOrdered",&theJetAK8Eta_JetSubCalc_PtOrdered);
+   outputTree->Branch("theJetAK8Phi_JetSubCalc_PtOrdered",&theJetAK8Phi_JetSubCalc_PtOrdered);
+   outputTree->Branch("theJetAK8Mass_JetSubCalc_PtOrdered",&theJetAK8Mass_JetSubCalc_PtOrdered);
+   outputTree->Branch("theJetAK8Energy_JetSubCalc_PtOrdered",&theJetAK8Energy_JetSubCalc_PtOrdered);
+   outputTree->Branch("minDR_leadAK8otherAK8",&minDR_leadAK8otherAK8,"minDR_leadAK8otherAK8/F");
+   outputTree->Branch("minDR_lepAK8",&minDR_lepAK8,"minDR_lepAK8/F");
+   outputTree->Branch("deltaR_lepAK8s",&deltaR_lepAK8s);
 
-   outputTree->Branch("topWEnergy_TTbarMassCalc",&topWEnergy_TTbarMassCalc);
-   outputTree->Branch("topWEta_TTbarMassCalc",&topWEta_TTbarMassCalc);
-   outputTree->Branch("topWPhi_TTbarMassCalc",&topWPhi_TTbarMassCalc);
-   outputTree->Branch("topWPt_TTbarMassCalc",&topWPt_TTbarMassCalc);   
-   outputTree->Branch("topWID_TTbarMassCalc",&topWID_TTbarMassCalc);      
-
-   outputTree->Branch("topbEnergy_TTbarMassCalc",&topbEnergy_TTbarMassCalc);
-   outputTree->Branch("topbEta_TTbarMassCalc",&topbEta_TTbarMassCalc);
-   outputTree->Branch("topbPhi_TTbarMassCalc",&topbPhi_TTbarMassCalc);
-   outputTree->Branch("topbPt_TTbarMassCalc",&topbPt_TTbarMassCalc);   
-   outputTree->Branch("topbID_TTbarMassCalc",&topbID_TTbarMassCalc);      
-
-   outputTree->Branch("nLooseElectrons_CommonCalc",&nLooseElectrons_CommonCalc,"nLooseElectrons_CommonCalc/I");
-   outputTree->Branch("topNAK4_HOTTaggerCalc",&topNAK4_HOTTaggerCalc,"topNAK4_HOTTaggerCalc/I");
-   outputTree->Branch("topNtops_HOTTaggerCalc",&topNtops_HOTTaggerCalc,"topNtops_HOTTaggerCalc/I");
-   outputTree->Branch("L1NonPrefiringProbDown_CommonCalc",&L1NonPrefiringProbDown_CommonCalc,"L1NonPrefiringProbDown_CommonCalc/D");
-   outputTree->Branch("L1NonPrefiringProbUp_CommonCalc",&L1NonPrefiringProbUp_CommonCalc,"L1NonPrefiringProbUp_CommonCalc/D");
-   outputTree->Branch("L1NonPrefiringProb_CommonCalc",&L1NonPrefiringProb_CommonCalc,"L1NonPrefiringProb_CommonCalc/D");
-   outputTree->Branch("LHEweightorig_MultiLepCalc",&LHEweightorig_MultiLepCalc,"LHEweightorig_MultiLepCalc/D");
-   outputTree->Branch("corr_metmod_MultiLepCalc",&corr_metmod_MultiLepCalc,"corr_metmod_MultiLepCalc/D");
-   outputTree->Branch("corr_metmod_phi_MultiLepCalc",&corr_metmod_phi_MultiLepCalc,"corr_metmod_phi_MultiLepCalc/D");
-   outputTree->Branch("metmod_MultiLepCalc",&metmod_MultiLepCalc,"metmod_MultiLepCalc/D");
-   outputTree->Branch("metmod_phi_MultiLepCalc",&metmod_phi_MultiLepCalc,"metmod_phi_MultiLepCalc/D");
-   
-   outputTree->Branch("NewPDFids_MultiLepCalc",&NewPDFids_MultiLepCalc);
-   outputTree->Branch("elIsMVATight80_MultiLepCalc",&elIsMVATight80_MultiLepCalc);
-   outputTree->Branch("elIsMVATight90_MultiLepCalc",&elIsMVATight90_MultiLepCalc);
-   outputTree->Branch("elIsMVATightIso80_MultiLepCalc",&elIsMVATightIso80_MultiLepCalc);
-   outputTree->Branch("elIsMVATightIso90_MultiLepCalc",&elIsMVATightIso90_MultiLepCalc);
-   outputTree->Branch("genTtbarId_TTbarMassCalc",&genTtbarId_TTbarMassCalc);
+   // mass + tau tagging
+   outputTree->Branch("maxProb_JetSubCalc_PtOrdered",&maxProb_JetSubCalc_PtOrdered);
+   outputTree->Branch("theJetAK8SoftDropRaw_JetSubCalc_PtOrdered",&theJetAK8SoftDropRaw_JetSubCalc_PtOrdered);
+   outputTree->Branch("theJetAK8SoftDropCorr_JetSubCalc_PtOrdered",&theJetAK8SoftDropCorr_JetSubCalc_PtOrdered);
+   outputTree->Branch("theJetAK8SoftDrop_JetSubCalc_PtOrdered",&theJetAK8SoftDrop_JetSubCalc_PtOrdered);
+   outputTree->Branch("theJetAK8SoftDrop_JetSubCalc_JMRup_PtOrdered",&theJetAK8SoftDrop_JetSubCalc_JMRup_PtOrdered);
+   outputTree->Branch("theJetAK8SoftDrop_JetSubCalc_JMRdn_PtOrdered",&theJetAK8SoftDrop_JetSubCalc_JMRdn_PtOrdered);
+   outputTree->Branch("theJetAK8SoftDrop_JetSubCalc_JMSup_PtOrdered",&theJetAK8SoftDrop_JetSubCalc_JMSup_PtOrdered);
+   outputTree->Branch("theJetAK8SoftDrop_JetSubCalc_JMSdn_PtOrdered",&theJetAK8SoftDrop_JetSubCalc_JMSdn_PtOrdered);
+   outputTree->Branch("theJetAK8NjettinessTau1_JetSubCalc_PtOrdered",&theJetAK8NjettinessTau1_JetSubCalc_PtOrdered);
+   outputTree->Branch("theJetAK8NjettinessTau2_JetSubCalc_PtOrdered",&theJetAK8NjettinessTau2_JetSubCalc_PtOrdered);
+   outputTree->Branch("theJetAK8NjettinessTau3_JetSubCalc_PtOrdered",&theJetAK8NjettinessTau3_JetSubCalc_PtOrdered);
+   outputTree->Branch("theJetAK8Indx_Wtagged",&theJetAK8Indx_Wtagged);
+   outputTree->Branch("NPuppiWtagged_0p55",&NPuppiWtagged_0p55,"NPuppiWtagged_0p55/I");
+   outputTree->Branch("NPuppiWtagged_0p55_notTtagged",&NPuppiWtagged_0p55_notTtagged,"NPuppiWtagged_0p55_notTtagged/I");
+   outputTree->Branch("NJetsTtagged_0p81",&NJetsTtagged_0p81,"NJetsTtagged_0p81/I");
+     
+   //HOT tagger
    outputTree->Branch("topJet1Index_HOTTaggerCalc",&topJet1Index_HOTTaggerCalc);
    outputTree->Branch("topJet2Index_HOTTaggerCalc",&topJet2Index_HOTTaggerCalc);
    outputTree->Branch("topJet3Index_HOTTaggerCalc",&topJet3Index_HOTTaggerCalc);
-   outputTree->Branch("elIsLoose_MultiLepCalc",&elIsLoose_MultiLepCalc);
-   outputTree->Branch("elIsMedium_MultiLepCalc",&elIsMedium_MultiLepCalc);
-   outputTree->Branch("elIsTight_MultiLepCalc",&elIsTight_MultiLepCalc);
-   outputTree->Branch("elIsVeto_MultiLepCalc",&elIsVeto_MultiLepCalc);
-   outputTree->Branch("NewPDFweightsBase_MultiLepCalc",&NewPDFweightsBase_MultiLepCalc);
-   outputTree->Branch("NewPDFweights_MultiLepCalc",&NewPDFweights_MultiLepCalc);
-   outputTree->Branch("AK8JetDoubleB_MultiLepCalc",&AK8JetDoubleB_MultiLepCalc);
+   outputTree->Branch("topNAK4_HOTTaggerCalc",&topNAK4_HOTTaggerCalc,"topNAK4_HOTTaggerCalc/I");
+   outputTree->Branch("topNtops_HOTTaggerCalc",&topNtops_HOTTaggerCalc,"topNtops_HOTTaggerCalc/I");
    outputTree->Branch("topBestGenEnergy_HOTTaggerCalc",&topBestGenEnergy_HOTTaggerCalc);
    outputTree->Branch("topBestGenEta_HOTTaggerCalc",&topBestGenEta_HOTTaggerCalc);
    outputTree->Branch("topBestGenPhi_HOTTaggerCalc",&topBestGenPhi_HOTTaggerCalc);
    outputTree->Branch("topBestGenPt_HOTTaggerCalc",&topBestGenPt_HOTTaggerCalc);
    outputTree->Branch("topDRmax_HOTTaggerCalc",&topDRmax_HOTTaggerCalc);
    outputTree->Branch("topDThetaMax_HOTTaggerCalc",&topDThetaMax_HOTTaggerCalc);
+   outputTree->Branch("topDThetaMin_HOTTaggerCalc",&topDThetaMin_HOTTaggerCalc);
    outputTree->Branch("topDiscriminator_HOTTaggerCalc",&topDiscriminator_HOTTaggerCalc);
    outputTree->Branch("topEta_HOTTaggerCalc",&topEta_HOTTaggerCalc);
    outputTree->Branch("topMass_HOTTaggerCalc",&topMass_HOTTaggerCalc);
@@ -525,8 +417,12 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    outputTree->Branch("topPhi_HOTTaggerCalc",&topPhi_HOTTaggerCalc);
    outputTree->Branch("topPt_HOTTaggerCalc",&topPt_HOTTaggerCalc);
    outputTree->Branch("topType_HOTTaggerCalc",&topType_HOTTaggerCalc);
-   outputTree->Branch("topDThetaMin_HOTTaggerCalc",&topDThetaMin_HOTTaggerCalc);
-   
+
+   outputTree->Branch("isHTgt500Njetge9",&isHTgt500Njetge9,"isHTgt500Njetge9/I");
+   outputTree->Branch("BJetLeadPt",&BJetLeadPt,"BJetLeadPt/F");
+   outputTree->Branch("WJetLeadPt",&WJetLeadPt,"WJetLeadPt/F");
+   outputTree->Branch("TJetLeadPt",&TJetLeadPt,"TJetLeadPt/F");     
+  
   // ----------------------------------------------------------------------------
   // Define and initialize objects / cuts / efficiencies
   // ----------------------------------------------------------------------------
@@ -861,6 +757,20 @@ void step1::Loop(TString inTreeName, TString outTreeName )
       if(isTTincMtt700to1000 && (ttbarMass_TTbarMassCalc < 700. || ttbarMass_TTbarMassCalc >= 1000.)) continue;
       if(isTTincMtt1000toInf && ttbarMass_TTbarMassCalc < 1000.) continue;
 
+      // ----------------------------------------------------------------------------
+      // Assign bool depending on gen level HT and Jet multiplicity for ttbar sample stitching
+      // ----------------------------------------------------------------------------
+      // HT calculated from jets with pT>30 and |eta|<2.4 > 500 GeV
+      // Jet multiplicity (jet pT>30) >= 9
+      isHTgt500Njetge9 = 0;
+      double genHT = 0;
+      int Ngenjet = 0;
+      for(unsigned int ijet=0; ijet < genJetPt_MultiLepCalc->size(); ijet++){
+	if(genJetPt_MultiLepCalc->at(ijet) > 30) Ngenjet+=1;
+	if(genJetPt_MultiLepCalc->at(ijet) > 30 && fabs(genJetEta_MultiLepCalc->at(ijet)) < 2.4) genHT+=genJetPt_MultiLepCalc->at(ijet);
+      }
+      if(genHT>500 && Ngenjet>=9) {isHTgt500Njetge9 = 1;}
+      
       // ----------------------------------------------------------------------------
       // Assign as electron or muon event
       // ----------------------------------------------------------------------------
@@ -1327,6 +1237,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
       //Pt ordering for AK8
       std::sort(jetak8ptindpair.begin(), jetak8ptindpair.end(), comparepair);
       
+      maxProb_JetSubCalc_PtOrdered.clear();
       theJetAK8Pt_JetSubCalc_PtOrdered.clear();
       theJetAK8Eta_JetSubCalc_PtOrdered.clear();
       theJetAK8Phi_JetSubCalc_PtOrdered.clear();
@@ -1345,6 +1256,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
       theJetAK8Indx_Wtagged.clear();
  
       for(unsigned int ijet=0; ijet < jetak8ptindpair.size(); ijet++){
+      	maxProb_JetSubCalc_PtOrdered.push_back(maxProb_JetSubCalc->at(jetak8ptindpair[ijet].second));
       	theJetAK8Pt_JetSubCalc_PtOrdered.push_back(theJetAK8Pt_JetSubCalc->at(jetak8ptindpair[ijet].second));
       	theJetAK8Eta_JetSubCalc_PtOrdered.push_back(theJetAK8Eta_JetSubCalc->at(jetak8ptindpair[ijet].second));
       	theJetAK8Phi_JetSubCalc_PtOrdered.push_back(theJetAK8Phi_JetSubCalc->at(jetak8ptindpair[ijet].second));
@@ -1709,9 +1621,13 @@ void step1::Loop(TString inTreeName, TString outTreeName )
       std::vector<double> pdf;
       renormWeights.clear();
       pdfWeights.clear();
+      pdfNewWeights.clear();
+      pdfNewNominalWeight = 1.0;
       if(isSig){
+	pdfNewNominalWeight = NewPDFweights_MultiLepCalc->at(0);
 	// SEEMS TO APPLY TO ALL B2G MG+PYTHIA SIGNALS. LEADING ORDER 4-FLAVOR PDF
 	for(unsigned int i = 0; i < LHEweightids_MultiLepCalc->size(); i++){
+	  if(i > 0 && i < 101) pdfNewWeights.push_back(NewPDFweights_MultiLepCalc->at(i));
 	  if(LHEweightids_MultiLepCalc->at(i) > 1 && LHEweightids_MultiLepCalc->at(i) < 10){
 	    if(LHEweightids_MultiLepCalc->at(i) == 6 || LHEweightids_MultiLepCalc->at(i) == 8) continue;
 	    renorm.push_back(LHEweights_MultiLepCalc->at(i));
