@@ -1800,5 +1800,6 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    std::cout<<"Npassed_ALL     = "<<npass_all<<" / "<<nentries<<std::endl;
 
    outputTree->Write();
+   delete outputTree;
 
 }
