@@ -8,6 +8,7 @@ outfilename=${2}
 inputDir=${3}
 outputDir=${4}
 idlist=${5}
+ID=${6}
 scratch=${PWD}
 
 source /cvmfs/cms.cern.ch/cmsset_default.sh
@@ -43,18 +44,23 @@ ls -l *.root
 
 # copy output to eos
 
+NOM="nominal"
 echo "xrdcp output for condor"
-for FILE in *.root
-do
-  echo "xrdcp -f ${FILE} root://cmseos.fnal.gov/${outputDir}/${FILE}"
-  xrdcp -f ${FILE} root://cmseos.fnal.gov/${outputDir}/${FILE} 2>&1
+for SHIFT in nominal JECup JECdown JERup JERdown
+  do
+  haddFile=${outfilename}_${ID}${SHIFT}_hadd.root
+  hadd ${haddFile} *${SHIFT}.root
+  echo "xrdcp -f ${haddFile} root://cmseos.fnal.gov/${outputDir//$NOM/$SHIFT}/${haddFile//${SHIFT}_hadd/}"
+  xrdcp -f ${haddFile} root://cmseos.fnal.gov/${outputDir//$NOM/$SHIFT}/${haddFile//${SHIFT}_hadd/} 2>&1
   XRDEXIT=$?
   if [[ $XRDEXIT -ne 0 ]]; then
     rm *.root
     echo "exit code $XRDEXIT, failure in xrdcp"
     exit $XRDEXIT
   fi
-  rm ${FILE}
+  rm *${SHIFT}.root
+  rm ${haddFile}
+  if [[ $haddFile == Single* ]]; then break; fi;
 done
 
 echo "done"

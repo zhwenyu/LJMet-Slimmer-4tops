@@ -10,8 +10,9 @@ start_time = time.time()
 finalStateYear = 'singleLep2017' # or 2018
 relbase = '/uscms_data/d3/ssagir/CMSSW_10_2_10/'
 inputDir='/eos/uscms/store/user/lpcljm/FWLJMET102X_1lep2017_052219/' # or 2018
-outputDir='/eos/uscms/store/user/lpcljm/FWLJMET102X_1lep2017_4tops_06132019_step1/' # or 2018
-condorDir='/uscms_data/d3/ssagir/FWLJMET102X_1lep2017_4tops_06132019_step1/' # or 2018
+outputDir='/eos/uscms/store/user/lpcljm/FWLJMET102X_1lep2017_4t_071919_step1/nominal/' # or 2018
+condorDir='/uscms_data/d3/ssagir/FWLJMET102X_1lep2017_4t_071919_step1/' # or 2018
+shifts = ['JECup','JECdown','JERup','JERdown']
 
 runDir=os.getcwd()
 inDir=inputDir[10:]
@@ -98,6 +99,7 @@ for sample in dirList:
         if outlabel == 'none': outsample = sample
 
         os.system('eos root://cmseos.fnal.gov/ mkdir -p '+outDir+outsample)
+        for shift in shifts: os.system('eos root://cmseos.fnal.gov/ mkdir -p '+outDir.replace('nominal',shift)+outsample)
         os.system('mkdir -p '+condorDir+outsample)
 
         runlist = EOSlistdir(inputDir+'/'+sample+'/'+finalStateYear+'/')
@@ -116,7 +118,8 @@ for sample in dirList:
                 basefilename = '_'.join(basefilename)
                 print "Running path:",pathsuffix,"\tBase filenames:",basefilename
 
-                for i in range(0,len(rootfiles),20):
+                nFilesPerJob=30
+                for i in range(0,len(rootfiles),nFilesPerJob):
                     count+=1
                     tmpcount += 1
 
@@ -127,19 +130,19 @@ for sample in dirList:
 
                     if isData:    # need unique IDs across eras
                         idlist = segment2[-1]+segment1+' '
-                        for j in range(i+1,i+20):
+                        for j in range(i+1,i+nFilesPerJob):
                             if j >= len(rootfiles): continue
                             idparts = (rootfiles[j].split('.')[0]).split('_')[-2:]
                             idlist += idparts[0][-1]+idparts[1]+' '
                     elif 'ext' in segment2:     # WON'T WORK in FWLJMET 052219, but ok since no samples need it
                         idlist = segment2[-4:]+segment1+' '
-                        for j in range(i+1,i+20):
+                        for j in range(i+1,i+nFilesPerJob):
                             if j >= len(rootfiles): continue
                             idparts = (rootfiles[j].split('.')[0]).split('_')[-2:]
                             idlist += idparts[0][-4:]+idparts[1]+' '
                     else:
                         idlist = segment1+' '
-                        for j in range(i+1,i+20):
+                        for j in range(i+1,i+nFilesPerJob):
                             if j >= len(rootfiles): continue
                             idlist += (rootfiles[j].split('.')[0]).split('_')[-1]+' '
                         
@@ -161,7 +164,7 @@ Output = %(OUTFILENAME)s_%(ID)s.out
 Error = %(OUTFILENAME)s_%(ID)s.err
 Log = %(OUTFILENAME)s_%(ID)s.log
 Notification = Never
-Arguments = "%(FILENAME)s %(OUTFILENAME)s %(INPUTDIR)s/%(SAMPLE)s/%(INPATHSUFFIX)s %(OUTPUTDIR)s/%(OUTFILENAME)s '%(LIST)s'"
+Arguments = "%(FILENAME)s %(OUTFILENAME)s %(INPUTDIR)s/%(SAMPLE)s/%(INPATHSUFFIX)s %(OUTPUTDIR)s/%(OUTFILENAME)s '%(LIST)s' %(ID)s"
 
 Queue 1"""%dict)
                     jdf.close()

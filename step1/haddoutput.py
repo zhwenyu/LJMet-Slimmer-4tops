@@ -5,11 +5,12 @@ execfile("/uscms_data/d3/jmanagan/EOSSafeUtils.py")
 start_time = time.time()
 
 #IO directories must be full paths
-input  = sys.argv[1]
-output = sys.argv[2]
+# input  = sys.argv[1]
+# output = sys.argv[2]
+shift = sys.argv[1]
 
-inputDir='/eos/uscms/store/user/'+input+'/'
-outputDir='/eos/uscms/store/user/'+output+'/'
+inputDir='/eos/uscms/store/user/lpcljm/FWLJMET102X_1lep2017_4t_071919_step1/'+shift+'/'
+outputDir='/eos/uscms/store/user/lpcljm/FWLJMET102X_1lep2017_4t_071919_step1hadds/'+shift+'/'
 
 inDir=inputDir[10:]
 outDir=outputDir[10:]
@@ -36,8 +37,8 @@ dirList = [
 'ST_t-channel_top_4f_InclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8',
 'ST_tW_antitop_5f_inclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8',
 'ST_tW_top_5f_inclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8',
-'SingleElectron',
-'SingleMuon',
+# 'SingleElectron',
+# 'SingleMuon',
 'TTHH_TuneCP5_13TeV-madgraph-pythia8',
 'TTTJ_TuneCP5_13TeV-madgraph-pythia8',
 'TTTT_TuneCP5_13TeV-amcatnlo-pythia8',
@@ -69,6 +70,10 @@ dirList = [
 'ttHTobb_M125_TuneCP5_13TeV-powheg-pythia8',
 ]
 
+if shift=='nominal':
+	dirList.append('SingleElectron')
+	dirList.append('SingleMuon')
+
 for sample in dirList:
     outList = ['none']
     if 'Tprime' in sample: outList = ['BWBW','TZBW','THBW','TZTH','TZTZ','THTH']
@@ -86,7 +91,10 @@ for sample in dirList:
         print 'N root files in',outsample,'=',len(rootfiles)
 
 
-        nFilesPerHadd = 500
+        nFilesPerHadd = 900
+        if 'TTToSemiLeptonic' in sample and outlabel=='Mtt0to700': nFilesPerHadd = 45
+        elif 'WJetsToLNu_HT-1200To2500' in sample: nFilesPerHadd = 20
+        elif 'WJetsToLNu_HT-2500ToInf' in sample: nFilesPerHadd = 13        
         onefile = ' root://cmseos.fnal.gov/'+inDir+'/'+outsample+'/'+rootfiles[-1]
         manyfiles = nFilesPerHadd*onefile
         lengthcheck = len('hadd -f root://cmseos.fnal.gov/'+outDir+'/'+outsample+'_hadd.root '+manyfiles)
