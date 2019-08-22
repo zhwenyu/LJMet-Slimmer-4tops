@@ -268,6 +268,11 @@ public :
    Float_t         genAntiTopPt;
    Float_t         topPtWeight13TeV;
 
+   Int_t           NresolvedTops1pFake;
+   Int_t           NresolvedTops2pFake;
+   Int_t           NresolvedTops5pFake;
+   Int_t           NresolvedTops10pFake;
+
    // Declaration of leaf types
    Bool_t          flagBadMu_MultiLepCalc;
    Bool_t          flagDupMu_MultiLepCalc;
@@ -584,6 +589,10 @@ public :
    vector<double>  *genJetEta_MultiLepCalc;
    vector<double>  *genJetPhi_MultiLepCalc;
    vector<double>  *genJetPt_MultiLepCalc;
+   vector<double>  *genJetEnergyNoClean_MultiLepCalc;
+   vector<double>  *genJetEtaNoClean_MultiLepCalc;
+   vector<double>  *genJetPhiNoClean_MultiLepCalc;
+   vector<double>  *genJetPtNoClean_MultiLepCalc;
    vector<double>  *genPhi_MultiLepCalc;
    vector<double>  *genPt_MultiLepCalc;
    vector<double>  *muChIso_MultiLepCalc;
@@ -1021,6 +1030,10 @@ public :
    TBranch        *b_genJetEta_MultiLepCalc;   //!
    TBranch        *b_genJetPhi_MultiLepCalc;   //!
    TBranch        *b_genJetPt_MultiLepCalc;   //!
+   TBranch        *b_genJetEnergyNoClean_MultiLepCalc;   //!
+   TBranch        *b_genJetEtaNoClean_MultiLepCalc;   //!
+   TBranch        *b_genJetPhiNoClean_MultiLepCalc;   //!
+   TBranch        *b_genJetPtNoClean_MultiLepCalc;   //!
    TBranch        *b_genPhi_MultiLepCalc;   //!
    TBranch        *b_genPt_MultiLepCalc;   //!
    TBranch        *b_muChIso_MultiLepCalc;   //!
@@ -1198,6 +1211,7 @@ step1::step1(TString inputFileName, TString outputFileName) : inputTree(0), inpu
   isMadgraphBkg = (inputFileName.Contains("QCD") || inputFileName.Contains("madgraphMLM"));
   isTOP = (inputFileName.Contains("Mtt") || inputFileName.Contains("ST") || inputFileName.Contains("ttZ") || inputFileName.Contains("ttW") || inputFileName.Contains("ttH") || inputFileName.Contains("TTTo"));
   isTT = (inputFileName.Contains("TT_Tune") || inputFileName.Contains("Mtt") || inputFileName.Contains("TTTo"));
+  if(isSig) isTT = false;
   isSTt = inputFileName.Contains("ST_t-channel");
   isSTtW = inputFileName.Contains("ST_tW");
   isTTV = (inputFileName.Contains("ttZ") || inputFileName.Contains("ttW") || inputFileName.Contains("ttH"));
@@ -1603,6 +1617,10 @@ void step1::Init(TTree *tree)
    genJetEta_MultiLepCalc = 0;
    genJetPhi_MultiLepCalc = 0;
    genJetPt_MultiLepCalc = 0;
+   genJetEnergyNoClean_MultiLepCalc = 0;
+   genJetEtaNoClean_MultiLepCalc = 0;
+   genJetPhiNoClean_MultiLepCalc = 0;
+   genJetPtNoClean_MultiLepCalc = 0;
    genPhi_MultiLepCalc = 0;
    genPt_MultiLepCalc = 0;
    muChIso_MultiLepCalc = 0;
@@ -2044,6 +2062,12 @@ void step1::Init(TTree *tree)
    inputTree->SetBranchAddress("genJetEta_MultiLepCalc", &genJetEta_MultiLepCalc, &b_genJetEta_MultiLepCalc);
    inputTree->SetBranchAddress("genJetPhi_MultiLepCalc", &genJetPhi_MultiLepCalc, &b_genJetPhi_MultiLepCalc);
    inputTree->SetBranchAddress("genJetPt_MultiLepCalc", &genJetPt_MultiLepCalc, &b_genJetPt_MultiLepCalc);
+   if(isTT){
+   inputTree->SetBranchAddress("genJetEnergyNoClean_MultiLepCalc", &genJetEnergyNoClean_MultiLepCalc, &b_genJetEnergyNoClean_MultiLepCalc);
+   inputTree->SetBranchAddress("genJetEtaNoClean_MultiLepCalc", &genJetEtaNoClean_MultiLepCalc, &b_genJetEtaNoClean_MultiLepCalc);
+   inputTree->SetBranchAddress("genJetPhiNoClean_MultiLepCalc", &genJetPhiNoClean_MultiLepCalc, &b_genJetPhiNoClean_MultiLepCalc);
+   inputTree->SetBranchAddress("genJetPtNoClean_MultiLepCalc", &genJetPtNoClean_MultiLepCalc, &b_genJetPtNoClean_MultiLepCalc);
+   }
    inputTree->SetBranchAddress("genPhi_MultiLepCalc", &genPhi_MultiLepCalc, &b_genPhi_MultiLepCalc);
    inputTree->SetBranchAddress("genPt_MultiLepCalc", &genPt_MultiLepCalc, &b_genPt_MultiLepCalc);
    inputTree->SetBranchAddress("muChIso_MultiLepCalc", &muChIso_MultiLepCalc, &b_muChIso_MultiLepCalc);
