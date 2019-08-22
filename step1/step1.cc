@@ -236,6 +236,8 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    inputTree->SetBranchStatus("allTopsID_TTbarMassCalc",1);
    inputTree->SetBranchStatus("allTopsStatus_TTbarMassCalc",1);
 
+   inputTree->SetBranchStatus("genTtbarIdCategory_TTbarMassCalc",1);
+
    //top W
    inputTree->SetBranchStatus("topWEnergy_TTbarMassCalc",1);
    inputTree->SetBranchStatus("topWEta_TTbarMassCalc",1);
@@ -496,7 +498,9 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    outputTree->Branch("BJetLeadPt_lSFup",&BJetLeadPt_lSFup,"BJetLeadPt_lSFup/F");
    outputTree->Branch("BJetLeadPt_lSFdn",&BJetLeadPt_lSFdn,"BJetLeadPt_lSFdn/F");
    outputTree->Branch("WJetLeadPt",&WJetLeadPt,"WJetLeadPt/F");
-   outputTree->Branch("TJetLeadPt",&TJetLeadPt,"TJetLeadPt/F");     
+   outputTree->Branch("TJetLeadPt",&TJetLeadPt,"TJetLeadPt/F"); 
+
+   outputTree->Branch("genTtbarIdCategory_TTbarMassCalc",&genTtbarIdCategory_TTbarMassCalc);    
   
   // ----------------------------------------------------------------------------
   // Define and initialize objects / cuts / efficiencies
