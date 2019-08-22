@@ -6,7 +6,7 @@ void testStep1(){
   
   //TString inputFile="root://cmseos.fnal.gov//store/user/lpcljm/FWLJMET102X_1lep2017_052219/SingleElectron/singleLep2017/190610_165959/0000/SingleElectronRun2017C_1-27.root" ;
   TString inputFile="root://cmseos.fnal.gov//store/user/lpcljm/FWLJMET102X_1lep2017_052219/TTTT_TuneCP5_13TeV-amcatnlo-pythia8/singleLep2017/190614_213007/0000/TTTT_TuneCP5_13TeV-amcatnlo-pythia8_78.root";
-  TString outputFile="/uscms_data/d3/ssagir/CMSSW_10_2_10/src/LJMet-Slimmer-4tops/step1/nominal/test.root";
+  TString outputFile="/user_data/ssagir/CMSSW_10_2_10/src/LJMet-Slimmer-4tops/step1/test/test.root";
   
   gSystem->AddIncludePath("-I$CMSSW_BASE/src/");
   

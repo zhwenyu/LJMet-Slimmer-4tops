@@ -169,6 +169,12 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    inputTree->SetBranchStatus("genJetEta_MultiLepCalc",1);
    inputTree->SetBranchStatus("genJetPhi_MultiLepCalc",1);
    inputTree->SetBranchStatus("genJetEnergy_MultiLepCalc",1);
+   if(isTT){
+   inputTree->SetBranchStatus("genJetPtNoClean_MultiLepCalc",1);
+   inputTree->SetBranchStatus("genJetEtaNoClean_MultiLepCalc",1);
+   inputTree->SetBranchStatus("genJetPhiNoClean_MultiLepCalc",1);
+   inputTree->SetBranchStatus("genJetEnergyNoClean_MultiLepCalc",1);
+   }                
 
    //JetSubCalc
    inputTree->SetBranchStatus("theJetHFlav_JetSubCalc",1);
@@ -394,7 +400,13 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    outputTree->Branch("genJetPt_MultiLepCalc",&genJetPt_MultiLepCalc);                  
    outputTree->Branch("genJetEta_MultiLepCalc",&genJetEta_MultiLepCalc);                     
    outputTree->Branch("genJetPhi_MultiLepCalc",&genJetPhi_MultiLepCalc);                  
-   outputTree->Branch("genJetEnergy_MultiLepCalc",&genJetEnergy_MultiLepCalc);                  
+   outputTree->Branch("genJetEnergy_MultiLepCalc",&genJetEnergy_MultiLepCalc);  
+   if(isTT){                
+   outputTree->Branch("genJetPtNoClean_MultiLepCalc",&genJetPtNoClean_MultiLepCalc);                  
+   outputTree->Branch("genJetEtaNoClean_MultiLepCalc",&genJetEtaNoClean_MultiLepCalc);                     
+   outputTree->Branch("genJetPhiNoClean_MultiLepCalc",&genJetPhiNoClean_MultiLepCalc);                  
+   outputTree->Branch("genJetEnergyNoClean_MultiLepCalc",&genJetEnergyNoClean_MultiLepCalc); 
+   }                 
    outputTree->Branch("genIndex_MultiLepCalc",&genIndex_MultiLepCalc);
    outputTree->Branch("genMotherID_MultiLepCalc",&genMotherID_MultiLepCalc);
    outputTree->Branch("genMotherIndex_MultiLepCalc",&genMotherIndex_MultiLepCalc);
@@ -428,8 +440,8 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    outputTree->Branch("maxProb_JetSubCalc_PtOrdered",&maxProb_JetSubCalc_PtOrdered);
    outputTree->Branch("theJetAK8CHSPrunedMass_JetSubCalc_PtOrdered",&theJetAK8CHSPrunedMass_JetSubCalc_PtOrdered);
    outputTree->Branch("theJetAK8CHSSoftDropMass_JetSubCalc_PtOrdered",&theJetAK8CHSSoftDropMass_JetSubCalc_PtOrdered);
-   outputTree->Branch("theJetAK8SoftDropRaw_JetSubCalc_PtOrdered",&theJetAK8SoftDropRaw_PtOrdered);
-   outputTree->Branch("theJetAK8SoftDropCorr_JetSubCalc_PtOrdered",&theJetAK8SoftDropCorr_PtOrdered);
+   outputTree->Branch("theJetAK8SoftDropRaw_JetSubCalc_PtOrdered",&theJetAK8SoftDropRaw_JetSubCalc_PtOrdered);
+   outputTree->Branch("theJetAK8SoftDropCorr_JetSubCalc_PtOrdered",&theJetAK8SoftDropCorr_JetSubCalc_PtOrdered);
    outputTree->Branch("theJetAK8DoubleB_JetSubCalc_PtOrdered",&theJetAK8DoubleB_JetSubCalc_PtOrdered);
    outputTree->Branch("theJetAK8SoftDrop_JetSubCalc_PtOrdered",&theJetAK8SoftDrop_JetSubCalc_PtOrdered);
    outputTree->Branch("theJetAK8SoftDrop_JetSubCalc_JMRup_PtOrdered",&theJetAK8SoftDrop_JetSubCalc_JMRup_PtOrdered);
@@ -472,6 +484,10 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    outputTree->Branch("topPhi_HOTTaggerCalc",&topPhi_HOTTaggerCalc);
    outputTree->Branch("topPt_HOTTaggerCalc",&topPt_HOTTaggerCalc);
    outputTree->Branch("topType_HOTTaggerCalc",&topType_HOTTaggerCalc);
+   outputTree->Branch("NresolvedTops1pFake",&NresolvedTops1pFake,"NresolvedTops1pFake/I");
+   outputTree->Branch("NresolvedTops2pFake",&NresolvedTops2pFake,"NresolvedTops2pFake/I");
+   outputTree->Branch("NresolvedTops5pFake",&NresolvedTops5pFake,"NresolvedTops5pFake/I");
+   outputTree->Branch("NresolvedTops10pFake",&NresolvedTops10pFake,"NresolvedTops10pFake/I");
 
    outputTree->Branch("isHTgt500Njetge9",&isHTgt500Njetge9,"isHTgt500Njetge9/I");
    outputTree->Branch("BJetLeadPt",&BJetLeadPt,"BJetLeadPt/F");
@@ -732,13 +748,15 @@ void step1::Loop(TString inTreeName, TString outTreeName )
       // HT calculated from jets with pT>30 and |eta|<2.4 > 500 GeV
       // Jet multiplicity (jet pT>30) >= 9
       isHTgt500Njetge9 = 0;
+      if(isTT){
       double genHT = 0;
       int Ngenjet = 0;
-      for(unsigned int ijet=0; ijet < genJetPt_MultiLepCalc->size(); ijet++){
-	if(genJetPt_MultiLepCalc->at(ijet) > 30) Ngenjet+=1;
-	if(genJetPt_MultiLepCalc->at(ijet) > 30 && fabs(genJetEta_MultiLepCalc->at(ijet)) < 2.4) genHT+=genJetPt_MultiLepCalc->at(ijet);
+      for(unsigned int ijet=0; ijet < genJetPtNoClean_MultiLepCalc->size(); ijet++){
+	if(genJetPtNoClean_MultiLepCalc->at(ijet) > 30) Ngenjet+=1;
+	if(genJetPtNoClean_MultiLepCalc->at(ijet) > 30 && fabs(genJetEtaNoClean_MultiLepCalc->at(ijet)) < 2.4) genHT+=genJetPtNoClean_MultiLepCalc->at(ijet);
       }
       if(genHT>500 && Ngenjet>=9) {isHTgt500Njetge9 = 1;}
+      }
       
       // ----------------------------------------------------------------------------
       // Assign as electron or muon event
@@ -1451,14 +1469,30 @@ void step1::Loop(TString inTreeName, TString outTreeName )
       // ----------------------------------------------------------------------------
          
       BJetLeadPt = -99;
+      BJetLeadPt_bSFup = -99;
+      BJetLeadPt_bSFdn = -99;
+      BJetLeadPt_lSFup = -99;
+      BJetLeadPt_lSFdn = -99;
       minMleppBjet = 1e8;
+      minMleppBjet_bSFup = 1e8;
+      minMleppBjet_bSFdn = 1e8;
+      minMleppBjet_lSFup = 1e8;
+      minMleppBjet_lSFdn = 1e8;
       minMleppJet = 1e8;      
       minDPhi_MetJet = 1e8;
       minDR_lepJet = 1e8;
       ptRel_lepJet = -99;
       deltaR_lepJets.clear();
       deltaR_lepBJets.clear();
+      deltaR_lepBJets_bSFup.clear();
+      deltaR_lepBJets_bSFdn.clear();
+      deltaR_lepBJets_lSFup.clear();
+      deltaR_lepBJets_lSFdn.clear();
       deltaR_lepMinMlb = 1e8;
+      deltaR_lepMinMlb_bSFup = 1e8;
+      deltaR_lepMinMlb_bSFdn = 1e8;
+      deltaR_lepMinMlb_lSFup = 1e8;
+      deltaR_lepMinMlb_lSFdn = 1e8;
       deltaR_lepMinMlj = 1e8;
       NJetsCSV_JetSubCalc = 0;
       NJetsCSVwithSF_JetSubCalc = 0;
@@ -1494,40 +1528,40 @@ void step1::Loop(TString inTreeName, TString outTreeName )
 	}
 	if(theJetBTag_bSFup_JetSubCalc_PtOrdered.at(ijet) == 1){
 	  NJetsCSVwithSF_JetSubCalc_bSFup += 1;
-          if(theJetPt_JetSubCalc_PtOrdered.at(ijet) > BJetLeadPt) BJetLeadPt_bSFup = theJetPt_JetSubCalc_PtOrdered.at(ijet);
+          if(theJetPt_JetSubCalc_PtOrdered.at(ijet) > BJetLeadPt_bSFup) BJetLeadPt_bSFup = theJetPt_JetSubCalc_PtOrdered.at(ijet);
           deltaR_lepBJets_bSFup.push_back(lepton_lv.DeltaR(jet_lv));
 	  
-          if((lepton_lv + jet_lv).M() < minMleppBjet) {
+          if((lepton_lv + jet_lv).M() < minMleppBjet_bSFup) {
             minMleppBjet_bSFup = fabs( (lepton_lv + jet_lv).M() );
 	    deltaR_lepMinMlb_bSFup = jet_lv.DeltaR(lepton_lv);
           }
 	}
 	if(theJetBTag_bSFdn_JetSubCalc_PtOrdered.at(ijet) == 1){
 	  NJetsCSVwithSF_JetSubCalc_bSFdn += 1;
-          if(theJetPt_JetSubCalc_PtOrdered.at(ijet) > BJetLeadPt) BJetLeadPt_bSFdn = theJetPt_JetSubCalc_PtOrdered.at(ijet);
+          if(theJetPt_JetSubCalc_PtOrdered.at(ijet) > BJetLeadPt_bSFdn) BJetLeadPt_bSFdn = theJetPt_JetSubCalc_PtOrdered.at(ijet);
           deltaR_lepBJets_bSFdn.push_back(lepton_lv.DeltaR(jet_lv));
 	  
-          if((lepton_lv + jet_lv).M() < minMleppBjet) {
+          if((lepton_lv + jet_lv).M() < minMleppBjet_bSFdn) {
             minMleppBjet_bSFdn = fabs( (lepton_lv + jet_lv).M() );
 	    deltaR_lepMinMlb_bSFdn = jet_lv.DeltaR(lepton_lv);
           }
 	}
 	if(theJetBTag_lSFup_JetSubCalc_PtOrdered.at(ijet) == 1){
 	  NJetsCSVwithSF_JetSubCalc_lSFup += 1;
-          if(theJetPt_JetSubCalc_PtOrdered.at(ijet) > BJetLeadPt) BJetLeadPt_lSFup = theJetPt_JetSubCalc_PtOrdered.at(ijet);
+          if(theJetPt_JetSubCalc_PtOrdered.at(ijet) > BJetLeadPt_lSFup) BJetLeadPt_lSFup = theJetPt_JetSubCalc_PtOrdered.at(ijet);
           deltaR_lepBJets_lSFup.push_back(lepton_lv.DeltaR(jet_lv));
 	  
-          if((lepton_lv + jet_lv).M() < minMleppBjet) {
+          if((lepton_lv + jet_lv).M() < minMleppBjet_lSFup) {
             minMleppBjet_lSFup = fabs( (lepton_lv + jet_lv).M() );
 	    deltaR_lepMinMlb_lSFup = jet_lv.DeltaR(lepton_lv);
           }
 	}
 	if(theJetBTag_lSFdn_JetSubCalc_PtOrdered.at(ijet) == 1){
 	  NJetsCSVwithSF_JetSubCalc_lSFdn += 1;
-          if(theJetPt_JetSubCalc_PtOrdered.at(ijet) > BJetLeadPt) BJetLeadPt_lSFdn = theJetPt_JetSubCalc_PtOrdered.at(ijet);
+          if(theJetPt_JetSubCalc_PtOrdered.at(ijet) > BJetLeadPt_lSFdn) BJetLeadPt_lSFdn = theJetPt_JetSubCalc_PtOrdered.at(ijet);
           deltaR_lepBJets_lSFdn.push_back(lepton_lv.DeltaR(jet_lv));
 	  
-          if((lepton_lv + jet_lv).M() < minMleppBjet) {
+          if((lepton_lv + jet_lv).M() < minMleppBjet_lSFdn) {
             minMleppBjet_lSFdn = fabs( (lepton_lv + jet_lv).M() );
 	    deltaR_lepMinMlb_lSFdn = jet_lv.DeltaR(lepton_lv);
           }
@@ -1927,6 +1961,20 @@ void step1::Loop(TString inTreeName, TString outTreeName )
 	  }
 	}
       }
+
+      // ----------------------------------------------------------------------------
+      // HOT tagger variables -- SCALE FACTORS TO BE ADDED!!!
+      // ----------------------------------------------------------------------------
+     NresolvedTops1pFake = 0;
+     NresolvedTops2pFake = 0;
+     NresolvedTops5pFake = 0;
+     NresolvedTops10pFake = 0;
+     for(unsigned int itop=0; itop < topDiscriminator_HOTTaggerCalc->size(); itop++){
+        if(topDiscriminator_HOTTaggerCalc->at(itop) > 0.75) NresolvedTops10pFake+=1;
+        if(topDiscriminator_HOTTaggerCalc->at(itop) > 0.85) NresolvedTops5pFake+=1;
+        if(topDiscriminator_HOTTaggerCalc->at(itop) > 0.92) NresolvedTops2pFake+=1;
+        if(topDiscriminator_HOTTaggerCalc->at(itop) > 0.95) NresolvedTops1pFake+=1;
+        }
 
       // ----------------------------------------------------------------------------
       // PDF and Matrix Element energy scale weights
