@@ -520,25 +520,18 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    float ak8PtCut=200;
 
    // counters
-   int n_vectorSizeMismatch = 0;
-
-   int n_jetstotal     = 0;
-   int n_jetsnearlep   = 0;
-   int n_jetspassed    = 0;
-   int npass_ThreeJets = 0;
    int npass_trigger   = 0;
-   int npass_mu500     = 0;
    int npass_met       = 0;
    int npass_ht        = 0;
    int npass_Njets     = 0;
    int npass_nAK8jets  = 0;
-   int npass_nHjets    = 0;
    int npass_lepPt     = 0;
    int npass_ElEta     = 0;
    int npass_MuEta     = 0;
    int npass_all       = 0;
    int Nelectrons      = 0;
    int Nmuons          = 0;
+   int NrelIsoFail     = 0;
 
    // Lorentz vectors
    TLorentzVector jet_lv;
@@ -775,6 +768,11 @@ void step1::Loop(TString inTreeName, TString outTreeName )
       if(elPt_MultiLepCalc->size()>0 && muPt_MultiLepCalc->size()==0) {isElectron = 1; isMuon = 0;}
       if(elPt_MultiLepCalc->size()==0 && muPt_MultiLepCalc->size()>0) {isElectron = 0; isMuon = 1;}
       if(isElectron==0 && isMuon==0){std::cout << "got no leptons, something wrong" << std::endl; continue;}
+      
+      if(isMuon == 1 && muRelIso_MultiLepCalc->at(0) > 0.15) {
+      	NrelIsoFail++;
+      	std::cout << "muRelIso > 0.15, skipping the event ..." << std::endl; continue;
+      	}
 
       if(isSM && isElectron == 1) continue;
       if(isSE && isMuon == 1) continue;
@@ -815,21 +813,34 @@ void step1::Loop(TString inTreeName, TString outTreeName )
       lepIdSF = 1.0;
       triggerSF = 1.0;
       isoSF = 1.0;
+      std::vector<std::string> eltriggers;
+      std::vector<std::string> mutriggers;
+      eltriggers = {"Ele32_WPTight_Gsf","Ele35_WPTight_Gsf"};
+      mutriggers = {"IsoMu24_eta2p1","IsoMu27"};
+	  std::string elstring_a = "Ele15_IsoVVVL_PFHT450";
+	  std::string elstring_b = "Ele15_IsoVVVL_PFHT450_PFMET50";
+	  std::string elstring_c = "Ele50_IsoVVVL_PFHT450";
+	  std::string elstring_d = "Ele15_IsoVVVL_PFHT600";
+	  std::string elstring_ORa = "Ele35_WPTight_Gsf";
+	  std::string elstring_ORb = "Ele38_WPTight_Gsf";
+	  std::string mustring_a = "Mu15_IsoVVVL_PFHT450";
+	  std::string mustring_b = "Mu15_IsoVVVL_PFHT450_PFMET50";
+	  std::string mustring_c = "Mu50_IsoVVVL_PFHT450";
+	  std::string mustring_d = "Mu15_IsoVVVL_PFHT600";
+	  std::string mustring_ORa = "Mu50";
+	  std::string mustring_ORb = "TkMu50";
       if(isMC){ //MC triggers check
 	if(isElectron){
-	  std::string string_a = "Ele15_IsoVVVL_PFHT450";
-	  std::string string_b = "Ele15_IsoVVVL_PFHT450_PFMET50";
-	  std::string string_c = "Ele50_IsoVVVL_PFHT450";
-	  std::string string_d = "Ele15_IsoVVVL_PFHT600";
-	  std::string string_ORa = "Ele35_WPTight_Gsf";
-	  std::string string_ORb = "Ele38_WPTight_Gsf";
 	  for(unsigned int itrig=0; itrig < vsSelMCTriggersEl_MultiLepCalc->size(); itrig++){
-	    if(vsSelMCTriggersEl_MultiLepCalc->at(itrig).find(string_a) != std::string::npos && viSelMCTriggersEl_MultiLepCalc->at(itrig) > 0) MCPastTrigger = 1;
-	    // if(vsSelMCTriggersEl_MultiLepCalc->at(itrig).find(string_b) != std::string::npos && viSelMCTriggersEl_MultiLepCalc->at(itrig) > 0) MCPastTrigger = 1;
-            if(vsSelMCTriggersEl_MultiLepCalc->at(itrig).find(string_c) != std::string::npos && viSelMCTriggersEl_MultiLepCalc->at(itrig) > 0) MCPastTrigger = 1;
-            if(vsSelMCTriggersEl_MultiLepCalc->at(itrig).find(string_d) != std::string::npos && viSelMCTriggersEl_MultiLepCalc->at(itrig) > 0) MCPastTrigger = 1;
-	    if(vsSelMCTriggersEl_MultiLepCalc->at(itrig).find(string_ORa) != std::string::npos && viSelMCTriggersEl_MultiLepCalc->at(itrig) > 0) MCPastTrigger = 1;
-	    if(vsSelMCTriggersEl_MultiLepCalc->at(itrig).find(string_ORb) != std::string::npos && viSelMCTriggersEl_MultiLepCalc->at(itrig) > 0) MCPastTrigger = 1;
+// 	    if(vsSelMCTriggersEl_MultiLepCalc->at(itrig).find(elstring_a) != std::string::npos && viSelMCTriggersEl_MultiLepCalc->at(itrig) > 0) MCPastTrigger = 1;
+// 	    // if(vsSelMCTriggersEl_MultiLepCalc->at(itrig).find(elstring_b) != std::string::npos && viSelMCTriggersEl_MultiLepCalc->at(itrig) > 0) MCPastTrigger = 1;
+//             if(vsSelMCTriggersEl_MultiLepCalc->at(itrig).find(elstring_c) != std::string::npos && viSelMCTriggersEl_MultiLepCalc->at(itrig) > 0) MCPastTrigger = 1;
+//             if(vsSelMCTriggersEl_MultiLepCalc->at(itrig).find(elstring_d) != std::string::npos && viSelMCTriggersEl_MultiLepCalc->at(itrig) > 0) MCPastTrigger = 1;
+// 	    if(vsSelMCTriggersEl_MultiLepCalc->at(itrig).find(elstring_ORa) != std::string::npos && viSelMCTriggersEl_MultiLepCalc->at(itrig) > 0) MCPastTrigger = 1;
+// 	    if(vsSelMCTriggersEl_MultiLepCalc->at(itrig).find(elstring_ORb) != std::string::npos && viSelMCTriggersEl_MultiLepCalc->at(itrig) > 0) MCPastTrigger = 1;
+	    for(unsigned int jtrig=0; jtrig < eltriggers.size(); jtrig++){
+	    	if(vsSelMCTriggersEl_MultiLepCalc->at(itrig).find(eltriggers.at(jtrig)) != std::string::npos && viSelMCTriggersEl_MultiLepCalc->at(itrig) > 0) MCPastTrigger = 1;
+	    }
 	  }
 	  // Gsf Tracking scale factor: http://fcouderc.web.cern.ch/fcouderc/EGamma/scaleFactors/Moriond17/approval/RECO/passingRECO/egammaEffi.txt_egammaPlots.pdf
 	  if (leppt < 45) {
@@ -1023,19 +1034,16 @@ void step1::Loop(TString inTreeName, TString outTreeName )
 	  triggerSF = (4.823*trigSFB + 36.734*trigSFCDEF)/41.557;
 	}
 	if(isMuon){
-	  std::string string_a = "Mu15_IsoVVVL_PFHT450";
-	  std::string string_b = "Mu15_IsoVVVL_PFHT450_PFMET50";
-	  std::string string_d = "Mu50_IsoVVVL_PFHT450";
-	  std::string string_e = "Mu15_IsoVVVL_PFHT600";
-	  std::string string_ORb = "Mu50";
-	  std::string string_ORc = "TkMu50";
 	  for(unsigned int itrig=0; itrig < vsSelMCTriggersMu_MultiLepCalc->size(); itrig++){
-	    if(vsSelMCTriggersMu_MultiLepCalc->at(itrig).find(string_a) != std::string::npos && viSelMCTriggersMu_MultiLepCalc->at(itrig) > 0) MCPastTrigger = 1;
-	    // if(vsSelMCTriggersMu_MultiLepCalc->at(itrig).find(string_b) != std::string::npos && viSelMCTriggersMu_MultiLepCalc->at(itrig) > 0) MCPastTrigger = 1;
-            if(vsSelMCTriggersMu_MultiLepCalc->at(itrig).find(string_d) != std::string::npos && viSelMCTriggersMu_MultiLepCalc->at(itrig) > 0) MCPastTrigger = 1;
-            if(vsSelMCTriggersMu_MultiLepCalc->at(itrig).find(string_e) != std::string::npos && viSelMCTriggersMu_MultiLepCalc->at(itrig) > 0) MCPastTrigger = 1;
-	    if(vsSelMCTriggersMu_MultiLepCalc->at(itrig).find(string_ORb) != std::string::npos && viSelMCTriggersMu_MultiLepCalc->at(itrig) > 0) MCPastTrigger = 1;
-	    if(vsSelMCTriggersMu_MultiLepCalc->at(itrig).find(string_ORc) != std::string::npos && viSelMCTriggersMu_MultiLepCalc->at(itrig) > 0) MCPastTrigger = 1;
+// 	    if(vsSelMCTriggersMu_MultiLepCalc->at(itrig).find(mustring_a) != std::string::npos && viSelMCTriggersMu_MultiLepCalc->at(itrig) > 0) MCPastTrigger = 1;
+// 	    // if(vsSelMCTriggersMu_MultiLepCalc->at(itrig).find(mustring_b) != std::string::npos && viSelMCTriggersMu_MultiLepCalc->at(itrig) > 0) MCPastTrigger = 1;
+//             if(vsSelMCTriggersMu_MultiLepCalc->at(itrig).find(mustring_c) != std::string::npos && viSelMCTriggersMu_MultiLepCalc->at(itrig) > 0) MCPastTrigger = 1;
+//             if(vsSelMCTriggersMu_MultiLepCalc->at(itrig).find(mustring_d) != std::string::npos && viSelMCTriggersMu_MultiLepCalc->at(itrig) > 0) MCPastTrigger = 1;
+// 	    if(vsSelMCTriggersMu_MultiLepCalc->at(itrig).find(mustring_ORa) != std::string::npos && viSelMCTriggersMu_MultiLepCalc->at(itrig) > 0) MCPastTrigger = 1;
+// 	    if(vsSelMCTriggersMu_MultiLepCalc->at(itrig).find(mustring_ORb) != std::string::npos && viSelMCTriggersMu_MultiLepCalc->at(itrig) > 0) MCPastTrigger = 1;
+	    for(unsigned int jtrig=0; jtrig < mutriggers.size(); jtrig++){
+	    	if(vsSelMCTriggersMu_MultiLepCalc->at(itrig).find(mutriggers.at(jtrig)) != std::string::npos && viSelMCTriggersMu_MultiLepCalc->at(itrig) > 0) MCPastTrigger = 1;
+	    }
 	  }
 	  // MiniIsoTight/Tight
 	  // https://wiwong.web.cern.ch/wiwong/Muon_Eff_Plots/2017_Efficiency20_miniTight_Tight_abseta/20_miniIsoTight_SF.json
@@ -1242,38 +1250,32 @@ void step1::Loop(TString inTreeName, TString outTreeName )
 
       else{ //Data triggers check
 	if(isElectron){
-	  std::string string_a = "Ele15_IsoVVVL_PFHT450";
-	  std::string string_b = "Ele15_IsoVVVL_PFHT450_PFMET50";
-	  std::string string_c = "Ele50_IsoVVVL_PFHT450";
-	  std::string string_d = "Ele15_IsoVVVL_PFHT600";
-	  std::string string_ORa = "Ele35_WPTight_Gsf";
-	  std::string string_ORb = "Ele38_WPTight_Gsf";
 	  for(unsigned int itrig=0; itrig < vsSelTriggersEl_MultiLepCalc->size(); itrig++){
-	    if(vsSelTriggersEl_MultiLepCalc->at(itrig).find(string_a) != std::string::npos && viSelTriggersEl_MultiLepCalc->at(itrig) > 0) DataPastTrigger = 1;
-	    // if(vsSelTriggersEl_MultiLepCalc->at(itrig).find(string_b) != std::string::npos && viSelTriggersEl_MultiLepCalc->at(itrig) > 0) DataPastTrigger = 1;
-            if(vsSelTriggersEl_MultiLepCalc->at(itrig).find(string_c) != std::string::npos && viSelTriggersEl_MultiLepCalc->at(itrig) > 0) DataPastTrigger = 1;
-            if(vsSelTriggersEl_MultiLepCalc->at(itrig).find(string_d) != std::string::npos && viSelTriggersEl_MultiLepCalc->at(itrig) > 0) DataPastTrigger = 1;
-	    if(vsSelTriggersEl_MultiLepCalc->at(itrig).find(string_ORa) != std::string::npos && viSelTriggersEl_MultiLepCalc->at(itrig) > 0) DataPastTrigger = 1;
-	    if(vsSelTriggersEl_MultiLepCalc->at(itrig).find(string_ORb) != std::string::npos && viSelTriggersEl_MultiLepCalc->at(itrig) > 0) DataPastTrigger = 1;
+// 	    if(vsSelTriggersEl_MultiLepCalc->at(itrig).find(elstring_a) != std::string::npos && viSelTriggersEl_MultiLepCalc->at(itrig) > 0) DataPastTrigger = 1;
+// 	    // if(vsSelTriggersEl_MultiLepCalc->at(itrig).find(elstring_b) != std::string::npos && viSelTriggersEl_MultiLepCalc->at(itrig) > 0) DataPastTrigger = 1;
+//             if(vsSelTriggersEl_MultiLepCalc->at(itrig).find(elstring_c) != std::string::npos && viSelTriggersEl_MultiLepCalc->at(itrig) > 0) DataPastTrigger = 1;
+//             if(vsSelTriggersEl_MultiLepCalc->at(itrig).find(elstring_d) != std::string::npos && viSelTriggersEl_MultiLepCalc->at(itrig) > 0) DataPastTrigger = 1;
+// 	    if(vsSelTriggersEl_MultiLepCalc->at(itrig).find(elstring_ORa) != std::string::npos && viSelTriggersEl_MultiLepCalc->at(itrig) > 0) DataPastTrigger = 1;
+// 	    if(vsSelTriggersEl_MultiLepCalc->at(itrig).find(elstring_ORb) != std::string::npos && viSelTriggersEl_MultiLepCalc->at(itrig) > 0) DataPastTrigger = 1;
+	    for(unsigned int jtrig=0; jtrig < eltriggers.size(); jtrig++){
+	    	if(vsSelTriggersEl_MultiLepCalc->at(itrig).find(eltriggers.at(jtrig)) != std::string::npos && viSelTriggersEl_MultiLepCalc->at(itrig) > 0) DataPastTrigger = 1;
+	    }
 	  }
 	}
 
 
 
 	if(isMuon){
-	  std::string string_a = "Mu15_IsoVVVL_PFHT450";
-	  std::string string_b = "Mu15_IsoVVVL_PFHT450_PFMET50";
-	  std::string string_d = "Mu50_IsoVVVL_PFHT450";
-	  std::string string_e = "Mu15_IsoVVVL_PFHT600";
-	  std::string string_ORb = "Mu50";
-	  std::string string_ORc = "TkMu50";
 	  for(unsigned int itrig=0; itrig < vsSelTriggersMu_MultiLepCalc->size(); itrig++){
-	    if(vsSelTriggersMu_MultiLepCalc->at(itrig).find(string_a) != std::string::npos && viSelTriggersMu_MultiLepCalc->at(itrig) > 0) DataPastTrigger = 1;
-	    // if(vsSelTriggersMu_MultiLepCalc->at(itrig).find(string_b) != std::string::npos && viSelTriggersMu_MultiLepCalc->at(itrig) > 0) DataPastTrigger = 1;
-            if(vsSelTriggersMu_MultiLepCalc->at(itrig).find(string_d) != std::string::npos && viSelTriggersMu_MultiLepCalc->at(itrig) > 0) DataPastTrigger = 1;
-            if(vsSelTriggersMu_MultiLepCalc->at(itrig).find(string_e) != std::string::npos && viSelTriggersMu_MultiLepCalc->at(itrig) > 0) DataPastTrigger = 1;
-	    if(vsSelTriggersMu_MultiLepCalc->at(itrig).find(string_ORb) != std::string::npos && viSelTriggersMu_MultiLepCalc->at(itrig) > 0) DataPastTrigger = 1;
-	    if(vsSelTriggersMu_MultiLepCalc->at(itrig).find(string_ORc) != std::string::npos && viSelTriggersMu_MultiLepCalc->at(itrig) > 0) DataPastTrigger = 1;
+// 	    if(vsSelTriggersMu_MultiLepCalc->at(itrig).find(mustring_a) != std::string::npos && viSelTriggersMu_MultiLepCalc->at(itrig) > 0) DataPastTrigger = 1;
+// 	    // if(vsSelTriggersMu_MultiLepCalc->at(itrig).find(mustring_b) != std::string::npos && viSelTriggersMu_MultiLepCalc->at(itrig) > 0) DataPastTrigger = 1;
+//             if(vsSelTriggersMu_MultiLepCalc->at(itrig).find(mustring_c) != std::string::npos && viSelTriggersMu_MultiLepCalc->at(itrig) > 0) DataPastTrigger = 1;
+//             if(vsSelTriggersMu_MultiLepCalc->at(itrig).find(mustring_d) != std::string::npos && viSelTriggersMu_MultiLepCalc->at(itrig) > 0) DataPastTrigger = 1;
+// 	    if(vsSelTriggersMu_MultiLepCalc->at(itrig).find(mustring_ORa) != std::string::npos && viSelTriggersMu_MultiLepCalc->at(itrig) > 0) DataPastTrigger = 1;
+// 	    if(vsSelTriggersMu_MultiLepCalc->at(itrig).find(mustring_ORb) != std::string::npos && viSelTriggersMu_MultiLepCalc->at(itrig) > 0) DataPastTrigger = 1;
+	    for(unsigned int jtrig=0; jtrig < mutriggers.size(); jtrig++){
+	    	if(vsSelTriggersMu_MultiLepCalc->at(itrig).find(mutriggers.at(jtrig)) != std::string::npos && viSelTriggersMu_MultiLepCalc->at(itrig) > 0) DataPastTrigger = 1;
+	    }
 	  }
 	}
 	MCPastTrigger = 1;
@@ -1990,7 +1992,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
       pdfWeights.clear();
       pdfNewWeights.clear();
       pdfNewNominalWeight = 1.0;
-      if(isSig){
+      if(isSig && !isTTTT){
 	pdfNewNominalWeight = NewPDFweights_MultiLepCalc->at(0);
 	// SEEMS TO APPLY TO ALL B2G MG+PYTHIA SIGNALS. NNLO 4-FLAVOR PDF
 	for(unsigned int i = 0; i < LHEweightids_MultiLepCalc->size(); i++){
@@ -2001,6 +2003,23 @@ void step1::Loop(TString inTreeName, TString outTreeName )
 	  }
 	  if(LHEweightids_MultiLepCalc->at(i) > 474 && LHEweightids_MultiLepCalc->at(i) < 575){
 	    pdfWeights.push_back(LHEweights_MultiLepCalc->at(i));
+	  }
+	}
+      }
+      else if(isTTTT){
+	// 
+	for(unsigned int i = 0; i < LHEweightids_MultiLepCalc->size(); i++){
+	  if(LHEweightids_MultiLepCalc->at(i) > 1001 && LHEweightids_MultiLepCalc->at(i) < 1010){
+	    if(LHEweightids_MultiLepCalc->at(i) == 1006 || LHEweightids_MultiLepCalc->at(i) == 1008) continue;
+	    renorm.push_back(LHEweights_MultiLepCalc->at(i));
+	    renormWeights.push_back(LHEweights_MultiLepCalc->at(i));
+	  }
+	  if(LHEweightids_MultiLepCalc->at(i) > 1009 && LHEweightids_MultiLepCalc->at(i) < 1111){
+	    pdf.push_back(LHEweights_MultiLepCalc->at(i));
+	    pdfWeights.push_back(LHEweights_MultiLepCalc->at(i));
+	  }
+	  if(LHEweightids_MultiLepCalc->at(i) == 1111 || LHEweightids_MultiLepCalc->at(i) == 1112){
+	    alphaSWeights.push_back(LHEweights_MultiLepCalc->at(i));
 	  }
 	}
       }
@@ -2068,6 +2087,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    std::cout<<"Nelectrons      = "<<Nelectrons<<" / "<<nentries<<std::endl;
    std::cout<<"Npassed_ElEta   = "<<npass_ElEta<<" / "<<nentries<<std::endl;
    std::cout<<"Nmuons          = "<<Nmuons<<" / "<<nentries<<std::endl;
+   std::cout<<"NrelIsoFail     = "<<NrelIsoFail<<" / "<<nentries<<std::endl;
    std::cout<<"Npassed_MuEta   = "<<npass_MuEta<<" / "<<nentries<<std::endl;
    std::cout<<"Npassed_nAK8Jets= "<<npass_nAK8jets<<" / "<<nentries<<std::endl;
    std::cout<<"Npassed_Trigger = "<<npass_trigger<<" / "<<nentries<<std::endl;
