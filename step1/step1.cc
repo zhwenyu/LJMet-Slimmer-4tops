@@ -122,13 +122,15 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    inputTree->SetBranchStatus("elPhi_MultiLepCalc",1);
    inputTree->SetBranchStatus("elEnergy_MultiLepCalc",1);
    inputTree->SetBranchStatus("elMiniIso_MultiLepCalc",1);  
+   inputTree->SetBranchStatus("elRelIso_MultiLepCalc",1);
    
    //muons
    inputTree->SetBranchStatus("muPt_MultiLepCalc",1);
    inputTree->SetBranchStatus("muEta_MultiLepCalc",1);
    inputTree->SetBranchStatus("muPhi_MultiLepCalc",1);
    inputTree->SetBranchStatus("muEnergy_MultiLepCalc",1);
-   inputTree->SetBranchStatus("muMiniIso_MultiLepCalc",1);  
+   inputTree->SetBranchStatus("muMiniIso_MultiLepCalc",1);
+   inputTree->SetBranchStatus("muRelIso_MultiLepCalc",1);
    
    //missing et
    inputTree->SetBranchStatus("corr_met_MultiLepCalc",1);
@@ -346,6 +348,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    outputTree->Branch("leptonEnergy_MultiLepCalc",&leptonEnergy_MultiLepCalc,"leptonEnergy_MultiLepCalc/F");
    outputTree->Branch("leptonMVAValue_MultiLepCalc",&leptonMVAValue_MultiLepCalc,"leptonMVAValue_MultiLepCalc/F");
    outputTree->Branch("leptonMiniIso_MultiLepCalc",&leptonMiniIso_MultiLepCalc,"leptonMiniIso_MultiLepCalc/F");
+   outputTree->Branch("leptonRelIso_MultiLepCalc",&leptonRelIso_MultiLepCalc,"leptonRelIso_MultiLepCalc/F");
    outputTree->Branch("MT_lepMet",&MT_lepMet,"MT_lepMet/F");
    outputTree->Branch("MT_lepMetmod",&MT_lepMetmod,"MT_lepMetmod/F");
    outputTree->Branch("minDPhi_MetJet",&minDPhi_MetJet,"minDPhi_MetJet/F");
@@ -728,7 +731,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
       
       //      if (ientry > 5000) continue;
       
-      if(jentry % 1000 ==0) std::cout<<"Completed "<<jentry<<" out of "<<nentries<<" events"<<std::endl;
+      if(jentry % 1000 ==0) std::cout<<"Completed "<<jentry<<" out of "<<nentries<<" events and skipped "<<NrelIsoFail<<" muon events"<<std::endl;
 
       // ----------------------------------------------------------------------------
       // Filter input file by mass or decay
@@ -769,9 +772,12 @@ void step1::Loop(TString inTreeName, TString outTreeName )
       if(elPt_MultiLepCalc->size()==0 && muPt_MultiLepCalc->size()>0) {isElectron = 0; isMuon = 1;}
       if(isElectron==0 && isMuon==0){std::cout << "got no leptons, something wrong" << std::endl; continue;}
       
-      if(isMuon == 1 && muRelIso_MultiLepCalc->at(0) > 0.15) {
-      	NrelIsoFail++;
-      	std::cout << "muRelIso > 0.15, skipping the event ..." << std::endl; continue;
+      if(isMuon == 1) {
+      	if(muRelIso_MultiLepCalc->at(0) > 0.15) {
+      	  NrelIsoFail++;
+      	  //std::cout << "muRelIso > 0.15, skipping the event ..." << std::endl; 
+      	  continue;
+      	  }
       	}
 
       if(isSM && isElectron == 1) continue;
@@ -1421,6 +1427,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
 	leptonPhi_MultiLepCalc = elPhi_MultiLepCalc->at(0);
 	leptonEnergy_MultiLepCalc = elEnergy_MultiLepCalc->at(0);
 	leptonMiniIso_MultiLepCalc = elMiniIso_MultiLepCalc->at(0);
+	leptonRelIso_MultiLepCalc = elRelIso_MultiLepCalc->at(0);
 	leptonMVAValue_MultiLepCalc = -99.9; //elMVAValue_MultiLepCalc->at(0);
       }
       if(isMuon){
@@ -1429,6 +1436,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
 	leptonPhi_MultiLepCalc = muPhi_MultiLepCalc->at(0);
 	leptonEnergy_MultiLepCalc = muEnergy_MultiLepCalc->at(0);
 	leptonMiniIso_MultiLepCalc = muMiniIso_MultiLepCalc->at(0);
+	leptonRelIso_MultiLepCalc = muRelIso_MultiLepCalc->at(0);
 	leptonMVAValue_MultiLepCalc = -99.9;
       }
 
