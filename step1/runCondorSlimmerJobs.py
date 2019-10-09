@@ -9,9 +9,10 @@ start_time = time.time()
 
 finalStateYear = 'singleLep2017' # or 2018
 relbase = '/uscms_data/d3/ssagir/CMSSW_10_2_10/'
-inputDir='/eos/uscms/store/user/lpcljm/FWLJMET102X_1lep2017_052219/' # or 2018
-outputDir='/eos/uscms/store/user/lpcljm/FWLJMET102X_1lep2017_4t_071919_step1/nominal/' # or 2018
-condorDir='/uscms_data/d3/ssagir/FWLJMET102X_1lep2017_4t_071919_step1/' # or 2018
+#inputDir='/eos/uscms/store/user/lpcljm/FWLJMET102X_1lep2017_052219/' # or 2018
+inputDir='/eos/uscms/store/user/lpcljm/FWLJMET102X_1lep2017_070919/' # or 2018
+outputDir='/eos/uscms/store/user/lpcljm/FWLJMET102X_1lep2017_4t_100719_step1/nominal/' # or 2018
+condorDir='/uscms_data/d3/ssagir/FWLJMET102X_1lep2017_4t_100719_step1/' # or 2018
 shifts = ['JECup','JECdown','JERup','JERdown']
 
 runDir=os.getcwd()
@@ -49,16 +50,6 @@ dirList = [
 'TTTJ_TuneCP5_13TeV-madgraph-pythia8',
 'TTTT_TuneCP5_13TeV-amcatnlo-pythia8',
 'TTTW_TuneCP5_13TeV-madgraph-pythia8',
-'TTTo2L2Nu_TuneCP5_PSweights_13TeV-powheg-pythia8',
-'TTToHadronic_TuneCP5_PSweights_13TeV-powheg-pythia8',
-# 'TTToSemiLepton_HT500Njet9_TuneCP5_PSweights_13TeV-powheg-pythia8',
-'TTToSemiLeptonic_TuneCP5_PSweights_13TeV-powheg-pythia8',
-# 'TTTo2L2Nu_TuneCP5down_PSweights_13TeV-powheg-pythia8',
-# 'TTToHadronic_TuneCP5down_PSweights_13TeV-powheg-pythia8',
-# 'TTToSemiLeptonic_TuneCP5down_PSweights_13TeV-powheg-pythia8',
-# 'TTTo2L2Nu_TuneCP5up_PSweights_13TeV-powheg-pythia8',
-# 'TTToHadronic_TuneCP5up_PSweights_13TeV-powheg-pythia8',
-# 'TTToSemiLeptonic_TuneCP5up_PSweights_13TeV-powheg-pythia8',
 'TTWH_TuneCP5_13TeV-madgraph-pythia8',
 'TTWJetsToLNu_TuneCP5_PSweights_13TeV-amcatnloFXFX-madspin-pythia8',
 'TTWJetsToQQ_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8',
@@ -67,8 +58,6 @@ dirList = [
 'TTZH_TuneCP5_13TeV-madgraph-pythia8',
 'TTZToLLNuNu_M-10_TuneCP5_PSweights_13TeV-amcatnlo-pythia8',
 'TTZZ_TuneCP5_13TeV-madgraph-pythia8',
-'TT_Mtt-1000toInf_TuneCP5_PSweights_13TeV-powheg-pythia8',
-'TT_Mtt-700to1000_TuneCP5_PSweights_13TeV-powheg-pythia8',
 'WJetsToLNu_HT-1200To2500_TuneCP5_13TeV-madgraphMLM-pythia8',
 'WJetsToLNu_HT-200To400_TuneCP5_13TeV-madgraphMLM-pythia8',
 'WJetsToLNu_HT-2500ToInf_TuneCP5_13TeV-madgraphMLM-pythia8',
@@ -81,13 +70,36 @@ dirList = [
 'ttHToNonbb_M125_TuneCP5_13TeV-powheg-pythia8',
 'ttHTobb_M125_TuneCP5_13TeV-powheg-pythia8',
 ]
-            
+
+dirList = [ # from 'FWLJMET102X_1lep2017_070919'
+'TTTo2L2Nu_TuneCP5_PSweights_13TeV-powheg-pythia8',
+'TTToHadronic_TuneCP5_PSweights_13TeV-powheg-pythia8',
+'TTToSemiLepton_HT500Njet9_TuneCP5_PSweights_13TeV-powheg-pythia8',
+'TTToSemiLeptonic_TuneCP5_PSweights_13TeV-powheg-pythia8',
+# 'TT_Mtt-1000toInf_TuneCP5_PSweights_13TeV-powheg-pythia8',
+# 'TT_Mtt-700to1000_TuneCP5_PSweights_13TeV-powheg-pythia8',
+# 'TTTo2L2Nu_TuneCP5down_PSweights_13TeV-powheg-pythia8',
+# 'TTToHadronic_TuneCP5down_PSweights_13TeV-powheg-pythia8',
+# 'TTToSemiLeptonic_TuneCP5down_PSweights_13TeV-powheg-pythia8',
+# 'TTTo2L2Nu_TuneCP5up_PSweights_13TeV-powheg-pythia8',
+# 'TTToHadronic_TuneCP5up_PSweights_13TeV-powheg-pythia8',
+# 'TTToSemiLeptonic_TuneCP5up_PSweights_13TeV-powheg-pythia8',
+]
+
 for sample in dirList:
     print "------------ Sample:",sample,"---------------"
     outList = ['none']
     if 'Tprime' in sample: outList = ['BWBW','TZBW','THBW','TZTH','TZTZ','THTH']
     elif 'Bprime' in sample: outList = ['TWTW','BZTW','BHTW','BZBH','BZBZ','BHBH']
-    elif 'TTTo' in sample: outList = ['Mtt0to700','Mtt700to1000','Mtt1000toInf']
+    elif 'TTToSemiLeptonic' in sample: outList = ['HT0Njet0','HT500Njet9']
+    #elif 'TTTo' in sample: outList = ['Mtt0to700','Mtt700to1000','Mtt1000toInf']
+    if 'TTTo' in sample or 'TT_Mtt' in sample: 
+    	if outList==['none']: outList = ['ttbb','ttcc','ttjj']
+    	else:
+    		outList_ = outList[:]
+    		outList = []
+    		for outlabel in outList_:
+    			for flv in ['ttbb','ttcc','ttjj']: outList.append(outlabel+'_'+flv)
 
     isData = False
     if 'Single' in sample or 'EGamma' in sample: isData = True

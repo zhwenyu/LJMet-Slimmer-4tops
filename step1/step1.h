@@ -47,6 +47,11 @@ public :
    Bool_t          isTTincMtt0to700;
    Bool_t          isTTincMtt700to1000;
    Bool_t          isTTincMtt1000toInf;
+   Bool_t          isTTSemilepIncHT0Njet0;
+   Bool_t          isTTSemilepIncHT500Njet9;
+   Bool_t          isTTBB;
+   Bool_t          isTTCC;
+   Bool_t          isTTJJ;
    Int_t           SigMass;
    Int_t           pileupIndex;
 
@@ -1304,6 +1309,11 @@ step1::step1(TString inputFileName, TString outputFileName) : inputTree(0), inpu
   isTTincMtt0to1000   = outputFileName.Contains("Mtt0to1000");
   isTTincMtt700to1000 = outputFileName.Contains("Mtt700to1000");
   isTTincMtt1000toInf = outputFileName.Contains("Mtt1000toInf");
+  isTTSemilepIncHT0Njet0 = outputFileName.Contains("HT0Njet0");
+  isTTSemilepIncHT500Njet9 = outputFileName.Contains("HT500Njet9");
+  isTTBB = outputFileName.Contains("_ttbb");
+  isTTCC = outputFileName.Contains("_ttcc");
+  isTTJJ = outputFileName.Contains("_ttjj");
   
   std::cout<<"Opening file: "<<inputFileName<<std::endl;
   if(!(inputFile=TFile::Open(inputFileName))){
