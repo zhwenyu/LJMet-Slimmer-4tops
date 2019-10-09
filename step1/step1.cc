@@ -111,11 +111,15 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    inputTree->SetBranchStatus("viSelMCTriggersEl_MultiLepCalc",1);
    inputTree->SetBranchStatus("vsSelMCTriggersMu_MultiLepCalc",1);
    inputTree->SetBranchStatus("viSelMCTriggersMu_MultiLepCalc",1);
+   inputTree->SetBranchStatus("vsSelMCTriggersHad_MultiLepCalc",1);
+   inputTree->SetBranchStatus("viSelMCTriggersHad_MultiLepCalc",1);
    inputTree->SetBranchStatus("vsSelTriggersEl_MultiLepCalc",1);
    inputTree->SetBranchStatus("viSelTriggersEl_MultiLepCalc",1);
    inputTree->SetBranchStatus("vsSelTriggersMu_MultiLepCalc",1);
    inputTree->SetBranchStatus("viSelTriggersMu_MultiLepCalc",1);
-   
+   inputTree->SetBranchStatus("vsSelTriggersHad_MultiLepCalc",1);
+   inputTree->SetBranchStatus("viSelTriggersHad_MultiLepCalc",1);   
+
    //electrons
    inputTree->SetBranchStatus("elPt_MultiLepCalc",1);
    inputTree->SetBranchStatus("elEta_MultiLepCalc",1);

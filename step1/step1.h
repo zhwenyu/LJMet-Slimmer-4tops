@@ -445,8 +445,10 @@ public :
    vector<int>     *topbID_TTbarMassCalc;
    vector<int>     *viSelMCTriggersEl_MultiLepCalc;
    vector<int>     *viSelMCTriggersMu_MultiLepCalc;
+   vector<int>     *viSelMCTriggersHad_MultiLepCalc;
    vector<int>     *viSelTriggersEl_MultiLepCalc;
    vector<int>     *viSelTriggersMu_MultiLepCalc;
+   vector<int>     *viSelTriggersHad_MultiLepCalc;
    vector<double>  *AK4JetBDeepCSVb_MultiLepCalc;
    vector<double>  *AK4JetBDeepCSVbb_MultiLepCalc;
    vector<double>  *AK4JetBDeepCSVc_MultiLepCalc;
@@ -711,8 +713,10 @@ public :
    vector<double>  *topbPt_TTbarMassCalc;
    vector<string>  *vsSelMCTriggersEl_MultiLepCalc;
    vector<string>  *vsSelMCTriggersMu_MultiLepCalc;
+   vector<string>  *vsSelMCTriggersHad_MultiLepCalc;
    vector<string>  *vsSelTriggersEl_MultiLepCalc;
    vector<string>  *vsSelTriggersMu_MultiLepCalc;
+   vector<string>  *vsSelTriggersHad_MultiLepCalc;
 
    // List of branches
    TBranch        *b_flagBadMu_MultiLepCalc;   //!
@@ -886,8 +890,10 @@ public :
    TBranch        *b_topbID_TTbarMassCalc;   //!
    TBranch        *b_viSelMCTriggersEl_MultiLepCalc;   //!
    TBranch        *b_viSelMCTriggersMu_MultiLepCalc;   //!
+   TBranch        *b_viSelMCTriggersHad_MultiLepCalc;   //!
    TBranch        *b_viSelTriggersEl_MultiLepCalc;   //!
    TBranch        *b_viSelTriggersMu_MultiLepCalc;   //!
+   TBranch        *b_viSelTriggersHad_MultiLepCalc;   //!
    TBranch        *b_AK4JetBDeepCSVb_MultiLepCalc;   //!
    TBranch        *b_AK4JetBDeepCSVbb_MultiLepCalc;   //!
    TBranch        *b_AK4JetBDeepCSVc_MultiLepCalc;   //!
@@ -1152,9 +1158,11 @@ public :
    TBranch        *b_topbPt_TTbarMassCalc;   //!
    TBranch        *b_vsSelMCTriggersEl_MultiLepCalc;   //!
    TBranch        *b_vsSelMCTriggersMu_MultiLepCalc;   //!
+   TBranch        *b_vsSelMCTriggersHad_MultiLepCalc;   //!
    TBranch        *b_vsSelTriggersEl_MultiLepCalc;   //!
    TBranch        *b_vsSelTriggersMu_MultiLepCalc;   //!
- 
+   TBranch        *b_vsSelTriggersHad_MultiLepCalc;   //! 
+
    step1(TString inputFileName, TString outputFileName);
    virtual ~step1();
    virtual Int_t    Cut(Long64_t entry);
@@ -1473,8 +1481,10 @@ void step1::Init(TTree *tree)
    topbID_TTbarMassCalc = 0;
    viSelMCTriggersEl_MultiLepCalc = 0;
    viSelMCTriggersMu_MultiLepCalc = 0;
+   viSelMCTriggersHad_MultiLepCalc = 0;
    viSelTriggersEl_MultiLepCalc = 0;
    viSelTriggersMu_MultiLepCalc = 0;
+   viSelTriggersHad_MultiLepCalc = 0;
    AK4JetBDeepCSVb_MultiLepCalc = 0;
    AK4JetBDeepCSVbb_MultiLepCalc = 0;
    AK4JetBDeepCSVc_MultiLepCalc = 0;
@@ -1739,8 +1749,10 @@ void step1::Init(TTree *tree)
    topbPt_TTbarMassCalc = 0;
    vsSelMCTriggersEl_MultiLepCalc = 0;
    vsSelMCTriggersMu_MultiLepCalc = 0;
+   vsSelMCTriggersHad_MultiLepCalc = 0;
    vsSelTriggersEl_MultiLepCalc = 0;
    vsSelTriggersMu_MultiLepCalc = 0;
+   vsSelTriggersHad_MultiLepCalc = 0;
    // Set branch addresses and branch pointers
    if (!tree) return;
    inputTree = tree;
@@ -1918,8 +1930,10 @@ void step1::Init(TTree *tree)
    inputTree->SetBranchAddress("topbID_TTbarMassCalc", &topbID_TTbarMassCalc, &b_topbID_TTbarMassCalc);
    inputTree->SetBranchAddress("viSelMCTriggersEl_MultiLepCalc", &viSelMCTriggersEl_MultiLepCalc, &b_viSelMCTriggersEl_MultiLepCalc);
    inputTree->SetBranchAddress("viSelMCTriggersMu_MultiLepCalc", &viSelMCTriggersMu_MultiLepCalc, &b_viSelMCTriggersMu_MultiLepCalc);
+   inputTree->SetBranchAddress("viSelMCTriggersHad_MultiLepCalc", &viSelMCTriggersHad_MultiLepCalc, &b_viSelMCTriggersHad_MultiLepCalc);
    inputTree->SetBranchAddress("viSelTriggersEl_MultiLepCalc", &viSelTriggersEl_MultiLepCalc, &b_viSelTriggersEl_MultiLepCalc);
    inputTree->SetBranchAddress("viSelTriggersMu_MultiLepCalc", &viSelTriggersMu_MultiLepCalc, &b_viSelTriggersMu_MultiLepCalc);
+   inputTree->SetBranchAddress("viSelTriggersHad_MultiLepCalc", &viSelTriggersHad_MultiLepCalc, &b_viSelTriggersHad_MultiLepCalc);
    inputTree->SetBranchAddress("AK4JetBDeepCSVb_MultiLepCalc", &AK4JetBDeepCSVb_MultiLepCalc, &b_AK4JetBDeepCSVb_MultiLepCalc);
    inputTree->SetBranchAddress("AK4JetBDeepCSVbb_MultiLepCalc", &AK4JetBDeepCSVbb_MultiLepCalc, &b_AK4JetBDeepCSVbb_MultiLepCalc);
    inputTree->SetBranchAddress("AK4JetBDeepCSVc_MultiLepCalc", &AK4JetBDeepCSVc_MultiLepCalc, &b_AK4JetBDeepCSVc_MultiLepCalc);
@@ -2186,8 +2200,10 @@ void step1::Init(TTree *tree)
    inputTree->SetBranchAddress("topbPt_TTbarMassCalc", &topbPt_TTbarMassCalc, &b_topbPt_TTbarMassCalc);
    inputTree->SetBranchAddress("vsSelMCTriggersEl_MultiLepCalc", &vsSelMCTriggersEl_MultiLepCalc, &b_vsSelMCTriggersEl_MultiLepCalc);
    inputTree->SetBranchAddress("vsSelMCTriggersMu_MultiLepCalc", &vsSelMCTriggersMu_MultiLepCalc, &b_vsSelMCTriggersMu_MultiLepCalc);
+   inputTree->SetBranchAddress("vsSelMCTriggersHad_MultiLepCalc", &vsSelMCTriggersHad_MultiLepCalc, &b_vsSelMCTriggersHad_MultiLepCalc);
    inputTree->SetBranchAddress("vsSelTriggersEl_MultiLepCalc", &vsSelTriggersEl_MultiLepCalc, &b_vsSelTriggersEl_MultiLepCalc);
    inputTree->SetBranchAddress("vsSelTriggersMu_MultiLepCalc", &vsSelTriggersMu_MultiLepCalc, &b_vsSelTriggersMu_MultiLepCalc);
+   inputTree->SetBranchAddress("vsSelTriggersHad_MultiLepCalc", &vsSelTriggersHad_MultiLepCalc, &b_vsSelTriggersHad_MultiLepCalc);
    Notify();
 }
 
