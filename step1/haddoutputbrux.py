@@ -1,6 +1,5 @@
 import os,sys,datetime,time, subprocess, math
 from ROOT import *
-execfile("/uscms_data/d3/jmanagan/EOSSafeUtils.py")
 
 start_time = time.time()
 
@@ -9,13 +8,10 @@ start_time = time.time()
 # output = sys.argv[2]
 shift = sys.argv[1]
 
-inputDir='/eos/uscms/store/user/lpcljm/FWLJMET102X_1lep2017_4t_071919_step1/'+shift+'/'
-outputDir='/eos/uscms/store/user/lpcljm/FWLJMET102X_1lep2017_4t_071919_step1hadds/'+shift+'/'
+inDir='/mnt/hadoop/store/group/bruxljm/FWLJMET102X_1lep2017_4t_081019_step1/'+shift+'/'
+outDir='/mnt/hadoop/store/group/bruxljm/FWLJMET102X_1lep2017_4t_081019_step1hadds/'+shift+'/'
 
-inDir=inputDir[10:]
-outDir=outputDir[10:]
-
-os.system('eos root://cmseos.fnal.gov/ mkdir -p '+outDir)
+os.system('mkdir -p '+outDir)
 
 dirList = [
 'DYJetsToLL_M-50_HT-1200to2500_TuneCP5_13TeV-madgraphMLM-pythia8',
@@ -45,7 +41,7 @@ dirList = [
 'TTTW_TuneCP5_13TeV-madgraph-pythia8',
 'TTTo2L2Nu_TuneCP5_PSweights_13TeV-powheg-pythia8',
 'TTToHadronic_TuneCP5_PSweights_13TeV-powheg-pythia8',
-# 'TTToSemiLepton_HT500Njet9_TuneCP5_PSweights_13TeV-powheg-pythia8',
+'TTToSemiLepton_HT500Njet9_TuneCP5_PSweights_13TeV-powheg-pythia8',
 'TTToSemiLeptonic_TuneCP5_PSweights_13TeV-powheg-pythia8',
 'TTWH_TuneCP5_13TeV-madgraph-pythia8',
 'TTWJetsToLNu_TuneCP5_PSweights_13TeV-amcatnloFXFX-madspin-pythia8',
@@ -70,7 +66,7 @@ dirList = [
 'ttHTobb_M125_TuneCP5_13TeV-powheg-pythia8',
 ]
 
-if shift=='nominal':
+if shift=='nominalll':
 	dirList.append('SingleElectron')
 	dirList.append('SingleMuon')
 
@@ -85,7 +81,7 @@ for sample in dirList:
         outsample = sample+'_'+outlabel
         if outlabel == 'none': outsample = sample
 
-        rootfiles = EOSlist_root_files(inputDir+'/'+outsample)
+        rootfiles = [x for x in os.listdir(inDir+'/'+outsample) if '.root' in x]
 
         print "------------ hadding Sample:",outsample,"---------------"
         print 'N root files in',outsample,'=',len(rootfiles)
@@ -95,9 +91,9 @@ for sample in dirList:
         if 'TTToSemiLeptonic' in sample and outlabel=='Mtt0to700': nFilesPerHadd = 45
         elif 'WJetsToLNu_HT-1200To2500' in sample: nFilesPerHadd = 20
         elif 'WJetsToLNu_HT-2500ToInf' in sample: nFilesPerHadd = 13        
-        onefile = ' root://cmseos.fnal.gov/'+inDir+'/'+outsample+'/'+rootfiles[-1]
+        onefile = inDir+'/'+outsample+'/'+rootfiles[-1]
         manyfiles = nFilesPerHadd*onefile
-        lengthcheck = len('hadd -f root://cmseos.fnal.gov/'+outDir+'/'+outsample+'_hadd.root '+manyfiles)
+        lengthcheck = len('hadd -f '+outDir+'/'+outsample+'_hadd.root '+manyfiles)
         if lengthcheck > 126000.:
             toolong = lengthcheck - 126000.
             num2remove = math.ceil(toolong/len(onefile))
@@ -105,17 +101,14 @@ for sample in dirList:
             print 'Length estimate reduced from',lengthcheck,'by',toolong,'via removing',num2remove,'files for nFilesPerHadd of',nFilesPerHadd
 
         if len(rootfiles) < nFilesPerHadd:
-            haddcommand = 'hadd -f root://cmseos.fnal.gov/'+outDir+'/'+outsample+'_hadd.root '
+            haddcommand = 'hadd -f '+outDir+'/'+outsample+'_hadd.root '
             for file in rootfiles:
-                haddcommand+=' root://cmseos.fnal.gov/'+inDir+'/'+outsample+'/'+file
+                haddcommand+=' '+inDir+'/'+outsample+'/'+file
             print 'Length of hadd command =',len(haddcommand)
             subprocess.call(haddcommand,shell=True)
-
-            if bool(EOSisfile(outDir+'/'+outsample+'_hadd.root')) != True:
-                print haddcommand
         else:
             for i in range(int(math.ceil(len(rootfiles)/float(nFilesPerHadd)))):
-                haddcommand = 'hadd -f root://cmseos.fnal.gov/'+outDir+'/'+outsample+'_'+str(i+1)+'_hadd.root '
+                haddcommand = 'hadd -f '+outDir+'/'+outsample+'_'+str(i+1)+'_hadd.root '
 
                 begin=i*nFilesPerHadd
                 end=begin+nFilesPerHadd
@@ -123,12 +116,9 @@ for sample in dirList:
                 print 'begin:',begin,'end:',end
 
                 for j in range(begin,end):
-                    haddcommand+=' root://cmseos.fnal.gov/'+inDir+'/'+outsample+'/'+rootfiles[j]
+                    haddcommand+=' '+inDir+'/'+outsample+'/'+rootfiles[j]
                 print 'Length of hadd command =',len(haddcommand)
                 subprocess.call(haddcommand,shell=True)
-
-                if bool(EOSisfile(outDir+'/'+outsample+'_'+str(i+1)+'_hadd.root')) != True:
-                    print haddcommand
 
 print("--- %s minutes ---" % (round(time.time() - start_time, 2)/60))
 

@@ -45,19 +45,13 @@ ls -l *.root
 # copy output to eos
 
 NOM="nominal"
-echo "xrdcp output for condor"
+echo "cp output for condor"
 for SHIFT in nominal JECup JECdown JERup JERdown
   do
   haddFile=${outfilename}_${ID}${SHIFT}_hadd.root
   hadd ${haddFile} *${SHIFT}.root
-  echo "xrdcp -f ${haddFile} root://cmseos.fnal.gov/${outputDir//$NOM/$SHIFT}/${haddFile//${SHIFT}_hadd/}"
-  xrdcp -f ${haddFile} root://cmseos.fnal.gov/${outputDir//$NOM/$SHIFT}/${haddFile//${SHIFT}_hadd/} 2>&1
-  XRDEXIT=$?
-  if [[ $XRDEXIT -ne 0 ]]; then
-    rm *.root
-    echo "exit code $XRDEXIT, failure in xrdcp"
-    exit $XRDEXIT
-  fi
+  echo "cp ${haddFile} ${outputDir//$NOM/$SHIFT}/${haddFile//${SHIFT}_hadd/}"
+  cp ${haddFile} ${outputDir//$NOM/$SHIFT}/${haddFile//${SHIFT}_hadd/}
   rm *${SHIFT}.root
   rm ${haddFile}
   if [[ $haddFile == Single* ]]; then break; fi;
