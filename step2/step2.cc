@@ -1,6 +1,5 @@
 #define step2_cxx
 #include "step2.h"
-//#include "GeneralFunctions.h"
 #include <TH2.h>
 #include <TH1.h>
 #include <TStyle.h>
@@ -410,7 +409,7 @@ void step2::Loop()
      std::vector<TLorentzVector> GoodRecoJet2;         
      std::vector<TLorentzVector> GoodRecoJet3;                   
      TRandom3 myseed;
-     myseed.SetSeed(static_cast<int>(leptonPhi_singleLepCalc*1e5));
+     myseed.SetSeed(static_cast<int>(leptonPhi_MultiLepCalc*1e5));
      double coin = myseed.Rndm();
      if(coin<1./3.) isTraining = 1;                          // BDT TRAINING
      else if((coin>=1./3.) && (coin<2./3.))isTraining =2;    // BDT TESTING
@@ -463,7 +462,7 @@ void step2::Loop()
          ratio_HTdHT4leadjets = AK4HT/HT_4jets;
      }
 
-     corr_met = (float) corr_met_singleLepCalc;
+     corr_met = (float) corr_met_MultiLepCalc;
      theJetLeadPt = theJetPt_JetSubCalc_PtOrdered->at(0);
      
      double maxBBdphi = 0;
@@ -482,8 +481,8 @@ void step2::Loop()
      double metM=0;
      if(isMuon) lepM = 0.105658367;
      else lepM = 0.00051099891;
-     lep.SetPtEtaPhiM(leptonPt_singleLepCalc,leptonEta_singleLepCalc,leptonPhi_singleLepCalc,lepM);
-     met.SetPtEtaPhiM(corr_met_singleLepCalc,0,corr_met_phi_singleLepCalc,metM);
+     lep.SetPtEtaPhiM(leptonPt_MultiLepCalc,leptonEta_MultiLepCalc,leptonPhi_MultiLepCalc,lepM);
+     met.SetPtEtaPhiM(corr_met_MultiLepCalc,0,corr_met_phi_MultiLepCalc,metM);
      mass_minBBdr = -1;
      mass_minLLdr = -1;
      mass_maxBBpt = -1;
@@ -528,9 +527,9 @@ void step2::Loop()
      sixthJetPt = -1;
      
      float totalPtCSV = 0;
-     double deltaPhifromMET_ = TVector2::Phi_mpi_pi(leptonPhi_singleLepCalc - corr_met_phi_singleLepCalc);
+     double deltaPhifromMET_ = TVector2::Phi_mpi_pi(leptonPhi_MultiLepCalc - corr_met_phi_MultiLepCalc);
      deltaPhi_lepMET = deltaPhifromMET_;
-     if(abs(deltaPhifromMET_)>TMath::Pi()/2){hemiout+=leptonPt_singleLepCalc;}
+     if(abs(deltaPhifromMET_)>TMath::Pi()/2){hemiout+=leptonPt_MultiLepCalc;}
 
      std::vector<float> v_CSVb_bb;
      std::vector<TLorentzVector> v_allJets;
@@ -636,7 +635,7 @@ void step2::Loop()
         	    
 		totalJetPt+=theJetPt_JetSubCalc_PtOrdered->at(ijet);
 		totalJetE+=theJetEnergy_JetSubCalc_PtOrdered->at(ijet);
-		deltaPhifromMET_ = TVector2::Phi_mpi_pi(theJetPhi_JetSubCalc_PtOrdered->at(ijet) - corr_met_phi_singleLepCalc);
+		deltaPhifromMET_ = TVector2::Phi_mpi_pi(theJetPhi_JetSubCalc_PtOrdered->at(ijet) - corr_met_phi_MultiLepCalc);
 		deltaPhi_METjets.push_back(deltaPhifromMET_);
 		if(min_deltaPhi_METjets>fabs(deltaPhifromMET_)){min_deltaPhi_METjets=fabs(deltaPhifromMET_);}
 		if(abs(deltaPhifromMET_)>TMath::Pi()/2){hemiout+=theJetPt_JetSubCalc_PtOrdered->at(ijet);}				
@@ -709,7 +708,7 @@ void step2::Loop()
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////HT without the best jet where best jet is the one used in leptonic top reconstruction//////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-      bestJetinWjet = bestJet( corr_met_phi_singleLepCalc, corr_met_singleLepCalc, lepM, lep, 
+      bestJetinWjet = bestJet( corr_met_phi_MultiLepCalc, corr_met_MultiLepCalc, lepM, lep, 
                                theJetPt_JetSubCalc_PtOrdered, theJetEta_JetSubCalc_PtOrdered, theJetPhi_JetSubCalc_PtOrdered, theJetEnergy_JetSubCalc_PtOrdered);
       TLorentzVector totalJetVectSum;
 
@@ -735,16 +734,16 @@ void step2::Loop()
      bool WfromTop = false;
      bool WnotFromTop = false;
      if (isElectron==1){
-        for(int ind = 0; ind < elNumberOfMothers_singleLepCalc->at(0); ind++){
-            if(abs(elMother_id_singleLepCalc->at(ind))==24) {mom_W=true;}
-            if(abs(elMother_id_singleLepCalc->at(ind))==6 && mom_W) {WfromTop=true;}            
+        for(int ind = 0; ind < elNumberOfMothers_MultiLepCalc->at(0); ind++){
+            if(abs(elMother_id_MultiLepCalc->at(ind))==24) {mom_W=true;}
+            if(abs(elMother_id_MultiLepCalc->at(ind))==6 && mom_W) {WfromTop=true;}            
         }
 	 }  
 
      if (isMuon==1){
-        for(int ind = 0; ind < muNumberOfMothers_singleLepCalc->at(0); ind++){
-            if(abs(muMother_id_singleLepCalc->at(ind))==24) {mom_W=true;}
-            if(abs(muMother_id_singleLepCalc->at(ind))==6 && mom_W) {WfromTop=true;}            
+        for(int ind = 0; ind < muNumberOfMothers_MultiLepCalc->at(0); ind++){
+            if(abs(muMother_id_MultiLepCalc->at(ind))==24) {mom_W=true;}
+            if(abs(muMother_id_MultiLepCalc->at(ind))==6 && mom_W) {WfromTop=true;}            
         }
 	 }
 
