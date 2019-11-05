@@ -21,6 +21,7 @@ using namespace std;
 // ----------------------------------------------------------------------------
 
 bool comparepair( const std::pair<double,int> a, const std::pair<double,int> b) { return a.first > b.first; }
+bool comparefloat( const float a, const float b) { return a < b; }
 
 TRandom3 Rand;
 
@@ -123,7 +124,9 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    inputTree->SetBranchStatus("elEnergy_MultiLepCalc",1);
    inputTree->SetBranchStatus("elMiniIso_MultiLepCalc",1);  
    inputTree->SetBranchStatus("elRelIso_MultiLepCalc",1);
-   
+   inputTree->SetBranchStatus("elMother_id_MultiLepCalc",1);
+   inputTree->SetBranchStatus("elNumberOfMothers_MultiLepCalc",1);
+     
    //muons
    inputTree->SetBranchStatus("muPt_MultiLepCalc",1);
    inputTree->SetBranchStatus("muEta_MultiLepCalc",1);
@@ -131,6 +134,8 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    inputTree->SetBranchStatus("muEnergy_MultiLepCalc",1);
    inputTree->SetBranchStatus("muMiniIso_MultiLepCalc",1);
    inputTree->SetBranchStatus("muRelIso_MultiLepCalc",1);
+   inputTree->SetBranchStatus("muMother_id_MultiLepCalc",1);
+   inputTree->SetBranchStatus("muNumberOfMothers_MultiLepCalc",1);
    
    //missing et
    inputTree->SetBranchStatus("corr_met_MultiLepCalc",1);
@@ -246,7 +251,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    inputTree->SetBranchStatus("topWPhi_TTbarMassCalc",1);
    inputTree->SetBranchStatus("topWPt_TTbarMassCalc",1);
    inputTree->SetBranchStatus("topWID_TTbarMassCalc",1);
-
+   
    //top b
    inputTree->SetBranchStatus("topbEnergy_TTbarMassCalc",1);
    inputTree->SetBranchStatus("topbEta_TTbarMassCalc",1);
@@ -320,23 +325,23 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    outputTree->Branch("ttbarMass_TTbarMassCalc",&ttbarMass_TTbarMassCalc,"ttbarMass_TTbarMassCalc/D");
    outputTree->Branch("genTopPt",&genTopPt,"genTopPt/F");
    outputTree->Branch("genAntiTopPt",&genAntiTopPt,"genAntiTopPt/F");
-//    outputTree->Branch("topEnergy_TTbarMassCalc",&topEnergy_TTbarMassCalc);
-//    outputTree->Branch("topEta_TTbarMassCalc",&topEta_TTbarMassCalc);
-//    outputTree->Branch("topMass_TTbarMassCalc",&topMass_TTbarMassCalc);
-//    outputTree->Branch("topPhi_TTbarMassCalc",&topPhi_TTbarMassCalc);   
-//    outputTree->Branch("topPt_TTbarMassCalc",&topPt_TTbarMassCalc);      
-//    outputTree->Branch("topID_TTbarMassCalc",&topID_TTbarMassCalc);
-//    outputTree->Branch("topWEnergy_TTbarMassCalc",&topWEnergy_TTbarMassCalc);
-//    outputTree->Branch("topWEta_TTbarMassCalc",&topWEta_TTbarMassCalc);
-//    outputTree->Branch("topWPhi_TTbarMassCalc",&topWPhi_TTbarMassCalc);
-//    outputTree->Branch("topWPt_TTbarMassCalc",&topWPt_TTbarMassCalc);   
-//    outputTree->Branch("topWID_TTbarMassCalc",&topWID_TTbarMassCalc);      
-//    outputTree->Branch("topbEnergy_TTbarMassCalc",&topbEnergy_TTbarMassCalc);
-//    outputTree->Branch("topbEta_TTbarMassCalc",&topbEta_TTbarMassCalc);
-//    outputTree->Branch("topbPhi_TTbarMassCalc",&topbPhi_TTbarMassCalc);
-//    outputTree->Branch("topbPt_TTbarMassCalc",&topbPt_TTbarMassCalc);   
-//    outputTree->Branch("topbID_TTbarMassCalc",&topbID_TTbarMassCalc);
-   
+   outputTree->Branch("topEnergy_TTbarMassCalc",&topEnergy_TTbarMassCalc);
+   outputTree->Branch("topEta_TTbarMassCalc",&topEta_TTbarMassCalc);
+   outputTree->Branch("topMass_TTbarMassCalc",&topMass_TTbarMassCalc);
+   outputTree->Branch("topPhi_TTbarMassCalc",&topPhi_TTbarMassCalc);   
+   outputTree->Branch("topPt_TTbarMassCalc",&topPt_TTbarMassCalc);      
+   outputTree->Branch("topID_TTbarMassCalc",&topID_TTbarMassCalc);
+   outputTree->Branch("topWEnergy_TTbarMassCalc",&topWEnergy_TTbarMassCalc);
+   outputTree->Branch("topWEta_TTbarMassCalc",&topWEta_TTbarMassCalc);
+   outputTree->Branch("topWPhi_TTbarMassCalc",&topWPhi_TTbarMassCalc);
+   outputTree->Branch("topWPt_TTbarMassCalc",&topWPt_TTbarMassCalc);   
+   outputTree->Branch("topWID_TTbarMassCalc",&topWID_TTbarMassCalc);      
+   outputTree->Branch("topbEnergy_TTbarMassCalc",&topbEnergy_TTbarMassCalc);
+   outputTree->Branch("topbEta_TTbarMassCalc",&topbEta_TTbarMassCalc);
+   outputTree->Branch("topbPhi_TTbarMassCalc",&topbPhi_TTbarMassCalc);
+   outputTree->Branch("topbPt_TTbarMassCalc",&topbPt_TTbarMassCalc);   
+   outputTree->Branch("topbID_TTbarMassCalc",&topbID_TTbarMassCalc);
+  
    //leptons
    outputTree->Branch("corr_met_MultiLepCalc",&corr_met_MultiLepCalc,"corr_met_MultiLepCalc/D");
    outputTree->Branch("corr_met_phi_MultiLepCalc",&corr_met_phi_MultiLepCalc,"corr_met_phi_MultiLepCalc/D");
@@ -349,6 +354,10 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    outputTree->Branch("leptonMVAValue_MultiLepCalc",&leptonMVAValue_MultiLepCalc,"leptonMVAValue_MultiLepCalc/F");
    outputTree->Branch("leptonMiniIso_MultiLepCalc",&leptonMiniIso_MultiLepCalc,"leptonMiniIso_MultiLepCalc/F");
    outputTree->Branch("leptonRelIso_MultiLepCalc",&leptonRelIso_MultiLepCalc,"leptonRelIso_MultiLepCalc/F");
+   outputTree->Branch("elMother_id_MultiLepCalc",&elMother_id_MultiLepCalc);
+   outputTree->Branch("elNumberOfMothers_MultiLepCalc",&elNumberOfMothers_MultiLepCalc);
+   outputTree->Branch("muMother_id_MultiLepCalc",&muMother_id_MultiLepCalc);
+   outputTree->Branch("muNumberOfMothers_MultiLepCalc",&theJetPt_JetSubCalc_PtOrdered);   
    outputTree->Branch("MT_lepMet",&MT_lepMet,"MT_lepMet/F");
    outputTree->Branch("MT_lepMetmod",&MT_lepMetmod,"MT_lepMetmod/F");
    outputTree->Branch("minDPhi_MetJet",&minDPhi_MetJet,"minDPhi_MetJet/F");
@@ -493,6 +502,10 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    outputTree->Branch("NresolvedTops2pFake",&NresolvedTops2pFake,"NresolvedTops2pFake/I");
    outputTree->Branch("NresolvedTops5pFake",&NresolvedTops5pFake,"NresolvedTops5pFake/I");
    outputTree->Branch("NresolvedTops10pFake",&NresolvedTops10pFake,"NresolvedTops10pFake/I");
+   outputTree->Branch("NresolvedTops1pFake_shifts",&NresolvedTops1pFake_shifts);
+   outputTree->Branch("NresolvedTops2pFake_shifts",&NresolvedTops2pFake_shifts);
+   outputTree->Branch("NresolvedTops5pFake_shifts",&NresolvedTops5pFake_shifts);
+   outputTree->Branch("NresolvedTops10pFake_shifts",&NresolvedTops10pFake_shifts);
 
    outputTree->Branch("isHTgt500Njetge9",&isHTgt500Njetge9,"isHTgt500Njetge9/I");
    outputTree->Branch("BJetLeadPt",&BJetLeadPt,"BJetLeadPt/F");
@@ -1420,8 +1433,8 @@ void step1::Loop(TString inTreeName, TString outTreeName )
 	leptonMiniIso_MultiLepCalc = muMiniIso_MultiLepCalc->at(0);
 	leptonRelIso_MultiLepCalc = muRelIso_MultiLepCalc->at(0);
 	leptonMVAValue_MultiLepCalc = -99.9;
-      }
-
+     }
+   
       // ----------------------------------------------------------------------------
       // Apply pt ordering to AK4 vectors
       // ----------------------------------------------------------------------------
@@ -1958,18 +1971,113 @@ void step1::Loop(TString inTreeName, TString outTreeName )
 	}
       }
 
-      // ----------------------------------------------------------------------------
-      // HOT tagger variables -- SCALE FACTORS TO BE ADDED!!!
-      // ----------------------------------------------------------------------------
+    // ----------------------------------------------------------------------------
+    // HOT TAGGER -- SCALE FACTORS TO BE ADDED!!!
+    // ----------------------------------------------------------------------------
      NresolvedTops1pFake = 0;
      NresolvedTops2pFake = 0;
      NresolvedTops5pFake = 0;
      NresolvedTops10pFake = 0;
+     NresolvedTops1pFake_shifts.clear();
+     NresolvedTops2pFake_shifts.clear();
+     NresolvedTops5pFake_shifts.clear();
+     NresolvedTops10pFake_shifts.clear();
+     for(int i = 0; i < 2; i++){
+     	NresolvedTops1pFake_shifts.push_back(0);
+     	NresolvedTops2pFake_shifts.push_back(0);
+     	NresolvedTops5pFake_shifts.push_back(0);
+     	NresolvedTops10pFake_shifts.push_back(0);
+     	}
+      
+     unsigned int idjet1,idjet2,idjet3;
+     TLorentzVector resolvedTop,resolvedTopD1,resolvedTopD2,resolvedTopD3;
+     TLorentzVector trueTop,trueTopD1,trueTopD2,trueTopD3;
+     std::vector<float> minDRtopDs;
+     minDRtopDs.clear();
+     for(int i = 0; i < 3; i++){ minDRtopDs.push_back(0); }
      for(unsigned int itop=0; itop < topDiscriminator_HOTTaggerCalc->size(); itop++){
-        if(topDiscriminator_HOTTaggerCalc->at(itop) > 0.75) NresolvedTops10pFake+=1;
-        if(topDiscriminator_HOTTaggerCalc->at(itop) > 0.85) NresolvedTops5pFake+=1;
-        if(topDiscriminator_HOTTaggerCalc->at(itop) > 0.92) NresolvedTops2pFake+=1;
-        if(topDiscriminator_HOTTaggerCalc->at(itop) > 0.95) NresolvedTops1pFake+=1;
+        if(isMC){
+  
+		    // ------------------------------------------------------------------------------------------------------------------
+		    // TRUTH MATCHING
+		    // ------------------------------------------------------------------------------------------------------------------
+		    float minDRtop = 1000;
+		    float minDRtopD1 = 1000;
+		    float minDRtopD2 = 1000;
+		    float minDRtopD3 = 1000;
+		    idjet1 = topJet1Index_HOTTaggerCalc->at(itop);
+		    idjet2 = topJet2Index_HOTTaggerCalc->at(itop);
+		    idjet3 = topJet3Index_HOTTaggerCalc->at(itop);
+		    resolvedTop.SetPtEtaPhiM(topPt_HOTTaggerCalc->at(itop),topEta_HOTTaggerCalc->at(itop),topPhi_HOTTaggerCalc->at(itop),topMass_HOTTaggerCalc->at(itop));
+	    	resolvedTopD1.SetPtEtaPhiE(theJetPt_JetSubCalc->at(idjet1),theJetEta_JetSubCalc->at(idjet1),theJetPhi_JetSubCalc->at(idjet1),theJetEnergy_JetSubCalc->at(idjet1));
+	    	resolvedTopD2.SetPtEtaPhiE(theJetPt_JetSubCalc->at(idjet2),theJetEta_JetSubCalc->at(idjet2),theJetPhi_JetSubCalc->at(idjet2),theJetEnergy_JetSubCalc->at(idjet2));
+	    	resolvedTopD3.SetPtEtaPhiE(theJetPt_JetSubCalc->at(idjet3),theJetEta_JetSubCalc->at(idjet3),theJetPhi_JetSubCalc->at(idjet3),theJetEnergy_JetSubCalc->at(idjet3));
+            for(unsigned int igtop=0; igtop < topPt_TTbarMassCalc->size(); igtop++){
+	    	   trueTop.SetPtEtaPhiE(topPt_TTbarMassCalc->at(igtop),topEta_TTbarMassCalc->at(igtop),topPhi_TTbarMassCalc->at(igtop),topEnergy_TTbarMassCalc->at(igtop));
+	    	   if(resolvedTop.DeltaR(trueTop) < minDRtop){
+	    	     minDRtop = resolvedTop.DeltaR(trueTop);
+	    	     trueTopD1.SetPtEtaPhiE(topbPt_TTbarMassCalc->at(igtop),topbEta_TTbarMassCalc->at(igtop),topbPhi_TTbarMassCalc->at(igtop),topbEnergy_TTbarMassCalc->at(igtop));
+	    	     trueTopD2.SetPtEtaPhiE(topWPt_TTbarMassCalc->at(2*igtop),topWEta_TTbarMassCalc->at(2*igtop),topWPhi_TTbarMassCalc->at(2*igtop),topWEnergy_TTbarMassCalc->at(2*igtop));
+	    	     trueTopD3.SetPtEtaPhiE(topWPt_TTbarMassCalc->at(2*igtop+1),topWEta_TTbarMassCalc->at(2*igtop+1),topWPhi_TTbarMassCalc->at(2*igtop+1),topWEnergy_TTbarMassCalc->at(2*igtop+1));
+	    	     
+	    	     minDRtopDs[0] = resolvedTopD1.DeltaR(trueTopD1);
+	    	     minDRtopDs[1] = resolvedTopD1.DeltaR(trueTopD2);
+	    	     minDRtopDs[2] = resolvedTopD1.DeltaR(trueTopD3);
+	    	     std::sort(minDRtopDs.begin(), minDRtopDs.end(), comparefloat);
+	    	     minDRtopD1 = minDRtopDs.at(0);
+	    	     minDRtopDs[0] = resolvedTopD2.DeltaR(trueTopD1);
+	    	     minDRtopDs[1] = resolvedTopD2.DeltaR(trueTopD2);
+	    	     minDRtopDs[2] = resolvedTopD2.DeltaR(trueTopD3);
+	    	     std::sort(minDRtopDs.begin(), minDRtopDs.end(), comparefloat);
+	    	     minDRtopD2 = minDRtopDs.at(0);
+	    	     minDRtopDs[0] = resolvedTopD3.DeltaR(trueTopD1);
+	    	     minDRtopDs[1] = resolvedTopD3.DeltaR(trueTopD2);
+	    	     minDRtopDs[2] = resolvedTopD3.DeltaR(trueTopD3);
+	    	     std::sort(minDRtopDs.begin(), minDRtopDs.end(), comparefloat);
+	    	     minDRtopD3 = minDRtopDs.at(0);
+	    	     }
+          	   }
+          	
+          	float TopTagSF1p = 9.92093861103e-01; // for mistagging; apply to those that ARENT truth matched
+          	float TopTagSF2p = 9.60411310196e-01; // for mistagging; apply to those that ARENT truth matched
+          	float TopTagSF5p = 9.87441658974e-01; // for mistagging; apply to those that ARENT truth matched
+          	float TopTagSF10p = 1.00665986538e+00; // for mistagging; apply to those that ARENT truth matched
+          	float TopTagSF1pStat = 2.36706994474e-02; // for mistagging; apply to those that ARENT truth matched
+          	if(minDRtop < 0.6 && minDRtopD1 < 0.4 && minDRtopD2 < 0.4 && minDRtopD3 < 0.4){
+          	  TopTagSF1p = 9.57049369812e-01; // for tagging; apply to those that ARE truth matched
+          	  TopTagSF2p = 1.01395213604e+00; // for tagging; apply to those that ARE truth matched
+          	  TopTagSF5p = 1.01192998886e+00; // for tagging; apply to those that ARE truth matched
+          	  TopTagSF10p = 1.00117206573e+00; // for tagging; apply to those that ARE truth matched
+          	  TopTagSF1pStat = 0.0993947964162e-03; // for tagging; apply to those that ARE truth matched
+          	  }
+          	float TopTagEff1p = 1.; // TO BE CALCULATED !!!!!!!!!!!!
+          	float TopTagEff2p = 1.; // TO BE CALCULATED !!!!!!!!!!!!
+          	float TopTagEff5p = 1.; // TO BE CALCULATED !!!!!!!!!!!!
+          	float TopTagEff10p = 1.; // TO BE CALCULATED !!!!!!!!!!!!
+          	bool isTtagged1p = topDiscriminator_HOTTaggerCalc->at(itop) > 0.95;
+          	bool isTtagged2p = topDiscriminator_HOTTaggerCalc->at(itop) > 0.92;
+          	bool isTtagged5p = topDiscriminator_HOTTaggerCalc->at(itop) > 0.85;
+          	bool isTtagged10p = topDiscriminator_HOTTaggerCalc->at(itop) > 0.75;
+          	int tag_top_1p = applySF(isTtagged1p,TopTagSF1p,TopTagEff1p);
+          	int tag_top_2p = applySF(isTtagged2p,TopTagSF2p,TopTagEff2p);
+          	int tag_top_5p = applySF(isTtagged5p,TopTagSF5p,TopTagEff5p);
+          	int tag_top_10p = applySF(isTtagged10p,TopTagSF10p,TopTagEff10p);
+          	int tag_top_1p_statup = applySF(isTtagged1p,TopTagSF1p+TopTagSF1pStat,TopTagEff1p);
+          	int tag_top_1p_statdn = applySF(isTtagged1p,TopTagSF1p-TopTagSF1pStat,TopTagEff1p);
+          	NresolvedTops1pFake += tag_top_1p;
+          	NresolvedTops2pFake += tag_top_2p;
+          	NresolvedTops5pFake += tag_top_5p;
+          	NresolvedTops10pFake += tag_top_10p;
+          	NresolvedTops1pFake_shifts[0] += tag_top_1p_statup;
+          	NresolvedTops1pFake_shifts[1] += tag_top_1p_statdn;
+          	}  
+
+        else{ // Data
+        	if(topDiscriminator_HOTTaggerCalc->at(itop) > 0.75) NresolvedTops10pFake+=1;
+        	if(topDiscriminator_HOTTaggerCalc->at(itop) > 0.85) NresolvedTops5pFake+=1;
+        	if(topDiscriminator_HOTTaggerCalc->at(itop) > 0.92) NresolvedTops2pFake+=1;
+        	if(topDiscriminator_HOTTaggerCalc->at(itop) > 0.95) NresolvedTops1pFake+=1;
+          	}
         }
 
       // ----------------------------------------------------------------------------

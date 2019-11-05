@@ -277,6 +277,10 @@ public :
    Int_t           NresolvedTops2pFake;
    Int_t           NresolvedTops5pFake;
    Int_t           NresolvedTops10pFake;
+   vector<int>     NresolvedTops1pFake_shifts;
+   vector<int>     NresolvedTops2pFake_shifts;
+   vector<int>     NresolvedTops5pFake_shifts;
+   vector<int>     NresolvedTops10pFake_shifts;
 
    // Declaration of leaf types
    Bool_t          flagBadMu_MultiLepCalc;
