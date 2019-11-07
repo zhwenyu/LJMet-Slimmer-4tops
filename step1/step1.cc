@@ -102,6 +102,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    //   inputTree->SetBranchStatus("nPV_MultiLepCalc",1);
    inputTree->SetBranchStatus("nTrueInteractions_MultiLepCalc",1);
    inputTree->SetBranchStatus("MCWeight_MultiLepCalc",1);
+   inputTree->SetBranchStatus("evtWeightsMC_MultiLepCalc",1);
    inputTree->SetBranchStatus("LHEweightids_MultiLepCalc",1);
    inputTree->SetBranchStatus("LHEweights_MultiLepCalc",1);
    inputTree->SetBranchStatus("NewPDFweights_MultiLepCalc",1);
@@ -1562,6 +1563,19 @@ void step1::Loop(TString inTreeName, TString outTreeName )
       pdfWeights.clear();
       pdfNewWeights.clear();
       pdfNewNominalWeight = 1.0;
+
+      //PSWEIGHTS
+      //https://twiki.cern.ch/twiki/bin/viewauth/CMS/TopModGen
+      //https://github.com/cms-sw/cmssw/commits/master/Configuration/Generator/python/PSweightsPythia/PythiaPSweightsSettings_cfi.py
+      // 2 = isrRedHi isr:muRfac=0.707, 3 = fsrRedHi fsr:muRfac=0.707, 4 = isrRedLo isr:muRfac=1.414, 5 = fsrRedLo fsr:muRfac=1.414, 
+      // 6 = isrDefHi isr:muRfac=0.5, 7 = fsrDefHi fsr:muRfac=0.5,  8 = isrDefLo isr:muRfac=2.0,   9 = fsrDefLo fsr:muRfac=2.0, 
+      // 10 = isrConHi isr:muRfac=0.25, 11 = fsrConHi fsr:muRfac=0.25, 12 = isrConLo isr:muRfac=4.0, 13 = fsrConLo fsr:muRfac=4.0
+      if (evtWeightsMC_MultiLepCalc->size()>=14)
+         for(auto & i: {6,7,8,9})
+            renormPSWeights.push_back(evtWeightsMC_MultiLepCalc->at(i)/evtWeightsMC_MultiLepCalc->at(0));
+      else renormPSWeights={1,1,1,1};
+
+      //ME-PS
       if(isSig && !isTTTT){
 	pdfNewNominalWeight = NewPDFweights_MultiLepCalc->at(0);
 	// SEEMS TO APPLY TO ALL B2G MG+PYTHIA SIGNALS. NNLO 4-FLAVOR PDF
