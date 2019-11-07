@@ -693,15 +693,13 @@ void step1::Loop(TString inTreeName, TString outTreeName )
 	
       if(isMC){
 	if(nTrueInteractions_MultiLepCalc > 99) nTrueInteractions_MultiLepCalc = 99;
-        if(nTrueInteractions_MultiLepCalc > 79 && isSig) nTrueInteractions_MultiLepCalc = 79;
+        if(nTrueInteractions_MultiLepCalc > 79 && isSig && Year==2017) nTrueInteractions_MultiLepCalc = 79;
 	if(nTrueInteractions_MultiLepCalc < 0) nTrueInteractions_MultiLepCalc = 0;
 	if(pileupIndex < 0 || pileupIndex > 60){
 	  std::cout << "I don't know this pileup sample, using TTToSemiLeptonic's" << std::endl;
 	  pileupIndex = 26;
 	}
-	pileupWeight = pileupweight[pileupIndex][nTrueInteractions_MultiLepCalc];
-	pileupWeightUp = pileupweightUp[pileupIndex][nTrueInteractions_MultiLepCalc];
-	pileupWeightDown = pileupweightDn[pileupIndex][nTrueInteractions_MultiLepCalc];
+	hardcodedConditions.GetPileupWeight(nTrueInteractions_MultiLepCalc, pileupIndex, &pileupWeight, &pileupWeightUp, &pileupWeightDown, Year);
       }
 
       // ----------------------------------------------------------------------------
@@ -894,8 +892,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
       ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
       ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////      
 
-      AK4HTpMETpLepPt = 0; //ST
-      AK4HTpMETpLepPt = AK4HT + corr_met_MultiLepCalc + leppt;
+      AK4HTpMETpLepPt = AK4HT + corr_met_MultiLepCalc + leppt; //ST
       
       // ----------------------------------------------------------------------------
       // Combine lepton variables into one set
@@ -1483,7 +1480,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
 	    	resolvedTopD1.SetPtEtaPhiE(theJetPt_JetSubCalc->at(idjet1),theJetEta_JetSubCalc->at(idjet1),theJetPhi_JetSubCalc->at(idjet1),theJetEnergy_JetSubCalc->at(idjet1));
 	    	resolvedTopD2.SetPtEtaPhiE(theJetPt_JetSubCalc->at(idjet2),theJetEta_JetSubCalc->at(idjet2),theJetPhi_JetSubCalc->at(idjet2),theJetEnergy_JetSubCalc->at(idjet2));
 	    	resolvedTopD3.SetPtEtaPhiE(theJetPt_JetSubCalc->at(idjet3),theJetEta_JetSubCalc->at(idjet3),theJetPhi_JetSubCalc->at(idjet3),theJetEnergy_JetSubCalc->at(idjet3));
-            cout<<"DEBUGGING: "<<topPt_TTbarMassCalc->size()<<" "<<topbPt_TTbarMassCalc->size()<<" "<<topWPt_TTbarMassCalc->size()<<endl;
+            //cout<<"DEBUGGING: "<<topPt_TTbarMassCalc->size()<<" "<<topbPt_TTbarMassCalc->size()<<" "<<topWPt_TTbarMassCalc->size()<<endl;
             for(unsigned int igtop=0; igtop < topPt_TTbarMassCalc->size(); igtop++){
 	    	   trueTop.SetPtEtaPhiE(topPt_TTbarMassCalc->at(igtop),topEta_TTbarMassCalc->at(igtop),topPhi_TTbarMassCalc->at(igtop),topEnergy_TTbarMassCalc->at(igtop));
 	    	   if(2*igtop>=topWPt_TTbarMassCalc->size()) continue; // DEBUGGING TEMPORARY EDITION

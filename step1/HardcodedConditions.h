@@ -12,6 +12,8 @@ public:
     
     HardcodedConditions();
     ~HardcodedConditions();
+
+    void GetPileupWeight(int nTrueInt, int pileupIndex, float *pileupweight, float *pileupweightup, float *pileupweightdn, int year = 2017);
     
     double GetEGammaGsfSF(double pt, double eta, int year = 2017);
     double GetElectronIdSF(double pt, double eta, int year = 2017);
@@ -27,6 +29,10 @@ public:
     void GetWtaggingEff(double pt, double *eff, int year = 2017, std::string sample = "ttbar", int massIndex=-1);
 
 private:
+
+    void GetPileupWeight2016(int nTrueInt, int pileupIndex, float *pileupweight, float *pileupweightup, float *pileupweightdn);
+    void GetPileupWeight2017(int nTrueInt, int pileupIndex, float *pileupweight, float *pileupweightup, float *pileupweightdn);
+    void GetPileupWeight2018(int nTrueInt, int pileupIndex, float *pileupweight, float *pileupweightup, float *pileupweightdn);
     
     double GetEGammaGsfSF2016(double pt, double eta);
     double GetEGammaGsfSF2017(double pt, double eta);

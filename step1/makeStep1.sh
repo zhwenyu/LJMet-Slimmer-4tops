@@ -21,6 +21,7 @@ cd -
 echo "setting macroDir to PWD"
 macroDir=${PWD}
 export PATH=$PATH:$macroDir
+root -l -b -q compileStep1.C
 
 XRDpath=root://cmseos.fnal.gov/$inputDir
 
