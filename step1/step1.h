@@ -97,6 +97,7 @@ public :
    Float_t         HTSF_PolUp;
    Float_t         HTSF_PolDn;
    vector<double>  renormWeights;
+   vector<double>  renormPSWeights;
    vector<double>  alphaSWeights;
    vector<double>  pdfWeights;
    vector<double>  pdfNewWeights;

@@ -309,6 +309,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    //weights
    outputTree->Branch("MCWeight_MultiLepCalc",&MCWeight_MultiLepCalc,"MCWeight_MultiLepCalc/D");
    outputTree->Branch("renormWeights",&renormWeights);
+   outputTree->Branch("renormPSWeights",&renormPSWeights);
    outputTree->Branch("pdfWeights",&pdfWeights);
    outputTree->Branch("pdfNewWeights",&pdfNewWeights);
    outputTree->Branch("pdfNewNominalWeight",&pdfNewNominalWeight,"pdfNewNominalWeight/F");
@@ -596,7 +597,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    cout << "isMC = " << isMC << ", isSig = " << isSig << ", SigMass = " << SigMass << endl;
    cout << "isTTTT = " << isTTTT << ", isXX = " << isXX << ", isTpTp = " << isTpTp << ", isBpBp = " << isBpBp << endl;
    cout << "For W's: isTT = " << isTT << ", isSTt = " << isSTt << ", isSTtW = " << isSTtW << endl;
-   cout << "Fot jets & PDF: isTOP = " << isTOP << ", isMadgraphBkg = " << isMadgraphBkg << endl;
+   cout << "For jets & PDF: isTOP = " << isTOP << ", isMadgraphBkg = " << isMadgraphBkg << endl;
    cout << "Pileup index: " << pileupIndex << endl;
    cout << "isTTincMtt0to700: " << isTTincMtt0to700 << endl;
    cout << "isTTincMtt0to1000: " << isTTincMtt0to1000 << endl;
@@ -1557,6 +1558,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
       std::vector<double> renorm;
       std::vector<double> pdf;
       renormWeights.clear();
+      renormPSWeights.clear();
       pdfWeights.clear();
       pdfNewWeights.clear();
       pdfNewNominalWeight = 1.0;
