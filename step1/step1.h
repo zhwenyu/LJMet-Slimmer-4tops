@@ -17,6 +17,7 @@
 // Header file for the classes stored in the TTree if any.
 #include "vector"
 #include "TLorentzVector.h"
+#include "HardcodedConditions.h"
 
 enum shift:char;
 
@@ -47,8 +48,14 @@ public :
    Bool_t          isTTincMtt0to700;
    Bool_t          isTTincMtt700to1000;
    Bool_t          isTTincMtt1000toInf;
+   Bool_t          isTTSemilepIncHT0Njet0;
+   Bool_t          isTTSemilepIncHT500Njet9;
+   Bool_t          isTTBB;
+   Bool_t          isTTCC;
+   Bool_t          isTTJJ;
    Int_t           SigMass;
    Int_t           pileupIndex;
+   Int_t           Year=2017;
 
    // Pileup distributions -- 31Mar2018 Data vs RunIIFall17MC
    std::vector<std::vector<float>> pileupweight;
@@ -272,6 +279,10 @@ public :
    Int_t           NresolvedTops2pFake;
    Int_t           NresolvedTops5pFake;
    Int_t           NresolvedTops10pFake;
+   vector<int>     NresolvedTops1pFake_shifts;
+   vector<int>     NresolvedTops2pFake_shifts;
+   vector<int>     NresolvedTops5pFake_shifts;
+   vector<int>     NresolvedTops10pFake_shifts;
 
    // Declaration of leaf types
    Bool_t          flagBadMu_MultiLepCalc;
@@ -1166,12 +1177,6 @@ public :
    virtual void     Show(Long64_t entry = -1);
    virtual void     saveHistograms();
    bool             applySF(bool& isTagged, float tag_SF, float tag_eff);
-   double           GetBtagSF2016Medium_comb(shift Shift, double pt, double eta);
-   double           GetCtagSF2016Medium_comb(shift Shift, double pt, double eta);
-   double           GetLFSF2016Medium(shift Shift, double pt, double eta);
-   double           GetBtagEfficiency(double pt);
-   double           GetCtagEfficiency(double pt);
-   double           GetMistagRate(double pt);
    void             InitPileup();
 };
 
@@ -1304,6 +1309,11 @@ step1::step1(TString inputFileName, TString outputFileName) : inputTree(0), inpu
   isTTincMtt0to1000   = outputFileName.Contains("Mtt0to1000");
   isTTincMtt700to1000 = outputFileName.Contains("Mtt700to1000");
   isTTincMtt1000toInf = outputFileName.Contains("Mtt1000toInf");
+  isTTSemilepIncHT0Njet0 = outputFileName.Contains("HT0Njet0");
+  isTTSemilepIncHT500Njet9 = outputFileName.Contains("HT500Njet9");
+  isTTBB = outputFileName.Contains("_ttbb");
+  isTTCC = outputFileName.Contains("_ttcc");
+  isTTJJ = outputFileName.Contains("_ttjj");
   
   std::cout<<"Opening file: "<<inputFileName<<std::endl;
   if(!(inputFile=TFile::Open(inputFileName))){
