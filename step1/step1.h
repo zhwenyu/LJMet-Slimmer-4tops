@@ -17,6 +17,7 @@
 // Header file for the classes stored in the TTree if any.
 #include "vector"
 #include "TLorentzVector.h"
+#include "HardcodedConditions.h"
 
 enum shift:char;
 
