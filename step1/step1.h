@@ -55,6 +55,7 @@ public :
    Bool_t          isTTJJ;
    Int_t           SigMass;
    Int_t           pileupIndex;
+   Int_t           Year=2017;
 
    // Pileup distributions -- 31Mar2018 Data vs RunIIFall17MC
    std::vector<std::vector<float>> pileupweight;
@@ -1176,12 +1177,6 @@ public :
    virtual void     Show(Long64_t entry = -1);
    virtual void     saveHistograms();
    bool             applySF(bool& isTagged, float tag_SF, float tag_eff);
-   double           GetBtagSF2016Medium_comb(shift Shift, double pt, double eta);
-   double           GetCtagSF2016Medium_comb(shift Shift, double pt, double eta);
-   double           GetLFSF2016Medium(shift Shift, double pt, double eta);
-   double           GetBtagEfficiency(double pt);
-   double           GetCtagEfficiency(double pt);
-   double           GetMistagRate(double pt);
    void             InitPileup();
 };
 

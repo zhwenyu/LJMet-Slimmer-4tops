@@ -21,6 +21,11 @@ public:
     double GetMuonIsoSF(double pt, double eta, int year = 2017);
     double GetMuonTriggerSF(double pt, double eta, int year = 2017);
 
+    void GetTtaggingSF(double pt, double *tau32sf, double *tau32sfup, double *tau32sfdn, int year = 2017);
+    void GetTtaggingEff(double pt, double *eff, int year = 2017, std::string sample = "ttbar", int massIndex=-1);
+    void GetWtaggingSF(double pt, double *tau21sf, double *tau21sfup, double *tau21sfdn, double *tau21ptsfup, double *tau21ptsfdn, int year = 2017);
+    void GetWtaggingEff(double pt, double *eff, int year = 2017, std::string sample = "ttbar", int massIndex=-1);
+
 private:
     
     double GetEGammaGsfSF2016(double pt, double eta);
@@ -50,6 +55,20 @@ private:
     double GetMuonTriggerSF2016(double pt, double eta);
     double GetMuonTriggerSF2017(double pt, double eta);
     double GetMuonTriggerSF2018(double pt, double eta);
+
+    void GetTtaggingSF2016(double pt, double *tau32sf, double *tau32sfup, double *tau32sfdn);
+    void GetTtaggingSF2017(double pt, double *tau32sf, double *tau32sfup, double *tau32sfdn);
+    void GetTtaggingSF2018(double pt, double *tau32sf, double *tau32sfup, double *tau32sfdn);
+    void GetTtaggingEff2016(double pt, double *eff, std::string sample = "ttbar", int massIndex=-1);
+    void GetTtaggingEff2017(double pt, double *eff, std::string sample = "ttbar", int massIndex=-1);
+    void GetTtaggingEff2018(double pt, double *eff, std::string sample = "ttbar", int massIndex=-1);
+
+    void GetWtaggingSF2016(double pt, double *tau21sf, double *tau21sfup, double *tau21sfdn, double *tau21ptsfup, double *tau21ptsfdn);
+    void GetWtaggingSF2017(double pt, double *tau21sf, double *tau21sfup, double *tau21sfdn, double *tau21ptsfup, double *tau21ptsfdn);
+    void GetWtaggingSF2018(double pt, double *tau21sf, double *tau21sfup, double *tau21sfdn, double *tau21ptsfup, double *tau21ptsfdn);
+    void GetWtaggingEff2016(double pt, double *eff, std::string sample = "ttbar", int massIndex=-1);
+    void GetWtaggingEff2017(double pt, double *eff, std::string sample = "ttbar", int massIndex=-1);
+    void GetWtaggingEff2018(double pt, double *eff, std::string sample = "ttbar", int massIndex=-1);
     
 };
 

@@ -587,151 +587,14 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    poly2D->SetParameter(4,-9.42671e-14); 
    poly2D->SetParameter(5, 7.51924e-18); 
    poly2D->SetParameter(6,0.351156);
-
-   // W/t TAGGING EFFICIENCIES NEED TO BE UPDATED!!!!!
-   // W tagging efficiencies. Assumes each signal mass uses the same pT bins but has unique values.
-   std::vector<float> ptRangeTpTp, ptRangeTTbar;
-   float ptminTTbar[12] = {175,200,250,300,350,400,450,500,550,600,700,800};
-   for (int i=0;i<12;++i) ptRangeTTbar.push_back(ptminTTbar[i]);
-   float ptminTpTp[14] = {175,200,250,300,350,400,450,500,550,600,700,800,1000,1200};
-   for (int i=0;i<14;++i) ptRangeTpTp.push_back(ptminTpTp[i]);
-
-   std::vector<std::vector<float>> SignalEff;
-   std::vector<std::vector<float>> SignalEffPuppi;
-   if(isTpTp){
-     SignalEffPuppi = {//TpTp
-       {1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000},//700
-       {0.626, 0.911, 0.936, 0.930, 0.925, 0.920, 0.914, 0.915, 0.909, 0.907, 0.898, 0.890, 0.878, 0.866},
-       {0.622, 0.914, 0.940, 0.932, 0.925, 0.919, 0.914, 0.907, 0.908, 0.905, 0.899, 0.888, 0.878, 0.859},
-       {0.619, 0.914, 0.938, 0.930, 0.927, 0.920, 0.918, 0.914, 0.908, 0.899, 0.900, 0.888, 0.884, 0.862},
-       {0.618, 0.911, 0.937, 0.930, 0.925, 0.920, 0.918, 0.918, 0.910, 0.906, 0.899, 0.886, 0.872, 0.877},
-       {0.637, 0.911, 0.943, 0.931, 0.922, 0.920, 0.918, 0.912, 0.906, 0.905, 0.898, 0.892, 0.877, 0.868},
-       {0.621, 0.909, 0.938, 0.930, 0.927, 0.923, 0.916, 0.912, 0.912, 0.904, 0.901, 0.891, 0.881, 0.873},
-       {0.641, 0.918, 0.935, 0.937, 0.924, 0.926, 0.917, 0.916, 0.914, 0.908, 0.903, 0.892, 0.884, 0.872},
-       {0.606, 0.917, 0.940, 0.936, 0.925, 0.925, 0.916, 0.915, 0.911, 0.910, 0.903, 0.895, 0.883, 0.876},
-       {0.650, 0.920, 0.935, 0.932, 0.929, 0.919, 0.918, 0.912, 0.911, 0.908, 0.900, 0.896, 0.887, 0.876},
-       {0.615, 0.915, 0.940, 0.934, 0.925, 0.921, 0.918, 0.912, 0.909, 0.910, 0.902, 0.895, 0.887, 0.872},
-       {0.627, 0.915, 0.938, 0.934, 0.929, 0.916, 0.912, 0.912, 0.911, 0.906, 0.901, 0.898, 0.887, 0.879},
-     };
-     SignalEff = {
-       {1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000},//700
-       {0.491, 0.892, 0.935, 0.926, 0.915, 0.908, 0.899, 0.902, 0.893, 0.889, 0.873, 0.866, 0.839, 0.831},
-       {0.484, 0.894, 0.937, 0.927, 0.915, 0.907, 0.902, 0.891, 0.892, 0.885, 0.877, 0.864, 0.839, 0.823},
-       {0.490, 0.893, 0.936, 0.923, 0.918, 0.909, 0.904, 0.897, 0.887, 0.885, 0.882, 0.864, 0.854, 0.821},
-       {0.463, 0.888, 0.936, 0.924, 0.916, 0.909, 0.908, 0.901, 0.895, 0.887, 0.875, 0.862, 0.841, 0.834},
-       {0.491, 0.891, 0.937, 0.925, 0.914, 0.911, 0.903, 0.897, 0.889, 0.888, 0.876, 0.865, 0.846, 0.830},
-       {0.481, 0.885, 0.932, 0.925, 0.915, 0.908, 0.903, 0.899, 0.893, 0.886, 0.879, 0.864, 0.852, 0.834},
-       {0.489, 0.892, 0.933, 0.924, 0.914, 0.912, 0.907, 0.900, 0.897, 0.888, 0.879, 0.864, 0.849, 0.835},
-       {0.468, 0.888, 0.928, 0.930, 0.917, 0.910, 0.901, 0.898, 0.894, 0.888, 0.879, 0.869, 0.851, 0.837},
-       {0.487, 0.893, 0.930, 0.922, 0.915, 0.902, 0.901, 0.894, 0.894, 0.886, 0.877, 0.869, 0.853, 0.836},
-       {0.461, 0.887, 0.931, 0.921, 0.910, 0.906, 0.900, 0.896, 0.891, 0.889, 0.878, 0.867, 0.854, 0.833},
-       {0.461, 0.893, 0.929, 0.927, 0.912, 0.901, 0.895, 0.888, 0.892, 0.886, 0.877, 0.869, 0.851, 0.839},
-     };
-   }else if(isBpBp){
-     SignalEffPuppi = {//BpBp
-       {1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000},//700
-       {0.616, 0.919, 0.940, 0.933, 0.933, 0.924, 0.915, 0.915, 0.909, 0.903, 0.892, 0.871, 0.831, 0.795},
-       {0.604, 0.919, 0.944, 0.937, 0.928, 0.926, 0.921, 0.916, 0.912, 0.909, 0.894, 0.876, 0.858, 0.830},
-       {0.633, 0.915, 0.944, 0.935, 0.932, 0.930, 0.919, 0.917, 0.912, 0.905, 0.902, 0.890, 0.863, 0.839},
-       {0.619, 0.918, 0.944, 0.938, 0.933, 0.927, 0.926, 0.919, 0.916, 0.909, 0.899, 0.893, 0.869, 0.856},
-       {0.600, 0.914, 0.943, 0.937, 0.932, 0.927, 0.925, 0.918, 0.917, 0.914, 0.906, 0.892, 0.880, 0.857},
-       {0.613, 0.912, 0.943, 0.940, 0.934, 0.925, 0.923, 0.920, 0.918, 0.914, 0.909, 0.897, 0.888, 0.864},
-       {0.610, 0.919, 0.944, 0.938, 0.933, 0.927, 0.927, 0.921, 0.920, 0.913, 0.908, 0.900, 0.882, 0.873},
-       {0.626, 0.911, 0.959, 0.935, 0.936, 0.929, 0.927, 0.922, 0.915, 0.911, 0.903, 0.902, 0.882, 0.870},
-       {0.619, 0.925, 0.943, 0.941, 0.936, 0.927, 0.927, 0.920, 0.920, 0.914, 0.909, 0.900, 0.890, 0.880},
-       {0.653, 0.924, 0.945, 0.934, 0.932, 0.934, 0.925, 0.923, 0.918, 0.912, 0.911, 0.901, 0.889, 0.877},
-       {0.629, 0.924, 0.944, 0.945, 0.928, 0.929, 0.924, 0.923, 0.918, 0.915, 0.911, 0.902, 0.888, 0.886},
-     };
-     SignalEff = {
-       {1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000},//700
-       {0.481, 0.894, 0.938, 0.927, 0.921, 0.914, 0.901, 0.900, 0.890, 0.885, 0.870, 0.846, 0.785, 0.789},
-       {0.470, 0.896, 0.940, 0.930, 0.917, 0.913, 0.904, 0.900, 0.896, 0.887, 0.874, 0.848, 0.823, 0.783},
-       {0.500, 0.898, 0.940, 0.927, 0.921, 0.917, 0.906, 0.900, 0.894, 0.885, 0.882, 0.863, 0.836, 0.789},
-       {0.464, 0.888, 0.937, 0.929, 0.919, 0.912, 0.913, 0.904, 0.898, 0.890, 0.880, 0.864, 0.834, 0.819},
-       {0.456, 0.886, 0.942, 0.927, 0.922, 0.912, 0.909, 0.906, 0.896, 0.894, 0.883, 0.866, 0.848, 0.810},
-       {0.472, 0.891, 0.937, 0.929, 0.923, 0.913, 0.911, 0.903, 0.900, 0.894, 0.886, 0.869, 0.853, 0.822},
-       {0.467, 0.892, 0.940, 0.928, 0.918, 0.911, 0.911, 0.908, 0.903, 0.893, 0.885, 0.874, 0.850, 0.834},
-       {0.476, 0.880, 0.941, 0.923, 0.918, 0.912, 0.903, 0.906, 0.895, 0.889, 0.881, 0.871, 0.846, 0.834},
-       {0.472, 0.892, 0.936, 0.924, 0.917, 0.910, 0.908, 0.904, 0.898, 0.892, 0.885, 0.874, 0.858, 0.839},
-       {0.473, 0.889, 0.939, 0.926, 0.917, 0.911, 0.908, 0.899, 0.900, 0.891, 0.887, 0.875, 0.860, 0.835},
-       {0.471, 0.888, 0.939, 0.929, 0.914, 0.914, 0.902, 0.899, 0.900, 0.894, 0.886, 0.873, 0.854, 0.846},
-     };
-   }else if(isXX){
-     SignalEffPuppi = {
-       {0.619, 0.915, 0.940, 0.936, 0.931, 0.928, 0.926, 0.916, 0.914, 0.906, 0.890, 0.864, 0.816, 0.772},
-       {0.629, 0.920, 0.946, 0.939, 0.932, 0.931, 0.927, 0.925, 0.918, 0.914, 0.899, 0.878, 0.868, 0.833},
-       {0.629, 0.917, 0.945, 0.939, 0.937, 0.933, 0.929, 0.924, 0.915, 0.916, 0.905, 0.889, 0.869, 0.839},
-       {0.626, 0.919, 0.943, 0.939, 0.935, 0.935, 0.930, 0.927, 0.926, 0.917, 0.915, 0.899, 0.883, 0.869},
-       {0.638, 0.919, 0.945, 0.940, 0.936, 0.936, 0.932, 0.928, 0.923, 0.922, 0.913, 0.904, 0.890, 0.870},
-       {0.619, 0.916, 0.946, 0.939, 0.937, 0.934, 0.935, 0.931, 0.927, 0.920, 0.916, 0.905, 0.900, 0.872},
-       {0.619, 0.915, 0.948, 0.943, 0.938, 0.932, 0.935, 0.931, 0.927, 0.923, 0.917, 0.907, 0.895, 0.872},
-       {0.625, 0.920, 0.944, 0.941, 0.939, 0.937, 0.932, 0.933, 0.927, 0.925, 0.918, 0.909, 0.897, 0.884},
-       {0.653, 0.922, 0.950, 0.942, 0.936, 0.936, 0.933, 0.932, 0.929, 0.925, 0.919, 0.914, 0.897, 0.883},
-       {0.651, 0.924, 0.944, 0.939, 0.937, 0.935, 0.934, 0.930, 0.928, 0.927, 0.920, 0.913, 0.899, 0.890},
-       {1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000},//1700
-       {1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000},//1800
-     };     
-     SignalEff = {//X53X53
-       {0.496, 0.895, 0.942, 0.933, 0.926, 0.922, 0.916, 0.908, 0.900, 0.889, 0.874, 0.844, 0.802, 0.759},
-       {0.498, 0.900, 0.945, 0.936, 0.928, 0.927, 0.919, 0.917, 0.905, 0.902, 0.883, 0.860, 0.845, 0.790},
-       {0.498, 0.896, 0.945, 0.936, 0.929, 0.927, 0.919, 0.916, 0.906, 0.903, 0.890, 0.868, 0.845, 0.792},
-       {0.491, 0.893, 0.944, 0.936, 0.932, 0.927, 0.922, 0.918, 0.916, 0.903, 0.897, 0.883, 0.854, 0.831},
-       {0.488, 0.893, 0.943, 0.936, 0.930, 0.930, 0.924, 0.919, 0.915, 0.911, 0.900, 0.886, 0.864, 0.832},
-       {0.461, 0.890, 0.943, 0.935, 0.928, 0.926, 0.924, 0.918, 0.914, 0.906, 0.899, 0.884, 0.871, 0.840},
-       {0.480, 0.893, 0.939, 0.940, 0.928, 0.927, 0.923, 0.921, 0.914, 0.910, 0.899, 0.888, 0.869, 0.841},
-       {0.475, 0.897, 0.939, 0.935, 0.928, 0.927, 0.922, 0.920, 0.914, 0.912, 0.902, 0.891, 0.873, 0.850},
-       {0.510, 0.894, 0.943, 0.936, 0.927, 0.928, 0.919, 0.922, 0.914, 0.909, 0.903, 0.894, 0.870, 0.851},
-       {0.479, 0.899, 0.939, 0.931, 0.925, 0.925, 0.922, 0.917, 0.918, 0.911, 0.900, 0.891, 0.873, 0.858},
-       {1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000},//1700
-       {1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000},//1800
-     };
-   }
-   float TTbarEff[12] = {0.468, 0.882, 0.941, 0.928, 0.915, 0.903, 0.892, 0.878, 0.868, 0.853, 0.828, 0.796};
-   float STtEff[12] = {0.437, 0.876, 0.941, 0.927, 0.914, 0.900, 0.890, 0.855, 0.864, 0.842, 0.827, 0.849};
-   float STtWEff[12] = {0.453, 0.885, 0.948, 0.938, 0.930, 0.927, 0.921, 0.916, 0.920, 0.910, 0.895, 0.875};
-   float WVEff[12] = {0.440, 0.882, 0.945, 0.937, 0.924, 0.926, 0.909, 0.913, 0.892, 0.902, 0.881, 0.870};
-
-   float STtEffPuppi[12] = {0.520, 0.901, 0.946, 0.933, 0.923, 0.906, 0.889, 0.869, 0.882, 0.855, 0.841, 0.875};
-   float STtWEffPuppi[12] = {0.543, 0.909, 0.952, 0.945, 0.940, 0.938, 0.932, 0.929, 0.933, 0.924, 0.916, 0.900};
-   float TTbarEffPuppi[12] = {0.562, 0.905, 0.944, 0.934, 0.923, 0.912, 0.899, 0.888, 0.883, 0.872, 0.841, 0.816};
-   float WVEffPuppi[12] = {0.527, 0.909, 0.954, 0.946, 0.939, 0.939, 0.922, 0.929, 0.910, 0.928, 0.901, 0.914};
-
-   // Top tagging efficiencies
-   std::vector<float> ptRangeTpTpTop, ptRangeTTbarTop;
-   float ptminTTbarTop[9] = {400,450,500,550,600,700,800,1000,1200};
-   for (int i=0;i<9;++i) ptRangeTTbarTop.push_back(ptminTTbarTop[i]);
-   float ptminTpTpTop[9] = {400,450,500,550,600,700,800,1000,1200};//X53X53
-   for (int i=0;i<9;++i) ptRangeTpTpTop.push_back(ptminTpTpTop[i]);
-   float TTbarEffTop[9] = {0.710731908673,0.911246812099,0.946258231276,0.950948087531,0.952308954524,0.947643078335,0.94133549608,0.929334428924,0.924661246612};
-   float STEffTop[9] = {0.691643703728,0.906228313671,0.941468696261,0.948002294016,0.947021636542,0.941775836972,0.933049300061,0.936046511628,0.933862433862};
-
-   float SignalEffTop[10][9] = {//X53X53
-     {0.724620303757,0.899211846191,0.936291859515,0.944579091937,0.94692371772,0.945789586458,0.935492651062,0.913173652695,0.90977443609},
-     {0.720768101761,0.907892004154,0.937210055022,0.945094294581,0.944494920294,0.941136208077,0.93661971831,0.924356223176,0.930051813472},
-     {0.724299065421,0.904784643301,0.937938576506,0.940539456533,0.944067043362,0.943750614613,0.939160329201,0.925230671333,0.920143884892},
-     {0.723555888972,0.891038887845,0.93702487906,0.943868050013,0.9433296466,0.941325202647,0.933387610095,0.930462184874,0.920435510888},
-     {0.706017891027,0.891839315242,0.929181103693,0.945251210149,0.946220930233,0.943065231159,0.936117240989,0.930840845279,0.918595371109},
-     {0.706572416905,0.885974797664,0.923103809857,0.938941876579,0.943281477238,0.942451135188,0.935289623871,0.926310160428,0.918116871222},
-     {0.703368526898,0.873433303491,0.920978890342,0.936481121716,0.942840429532,0.941648216482,0.935452396142,0.926339285714,0.913049112349},
-     {0.687741686002,0.876234529316,0.917185109638,0.93502800517,0.93907257226,0.941280976676,0.929876038507,0.923884514436,0.91489965922},
-     {0.675073181716,0.87130710477,0.909954158481,0.928911723494,0.937305146274,0.940579646213,0.932647997164,0.921526157947,0.91551008728},
-     {0.679444301518,0.863857374392,0.909068746953,0.920785999386,0.932639746077,0.937310063385,0.933625327818,0.923361250175,0.914409413854}
-     };
-
-   std::vector<float> ptRangeTopTagginSF;
-   float ptminTopTagginSF[5] = {300,400,480,600,1100};
-   for (int i=0;i<5;++i) ptRangeTopTagginSF.push_back(ptminTopTagginSF[i]);
-   float topTagginSF[5]   = {0.98331112,0.96821666,0.95967776,1.02111010,1.02111010};
-   float topTagginSFup[5] = {1.02416270,0.99713147,0.99533176,1.06593850,1.11076690};
-   float topTagginSFdn[5] = {0.94245958,0.93930185,0.92402375,0.97628158,0.93145317};
-   
-   
+  
   // ----------------------------------------------------------------------------
   // RUN THE EVENT LOOP
   // ----------------------------------------------------------------------------
 
-   cout << "RUN CONFIG: isMC = " << isMC << endl;
-   cout << "isSig = " << isSig << ", SigMass = " << SigMass << endl;
+   cout << "RUN CONFIG: YEAR = " << Year << endl;
+   cout << "isMC = " << isMC << ", isSig = " << isSig << ", SigMass = " << SigMass << endl;
+   cout << "isTTTT = " << isTTTT << ", isXX = " << isXX << ", isTpTp = " << isTpTp << ", isBpBp = " << isBpBp << endl;
    cout << "For W's: isTT = " << isTT << ", isSTt = " << isSTt << ", isSTtW = " << isSTtW << endl;
    cout << "Fot jets & PDF: isTOP = " << isTOP << ", isMadgraphBkg = " << isMadgraphBkg << endl;
    cout << "Pileup index: " << pileupIndex << endl;
@@ -865,10 +728,10 @@ void step1::Loop(TString inTreeName, TString outTreeName )
 	    }
 	  }
 	  
-	  EGammaGsfSF = hardcodedConditions.GetEGammaGsfSF(leppt, lepeta, 2017);
-      lepIdSF = hardcodedConditions.GetElectronIdSF(leppt, lepeta, 2017);
-      isoSF = hardcodedConditions.GetElectronIsoSF(leppt, lepeta, 2017);
-	  triggerSF = hardcodedConditions.GetElectronTriggerSF(leppt, lepeta, 2017);
+	  EGammaGsfSF = hardcodedConditions.GetEGammaGsfSF(leppt, lepeta, Year);
+      lepIdSF = hardcodedConditions.GetElectronIdSF(leppt, lepeta, Year);
+      isoSF = hardcodedConditions.GetElectronIsoSF(leppt, lepeta, Year);
+	  triggerSF = hardcodedConditions.GetElectronTriggerSF(leppt, lepeta, Year);
 	}
 	if(isMuon){
 	  for(unsigned int itrig=0; itrig < vsSelMCTriggersMu_MultiLepCalc->size(); itrig++){
@@ -876,9 +739,9 @@ void step1::Loop(TString inTreeName, TString outTreeName )
 	    	if(vsSelMCTriggersMu_MultiLepCalc->at(itrig).find(mutriggers.at(jtrig)) != std::string::npos && viSelMCTriggersMu_MultiLepCalc->at(itrig) > 0) MCPastTrigger = 1;
 	    }
 	  }
-	  lepIdSF = hardcodedConditions.GetMuonIdSF(leppt, lepeta, 2017);
-	  isoSF = hardcodedConditions.GetMuonIsoSF(leppt, lepeta, 2017);	  
-	  triggerSF = hardcodedConditions.GetMuonTriggerSF(leppt, lepeta, 2017);
+	  lepIdSF = hardcodedConditions.GetMuonIdSF(leppt, lepeta, Year);
+	  isoSF = hardcodedConditions.GetMuonIsoSF(leppt, lepeta, Year);	  
+	  triggerSF = hardcodedConditions.GetMuonTriggerSF(leppt, lepeta, Year);
 	 
 	}
 	DataPastTrigger = 1;
@@ -1442,28 +1305,22 @@ void step1::Loop(TString inTreeName, TString outTreeName )
 	  // ------------------------------------------------------------------------------------------------------------------
 	  // TOP TAGGING
 	  // ------------------------------------------------------------------------------------------------------------------
-	  float tau32SF = 1.0;
-	  float tau32SFup = 1.0;
-	  float tau32SFdn = 1.0;
+	  double tau32SF = 1.0;
+	  double tau32SFup = 1.0;
+	  double tau32SFdn = 1.0;
 	  double tau32eff = 1.0;
 	  if(isTmatched && matchedPt >= 400){	    
-	    // VALUES from the githup repository linked from https://twiki.cern.ch/twiki/bin/viewauth/CMS/JetTopTagging#13_TeV_Working_Points_and_Scale
-	    int sfbin = (std::upper_bound(ptRangeTopTagginSF.begin(), ptRangeTopTagginSF.end(), matchedPt)-ptRangeTopTagginSF.begin())-1;
+	    hardcodedConditions.GetTtaggingSF(matchedPt, &tau32SF, &tau32SFup, &tau32SFdn, Year);
 	    //THESE ARE SET TO 1 SO AS TO NOT APPLY SF WHILE WAITING FOR EFFICIENCIES!!!!
-	    tau32SF = 1.0;//topTagginSF[sfbin];
-	    tau32SFup = 1.0;//topTagginSFup[sfbin];
-	    tau32SFdn = 1.0;//topTagginSFdn[sfbin];
-	    
+	    //REMOVE THEM WHEN YOU HAVE THE CORRECT EFFICIENCIES!!!!
+	    tau32SF = 1.0;
+	    tau32SFup = 1.0;
+	    tau32SFdn = 1.0;
 	    // Use matched T to find the efficiency -- calculated for TpTp and ttbar, EWK/QCD will almost never pass here (use ttbar eff when they do)
-	    if(isSig){
-	      int bin = (std::upper_bound(ptRangeTpTpTop.begin(), ptRangeTpTpTop.end(), matchedPt)-ptRangeTpTpTop.begin())-1;
-	      tau32eff = SignalEffTop[SigMass][bin];
-	    }else{
-	      int bin = (std::upper_bound(ptRangeTTbarTop.begin(), ptRangeTTbarTop.end(), matchedPt)-ptRangeTTbarTop.begin())-1;
-	      if(isTT) tau32eff = TTbarEffTop[bin]; // ttbar
-	      else if(isTTTT) tau32eff = TTbarEffTop[bin]; // using ttbar while TTTT is missing
-	      else tau32eff = STEffTop[bin]; // ST
-	    }
+		if(isTTTT) {hardcodedConditions.GetTtaggingEff(matchedPt, &tau32eff, Year, "tttt");}
+		else if(isXX) {hardcodedConditions.GetTtaggingEff(matchedPt, &tau32eff, Year, "x53x53",SigMass);}		
+		else if(isTT) {hardcodedConditions.GetTtaggingEff(matchedPt, &tau32eff, Year, "ttbar");}
+		else {hardcodedConditions.GetTtaggingEff(matchedPt, &tau32eff, Year, "singletop");}
 	  }
 	  
 	  // Set the initial tagged/untagged state
@@ -1497,44 +1354,36 @@ void step1::Loop(TString inTreeName, TString outTreeName )
 	  // W TAGGING
 	  // ------------------------------------------------------------------------------------------------------------------
 
-	  float tau21SF = 1.0;
-	  float tau21SFup = 1.0;
-	  float tau21SFdn = 1.0;
-	  float tau21ptSFup = 1.0;
-	  float tau21ptSFdn = 1.0;
+	  double tau21SF = 1.0;
+	  double tau21SFup = 1.0;
+	  double tau21SFdn = 1.0;
+	  double tau21ptSFup = 1.0;
+	  double tau21ptSFdn = 1.0;
 	  double tau21eff = 1.0;
 	  if(isWmatched && matchedPt >= 175 && massSD > 65 && massSD < 105 && theJetAK8Pt_JetSubCalc_PtOrdered.at(ijet) >= 200){	    
-	    // VALUES from https://twiki.cern.ch/twiki/bin/view/CMS/JetWtagging#2017_scale_factors_and_correctio
+	    hardcodedConditions.GetWtaggingSF(theJetAK8Pt_JetSubCalc_PtOrdered.at(ijet), &tau21SF, &tau21SFup, &tau21SFdn, &tau21ptSFup, &tau21ptSFdn, Year);
 	    //THESE ARE SET TO 1 SO AS TO NOT APPLY SF WHILE WAITING FOR EFFICIENCIES!!!!
-	    tau21SF = 1.0;//0.97;
-	    tau21SFup = 1.0;//tau21SF+0.06;
-	    tau21SFdn = 1.0;//tau21SF-0.06;
-	    tau21ptSFup = 1.0;//tau21SF+0.041*log(theJetAK8Pt_JetSubCalc_PtOrdered.at(ijet)/200);
-	    tau21ptSFdn = 1.0;//tau21SF-0.041*log(theJetAK8Pt_JetSubCalc_PtOrdered.at(ijet)/200);
+	    tau21SF = 1.0;
+	    tau21SFup = 1.0;
+	    tau21SFdn = 1.0;
+	    tau21ptSFup = 1.0;
+	    tau21ptSFdn = 1.0;
 	    
 	    // Use matched W to find the efficiency -- calculated for TpTp and ttbar, EWK/QCD will almost never pass here (use ttbar eff when they do)
-	    if(isSig){
-	      int bin = (std::upper_bound(ptRangeTpTp.begin(), ptRangeTpTp.end(), matchedPt)-ptRangeTpTp.begin())-1;
-	      tau21eff = SignalEffPuppi[SigMass][bin];
-	    }else{
-	      int bin = (std::upper_bound(ptRangeTTbar.begin(), ptRangeTTbar.end(), matchedPt)-ptRangeTTbar.begin())-1;
-	      if(isTT){
-		tau21eff = TTbarEffPuppi[bin]; // ttbar
-	      }
-	      else if(isTTTT){
-		tau21eff = TTbarEffPuppi[bin]; // using ttbar while TTTT is missing
-	      }
-	      else if(isSTt){
-		tau21eff = STtEffPuppi[bin]; // single top (s and t channel had 0 boosted tops)
-	      }
-	      else if(isSTtW){
-		tau21eff = STtWEffPuppi[bin]; // single top (s and t channel had 0 boosted tops)
-	      }
-	      else{
-		tau21eff = WVEffPuppi[bin]; // WW, WZ, etc. 
-	      }
+		if(isTTTT) {hardcodedConditions.GetTtaggingEff(matchedPt, &tau32eff, Year, "tttt");}
+		else if(isXX) {hardcodedConditions.GetTtaggingEff(matchedPt, &tau32eff, Year, "x53x53",SigMass);}		
+		else if(isTT) {hardcodedConditions.GetTtaggingEff(matchedPt, &tau32eff, Year, "ttbar");}
+		else {hardcodedConditions.GetTtaggingEff(matchedPt, &tau32eff, Year, "singletop");}
+
+	    if(isXX) {hardcodedConditions.GetWtaggingEff(matchedPt, &tau21eff, Year, "x53x53",SigMass);}
+	    else if(isTpTp) {hardcodedConditions.GetWtaggingEff(matchedPt, &tau21eff, Year, "TpTp",SigMass);}
+	    else if(isBpBp) {hardcodedConditions.GetWtaggingEff(matchedPt, &tau21eff, Year, "BpBp",SigMass);}
+	    else if(isTTTT) {hardcodedConditions.GetWtaggingEff(matchedPt, &tau21eff, Year, "tttt");}
+	    else if(isTT) {hardcodedConditions.GetWtaggingEff(matchedPt, &tau21eff, Year, "ttbar");}
+	    else if(isSTt) {hardcodedConditions.GetWtaggingEff(matchedPt, &tau21eff, Year, "singletopt");}
+	    else if(isSTtW) {hardcodedConditions.GetWtaggingEff(matchedPt, &tau21eff, Year, "singletoptW");}
+	    else {hardcodedConditions.GetWtaggingEff(matchedPt, &tau21eff, Year, "WV");}
 	    }
-	  }
 	  
 	  // Set the initial tagged/untagged state
 	  bool isWtagged = (massSD > 65) && (massSD < 105) && (tau21 < tau21WP) && (theJetAK8Pt_JetSubCalc_PtOrdered.at(ijet) >= 200);
