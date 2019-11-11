@@ -599,7 +599,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    cout << "isTTTT = " << isTTTT << ", isXX = " << isXX << ", isTpTp = " << isTpTp << ", isBpBp = " << isBpBp << endl;
    cout << "For W's: isTT = " << isTT << ", isSTt = " << isSTt << ", isSTtW = " << isSTtW << endl;
    cout << "For jets & PDF: isTOP = " << isTOP << ", isMadgraphBkg = " << isMadgraphBkg << endl;
-   cout << "Pileup index: " << pileupIndex << endl;
+   cout << "Pileup sample key: " << sample << std::endl;
    cout << "isTTincMtt0to700: " << isTTincMtt0to700 << endl;
    cout << "isTTincMtt0to1000: " << isTTincMtt0to1000 << endl;
    cout << "isTTincMtt700to1000: " << isTTincMtt700to1000 << endl;
@@ -697,11 +697,15 @@ void step1::Loop(TString inTreeName, TString outTreeName )
 	if(nTrueInteractions_MultiLepCalc > 99) nTrueInteractions_MultiLepCalc = 99;
         if(nTrueInteractions_MultiLepCalc > 79 && isSig && Year==2017) nTrueInteractions_MultiLepCalc = 79;
 	if(nTrueInteractions_MultiLepCalc < 0) nTrueInteractions_MultiLepCalc = 0;
-	if(pileupIndex < 0 || pileupIndex > 60){
-	  std::cout << "I don't know this pileup sample, using TTToSemiLeptonic's" << std::endl;
-	  pileupIndex = 26;
-	}
-	hardcodedConditions.GetPileupWeight(nTrueInteractions_MultiLepCalc, pileupIndex, &pileupWeight, &pileupWeightUp, &pileupWeightDown, Year);
+	try {
+		hardcodedConditions.GetPileupWeight(nTrueInteractions_MultiLepCalc, &pileupWeight, &pileupWeightUp, &pileupWeightDown, Year, sample);
+		}
+	catch(const std::out_of_range &e) {
+	  	std::cout << "I don't know this pileup sample, using TTToSemiLeptonic's: ";
+		sample = "TTToSemiLeptonic_TuneCP5_PSweights_13TeV-powheg-pythia8";
+	  	std::cout << sample << std::endl;
+		hardcodedConditions.GetPileupWeight(nTrueInteractions_MultiLepCalc, &pileupWeight, &pileupWeightUp, &pileupWeightDown, Year, sample);
+		}
       }
 
       // ----------------------------------------------------------------------------
