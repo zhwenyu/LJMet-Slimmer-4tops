@@ -54,8 +54,9 @@ public :
    Bool_t          isTTCC;
    Bool_t          isTTJJ;
    Int_t           SigMass;
-   Int_t           pileupIndex;
    Int_t           Year=2017;
+   TString         sample_;
+   std::string     sample;
    
    // Fixed size dimensions of array or collections stored in the TTree if any.
 
@@ -1210,8 +1211,6 @@ step1::step1(TString inputFileName, TString outputFileName) : inputTree(0), inpu
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
 
-  pileupIndex = -1;
-
   isSig  = (inputFileName.Contains("TTTT_Tune") || inputFileName.Contains("prime") || inputFileName.Contains("X53") || inputFileName.Contains("ChargedHiggs_Hplus"));
   if(isSig){
     if(inputFileName.Contains("Tprime")) isTpTp = true;
@@ -1219,22 +1218,22 @@ step1::step1(TString inputFileName, TString outputFileName) : inputTree(0), inpu
     else if(inputFileName.Contains("X53")) isXX = true;
     else if(inputFileName.Contains("TTTT_Tune")) isTTTT = true;
 
-    if(inputFileName.Contains("_M-700")) {SigMass = 0; pileupIndex = 24;}
+    if(inputFileName.Contains("_M-700")) SigMass = 0; 
     else if(inputFileName.Contains("_M-800")) SigMass = 1;
     else if(inputFileName.Contains("_M-900")) SigMass = 2;
-    else if(inputFileName.Contains("_M-1000")) {SigMass = 3; pileupIndex = 25;}
-    else if(inputFileName.Contains("_M-1100")) {SigMass = 4; pileupIndex = 26;}
-    else if(inputFileName.Contains("_M-1200")) {SigMass = 5; pileupIndex = 27;}
-    else if(inputFileName.Contains("_M-1300")) {SigMass = 6; pileupIndex = 28;}
-    else if(inputFileName.Contains("_M-1400")) {SigMass = 7; pileupIndex = 29;}
-    else if(inputFileName.Contains("_M-1500")) {SigMass = 8; pileupIndex = 30;}
-    else if(inputFileName.Contains("_M-1600")) {SigMass = 9; pileupIndex = 31;}
-    else if(inputFileName.Contains("_M-1700")) {SigMass = 10; pileupIndex = 32;}
-    else if(inputFileName.Contains("_M-1800")) {SigMass = 11; pileupIndex = 33;}
+    else if(inputFileName.Contains("_M-1000")) SigMass = 3;
+    else if(inputFileName.Contains("_M-1100")) SigMass = 4;
+    else if(inputFileName.Contains("_M-1200")) SigMass = 5;
+    else if(inputFileName.Contains("_M-1300")) SigMass = 6;
+    else if(inputFileName.Contains("_M-1400")) SigMass = 7;
+    else if(inputFileName.Contains("_M-1500")) SigMass = 8;
+    else if(inputFileName.Contains("_M-1600")) SigMass = 9;
+    else if(inputFileName.Contains("_M-1700")) SigMass = 10;
+    else if(inputFileName.Contains("_M-1800")) SigMass = 11;
     else SigMass = -1;
   }  
   else SigMass = -1;
-
+  
   isMadgraphBkg = (inputFileName.Contains("QCD") || inputFileName.Contains("madgraphMLM"));
   isTOP = (inputFileName.Contains("Mtt") || inputFileName.Contains("ST") || inputFileName.Contains("ttZ") || inputFileName.Contains("ttW") || inputFileName.Contains("ttH") || inputFileName.Contains("TTTo"));
   isTT = (inputFileName.Contains("TT_Tune") || inputFileName.Contains("Mtt") || inputFileName.Contains("TTTo"));
@@ -1246,87 +1245,7 @@ step1::step1(TString inputFileName, TString outputFileName) : inputTree(0), inpu
   isMC = !(inputFileName.Contains("Single") || inputFileName.Contains("Data18"));
   isSM = inputFileName.Contains("SingleMuon");
   isSE = (inputFileName.Contains("SingleElectron") || inputFileName.Contains("EGamma"));
-
-  isSig  = (inputFileName.Contains("prime") || inputFileName.Contains("X53") || inputFileName.Contains("ChargedHiggs_Hplus"));
-  if(isSig){
-    if(inputFileName.Contains("Bprime")){
-      if(inputFileName.Contains("_M-900")) {SigMass = 2; pileupIndex = 44;}
-      else if(inputFileName.Contains("_M-1000")) {SigMass = 3; pileupIndex = 44;}
-      else if(inputFileName.Contains("_M-1100")) {SigMass = 4; pileupIndex = 45;}
-      else if(inputFileName.Contains("_M-1200")) {SigMass = 5; pileupIndex = 46;}
-      else if(inputFileName.Contains("_M-1300")) {SigMass = 6; pileupIndex = 47;}
-      else if(inputFileName.Contains("_M-1400")) {SigMass = 7; pileupIndex = 48;}
-      else if(inputFileName.Contains("_M-1500")) {SigMass = 8; pileupIndex = 49;}
-      else if(inputFileName.Contains("_M-1600")) {SigMass = 9; pileupIndex = 50;}
-      else if(inputFileName.Contains("_M-1700")) {SigMass = 10; pileupIndex = 50;}
-      else if(inputFileName.Contains("_M-1800")) {SigMass = 11; pileupIndex = 51;}
-      else SigMass = -1;
-    } 
-    else if(inputFileName.Contains("Tprime")){
-      if(inputFileName.Contains("_M-700")) {SigMass = 0; pileupIndex = 52;}
-      else if(inputFileName.Contains("_M-1000")) {SigMass = 3; pileupIndex = 52;}
-      else if(inputFileName.Contains("_M-1100")) {SigMass = 4; pileupIndex = 53;}
-      else if(inputFileName.Contains("_M-1200")) {SigMass = 5; pileupIndex = 54;}
-      else if(inputFileName.Contains("_M-1300")) {SigMass = 6; pileupIndex = 55;}
-      else if(inputFileName.Contains("_M-1400")) {SigMass = 7; pileupIndex = 56;}
-      else if(inputFileName.Contains("_M-1500")) {SigMass = 8; pileupIndex = 57;}
-      else if(inputFileName.Contains("_M-1600")) {SigMass = 9; pileupIndex = 58;}
-      else if(inputFileName.Contains("_M-1700")) {SigMass = 10; pileupIndex = 59;}
-      else if(inputFileName.Contains("_M-1800")) {SigMass = 11; pileupIndex = 60;}
-      else SigMass = -1;
-    }
-  }  
-  else SigMass = -1;
-
-
-  if(inputFileName.Contains("DYJetsToLL_M-50_HT-200")) pileupIndex = 0;
-  else if(inputFileName.Contains("DYJetsToLL_M-50_HT-400")) pileupIndex = 1;
-  else if(inputFileName.Contains("DYJetsToLL_M-50_HT-600")) pileupIndex = 2;
-  else if(inputFileName.Contains("DYJetsToLL_M-50_HT-800")) pileupIndex = 3;
-  else if(inputFileName.Contains("DYJetsToLL_M-50_HT-1200")) pileupIndex = 4;
-  else if(inputFileName.Contains("DYJetsToLL_M-50_HT-2500")) pileupIndex = 5;
-  else if(inputFileName.Contains("TTWJetsToQQ")) pileupIndex = 6;
-  else if(inputFileName.Contains("QCD_HT1000")) pileupIndex = 7;
-  else if(inputFileName.Contains("QCD_HT1500")) pileupIndex = 8;
-  else if(inputFileName.Contains("QCD_HT2000")) pileupIndex = 9;
-  else if(inputFileName.Contains("QCD_HT200")) pileupIndex = 10;
-  else if(inputFileName.Contains("QCD_HT300")) pileupIndex = 11;
-  else if(inputFileName.Contains("QCD_HT500")) pileupIndex = 12;
-  else if(inputFileName.Contains("QCD_HT700")) pileupIndex = 13;
-  else if(inputFileName.Contains("ST_s-channel_antitop")) pileupIndex = 14;
-  else if(inputFileName.Contains("ST_s-channel_top")) pileupIndex = 15;
-  else if(inputFileName.Contains("ST_t-channel_antitop")) pileupIndex = 16;
-  else if(inputFileName.Contains("ST_t-channel_top")) pileupIndex = 17;
-  else if(inputFileName.Contains("ST_tW_antitop")) pileupIndex = 18;
-  else if(inputFileName.Contains("ST_tW_top")) pileupIndex = 19;
-  else if(inputFileName.Contains("TTTo2") && inputFileName.Contains("0to7")) pileupIndex = 20;
-  else if(inputFileName.Contains("TTTo2") && inputFileName.Contains("Inf")) pileupIndex = 21;
-  else if(inputFileName.Contains("TTTo2") && inputFileName.Contains("700to")) pileupIndex = 22;
-  else if(inputFileName.Contains("TTToH") && inputFileName.Contains("0to7")) pileupIndex = 23;
-  else if(inputFileName.Contains("TTToH") && inputFileName.Contains("Inf")) pileupIndex = 24;
-  else if(inputFileName.Contains("TTToH") && inputFileName.Contains("700to")) pileupIndex = 25;
-  else if(inputFileName.Contains("TTToS") && inputFileName.Contains("0to7")) pileupIndex = 26;
-  else if(inputFileName.Contains("TTToS") && inputFileName.Contains("Inf")) pileupIndex = 27;
-  else if(inputFileName.Contains("TTToS") && inputFileName.Contains("700to")) pileupIndex = 28;
-  else if(inputFileName.Contains("TT_Mtt-700")) pileupIndex = 29;
-  else if(inputFileName.Contains("TT_Mtt-1000")) pileupIndex = 30;
-  else if(inputFileName.Contains("TTZToLLNuNu")) pileupIndex = 31;
-  else if(inputFileName.Contains("TTWJetsToLNu")) pileupIndex = 32;
-  else if(inputFileName.Contains("ttHTobb")) pileupIndex = 33;
-  else if(inputFileName.Contains("ttHToNonbb")) pileupIndex = 34;
-  else if(inputFileName.Contains("WJetsToLNu_HT-1200")) pileupIndex = 35;
-  else if(inputFileName.Contains("WJetsToLNu_HT-200")) pileupIndex = 36;
-  else if(inputFileName.Contains("WJetsToLNu_HT-2500")) pileupIndex = 37;
-  else if(inputFileName.Contains("WJetsToLNu_HT-400")) pileupIndex = 38;
-  else if(inputFileName.Contains("WJetsToLNu_HT-600")) pileupIndex = 39;
-  else if(inputFileName.Contains("WJetsToLNu_HT-800")) pileupIndex = 40;
-  else if(inputFileName.Contains("WW_")) pileupIndex = 41;
-  else if(inputFileName.Contains("WZ_")) pileupIndex = 42;
-  else if(inputFileName.Contains("ZZ_")) pileupIndex = 43;
-
-
-  //std::cout << "output = " << outputDir << "/" << outputFileName << std::endl;
-
+  
   isTTincMtt0to700    = outputFileName.Contains("Mtt0to700");
   isTTincMtt0to1000   = outputFileName.Contains("Mtt0to1000");
   isTTincMtt700to1000 = outputFileName.Contains("Mtt700to1000");
@@ -1336,8 +1255,17 @@ step1::step1(TString inputFileName, TString outputFileName) : inputTree(0), inpu
   isTTBB = outputFileName.Contains("_ttbb");
   isTTCC = outputFileName.Contains("_ttcc");
   isTTJJ = outputFileName.Contains("_ttjj");
-  
+    
   std::cout<<"Opening file: "<<inputFileName<<std::endl;
+  //Get the sample name from "inputFileName" for pileupWeights
+  sample_ = inputFileName;
+  Int_t slash = sample_.Last('/');
+  sample_.Remove(0,slash+1);
+  Int_t uscore = sample_.Last('_');
+  Int_t thelength = sample_.Length();
+  sample_.Remove(uscore,thelength);
+  sample = (std::string)sample_;
+  
   if(!(inputFile=TFile::Open(inputFileName))){
     std::cout<<"WARNING! File doesn't exist! Exiting" << std::endl;
     exit(1);
