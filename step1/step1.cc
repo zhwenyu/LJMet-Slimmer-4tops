@@ -194,10 +194,11 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    inputTree->SetBranchStatus("theJetEta_JetSubCalc",1);
    inputTree->SetBranchStatus("theJetPhi_JetSubCalc",1);
    inputTree->SetBranchStatus("theJetEnergy_JetSubCalc",1);
-   inputTree->SetBranchStatus("theJetDeepCSVb_JetSubCalc",1);
-   inputTree->SetBranchStatus("theJetDeepCSVbb_JetSubCalc",1);
-   inputTree->SetBranchStatus("theJetDeepCSVc_JetSubCalc",1);
-   inputTree->SetBranchStatus("theJetDeepCSVudsg_JetSubCalc",1);
+   inputTree->SetBranchStatus("theJetDeepFlavB_JetSubCalc",1);
+   // inputTree->SetBranchStatus("theJetDeepCSVb_JetSubCalc",1);
+   // inputTree->SetBranchStatus("theJetDeepCSVbb_JetSubCalc",1);
+   // inputTree->SetBranchStatus("theJetDeepCSVc_JetSubCalc",1);
+   // inputTree->SetBranchStatus("theJetDeepCSVudsg_JetSubCalc",1);
    inputTree->SetBranchStatus("theJetAK8DoubleB_JetSubCalc",1);
    inputTree->SetBranchStatus("theJetBTag_bSFup_JetSubCalc",1);
    inputTree->SetBranchStatus("theJetBTag_bSFdn_JetSubCalc",1);
@@ -372,10 +373,11 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    outputTree->Branch("theJetEta_JetSubCalc_PtOrdered",&theJetEta_JetSubCalc_PtOrdered);
    outputTree->Branch("theJetPhi_JetSubCalc_PtOrdered",&theJetPhi_JetSubCalc_PtOrdered);
    outputTree->Branch("theJetEnergy_JetSubCalc_PtOrdered",&theJetEnergy_JetSubCalc_PtOrdered);
-   outputTree->Branch("theJetDeepCSVb_JetSubCalc_PtOrdered",&theJetDeepCSVb_JetSubCalc_PtOrdered);
-   outputTree->Branch("theJetDeepCSVbb_JetSubCalc_PtOrdered",&theJetDeepCSVbb_JetSubCalc_PtOrdered);
-   outputTree->Branch("theJetDeepCSVc_JetSubCalc_PtOrdered",&theJetDeepCSVc_JetSubCalc_PtOrdered);
-   outputTree->Branch("theJetDeepCSVudsg_JetSubCalc_PtOrdered",&theJetDeepCSVudsg_JetSubCalc_PtOrdered);
+   outputTree->Branch("theJetDeepFlavB_JetSubCalc_PtOrdered",&theJetDeepFlavB_JetSubCalc_PtOrdered);
+   // outputTree->Branch("theJetDeepCSVb_JetSubCalc_PtOrdered",&theJetDeepCSVb_JetSubCalc_PtOrdered);
+   // outputTree->Branch("theJetDeepCSVbb_JetSubCalc_PtOrdered",&theJetDeepCSVbb_JetSubCalc_PtOrdered);
+   // outputTree->Branch("theJetDeepCSVc_JetSubCalc_PtOrdered",&theJetDeepCSVc_JetSubCalc_PtOrdered);
+   // outputTree->Branch("theJetDeepCSVudsg_JetSubCalc_PtOrdered",&theJetDeepCSVudsg_JetSubCalc_PtOrdered);
    outputTree->Branch("theJetHFlav_JetSubCalc_PtOrdered",&theJetHFlav_JetSubCalc_PtOrdered);
    outputTree->Branch("theJetPFlav_JetSubCalc_PtOrdered",&theJetPFlav_JetSubCalc_PtOrdered);
    outputTree->Branch("theJetBTag_JetSubCalc_PtOrdered",&theJetBTag_JetSubCalc_PtOrdered);
@@ -928,10 +930,11 @@ void step1::Loop(TString inTreeName, TString outTreeName )
       theJetEta_JetSubCalc_PtOrdered.clear();
       theJetPhi_JetSubCalc_PtOrdered.clear();
       theJetEnergy_JetSubCalc_PtOrdered.clear();
-      theJetDeepCSVb_JetSubCalc_PtOrdered.clear();
-      theJetDeepCSVbb_JetSubCalc_PtOrdered.clear();
-      theJetDeepCSVc_JetSubCalc_PtOrdered.clear();
-      theJetDeepCSVudsg_JetSubCalc_PtOrdered.clear();
+      theJetDeepFlavB_JetSubCalc_PtOrdered.clear();
+      // theJetDeepCSVb_JetSubCalc_PtOrdered.clear();
+      // theJetDeepCSVbb_JetSubCalc_PtOrdered.clear();
+      // theJetDeepCSVc_JetSubCalc_PtOrdered.clear();
+      // theJetDeepCSVudsg_JetSubCalc_PtOrdered.clear();
       theJetHFlav_JetSubCalc_PtOrdered.clear();
       theJetPFlav_JetSubCalc_PtOrdered.clear();
       theJetBTag_JetSubCalc_PtOrdered.clear();
@@ -944,10 +947,11 @@ void step1::Loop(TString inTreeName, TString outTreeName )
       	theJetEta_JetSubCalc_PtOrdered.push_back(theJetEta_JetSubCalc->at(jetptindpair[ijet].second));
       	theJetPhi_JetSubCalc_PtOrdered.push_back(theJetPhi_JetSubCalc->at(jetptindpair[ijet].second));
       	theJetEnergy_JetSubCalc_PtOrdered.push_back(theJetEnergy_JetSubCalc->at(jetptindpair[ijet].second));
-      	theJetDeepCSVb_JetSubCalc_PtOrdered.push_back(theJetDeepCSVb_JetSubCalc->at(jetptindpair[ijet].second));
-		theJetDeepCSVbb_JetSubCalc_PtOrdered.push_back(theJetDeepCSVbb_JetSubCalc->at(jetptindpair[ijet].second));
-		theJetDeepCSVc_JetSubCalc_PtOrdered.push_back(theJetDeepCSVc_JetSubCalc->at(jetptindpair[ijet].second));
-		theJetDeepCSVudsg_JetSubCalc_PtOrdered.push_back(theJetDeepCSVudsg_JetSubCalc->at(jetptindpair[ijet].second));
+         theJetDeepFlavB_JetSubCalc_PtOrdered.push_back(theJetDeepFlavB_JetSubCalc->at(jetptindpair[ijet].second));
+  //     	theJetDeepCSVb_JetSubCalc_PtOrdered.push_back(theJetDeepCSVb_JetSubCalc->at(jetptindpair[ijet].second));
+		// theJetDeepCSVbb_JetSubCalc_PtOrdered.push_back(theJetDeepCSVbb_JetSubCalc->at(jetptindpair[ijet].second));
+		// theJetDeepCSVc_JetSubCalc_PtOrdered.push_back(theJetDeepCSVc_JetSubCalc->at(jetptindpair[ijet].second));
+		// theJetDeepCSVudsg_JetSubCalc_PtOrdered.push_back(theJetDeepCSVudsg_JetSubCalc->at(jetptindpair[ijet].second));
       	theJetHFlav_JetSubCalc_PtOrdered.push_back(theJetHFlav_JetSubCalc->at(jetptindpair[ijet].second));
       	theJetPFlav_JetSubCalc_PtOrdered.push_back(theJetPFlav_JetSubCalc->at(jetptindpair[ijet].second));
 		theJetBTag_JetSubCalc_PtOrdered.push_back(theJetBTag_JetSubCalc->at(jetptindpair[ijet].second));
@@ -1005,7 +1009,10 @@ void step1::Loop(TString inTreeName, TString outTreeName )
 
 	deltaR_lepJets.push_back(lepton_lv.DeltaR(jet_lv));
 
-   	if(theJetDeepCSVb_JetSubCalc_PtOrdered.at(ijet) + theJetDeepCSVbb_JetSubCalc_PtOrdered.at(ijet) > 0.4941){
+   	// if(theJetDeepCSVb_JetSubCalc_PtOrdered.at(ijet) + theJetDeepCSVbb_JetSubCalc_PtOrdered.at(ijet) > 0.4941){
+    //       NJetsCSV_JetSubCalc += 1;
+    //     }
+   if(theJetDeepFlavB_JetSubCalc_PtOrdered.at(ijet) > 0.3033){
           NJetsCSV_JetSubCalc += 1;
         }
 

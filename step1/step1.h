@@ -138,10 +138,11 @@ public :
    vector<double>  theJetEta_JetSubCalc_PtOrdered;
    vector<double>  theJetPhi_JetSubCalc_PtOrdered;
    vector<double>  theJetEnergy_JetSubCalc_PtOrdered;
-   vector<double>  theJetDeepCSVb_JetSubCalc_PtOrdered;
-   vector<double>  theJetDeepCSVbb_JetSubCalc_PtOrdered;
-   vector<double>  theJetDeepCSVc_JetSubCalc_PtOrdered;
-   vector<double>  theJetDeepCSVudsg_JetSubCalc_PtOrdered;
+   vector<double>  theJetDeepFlavB_JetSubCalc_PtOrdered;
+   // vector<double>  theJetDeepCSVb_JetSubCalc_PtOrdered;
+   // vector<double>  theJetDeepCSVbb_JetSubCalc_PtOrdered;
+   // vector<double>  theJetDeepCSVc_JetSubCalc_PtOrdered;
+   // vector<double>  theJetDeepCSVudsg_JetSubCalc_PtOrdered;
    vector<int>     theJetHFlav_JetSubCalc_PtOrdered;
    vector<int>     theJetPFlav_JetSubCalc_PtOrdered;
    vector<int>     theJetBTag_JetSubCalc_PtOrdered;
