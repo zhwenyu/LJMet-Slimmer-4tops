@@ -139,10 +139,11 @@ public :
    vector<double>  theJetEta_JetSubCalc_PtOrdered;
    vector<double>  theJetPhi_JetSubCalc_PtOrdered;
    vector<double>  theJetEnergy_JetSubCalc_PtOrdered;
-   vector<double>  theJetDeepCSVb_JetSubCalc_PtOrdered;
-   vector<double>  theJetDeepCSVbb_JetSubCalc_PtOrdered;
-   vector<double>  theJetDeepCSVc_JetSubCalc_PtOrdered;
-   vector<double>  theJetDeepCSVudsg_JetSubCalc_PtOrdered;
+   vector<double>  theJetDeepFlavB_JetSubCalc_PtOrdered;
+   // vector<double>  theJetDeepCSVb_JetSubCalc_PtOrdered;
+   // vector<double>  theJetDeepCSVbb_JetSubCalc_PtOrdered;
+   // vector<double>  theJetDeepCSVc_JetSubCalc_PtOrdered;
+   // vector<double>  theJetDeepCSVudsg_JetSubCalc_PtOrdered;
    vector<int>     theJetHFlav_JetSubCalc_PtOrdered;
    vector<int>     theJetPFlav_JetSubCalc_PtOrdered;
    vector<int>     theJetBTag_JetSubCalc_PtOrdered;
@@ -303,6 +304,7 @@ public :
    Int_t           nAllJets_CommonCalc;
    Int_t           nLooseElectrons_CommonCalc;
    Int_t           nLooseMuons_CommonCalc;
+   Int_t           nPV_MultiLepCalc;
    Int_t           nPileupInteractions_MultiLepCalc;
    Int_t           nSelBtagJets_CommonCalc;
    Int_t           nSelElectrons_CommonCalc;
@@ -387,6 +389,9 @@ public :
    vector<int>     *elPdgId_MultiLepCalc;
    vector<int>     *elScPixCharge_MultiLepCalc;
    vector<int>     *elStatus_MultiLepCalc;
+   vector<int>     *elTrigMatchFilter0_MultiLepCalc;
+   vector<int>     *elTrigMatchFilter1_MultiLepCalc;
+   vector<int>     *elTrigMatchFilter2_MultiLepCalc;
    vector<int>     *elVtxFitConv_MultiLepCalc;
    vector<int>     *genBSLID_MultiLepCalc;
    vector<int>     *genID_MultiLepCalc;
@@ -410,6 +415,8 @@ public :
    vector<int>     *muIsMvaLoose_MultiLepCalc;
    vector<int>     *muIsMvaMedium_MultiLepCalc;
    vector<int>     *muIsMvaTight_MultiLepCalc;
+   vector<int>     *muIsRelIsoLoose_MultiLepCalc;
+   vector<int>     *muIsRelIsoTight_MultiLepCalc;
    vector<int>     *muIsTight_MultiLepCalc;
    vector<int>     *muIsTrkHighPt_MultiLepCalc;
    vector<int>     *muMatched_MultiLepCalc;
@@ -422,6 +429,9 @@ public :
    vector<int>     *muNumberOfMothers_MultiLepCalc;
    vector<int>     *muPdgId_MultiLepCalc;
    vector<int>     *muStatus_MultiLepCalc;
+   vector<int>     *muTrigMatchFilter0_MultiLepCalc;
+   vector<int>     *muTrigMatchFilter1_MultiLepCalc;
+   vector<int>     *muTrigMatchFilter2_MultiLepCalc;
    vector<int>     *quarkID_TpTpCalc;
    vector<int>     *tPrimeID_TpTpCalc;
    vector<int>     *tPrimeNDaughters_TpTpCalc;
@@ -452,14 +462,22 @@ public :
    vector<int>     *topWID_TTbarMassCalc;
    vector<int>     *topbID_TTbarMassCalc;
    vector<int>     *viSelMCTriggersEl_MultiLepCalc;
+   vector<int>     *viSelMCTriggersHad_MultiLepCalc;
    vector<int>     *viSelMCTriggersMu_MultiLepCalc;
    vector<int>     *viSelTriggersEl_MultiLepCalc;
+   vector<int>     *viSelTriggersHad_MultiLepCalc;
    vector<int>     *viSelTriggersMu_MultiLepCalc;
-   vector<double>  *AK4JetBDeepCSVb_MultiLepCalc;
-   vector<double>  *AK4JetBDeepCSVbb_MultiLepCalc;
-   vector<double>  *AK4JetBDeepCSVc_MultiLepCalc;
-   vector<double>  *AK4JetBDeepCSVudsg_MultiLepCalc;
-   vector<double>  *AK4JetBDisc_MultiLepCalc;
+   vector<double>  *AK4JetCSV_MultiLepCalc;
+   vector<double>  *AK4JetDeepCSVb_MultiLepCalc;
+   vector<double>  *AK4JetDeepCSVbb_MultiLepCalc;
+   vector<double>  *AK4JetDeepCSVc_MultiLepCalc;
+   vector<double>  *AK4JetDeepCSVudsg_MultiLepCalc;
+   vector<double>  *AK4JetDeepFlavb_MultiLepCalc;
+   vector<double>  *AK4JetDeepFlavbb_MultiLepCalc;
+   vector<double>  *AK4JetDeepFlavc_MultiLepCalc;
+   vector<double>  *AK4JetDeepFlavg_MultiLepCalc;
+   vector<double>  *AK4JetDeepFlavlepb_MultiLepCalc;
+   vector<double>  *AK4JetDeepFlavuds_MultiLepCalc;
    vector<double>  *AK4JetEnergy_MultiLepCalc;
    vector<double>  *AK4JetEta_MultiLepCalc;
    vector<double>  *AK4JetPhi_MultiLepCalc;
@@ -593,14 +611,14 @@ public :
    vector<double>  *genBSLPt_MultiLepCalc;
    vector<double>  *genEnergy_MultiLepCalc;
    vector<double>  *genEta_MultiLepCalc;
-   vector<double>  *genJetEnergy_MultiLepCalc;
-   vector<double>  *genJetEta_MultiLepCalc;
-   vector<double>  *genJetPhi_MultiLepCalc;
-   vector<double>  *genJetPt_MultiLepCalc;
    vector<double>  *genJetEnergyNoClean_MultiLepCalc;
+   vector<double>  *genJetEnergy_MultiLepCalc;
    vector<double>  *genJetEtaNoClean_MultiLepCalc;
+   vector<double>  *genJetEta_MultiLepCalc;
    vector<double>  *genJetPhiNoClean_MultiLepCalc;
+   vector<double>  *genJetPhi_MultiLepCalc;
    vector<double>  *genJetPtNoClean_MultiLepCalc;
+   vector<double>  *genJetPt_MultiLepCalc;
    vector<double>  *genPhi_MultiLepCalc;
    vector<double>  *genPt_MultiLepCalc;
    vector<double>  *muChIso_MultiLepCalc;
@@ -661,11 +679,8 @@ public :
    vector<double>  *theJetAK8NjettinessTau3_JetSubCalc;
    vector<double>  *theJetAK8Phi_JetSubCalc;
    vector<double>  *theJetAK8Pt_JetSubCalc;
-   vector<double>  *theJetAK8SDSubjetCSVb_JetSubCalc;
-   vector<double>  *theJetAK8SDSubjetCSVbb_JetSubCalc;
-   vector<double>  *theJetAK8SDSubjetCSVc_JetSubCalc;
-   vector<double>  *theJetAK8SDSubjetCSVudsg_JetSubCalc;
    vector<double>  *theJetAK8SDSubjetDR_JetSubCalc;
+   vector<double>  *theJetAK8SDSubjetDeepCSVb_JetSubCalc;
    vector<double>  *theJetAK8SDSubjetEta_JetSubCalc;
    vector<double>  *theJetAK8SDSubjetMass_JetSubCalc;
    vector<double>  *theJetAK8SDSubjetPhi_JetSubCalc;
@@ -681,10 +696,7 @@ public :
    vector<double>  *theJetAK8SoftDropn2b2_JetSubCalc;
    vector<double>  *theJetAK8SoftDropn3b1_JetSubCalc;
    vector<double>  *theJetAK8SoftDropn3b2_JetSubCalc;
-   vector<double>  *theJetDeepCSVb_JetSubCalc;
-   vector<double>  *theJetDeepCSVbb_JetSubCalc;
-   vector<double>  *theJetDeepCSVc_JetSubCalc;
-   vector<double>  *theJetDeepCSVudsg_JetSubCalc;
+   vector<double>  *theJetDeepFlavB_JetSubCalc;
    vector<double>  *theJetEnergy_JetSubCalc;
    vector<double>  *theJetEta_JetSubCalc;
    vector<double>  *theJetPhi_JetSubCalc;
@@ -718,8 +730,10 @@ public :
    vector<double>  *topbPhi_TTbarMassCalc;
    vector<double>  *topbPt_TTbarMassCalc;
    vector<string>  *vsSelMCTriggersEl_MultiLepCalc;
+   vector<string>  *vsSelMCTriggersHad_MultiLepCalc;
    vector<string>  *vsSelMCTriggersMu_MultiLepCalc;
    vector<string>  *vsSelTriggersEl_MultiLepCalc;
+   vector<string>  *vsSelTriggersHad_MultiLepCalc;
    vector<string>  *vsSelTriggersMu_MultiLepCalc;
 
    // List of branches
@@ -744,6 +758,7 @@ public :
    TBranch        *b_nAllJets_CommonCalc;   //!
    TBranch        *b_nLooseElectrons_CommonCalc;   //!
    TBranch        *b_nLooseMuons_CommonCalc;   //!
+   TBranch        *b_nPV_MultiLepCalc;   //!
    TBranch        *b_nPileupInteractions_MultiLepCalc;   //!
    TBranch        *b_nSelBtagJets_CommonCalc;   //!
    TBranch        *b_nSelElectrons_CommonCalc;   //!
@@ -828,6 +843,9 @@ public :
    TBranch        *b_elPdgId_MultiLepCalc;   //!
    TBranch        *b_elScPixCharge_MultiLepCalc;   //!
    TBranch        *b_elStatus_MultiLepCalc;   //!
+   TBranch        *b_elTrigMatchFilter0_MultiLepCalc;   //!
+   TBranch        *b_elTrigMatchFilter1_MultiLepCalc;   //!
+   TBranch        *b_elTrigMatchFilter2_MultiLepCalc;   //!
    TBranch        *b_elVtxFitConv_MultiLepCalc;   //!
    TBranch        *b_genBSLID_MultiLepCalc;   //!
    TBranch        *b_genID_MultiLepCalc;   //!
@@ -851,6 +869,8 @@ public :
    TBranch        *b_muIsMvaLoose_MultiLepCalc;   //!
    TBranch        *b_muIsMvaMedium_MultiLepCalc;   //!
    TBranch        *b_muIsMvaTight_MultiLepCalc;   //!
+   TBranch        *b_muIsRelIsoLoose_MultiLepCalc;   //!
+   TBranch        *b_muIsRelIsoTight_MultiLepCalc;   //!
    TBranch        *b_muIsTight_MultiLepCalc;   //!
    TBranch        *b_muIsTrkHighPt_MultiLepCalc;   //!
    TBranch        *b_muMatched_MultiLepCalc;   //!
@@ -863,6 +883,9 @@ public :
    TBranch        *b_muNumberOfMothers_MultiLepCalc;   //!
    TBranch        *b_muPdgId_MultiLepCalc;   //!
    TBranch        *b_muStatus_MultiLepCalc;   //!
+   TBranch        *b_muTrigMatchFilter0_MultiLepCalc;   //!
+   TBranch        *b_muTrigMatchFilter1_MultiLepCalc;   //!
+   TBranch        *b_muTrigMatchFilter2_MultiLepCalc;   //!
    TBranch        *b_quarkID_TpTpCalc;   //!
    TBranch        *b_tPrimeID_TpTpCalc;   //!
    TBranch        *b_tPrimeNDaughters_TpTpCalc;   //!
@@ -893,14 +916,22 @@ public :
    TBranch        *b_topWID_TTbarMassCalc;   //!
    TBranch        *b_topbID_TTbarMassCalc;   //!
    TBranch        *b_viSelMCTriggersEl_MultiLepCalc;   //!
+   TBranch        *b_viSelMCTriggersHad_MultiLepCalc;   //!
    TBranch        *b_viSelMCTriggersMu_MultiLepCalc;   //!
    TBranch        *b_viSelTriggersEl_MultiLepCalc;   //!
+   TBranch        *b_viSelTriggersHad_MultiLepCalc;   //!
    TBranch        *b_viSelTriggersMu_MultiLepCalc;   //!
-   TBranch        *b_AK4JetBDeepCSVb_MultiLepCalc;   //!
-   TBranch        *b_AK4JetBDeepCSVbb_MultiLepCalc;   //!
-   TBranch        *b_AK4JetBDeepCSVc_MultiLepCalc;   //!
-   TBranch        *b_AK4JetBDeepCSVudsg_MultiLepCalc;   //!
-   TBranch        *b_AK4JetBDisc_MultiLepCalc;   //!
+   TBranch        *b_AK4JetCSV_MultiLepCalc;   //!
+   TBranch        *b_AK4JetDeepCSVb_MultiLepCalc;   //!
+   TBranch        *b_AK4JetDeepCSVbb_MultiLepCalc;   //!
+   TBranch        *b_AK4JetDeepCSVc_MultiLepCalc;   //!
+   TBranch        *b_AK4JetDeepCSVudsg_MultiLepCalc;   //!
+   TBranch        *b_AK4JetDeepFlavb_MultiLepCalc;   //!
+   TBranch        *b_AK4JetDeepFlavbb_MultiLepCalc;   //!
+   TBranch        *b_AK4JetDeepFlavc_MultiLepCalc;   //!
+   TBranch        *b_AK4JetDeepFlavg_MultiLepCalc;   //!
+   TBranch        *b_AK4JetDeepFlavlepb_MultiLepCalc;   //!
+   TBranch        *b_AK4JetDeepFlavuds_MultiLepCalc;   //!
    TBranch        *b_AK4JetEnergy_MultiLepCalc;   //!
    TBranch        *b_AK4JetEta_MultiLepCalc;   //!
    TBranch        *b_AK4JetPhi_MultiLepCalc;   //!
@@ -1034,14 +1065,14 @@ public :
    TBranch        *b_genBSLPt_MultiLepCalc;   //!
    TBranch        *b_genEnergy_MultiLepCalc;   //!
    TBranch        *b_genEta_MultiLepCalc;   //!
-   TBranch        *b_genJetEnergy_MultiLepCalc;   //!
-   TBranch        *b_genJetEta_MultiLepCalc;   //!
-   TBranch        *b_genJetPhi_MultiLepCalc;   //!
-   TBranch        *b_genJetPt_MultiLepCalc;   //!
    TBranch        *b_genJetEnergyNoClean_MultiLepCalc;   //!
+   TBranch        *b_genJetEnergy_MultiLepCalc;   //!
    TBranch        *b_genJetEtaNoClean_MultiLepCalc;   //!
+   TBranch        *b_genJetEta_MultiLepCalc;   //!
    TBranch        *b_genJetPhiNoClean_MultiLepCalc;   //!
+   TBranch        *b_genJetPhi_MultiLepCalc;   //!
    TBranch        *b_genJetPtNoClean_MultiLepCalc;   //!
+   TBranch        *b_genJetPt_MultiLepCalc;   //!
    TBranch        *b_genPhi_MultiLepCalc;   //!
    TBranch        *b_genPt_MultiLepCalc;   //!
    TBranch        *b_muChIso_MultiLepCalc;   //!
@@ -1102,11 +1133,8 @@ public :
    TBranch        *b_theJetAK8NjettinessTau3_JetSubCalc;   //!
    TBranch        *b_theJetAK8Phi_JetSubCalc;   //!
    TBranch        *b_theJetAK8Pt_JetSubCalc;   //!
-   TBranch        *b_theJetAK8SDSubjetCSVb_JetSubCalc;   //!
-   TBranch        *b_theJetAK8SDSubjetCSVbb_JetSubCalc;   //!
-   TBranch        *b_theJetAK8SDSubjetCSVc_JetSubCalc;   //!
-   TBranch        *b_theJetAK8SDSubjetCSVudsg_JetSubCalc;   //!
    TBranch        *b_theJetAK8SDSubjetDR_JetSubCalc;   //!
+   TBranch        *b_theJetAK8SDSubjetDeepCSVb_JetSubCalc;   //!
    TBranch        *b_theJetAK8SDSubjetEta_JetSubCalc;   //!
    TBranch        *b_theJetAK8SDSubjetMass_JetSubCalc;   //!
    TBranch        *b_theJetAK8SDSubjetPhi_JetSubCalc;   //!
@@ -1122,10 +1150,7 @@ public :
    TBranch        *b_theJetAK8SoftDropn2b2_JetSubCalc;   //!
    TBranch        *b_theJetAK8SoftDropn3b1_JetSubCalc;   //!
    TBranch        *b_theJetAK8SoftDropn3b2_JetSubCalc;   //!
-   TBranch        *b_theJetDeepCSVb_JetSubCalc;   //!
-   TBranch        *b_theJetDeepCSVbb_JetSubCalc;   //!
-   TBranch        *b_theJetDeepCSVc_JetSubCalc;   //!
-   TBranch        *b_theJetDeepCSVudsg_JetSubCalc;   //!
+   TBranch        *b_theJetDeepFlavB_JetSubCalc;   //!
    TBranch        *b_theJetEnergy_JetSubCalc;   //!
    TBranch        *b_theJetEta_JetSubCalc;   //!
    TBranch        *b_theJetPhi_JetSubCalc;   //!
@@ -1159,8 +1184,10 @@ public :
    TBranch        *b_topbPhi_TTbarMassCalc;   //!
    TBranch        *b_topbPt_TTbarMassCalc;   //!
    TBranch        *b_vsSelMCTriggersEl_MultiLepCalc;   //!
+   TBranch        *b_vsSelMCTriggersHad_MultiLepCalc;   //!
    TBranch        *b_vsSelMCTriggersMu_MultiLepCalc;   //!
    TBranch        *b_vsSelTriggersEl_MultiLepCalc;   //!
+   TBranch        *b_vsSelTriggersHad_MultiLepCalc;   //!
    TBranch        *b_vsSelTriggersMu_MultiLepCalc;   //!
  
    step1(TString inputFileName, TString outputFileName);
@@ -1338,6 +1365,9 @@ void step1::Init(TTree *tree)
    elPdgId_MultiLepCalc = 0;
    elScPixCharge_MultiLepCalc = 0;
    elStatus_MultiLepCalc = 0;
+   elTrigMatchFilter0_MultiLepCalc = 0;
+   elTrigMatchFilter1_MultiLepCalc = 0;
+   elTrigMatchFilter2_MultiLepCalc = 0;
    elVtxFitConv_MultiLepCalc = 0;
    genBSLID_MultiLepCalc = 0;
    genID_MultiLepCalc = 0;
@@ -1361,6 +1391,8 @@ void step1::Init(TTree *tree)
    muIsMvaLoose_MultiLepCalc = 0;
    muIsMvaMedium_MultiLepCalc = 0;
    muIsMvaTight_MultiLepCalc = 0;
+   muIsRelIsoLoose_MultiLepCalc = 0;
+   muIsRelIsoTight_MultiLepCalc = 0;
    muIsTight_MultiLepCalc = 0;
    muIsTrkHighPt_MultiLepCalc = 0;
    muMatched_MultiLepCalc = 0;
@@ -1373,6 +1405,9 @@ void step1::Init(TTree *tree)
    muNumberOfMothers_MultiLepCalc = 0;
    muPdgId_MultiLepCalc = 0;
    muStatus_MultiLepCalc = 0;
+   muTrigMatchFilter0_MultiLepCalc = 0;
+   muTrigMatchFilter1_MultiLepCalc = 0;
+   muTrigMatchFilter2_MultiLepCalc = 0;
    quarkID_TpTpCalc = 0;
    tPrimeID_TpTpCalc = 0;
    tPrimeNDaughters_TpTpCalc = 0;
@@ -1403,14 +1438,22 @@ void step1::Init(TTree *tree)
    topWID_TTbarMassCalc = 0;
    topbID_TTbarMassCalc = 0;
    viSelMCTriggersEl_MultiLepCalc = 0;
+   viSelMCTriggersHad_MultiLepCalc = 0;
    viSelMCTriggersMu_MultiLepCalc = 0;
    viSelTriggersEl_MultiLepCalc = 0;
+   viSelTriggersHad_MultiLepCalc = 0;
    viSelTriggersMu_MultiLepCalc = 0;
-   AK4JetBDeepCSVb_MultiLepCalc = 0;
-   AK4JetBDeepCSVbb_MultiLepCalc = 0;
-   AK4JetBDeepCSVc_MultiLepCalc = 0;
-   AK4JetBDeepCSVudsg_MultiLepCalc = 0;
-   AK4JetBDisc_MultiLepCalc = 0;
+   AK4JetCSV_MultiLepCalc = 0;
+   AK4JetDeepCSVb_MultiLepCalc = 0;
+   AK4JetDeepCSVbb_MultiLepCalc = 0;
+   AK4JetDeepCSVc_MultiLepCalc = 0;
+   AK4JetDeepCSVudsg_MultiLepCalc = 0;
+   AK4JetDeepFlavb_MultiLepCalc = 0;
+   AK4JetDeepFlavbb_MultiLepCalc = 0;
+   AK4JetDeepFlavc_MultiLepCalc = 0;
+   AK4JetDeepFlavg_MultiLepCalc = 0;
+   AK4JetDeepFlavlepb_MultiLepCalc = 0;
+   AK4JetDeepFlavuds_MultiLepCalc = 0;
    AK4JetEnergy_MultiLepCalc = 0;
    AK4JetEta_MultiLepCalc = 0;
    AK4JetPhi_MultiLepCalc = 0;
@@ -1544,14 +1587,14 @@ void step1::Init(TTree *tree)
    genBSLPt_MultiLepCalc = 0;
    genEnergy_MultiLepCalc = 0;
    genEta_MultiLepCalc = 0;
-   genJetEnergy_MultiLepCalc = 0;
-   genJetEta_MultiLepCalc = 0;
-   genJetPhi_MultiLepCalc = 0;
-   genJetPt_MultiLepCalc = 0;
    genJetEnergyNoClean_MultiLepCalc = 0;
+   genJetEnergy_MultiLepCalc = 0;
    genJetEtaNoClean_MultiLepCalc = 0;
+   genJetEta_MultiLepCalc = 0;
    genJetPhiNoClean_MultiLepCalc = 0;
+   genJetPhi_MultiLepCalc = 0;
    genJetPtNoClean_MultiLepCalc = 0;
+   genJetPt_MultiLepCalc = 0;
    genPhi_MultiLepCalc = 0;
    genPt_MultiLepCalc = 0;
    muChIso_MultiLepCalc = 0;
@@ -1612,11 +1655,8 @@ void step1::Init(TTree *tree)
    theJetAK8NjettinessTau3_JetSubCalc = 0;
    theJetAK8Phi_JetSubCalc = 0;
    theJetAK8Pt_JetSubCalc = 0;
-   theJetAK8SDSubjetCSVb_JetSubCalc = 0;
-   theJetAK8SDSubjetCSVbb_JetSubCalc = 0;
-   theJetAK8SDSubjetCSVc_JetSubCalc = 0;
-   theJetAK8SDSubjetCSVudsg_JetSubCalc = 0;
    theJetAK8SDSubjetDR_JetSubCalc = 0;
+   theJetAK8SDSubjetDeepCSVb_JetSubCalc = 0;
    theJetAK8SDSubjetEta_JetSubCalc = 0;
    theJetAK8SDSubjetMass_JetSubCalc = 0;
    theJetAK8SDSubjetPhi_JetSubCalc = 0;
@@ -1632,10 +1672,7 @@ void step1::Init(TTree *tree)
    theJetAK8SoftDropn2b2_JetSubCalc = 0;
    theJetAK8SoftDropn3b1_JetSubCalc = 0;
    theJetAK8SoftDropn3b2_JetSubCalc = 0;
-   theJetDeepCSVb_JetSubCalc = 0;
-   theJetDeepCSVbb_JetSubCalc = 0;
-   theJetDeepCSVc_JetSubCalc = 0;
-   theJetDeepCSVudsg_JetSubCalc = 0;
+   theJetDeepFlavB_JetSubCalc = 0;
    theJetEnergy_JetSubCalc = 0;
    theJetEta_JetSubCalc = 0;
    theJetPhi_JetSubCalc = 0;
@@ -1669,8 +1706,10 @@ void step1::Init(TTree *tree)
    topbPhi_TTbarMassCalc = 0;
    topbPt_TTbarMassCalc = 0;
    vsSelMCTriggersEl_MultiLepCalc = 0;
+   vsSelMCTriggersHad_MultiLepCalc = 0;
    vsSelMCTriggersMu_MultiLepCalc = 0;
    vsSelTriggersEl_MultiLepCalc = 0;
+   vsSelTriggersHad_MultiLepCalc = 0;
    vsSelTriggersMu_MultiLepCalc = 0;
    // Set branch addresses and branch pointers
    if (!tree) return;
@@ -1699,6 +1738,7 @@ void step1::Init(TTree *tree)
    inputTree->SetBranchAddress("nAllJets_CommonCalc", &nAllJets_CommonCalc, &b_nAllJets_CommonCalc);
    inputTree->SetBranchAddress("nLooseElectrons_CommonCalc", &nLooseElectrons_CommonCalc, &b_nLooseElectrons_CommonCalc);
    inputTree->SetBranchAddress("nLooseMuons_CommonCalc", &nLooseMuons_CommonCalc, &b_nLooseMuons_CommonCalc);
+   inputTree->SetBranchAddress("nPV_MultiLepCalc", &nPV_MultiLepCalc, &b_nPV_MultiLepCalc);
    inputTree->SetBranchAddress("nPileupInteractions_MultiLepCalc", &nPileupInteractions_MultiLepCalc, &b_nPileupInteractions_MultiLepCalc);
    inputTree->SetBranchAddress("nSelBtagJets_CommonCalc", &nSelBtagJets_CommonCalc, &b_nSelBtagJets_CommonCalc);
    inputTree->SetBranchAddress("nSelElectrons_CommonCalc", &nSelElectrons_CommonCalc, &b_nSelElectrons_CommonCalc);
@@ -1783,6 +1823,9 @@ void step1::Init(TTree *tree)
    inputTree->SetBranchAddress("elPdgId_MultiLepCalc", &elPdgId_MultiLepCalc, &b_elPdgId_MultiLepCalc);
    inputTree->SetBranchAddress("elScPixCharge_MultiLepCalc", &elScPixCharge_MultiLepCalc, &b_elScPixCharge_MultiLepCalc);
    inputTree->SetBranchAddress("elStatus_MultiLepCalc", &elStatus_MultiLepCalc, &b_elStatus_MultiLepCalc);
+   inputTree->SetBranchAddress("elTrigMatchFilter0_MultiLepCalc", &elTrigMatchFilter0_MultiLepCalc, &b_elTrigMatchFilter0_MultiLepCalc);
+   inputTree->SetBranchAddress("elTrigMatchFilter1_MultiLepCalc", &elTrigMatchFilter1_MultiLepCalc, &b_elTrigMatchFilter1_MultiLepCalc);
+   inputTree->SetBranchAddress("elTrigMatchFilter2_MultiLepCalc", &elTrigMatchFilter2_MultiLepCalc, &b_elTrigMatchFilter2_MultiLepCalc);
    inputTree->SetBranchAddress("elVtxFitConv_MultiLepCalc", &elVtxFitConv_MultiLepCalc, &b_elVtxFitConv_MultiLepCalc);
    inputTree->SetBranchAddress("genBSLID_MultiLepCalc", &genBSLID_MultiLepCalc, &b_genBSLID_MultiLepCalc);
    inputTree->SetBranchAddress("genID_MultiLepCalc", &genID_MultiLepCalc, &b_genID_MultiLepCalc);
@@ -1806,6 +1849,8 @@ void step1::Init(TTree *tree)
    inputTree->SetBranchAddress("muIsMvaLoose_MultiLepCalc", &muIsMvaLoose_MultiLepCalc, &b_muIsMvaLoose_MultiLepCalc);
    inputTree->SetBranchAddress("muIsMvaMedium_MultiLepCalc", &muIsMvaMedium_MultiLepCalc, &b_muIsMvaMedium_MultiLepCalc);
    inputTree->SetBranchAddress("muIsMvaTight_MultiLepCalc", &muIsMvaTight_MultiLepCalc, &b_muIsMvaTight_MultiLepCalc);
+   inputTree->SetBranchAddress("muIsRelIsoLoose_MultiLepCalc", &muIsRelIsoLoose_MultiLepCalc, &b_muIsRelIsoLoose_MultiLepCalc);
+   inputTree->SetBranchAddress("muIsRelIsoTight_MultiLepCalc", &muIsRelIsoTight_MultiLepCalc, &b_muIsRelIsoTight_MultiLepCalc);
    inputTree->SetBranchAddress("muIsTight_MultiLepCalc", &muIsTight_MultiLepCalc, &b_muIsTight_MultiLepCalc);
    inputTree->SetBranchAddress("muIsTrkHighPt_MultiLepCalc", &muIsTrkHighPt_MultiLepCalc, &b_muIsTrkHighPt_MultiLepCalc);
    inputTree->SetBranchAddress("muMatched_MultiLepCalc", &muMatched_MultiLepCalc, &b_muMatched_MultiLepCalc);
@@ -1818,6 +1863,9 @@ void step1::Init(TTree *tree)
    inputTree->SetBranchAddress("muNumberOfMothers_MultiLepCalc", &muNumberOfMothers_MultiLepCalc, &b_muNumberOfMothers_MultiLepCalc);
    inputTree->SetBranchAddress("muPdgId_MultiLepCalc", &muPdgId_MultiLepCalc, &b_muPdgId_MultiLepCalc);
    inputTree->SetBranchAddress("muStatus_MultiLepCalc", &muStatus_MultiLepCalc, &b_muStatus_MultiLepCalc);
+   inputTree->SetBranchAddress("muTrigMatchFilter0_MultiLepCalc", &muTrigMatchFilter0_MultiLepCalc, &b_muTrigMatchFilter0_MultiLepCalc);
+   inputTree->SetBranchAddress("muTrigMatchFilter1_MultiLepCalc", &muTrigMatchFilter1_MultiLepCalc, &b_muTrigMatchFilter1_MultiLepCalc);
+   inputTree->SetBranchAddress("muTrigMatchFilter2_MultiLepCalc", &muTrigMatchFilter2_MultiLepCalc, &b_muTrigMatchFilter2_MultiLepCalc);
    inputTree->SetBranchAddress("quarkID_TpTpCalc", &quarkID_TpTpCalc, &b_quarkID_TpTpCalc);
    inputTree->SetBranchAddress("tPrimeID_TpTpCalc", &tPrimeID_TpTpCalc, &b_tPrimeID_TpTpCalc);
    inputTree->SetBranchAddress("tPrimeNDaughters_TpTpCalc", &tPrimeNDaughters_TpTpCalc, &b_tPrimeNDaughters_TpTpCalc);
@@ -1848,14 +1896,22 @@ void step1::Init(TTree *tree)
    inputTree->SetBranchAddress("topWID_TTbarMassCalc", &topWID_TTbarMassCalc, &b_topWID_TTbarMassCalc);
    inputTree->SetBranchAddress("topbID_TTbarMassCalc", &topbID_TTbarMassCalc, &b_topbID_TTbarMassCalc);
    inputTree->SetBranchAddress("viSelMCTriggersEl_MultiLepCalc", &viSelMCTriggersEl_MultiLepCalc, &b_viSelMCTriggersEl_MultiLepCalc);
+   inputTree->SetBranchAddress("viSelMCTriggersHad_MultiLepCalc", &viSelMCTriggersHad_MultiLepCalc, &b_viSelMCTriggersHad_MultiLepCalc);
    inputTree->SetBranchAddress("viSelMCTriggersMu_MultiLepCalc", &viSelMCTriggersMu_MultiLepCalc, &b_viSelMCTriggersMu_MultiLepCalc);
    inputTree->SetBranchAddress("viSelTriggersEl_MultiLepCalc", &viSelTriggersEl_MultiLepCalc, &b_viSelTriggersEl_MultiLepCalc);
+   inputTree->SetBranchAddress("viSelTriggersHad_MultiLepCalc", &viSelTriggersHad_MultiLepCalc, &b_viSelTriggersHad_MultiLepCalc);
    inputTree->SetBranchAddress("viSelTriggersMu_MultiLepCalc", &viSelTriggersMu_MultiLepCalc, &b_viSelTriggersMu_MultiLepCalc);
-   inputTree->SetBranchAddress("AK4JetBDeepCSVb_MultiLepCalc", &AK4JetBDeepCSVb_MultiLepCalc, &b_AK4JetBDeepCSVb_MultiLepCalc);
-   inputTree->SetBranchAddress("AK4JetBDeepCSVbb_MultiLepCalc", &AK4JetBDeepCSVbb_MultiLepCalc, &b_AK4JetBDeepCSVbb_MultiLepCalc);
-   inputTree->SetBranchAddress("AK4JetBDeepCSVc_MultiLepCalc", &AK4JetBDeepCSVc_MultiLepCalc, &b_AK4JetBDeepCSVc_MultiLepCalc);
-   inputTree->SetBranchAddress("AK4JetBDeepCSVudsg_MultiLepCalc", &AK4JetBDeepCSVudsg_MultiLepCalc, &b_AK4JetBDeepCSVudsg_MultiLepCalc);
-   inputTree->SetBranchAddress("AK4JetBDisc_MultiLepCalc", &AK4JetBDisc_MultiLepCalc, &b_AK4JetBDisc_MultiLepCalc);
+   inputTree->SetBranchAddress("AK4JetCSV_MultiLepCalc", &AK4JetCSV_MultiLepCalc, &b_AK4JetCSV_MultiLepCalc);
+   inputTree->SetBranchAddress("AK4JetDeepCSVb_MultiLepCalc", &AK4JetDeepCSVb_MultiLepCalc, &b_AK4JetDeepCSVb_MultiLepCalc);
+   inputTree->SetBranchAddress("AK4JetDeepCSVbb_MultiLepCalc", &AK4JetDeepCSVbb_MultiLepCalc, &b_AK4JetDeepCSVbb_MultiLepCalc);
+   inputTree->SetBranchAddress("AK4JetDeepCSVc_MultiLepCalc", &AK4JetDeepCSVc_MultiLepCalc, &b_AK4JetDeepCSVc_MultiLepCalc);
+   inputTree->SetBranchAddress("AK4JetDeepCSVudsg_MultiLepCalc", &AK4JetDeepCSVudsg_MultiLepCalc, &b_AK4JetDeepCSVudsg_MultiLepCalc);
+   inputTree->SetBranchAddress("AK4JetDeepFlavb_MultiLepCalc", &AK4JetDeepFlavb_MultiLepCalc, &b_AK4JetDeepFlavb_MultiLepCalc);
+   inputTree->SetBranchAddress("AK4JetDeepFlavbb_MultiLepCalc", &AK4JetDeepFlavbb_MultiLepCalc, &b_AK4JetDeepFlavbb_MultiLepCalc);
+   inputTree->SetBranchAddress("AK4JetDeepFlavc_MultiLepCalc", &AK4JetDeepFlavc_MultiLepCalc, &b_AK4JetDeepFlavc_MultiLepCalc);
+   inputTree->SetBranchAddress("AK4JetDeepFlavg_MultiLepCalc", &AK4JetDeepFlavg_MultiLepCalc, &b_AK4JetDeepFlavg_MultiLepCalc);
+   inputTree->SetBranchAddress("AK4JetDeepFlavlepb_MultiLepCalc", &AK4JetDeepFlavlepb_MultiLepCalc, &b_AK4JetDeepFlavlepb_MultiLepCalc);
+   inputTree->SetBranchAddress("AK4JetDeepFlavuds_MultiLepCalc", &AK4JetDeepFlavuds_MultiLepCalc, &b_AK4JetDeepFlavuds_MultiLepCalc);
    inputTree->SetBranchAddress("AK4JetEnergy_MultiLepCalc", &AK4JetEnergy_MultiLepCalc, &b_AK4JetEnergy_MultiLepCalc);
    inputTree->SetBranchAddress("AK4JetEta_MultiLepCalc", &AK4JetEta_MultiLepCalc, &b_AK4JetEta_MultiLepCalc);
    inputTree->SetBranchAddress("AK4JetPhi_MultiLepCalc", &AK4JetPhi_MultiLepCalc, &b_AK4JetPhi_MultiLepCalc);
@@ -1989,16 +2045,16 @@ void step1::Init(TTree *tree)
    inputTree->SetBranchAddress("genBSLPt_MultiLepCalc", &genBSLPt_MultiLepCalc, &b_genBSLPt_MultiLepCalc);
    inputTree->SetBranchAddress("genEnergy_MultiLepCalc", &genEnergy_MultiLepCalc, &b_genEnergy_MultiLepCalc);
    inputTree->SetBranchAddress("genEta_MultiLepCalc", &genEta_MultiLepCalc, &b_genEta_MultiLepCalc);
+   if(isTT){
+      inputTree->SetBranchAddress("genJetEnergyNoClean_MultiLepCalc", &genJetEnergyNoClean_MultiLepCalc, &b_genJetEnergyNoClean_MultiLepCalc);
+      inputTree->SetBranchAddress("genJetEtaNoClean_MultiLepCalc", &genJetEtaNoClean_MultiLepCalc, &b_genJetEtaNoClean_MultiLepCalc);
+      inputTree->SetBranchAddress("genJetPhiNoClean_MultiLepCalc", &genJetPhiNoClean_MultiLepCalc, &b_genJetPhiNoClean_MultiLepCalc);
+      inputTree->SetBranchAddress("genJetPtNoClean_MultiLepCalc", &genJetPtNoClean_MultiLepCalc, &b_genJetPtNoClean_MultiLepCalc);
+   }
    inputTree->SetBranchAddress("genJetEnergy_MultiLepCalc", &genJetEnergy_MultiLepCalc, &b_genJetEnergy_MultiLepCalc);
    inputTree->SetBranchAddress("genJetEta_MultiLepCalc", &genJetEta_MultiLepCalc, &b_genJetEta_MultiLepCalc);
    inputTree->SetBranchAddress("genJetPhi_MultiLepCalc", &genJetPhi_MultiLepCalc, &b_genJetPhi_MultiLepCalc);
    inputTree->SetBranchAddress("genJetPt_MultiLepCalc", &genJetPt_MultiLepCalc, &b_genJetPt_MultiLepCalc);
-   if(isTT){
-   inputTree->SetBranchAddress("genJetEnergyNoClean_MultiLepCalc", &genJetEnergyNoClean_MultiLepCalc, &b_genJetEnergyNoClean_MultiLepCalc);
-   inputTree->SetBranchAddress("genJetEtaNoClean_MultiLepCalc", &genJetEtaNoClean_MultiLepCalc, &b_genJetEtaNoClean_MultiLepCalc);
-   inputTree->SetBranchAddress("genJetPhiNoClean_MultiLepCalc", &genJetPhiNoClean_MultiLepCalc, &b_genJetPhiNoClean_MultiLepCalc);
-   inputTree->SetBranchAddress("genJetPtNoClean_MultiLepCalc", &genJetPtNoClean_MultiLepCalc, &b_genJetPtNoClean_MultiLepCalc);
-   }
    inputTree->SetBranchAddress("genPhi_MultiLepCalc", &genPhi_MultiLepCalc, &b_genPhi_MultiLepCalc);
    inputTree->SetBranchAddress("genPt_MultiLepCalc", &genPt_MultiLepCalc, &b_genPt_MultiLepCalc);
    inputTree->SetBranchAddress("muChIso_MultiLepCalc", &muChIso_MultiLepCalc, &b_muChIso_MultiLepCalc);
@@ -2059,11 +2115,8 @@ void step1::Init(TTree *tree)
    inputTree->SetBranchAddress("theJetAK8NjettinessTau3_JetSubCalc", &theJetAK8NjettinessTau3_JetSubCalc, &b_theJetAK8NjettinessTau3_JetSubCalc);
    inputTree->SetBranchAddress("theJetAK8Phi_JetSubCalc", &theJetAK8Phi_JetSubCalc, &b_theJetAK8Phi_JetSubCalc);
    inputTree->SetBranchAddress("theJetAK8Pt_JetSubCalc", &theJetAK8Pt_JetSubCalc, &b_theJetAK8Pt_JetSubCalc);
-   inputTree->SetBranchAddress("theJetAK8SDSubjetCSVb_JetSubCalc", &theJetAK8SDSubjetCSVb_JetSubCalc, &b_theJetAK8SDSubjetCSVb_JetSubCalc);
-   inputTree->SetBranchAddress("theJetAK8SDSubjetCSVbb_JetSubCalc", &theJetAK8SDSubjetCSVbb_JetSubCalc, &b_theJetAK8SDSubjetCSVbb_JetSubCalc);
-   inputTree->SetBranchAddress("theJetAK8SDSubjetCSVc_JetSubCalc", &theJetAK8SDSubjetCSVc_JetSubCalc, &b_theJetAK8SDSubjetCSVc_JetSubCalc);
-   inputTree->SetBranchAddress("theJetAK8SDSubjetCSVudsg_JetSubCalc", &theJetAK8SDSubjetCSVudsg_JetSubCalc, &b_theJetAK8SDSubjetCSVudsg_JetSubCalc);
    inputTree->SetBranchAddress("theJetAK8SDSubjetDR_JetSubCalc", &theJetAK8SDSubjetDR_JetSubCalc, &b_theJetAK8SDSubjetDR_JetSubCalc);
+   inputTree->SetBranchAddress("theJetAK8SDSubjetDeepCSVb_JetSubCalc", &theJetAK8SDSubjetDeepCSVb_JetSubCalc, &b_theJetAK8SDSubjetDeepCSVb_JetSubCalc);
    inputTree->SetBranchAddress("theJetAK8SDSubjetEta_JetSubCalc", &theJetAK8SDSubjetEta_JetSubCalc, &b_theJetAK8SDSubjetEta_JetSubCalc);
    inputTree->SetBranchAddress("theJetAK8SDSubjetMass_JetSubCalc", &theJetAK8SDSubjetMass_JetSubCalc, &b_theJetAK8SDSubjetMass_JetSubCalc);
    inputTree->SetBranchAddress("theJetAK8SDSubjetPhi_JetSubCalc", &theJetAK8SDSubjetPhi_JetSubCalc, &b_theJetAK8SDSubjetPhi_JetSubCalc);
@@ -2079,10 +2132,7 @@ void step1::Init(TTree *tree)
    inputTree->SetBranchAddress("theJetAK8SoftDropn2b2_JetSubCalc", &theJetAK8SoftDropn2b2_JetSubCalc, &b_theJetAK8SoftDropn2b2_JetSubCalc);
    inputTree->SetBranchAddress("theJetAK8SoftDropn3b1_JetSubCalc", &theJetAK8SoftDropn3b1_JetSubCalc, &b_theJetAK8SoftDropn3b1_JetSubCalc);
    inputTree->SetBranchAddress("theJetAK8SoftDropn3b2_JetSubCalc", &theJetAK8SoftDropn3b2_JetSubCalc, &b_theJetAK8SoftDropn3b2_JetSubCalc);
-   inputTree->SetBranchAddress("theJetDeepCSVb_JetSubCalc", &theJetDeepCSVb_JetSubCalc, &b_theJetDeepCSVb_JetSubCalc);
-   inputTree->SetBranchAddress("theJetDeepCSVbb_JetSubCalc", &theJetDeepCSVbb_JetSubCalc, &b_theJetDeepCSVbb_JetSubCalc);
-   inputTree->SetBranchAddress("theJetDeepCSVc_JetSubCalc", &theJetDeepCSVc_JetSubCalc, &b_theJetDeepCSVc_JetSubCalc);
-   inputTree->SetBranchAddress("theJetDeepCSVudsg_JetSubCalc", &theJetDeepCSVudsg_JetSubCalc, &b_theJetDeepCSVudsg_JetSubCalc);
+   inputTree->SetBranchAddress("theJetDeepFlavB_JetSubCalc", &theJetDeepFlavB_JetSubCalc, &b_theJetDeepFlavB_JetSubCalc);
    inputTree->SetBranchAddress("theJetEnergy_JetSubCalc", &theJetEnergy_JetSubCalc, &b_theJetEnergy_JetSubCalc);
    inputTree->SetBranchAddress("theJetEta_JetSubCalc", &theJetEta_JetSubCalc, &b_theJetEta_JetSubCalc);
    inputTree->SetBranchAddress("theJetPhi_JetSubCalc", &theJetPhi_JetSubCalc, &b_theJetPhi_JetSubCalc);
@@ -2116,8 +2166,10 @@ void step1::Init(TTree *tree)
    inputTree->SetBranchAddress("topbPhi_TTbarMassCalc", &topbPhi_TTbarMassCalc, &b_topbPhi_TTbarMassCalc);
    inputTree->SetBranchAddress("topbPt_TTbarMassCalc", &topbPt_TTbarMassCalc, &b_topbPt_TTbarMassCalc);
    inputTree->SetBranchAddress("vsSelMCTriggersEl_MultiLepCalc", &vsSelMCTriggersEl_MultiLepCalc, &b_vsSelMCTriggersEl_MultiLepCalc);
+   inputTree->SetBranchAddress("vsSelMCTriggersHad_MultiLepCalc", &vsSelMCTriggersHad_MultiLepCalc, &b_vsSelMCTriggersHad_MultiLepCalc);
    inputTree->SetBranchAddress("vsSelMCTriggersMu_MultiLepCalc", &vsSelMCTriggersMu_MultiLepCalc, &b_vsSelMCTriggersMu_MultiLepCalc);
    inputTree->SetBranchAddress("vsSelTriggersEl_MultiLepCalc", &vsSelTriggersEl_MultiLepCalc, &b_vsSelTriggersEl_MultiLepCalc);
+   inputTree->SetBranchAddress("vsSelTriggersHad_MultiLepCalc", &vsSelTriggersHad_MultiLepCalc, &b_vsSelTriggersHad_MultiLepCalc);
    inputTree->SetBranchAddress("vsSelTriggersMu_MultiLepCalc", &vsSelTriggersMu_MultiLepCalc, &b_vsSelTriggersMu_MultiLepCalc);
    Notify();
 }
