@@ -697,7 +697,8 @@ void step1::Loop(TString inTreeName, TString outTreeName )
 	
       if(isMC){
 	if(nTrueInteractions_MultiLepCalc > 99) nTrueInteractions_MultiLepCalc = 99;
-        if(nTrueInteractions_MultiLepCalc > 79 && isSig && Year==2017) nTrueInteractions_MultiLepCalc = 79;
+    if(nTrueInteractions_MultiLepCalc > 79 && isSig && Year==2017) nTrueInteractions_MultiLepCalc = 79;
+    if(nTrueInteractions_MultiLepCalc > 74 && Year==2016) nTrueInteractions_MultiLepCalc = 74;
 	if(nTrueInteractions_MultiLepCalc < 0) nTrueInteractions_MultiLepCalc = 0;
 	try {
 		hardcodedConditions.GetPileupWeight(nTrueInteractions_MultiLepCalc, &pileupWeight, &pileupWeightUp, &pileupWeightDown, Year, sample);

@@ -47,16 +47,24 @@ void HardcodedConditions::GetTtaggingSF(double pt, double *tau32sf, double *tau3
 
 void HardcodedConditions::GetTtaggingSF2016(double pt, double *tau32sf, double *tau32sfup, double *tau32sfdn)
 {
-	// TO-BE-IMPLEMENTED!!!!!!!
-	*tau32sf   = 1.000;
-	*tau32sfup = 1.000;
-	*tau32sfdn = 1.000;
+	// VALUES from the githup repository linked from https://twiki.cern.ch/twiki/bin/viewauth/CMS/JetTopTagging#13_TeV_Working_Points_and_Scale
+	// CORRESPONDING TO WP5 with tau32<0.80 and 105<mSD<220
+    const int Nbin = 5;
+    double ptMins[Nbin]= {300,400,480,600,1100};
+    double SFs[Nbin]   = {0.98376977,1.00090742,1.00348091,1.00204241,1.00204241};
+    double SFsUp[Nbin] = {1.02300429,1.02958071,1.03640139,1.05011296,1.09818339};
+    double SFsDn[Nbin] = {0.94453520,9.72234130,9.70560491,9.53971922,9.05901372};
+
+    for(int ibin = Nbin-1; ibin >= 0; ibin--){
+    	if (pt > ptMins[ibin]){*tau32sf=SFs[ibin];*tau32sfup=SFsUp[ibin];*tau32sfdn=SFsDn[ibin];break;}
+    	}
 
 }
 
 void HardcodedConditions::GetTtaggingSF2017(double pt, double *tau32sf, double *tau32sfup, double *tau32sfdn)
 {
 	// VALUES from the githup repository linked from https://twiki.cern.ch/twiki/bin/viewauth/CMS/JetTopTagging#13_TeV_Working_Points_and_Scale
+	// CORRESPONDING TO WP5 with tau32<0.80 and 105<mSD<220
     const int Nbin = 5;
     double ptMins[Nbin]= {300,400,480,600,1100};
     double SFs[Nbin]   = {0.98331112,0.96821666,0.95967776,1.02111010,1.02111010};
@@ -178,34 +186,73 @@ void HardcodedConditions::GetWtaggingSF(double pt, double *tau21sf, double *tau2
 
 void HardcodedConditions::GetWtaggingSF2016(double pt, double *tau21sf, double *tau21sfup, double *tau21sfdn, double *tau21ptsfup, double *tau21ptsfdn)
 {
-	// TO-BE-IMPLEMENTED!!!!!!!
-	*tau21sf   = 1.000;
-	*tau21sfup = 1.000;
-	*tau21sfdn = 1.000;
-	*tau21ptsfup = 1.000;
-	*tau21ptsfdn = 1.000;
+	// VALUES from https://twiki.cern.ch/twiki/bin/view/CMS/JetWtagging#2016_scale_factors_and_correctio
+	// CORRESPONDING TO tau21<0.55 and 65<mSD<105
+	*tau21sf = 1.03;
+	*tau21sfup = 1.03+0.14;
+	*tau21sfdn = 1.03-0.14;
+	*tau21ptsfup = 1.03+0.041*log(pt/200);
+	*tau21ptsfdn = 1.03-0.041*log(pt/200);
 
 }
 
 void HardcodedConditions::GetWtaggingSF2017(double pt, double *tau21sf, double *tau21sfup, double *tau21sfdn, double *tau21ptsfup, double *tau21ptsfdn)
 {
 	// VALUES from https://twiki.cern.ch/twiki/bin/view/CMS/JetWtagging#2017_scale_factors_and_correctio
+	// CORRESPONDING TO tau21<0.45 and 65<mSD<105
 	*tau21sf = 0.97;
 	*tau21sfup = 0.97+0.06;
 	*tau21sfdn = 0.97-0.06;
 	*tau21ptsfup = 0.97+0.041*log(pt/200);
 	*tau21ptsfdn = 0.97-0.041*log(pt/200);
+	if(pt > 600){
+		*tau21sfup = 1.00;
+		*tau21sfdn = 1.00;
+		*tau21ptsfup = 0.97+0.041*log(pt/200);
+		*tau21ptsfdn = 0.97-0.041*log(pt/200);
+		}
+	else if(pt > 350){
+		*tau21sfup = 0.90+0.13;
+		*tau21sfdn = 0.90-0.13;
+		*tau21ptsfup = 1.00;
+		*tau21ptsfdn = 1.00;
+		}
+	else if(pt > 300){
+		*tau21sfup = 1.00+0.09;
+		*tau21sfdn = 1.00-0.09;
+		*tau21ptsfup = 1.00;
+		*tau21ptsfdn = 1.00;
+		}
+	else if(pt > 250){
+		*tau21sfup = 1.06+0.06;
+		*tau21sfdn = 1.06-0.06;
+		*tau21ptsfup = 1.00;
+		*tau21ptsfdn = 1.00;
+		}
+	else if(pt > 200){
+		*tau21sfup = 1.02+0.07;
+		*tau21sfdn = 1.02-0.07;
+		*tau21ptsfup = 1.00;
+		*tau21ptsfdn = 1.00;
+		}
+	else{
+		*tau21sfup = 1.00;
+		*tau21sfdn = 1.00;
+		*tau21ptsfup = 1.00;
+		*tau21ptsfdn = 1.00;
+		}
    
 }
 
 void HardcodedConditions::GetWtaggingSF2018(double pt, double *tau21sf, double *tau21sfup, double *tau21sfdn, double *tau21ptsfup, double *tau21ptsfdn)
 {
-	// TO-BE-IMPLEMENTED!!!!!!!
-	*tau21sf   = 1.000;
-	*tau21sfup = 1.000;
-	*tau21sfdn = 1.000;
-	*tau21ptsfup = 1.000;
-	*tau21ptsfdn = 1.000;
+	// VALUES from https://twiki.cern.ch/twiki/bin/view/CMS/JetWtagging#2018_scale_factors_and_correctio
+	// CORRESPONDING TO tau21<0.45 and 65<mSD<105
+	*tau21sf = 0.98;
+	*tau21sfup = 0.98+0.03;
+	*tau21sfdn = 0.98-0.03;
+	*tau21ptsfup = 0.98+0.041*log(pt/200);
+	*tau21ptsfdn = 0.98-0.041*log(pt/200);
 
 }
 
@@ -356,8 +403,48 @@ double HardcodedConditions::GetEGammaGsfSF(double pt, double eta, int year)
 
 double HardcodedConditions::GetEGammaGsfSF2016(double pt, double eta)
 {
-	// TO-BE-IMPLEMENTED!!!!!!!
-	return 1.000;
+	// Gsf Tracking scale factor: http://fcouderc.web.cern.ch/fcouderc/EGamma/scaleFactors/Moriond17/approval/RECO/passingRECO/egammaEffi.txt_egammaPlots.pdf
+	if (pt < 45) {
+		if (eta < -2.0) return 0.977;
+		else if (eta < -1.566) return 0.982;
+		else if (eta < -1.442) return 0.948;
+		else if (eta < -1.0) return 0.969;
+		else if (eta < -0.5) return 0.977;
+		else if (eta < 0.5) return 0.970;
+		else if (eta < 1.0) return 0.972;
+		else if (eta < 1.442) return 0.970;
+		else if (eta < 1.566) return 0.958;
+		else return 0.980; }
+	else if (pt < 75) {
+		if (eta < -2.0) return 0.984;
+		else if (eta < -1.566) return 0.982;
+		else if (eta < -1.442) return 0.971;
+		else if (eta < -1.0) return 0.976;
+		else if (eta < 0.0) return 0.980;
+		else if (eta < 0.5) return 0.978;
+		else if (eta < 1.0) return 0.979;
+		else if (eta < 1.442) return 0.977;
+		else if (eta < 1.566) return 0.964;
+		else if (eta < 2.0) return 0.983;
+		else return 0.984; }
+	else if (pt < 100) {
+		if (eta < -1.566) return 0.997;
+		else if (eta < -1.442) return 1.003;
+		else if (eta < -1.0) return 0.996;
+		else if (eta < 1.0) return 0.992;
+		else if (eta < 1.442) return 0.996;
+		else if (eta < 1.566) return 1.003;
+		else return 0.997; }
+	else {
+		if (eta < -1.566) return 0.990;
+		else if (eta < -1.442) return 1.010;
+		else if (eta < -1.0) return 0.985;
+		else if (eta < -0.5) return 0.988;
+		else if (eta < 0.5) return 0.994;
+		else if (eta < 1.0) return 0.988;
+		else if (eta < 1.442) return 0.985;
+		else if (eta < 1.566) return 1.010;
+		else return 0.990; }
 
 }
 
@@ -488,9 +575,74 @@ double HardcodedConditions::GetElectronIdSF(double pt, double eta, int year)
 
 double HardcodedConditions::GetElectronIdSF2016(double pt, double eta)
 {
-	// TO-BE-IMPLEMENTED!!!!!!!
-	return 1.000;
-
+    //Scale Factor 2: https://twiki.cern.ch/twiki/pub/CMS/EgammaIDRecipesRun2/2017_ElectronMVA90noiso_2D.pdf
+	if (pt < 20) {
+	    if (eta < -2.0) return 0.943;
+	    else if (eta < -1.566) return 0.957;
+	    else if (eta < -1.442) return 1.000;
+	    else if (eta < -0.8) return 1.008;
+	    else if (eta < 0.0) return 0.993;
+	    else if (eta < 0.8) return 0.992;
+	    else if (eta < 1.442) return 0.999;
+	    else if (eta < 1.566) return 1.000;
+	    else if (eta < 2.0) return 0.978;
+	    else return 0.930; }
+	else if (pt < 35) {
+	    if (eta < -2.0) return 0.926;
+	    else if (eta < -1.566) return 0.937;
+	    else if (eta < -1.442) return 1.000;
+	    else if (eta < -0.8) return 0.964;
+	    else if (eta < 0.0) return 0.981;
+	    else if (eta < 0.8) return 0.981;
+	    else if (eta < 1.442) return 0.963;
+	    else if (eta < 1.566) return 1.000;
+	    else if (eta < 2.0) return 0.943;
+	    else return 0.918; }
+	else if (pt < 50) {
+	    if (eta < -2.0) return 0.941;
+	    else if (eta < -1.566) return 0.953;
+	    else if (eta < -1.442) return 1.000;
+	    else if (eta < -0.8) return 0.962;
+	    else if (eta < 0.0) return 0.972;
+	    else if (eta < 0.8) return 0.974;
+	    else if (eta < 1.442) return 0.965;
+	    else if (eta < 1.566) return 1.000;
+	    else if (eta < 2.0) return 0.955;
+	    else return 0.933; }
+	else if (pt < 100) {
+	    if (eta < -2.0) return 0.948;
+	    else if (eta < -1.566) return 0.967;
+	    else if (eta < -1.442) return 1.000;
+	    else if (eta < -0.8) return 0.968;
+	    else if (eta < 0.0) return 0.979;
+	    else if (eta < 0.8) return 0.975;
+	    else if (eta < 1.442) return 0.970;
+	    else if (eta < 1.566) return 1.000;
+	    else if (eta < 2.0) return 0.971;
+	    else return 0.938; }
+	else if (pt < 200) {
+	    if (eta < -2.0) return 0.983;
+	    else if (eta < -1.566) return 0.969;
+	    else if (eta < -1.442) return 1.000;
+	    else if (eta < -0.8) return 0.979;
+	    else if (eta < 0.0) return 0.983;
+	    else if (eta < 0.8) return 0.988;
+	    else if (eta < 1.442) return 0.993;
+	    else if (eta < 1.566) return 1.000;
+	    else if (eta < 2.0) return 0.990;
+	    else return 0.939; }
+	else {
+	    if (eta < -2.0) return 0.922;
+	    else if (eta < -1.566) return 0.985;
+	    else if (eta < -1.442) return 1.000;
+	    else if (eta < -0.8) return 1.007;
+	    else if (eta < 0.0) return 0.993;
+	    else if (eta < 0.8) return 0.959;
+	    else if (eta < 1.442) return 1.013;
+	    else if (eta < 1.566) return 1.000;
+	    else if (eta < 2.0) return 0.949;
+	    else return 1.057; }
+	    	    
 }
 
 double HardcodedConditions::GetElectronIdSF2017(double pt, double eta)
@@ -885,9 +1037,36 @@ double HardcodedConditions::GetMuonIdSF(double pt, double eta, int year)
 
 double HardcodedConditions::GetMuonIdSF2016(double pt, double eta)
 {
-	// TO-BE-IMPLEMENTED!!!!!!!
-	return 1.000;
-
+	// Cut based tight id
+	if (fabs(eta) < 2.10 && fabs(eta) > 1.20) {
+	    if (pt < 25.0 && pt > 20.0) return 0.9924252719877384;
+	    else if (pt < 60.0 && pt > 50.0) return 0.9906364222943529;
+	    else if (pt < 30.0 && pt > 25.0) return 0.9890884461284933;
+	    else if (pt < 120.0 && pt > 60.0) return 0.9920464322143979;
+	    else if (pt < 40.0 && pt > 30.0) return 0.9946469069883841;
+	    else if (pt < 50.0 && pt > 40.0) return 0.9926528825155183; }
+	else if (fabs(eta) < 2.40 && pt > 2.10) {
+	    if (pt < 25.0 && pt > 20.0) return 0.9758095839531763;
+	    else if (pt < 60.0 && pt > 50.0) return 0.9673568416097894;
+	    else if (pt < 30.0 && pt > 25.0) return 0.9745153594179884;
+	    else if (pt < 120.0 && pt > 60.0) return 0.9766311856731202;
+	    else if (pt < 40.0 && pt > 30.0) return 0.9787410500158746;
+	    else if (pt < 50.0 && pt > 40.0) return 0.978189122919501; }
+	else if (fabs(eta) < 1.20 && fabs(eta) > 0.90) {
+	    if (pt < 25.0 && pt > 20.0) return 0.9927389275515244;
+	    else if (pt < 60.0 && pt > 50.0) return 0.9839056384760008;
+	    else if (pt < 30.0 && pt > 25.0) return 0.985063939762512;
+	    else if (pt < 120.0 && pt > 60.0) return 0.984060403143468;
+	    else if (pt < 40.0 && pt > 30.0) return 0.9865359464182247;
+	    else if (pt < 50.0 && pt > 40.0) return 0.984913093101493; }
+	else if (fabs(eta) < 0.90 && fabs(eta) > 0.0) {
+	    if (pt < 25.0 && pt > 20.0) return 0.9910777627756951;
+	    else if (pt < 60.0 && pt > 50.0) return 0.9855545160334763;
+	    else if (pt < 30.0 && pt > 25.0) return 0.987410468262084;
+	    else if (pt < 120.0 && pt > 60.0) return 0.9898057377093389;
+	    else if (pt < 40.0 && pt > 30.0) return 0.9907753279135898;
+	    else if (pt < 50.0 && pt > 40.0) return 0.9892483588952047; }
+	    
 }
 
 double HardcodedConditions::GetMuonIdSF2017(double pt, double eta)
@@ -1164,10 +1343,16 @@ void HardcodedConditions::GetPileupWeight(int nTrueInt, float *pileupweight, flo
 
 void HardcodedConditions::GetPileupWeight2016(int nTrueInt, float *pileupweight, float *pileupweightup, float *pileupweightdn, std::string sample)
 {
-	// TO-BE-IMPLEMENTED!!!!!!!
-	*pileupweight   = 1.000;
-	*pileupweightup = 1.000;
-	*pileupweightdn = 1.000;
+   // Pileup distributions -- ReReco Data vs Moriond17MC
+   std::vector<float> pileupweights;
+   std::vector<float> pileupweightsUp;
+   std::vector<float> pileupweightsDn;
+   pileupweights = {3.603e-01, 9.378e-01, 1.201e+00, 9.651e-01, 1.112e+00, 1.162e+00, 7.847e-01, 4.960e-01, 7.422e-01, 8.839e-01, 9.662e-01, 1.071e+00, 1.124e+00, 1.175e+00, 1.203e+00, 1.208e+00, 1.200e+00, 1.182e+00, 1.144e+00, 1.096e+00, 1.065e+00, 1.051e+00, 1.052e+00, 1.051e+00, 1.050e+00, 1.057e+00, 1.072e+00, 1.083e+00, 1.095e+00, 1.108e+00, 1.094e+00, 1.084e+00, 1.042e+00, 9.850e-01, 9.095e-01, 8.196e-01, 7.159e-01, 6.107e-01, 5.032e-01, 4.052e-01, 3.092e-01, 2.285e-01, 1.636e-01, 1.133e-01, 7.738e-02, 5.090e-02, 3.180e-02, 2.013e-02, 1.226e-02, 7.425e-03, 4.389e-03, 2.614e-03, 1.572e-03, 9.679e-04, 7.333e-04, 6.786e-04, 7.342e-04, 9.346e-04, 1.346e-03, 1.888e-03, 3.248e-03, 3.966e-03, 4.872e-03, 5.119e-03, 5.452e-03, 5.338e-03, 5.112e-03, 4.397e-03, 4.023e-03, 3.359e-03, 2.987e-03, 2.770e-03, 2.278e-03, 1.982e-03, 1.765e-03};
+   pileupweightsDn = {3.733e-01, 1.197e+00, 1.263e+00, 1.102e+00, 1.240e+00, 1.278e+00, 9.076e-01, 7.680e-01, 1.093e+00, 1.345e+00, 1.489e+00, 1.526e+00, 1.496e+00, 1.500e+00, 1.498e+00, 1.445e+00, 1.367e+00, 1.298e+00, 1.228e+00, 1.165e+00, 1.125e+00, 1.091e+00, 1.065e+00, 1.041e+00, 1.019e+00, 1.005e+00, 9.973e-01, 9.851e-01, 9.722e-01, 9.567e-01, 9.141e-01, 8.732e-01, 8.075e-01, 7.337e-01, 6.501e-01, 5.605e-01, 4.658e-01, 3.750e-01, 2.886e-01, 2.147e-01, 1.498e-01, 1.001e-01, 6.433e-02, 3.962e-02, 2.392e-02, 1.382e-02, 7.544e-03, 4.163e-03, 2.215e-03, 1.187e-03, 6.441e-04, 3.850e-04, 2.739e-04, 2.425e-04, 2.913e-04, 3.993e-04, 5.467e-04, 7.711e-04, 1.143e-03, 1.598e-03, 2.706e-03, 3.234e-03, 3.878e-03, 3.973e-03, 4.121e-03, 3.928e-03, 3.659e-03, 3.059e-03, 2.719e-03, 2.203e-03, 1.901e-03, 1.709e-03, 1.362e-03, 1.147e-03, 9.884e-04};
+   pileupweightsUp = {3.510e-01, 7.384e-01, 1.136e+00, 8.481e-01, 1.011e+00, 1.047e+00, 7.158e-01, 3.479e-01, 5.006e-01, 6.065e-01, 6.335e-01, 7.320e-01, 8.266e-01, 9.118e-01, 9.603e-01, 9.892e-01, 1.024e+00, 1.052e+00, 1.051e+00, 1.027e+00, 1.005e+00, 9.982e-01, 1.015e+00, 1.038e+00, 1.058e+00, 1.085e+00, 1.121e+00, 1.155e+00, 1.192e+00, 1.232e+00, 1.245e+00, 1.269e+00, 1.260e+00, 1.233e+00, 1.180e+00, 1.103e+00, 1.001e+00, 8.905e-01, 7.691e-01, 6.545e-01, 5.326e-01, 4.236e-01, 3.297e-01, 2.501e-01, 1.888e-01, 1.381e-01, 9.654e-02, 6.875e-02, 4.733e-02, 3.248e-02, 2.175e-02, 1.456e-02, 9.619e-03, 6.146e-03, 4.301e-03, 3.097e-03, 2.253e-03, 1.894e-03, 2.009e-03, 2.389e-03, 3.847e-03, 4.626e-03, 5.722e-03, 6.110e-03, 6.639e-03, 6.646e-03, 6.514e-03, 5.738e-03, 5.381e-03, 4.607e-03, 4.204e-03, 4.003e-03, 3.382e-03, 3.025e-03, 2.770e-03};
+   *pileupweight = pileupweights[nTrueInt];
+   *pileupweightup = pileupweightsUp[nTrueInt];
+   *pileupweightdn = pileupweightsDn[nTrueInt];
 
 }
 
