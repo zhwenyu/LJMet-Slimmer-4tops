@@ -1321,12 +1321,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
 	  double tau32eff = 1.0;
 	  if(isTmatched && matchedPt >= 400){	    
 	    hardcodedConditions.GetTtaggingSF(matchedPt, &tau32SF, &tau32SFup, &tau32SFdn, Year);
-	    //THESE ARE SET TO 1 SO AS TO NOT APPLY SF WHILE WAITING FOR EFFICIENCIES!!!!
-	    //REMOVE THEM WHEN YOU HAVE THE CORRECT EFFICIENCIES!!!!
-	    tau32SF = 1.0;
-	    tau32SFup = 1.0;
-	    tau32SFdn = 1.0;
-	    // Use matched T to find the efficiency -- calculated for TpTp and ttbar, EWK/QCD will almost never pass here (use ttbar eff when they do)
+	    // Use matched T to find the efficiency -- EWK/QCD will almost never pass here (use ttbar eff when they do)
 		if(isTTTT) {hardcodedConditions.GetTtaggingEff(matchedPt, &tau32eff, Year, "tttt");}
 		else if(isXX) {hardcodedConditions.GetTtaggingEff(matchedPt, &tau32eff, Year, "x53x53",SigMass);}		
 		else if(isTT) {hardcodedConditions.GetTtaggingEff(matchedPt, &tau32eff, Year, "ttbar");}
@@ -1372,19 +1367,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
 	  double tau21eff = 1.0;
 	  if(isWmatched && matchedPt >= 175 && massSD > 65 && massSD < 105 && theJetAK8Pt_JetSubCalc_PtOrdered.at(ijet) >= 200){	    
 	    hardcodedConditions.GetWtaggingSF(theJetAK8Pt_JetSubCalc_PtOrdered.at(ijet), &tau21SF, &tau21SFup, &tau21SFdn, &tau21ptSFup, &tau21ptSFdn, Year);
-	    //THESE ARE SET TO 1 SO AS TO NOT APPLY SF WHILE WAITING FOR EFFICIENCIES!!!!
-	    tau21SF = 1.0;
-	    tau21SFup = 1.0;
-	    tau21SFdn = 1.0;
-	    tau21ptSFup = 1.0;
-	    tau21ptSFdn = 1.0;
-	    
-	    // Use matched W to find the efficiency -- calculated for TpTp and ttbar, EWK/QCD will almost never pass here (use ttbar eff when they do)
-		if(isTTTT) {hardcodedConditions.GetTtaggingEff(matchedPt, &tau32eff, Year, "tttt");}
-		else if(isXX) {hardcodedConditions.GetTtaggingEff(matchedPt, &tau32eff, Year, "x53x53",SigMass);}		
-		else if(isTT) {hardcodedConditions.GetTtaggingEff(matchedPt, &tau32eff, Year, "ttbar");}
-		else {hardcodedConditions.GetTtaggingEff(matchedPt, &tau32eff, Year, "singletop");}
-
+	    // Use matched W to find the efficiency -- EWK/QCD will almost never pass here (use ttbar eff when they do)
 	    if(isXX) {hardcodedConditions.GetWtaggingEff(matchedPt, &tau21eff, Year, "x53x53",SigMass);}
 	    else if(isTpTp) {hardcodedConditions.GetWtaggingEff(matchedPt, &tau21eff, Year, "TpTp",SigMass);}
 	    else if(isBpBp) {hardcodedConditions.GetWtaggingEff(matchedPt, &tau21eff, Year, "BpBp",SigMass);}

@@ -182,6 +182,8 @@ void HardcodedConditions::GetWtaggingSF2016(double pt, double *tau21sf, double *
 	*tau21sf   = 1.000;
 	*tau21sfup = 1.000;
 	*tau21sfdn = 1.000;
+	*tau21ptsfup = 1.000;
+	*tau21ptsfdn = 1.000;
 
 }
 
@@ -202,6 +204,8 @@ void HardcodedConditions::GetWtaggingSF2018(double pt, double *tau21sf, double *
 	*tau21sf   = 1.000;
 	*tau21sfup = 1.000;
 	*tau21sfdn = 1.000;
+	*tau21ptsfup = 1.000;
+	*tau21ptsfdn = 1.000;
 
 }
 
