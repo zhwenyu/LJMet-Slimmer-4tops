@@ -2,7 +2,8 @@
 
 import os,sys,pickle
 
-inputDir = '/user_data/ssagir/CMSSW_10_2_10/src/LJMet-Slimmer-4tops/step1/FWLJMET102X_1lep2017_4t_081019_step1/'
+#inputDir = '/user_data/ssagir/CMSSW_10_2_10/src/LJMet-Slimmer-4tops/step1/FWLJMET102X_1lep2017_4t_081019_step1/'
+inputDir = '/uscms_data/d3/ssagir/FWLJMET102X_1lep2017_4t_100719_step1/'
 inputRdir = '/mnt/hadoop/store/group/bruxljm/FWLJMET102X_1lep2017_4t_081019_step1/'
 resubmit_err = False
 resubmit_out = False

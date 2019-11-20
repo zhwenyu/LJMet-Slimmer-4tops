@@ -9,8 +9,8 @@ start_time = time.time()
 # output = sys.argv[2]
 shift = sys.argv[1]
 
-inputDir='/eos/uscms/store/user/lpcljm/FWLJMET102X_1lep2017_4t_071919_step1/'+shift+'/'
-outputDir='/eos/uscms/store/user/lpcljm/FWLJMET102X_1lep2017_4t_071919_step1hadds/'+shift+'/'
+inputDir='/eos/uscms/store/user/lpcljm/FWLJMET102X_1lep2017_4t_100719_step1/'+shift+'/'
+outputDir='/eos/uscms/store/user/lpcljm/FWLJMET102X_1lep2017_4t_100719_step1hadds/'+shift+'/'
 
 inDir=inputDir[10:]
 outDir=outputDir[10:]
@@ -45,7 +45,7 @@ dirList = [
 'TTTW_TuneCP5_13TeV-madgraph-pythia8',
 'TTTo2L2Nu_TuneCP5_PSweights_13TeV-powheg-pythia8',
 'TTToHadronic_TuneCP5_PSweights_13TeV-powheg-pythia8',
-# 'TTToSemiLepton_HT500Njet9_TuneCP5_PSweights_13TeV-powheg-pythia8',
+'TTToSemiLepton_HT500Njet9_TuneCP5_PSweights_13TeV-powheg-pythia8',
 'TTToSemiLeptonic_TuneCP5_PSweights_13TeV-powheg-pythia8',
 'TTWH_TuneCP5_13TeV-madgraph-pythia8',
 'TTWJetsToLNu_TuneCP5_PSweights_13TeV-amcatnloFXFX-madspin-pythia8',
@@ -74,11 +74,26 @@ if shift=='nominal':
 	dirList.append('SingleElectron')
 	dirList.append('SingleMuon')
 
+dirList = [
+'TTTo2L2Nu_TuneCP5_PSweights_13TeV-powheg-pythia8',
+'TTToHadronic_TuneCP5_PSweights_13TeV-powheg-pythia8',
+'TTToSemiLepton_HT500Njet9_TuneCP5_PSweights_13TeV-powheg-pythia8',
+'TTToSemiLeptonic_TuneCP5_PSweights_13TeV-powheg-pythia8',
+]
+
 for sample in dirList:
     outList = ['none']
     if 'Tprime' in sample: outList = ['BWBW','TZBW','THBW','TZTH','TZTZ','THTH']
     elif 'Bprime' in sample: outList = ['TWTW','BZTW','BHTW','BZBH','BZBZ','BHBH']
-    elif 'TTTo' in sample: outList = ['Mtt0to700','Mtt700to1000','Mtt1000toInf']
+    elif 'TTToSemiLeptonic' in sample: outList = ['HT0Njet0','HT500Njet9']
+    #elif 'TTTo' in sample: outList = ['Mtt0to700','Mtt700to1000','Mtt1000toInf']
+    if 'TTTo' in sample or 'TT_Mtt' in sample: 
+    	if outList==['none']: outList = ['ttbb','ttcc','ttjj']
+    	else:
+    		outList_ = outList[:]
+    		outList = []
+    		for outlabel in outList_:
+    			for flv in ['ttbb','ttcc','ttjj']: outList.append(outlabel+'_'+flv)
 
     for outlabel in outList:
 
@@ -92,7 +107,7 @@ for sample in dirList:
 
 
         nFilesPerHadd = 900
-        if 'TTToSemiLeptonic' in sample and outlabel=='Mtt0to700': nFilesPerHadd = 45
+        if 'TTToSemiLeptonic' in sample and (outlabel=='Mtt0to700' or outlabel=='HT0Njet0_ttjj'): nFilesPerHadd = 45
         elif 'WJetsToLNu_HT-1200To2500' in sample: nFilesPerHadd = 20
         elif 'WJetsToLNu_HT-2500ToInf' in sample: nFilesPerHadd = 13        
         onefile = ' root://cmseos.fnal.gov/'+inDir+'/'+outsample+'/'+rootfiles[-1]

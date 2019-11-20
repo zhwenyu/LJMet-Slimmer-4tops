@@ -1,4 +1,5 @@
 #include "step1.cc"
+#include "HardcodedConditions.cc"
 #include<vector>
 using namespace std;
 
