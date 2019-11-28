@@ -79,10 +79,18 @@ void HardcodedConditions::GetTtaggingSF2017(double pt, double *tau32sf, double *
 
 void HardcodedConditions::GetTtaggingSF2018(double pt, double *tau32sf, double *tau32sfup, double *tau32sfdn)
 {
-	// TO-BE-IMPLEMENTED!!!!!!!
-	*tau32sf   = 1.000;
-	*tau32sfup = 1.000;
-	*tau32sfdn = 1.000;
+	// CURRENTLY USING 2017 SFs WHILE WAITING FOR 2018 RECOMMENDATIONS!!!!!
+	// VALUES from the githup repository linked from https://twiki.cern.ch/twiki/bin/viewauth/CMS/JetTopTagging#13_TeV_Working_Points_and_Scale
+	// CORRESPONDING TO WP5 with tau32<0.80 and 105<mSD<220
+    const int Nbin = 5;
+    double ptMins[Nbin]= {300,400,480,600,1100};
+    double SFs[Nbin]   = {0.98331112,0.96821666,0.95967776,1.02111010,1.02111010};
+    double SFsUp[Nbin] = {1.02416270,0.99713147,0.99533176,1.06593850,1.11076690};
+    double SFsDn[Nbin] = {0.94245958,0.93930185,0.92402375,0.97628158,0.93145317};
+
+    for(int ibin = Nbin-1; ibin >= 0; ibin--){
+    	if (pt > ptMins[ibin]){*tau32sf=SFs[ibin];*tau32sfup=SFsUp[ibin];*tau32sfdn=SFsDn[ibin];break;}
+    	}
 
 }
 
@@ -153,6 +161,7 @@ void HardcodedConditions::GetTtaggingEff2017(double pt, double *eff, std::string
 
 void HardcodedConditions::GetTtaggingEff2018(double pt, double *eff, std::string sample, int massIndex)
 {
+    // CURRENTLY USING 2017 SFs WHILE WAITING FOR 2018 RECOMMENDATIONS!!!!!
     // Top tagging efficiencies updated
     const int Nbin = 9;
     double ptMins[Nbin] = {400,450,500,550,600,700,800,1000,1200};
