@@ -1438,6 +1438,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
 
     // ----------------------------------------------------------------------------
     // HOT TAGGER -- SCALE FACTORS TO BE ADDED!!!
+    // !!!! THIS SHOULD BE UPDATED WHEN FWLJMET NTUPLES ARE AVAILABLE WITH UPDATED HOTTAGGERCALC; i.e., WITH getBestGenTopMatch !!!!!!!
     // ----------------------------------------------------------------------------
      NresolvedTops1pFake = 0;
      NresolvedTops2pFake = 0;
@@ -1479,8 +1480,9 @@ void step1::Loop(TString inTreeName, TString outTreeName )
 	    	resolvedTopD3.SetPtEtaPhiE(theJetPt_JetSubCalc->at(idjet3),theJetEta_JetSubCalc->at(idjet3),theJetPhi_JetSubCalc->at(idjet3),theJetEnergy_JetSubCalc->at(idjet3));
             //cout<<"DEBUGGING: "<<topPt_TTbarMassCalc->size()<<" "<<topbPt_TTbarMassCalc->size()<<" "<<topWPt_TTbarMassCalc->size()<<endl;
             for(unsigned int igtop=0; igtop < topPt_TTbarMassCalc->size(); igtop++){
-	    	   trueTop.SetPtEtaPhiE(topPt_TTbarMassCalc->at(igtop),topEta_TTbarMassCalc->at(igtop),topPhi_TTbarMassCalc->at(igtop),topEnergy_TTbarMassCalc->at(igtop));
 	    	   if(2*igtop>=topWPt_TTbarMassCalc->size()) continue; // DEBUGGING TEMPORARY EDITION
+	    	   if(abs(topWID_TTbarMassCalc->at(2*igtop))>5) continue; // select hadronically decaying tops
+	    	   trueTop.SetPtEtaPhiE(topPt_TTbarMassCalc->at(igtop),topEta_TTbarMassCalc->at(igtop),topPhi_TTbarMassCalc->at(igtop),topEnergy_TTbarMassCalc->at(igtop));
 	    	   if(resolvedTop.DeltaR(trueTop) < minDRtop){
 	    	     minDRtop = resolvedTop.DeltaR(trueTop);
 	    	     trueTopD1.SetPtEtaPhiE(topbPt_TTbarMassCalc->at(igtop),topbEta_TTbarMassCalc->at(igtop),topbPhi_TTbarMassCalc->at(igtop),topbEnergy_TTbarMassCalc->at(igtop));
@@ -1510,7 +1512,8 @@ void step1::Loop(TString inTreeName, TString outTreeName )
           	float TopTagSF5p = 9.87441658974e-01; // for mistagging; apply to those that ARENT truth matched
           	float TopTagSF10p = 1.00665986538e+00; // for mistagging; apply to those that ARENT truth matched
           	float TopTagSF1pStat = 2.36706994474e-02; // for mistagging; apply to those that ARENT truth matched
-          	if(minDRtop < 0.6 && minDRtopD1 < 0.4 && minDRtopD2 < 0.4 && minDRtopD3 < 0.4){
+          	int NdaughterMatch = (minDRtopD1 < 0.4) + (minDRtopD2 < 0.4) + (minDRtopD3 < 0.4);
+          	if(minDRtop < 0.6 && NdaughterMatch > 1){ // requiring 2 or 3 daughter match!
           	  TopTagSF1p = 9.57049369812e-01; // for tagging; apply to those that ARE truth matched
           	  TopTagSF2p = 1.01395213604e+00; // for tagging; apply to those that ARE truth matched
           	  TopTagSF5p = 1.01192998886e+00; // for tagging; apply to those that ARE truth matched
