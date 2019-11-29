@@ -505,6 +505,10 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    outputTree->Branch("topPhi_HOTTaggerCalc",&topPhi_HOTTaggerCalc);
    outputTree->Branch("topPt_HOTTaggerCalc",&topPt_HOTTaggerCalc);
    outputTree->Branch("topType_HOTTaggerCalc",&topType_HOTTaggerCalc);
+   outputTree->Branch("NresolvedTops1pFakeNoSF",&NresolvedTops1pFakeNoSF,"NresolvedTops1pFakeNoSF/I");
+   outputTree->Branch("NresolvedTops2pFakeNoSF",&NresolvedTops2pFakeNoSF,"NresolvedTops2pFakeNoSF/I");
+   outputTree->Branch("NresolvedTops5pFakeNoSF",&NresolvedTops5pFakeNoSF,"NresolvedTops5pFakeNoSF/I");
+   outputTree->Branch("NresolvedTops10pFakeNoSF",&NresolvedTops10pFakeNoSF,"NresolvedTops10pFakeNoSF/I");
    outputTree->Branch("NresolvedTops1pFake",&NresolvedTops1pFake,"NresolvedTops1pFake/I");
    outputTree->Branch("NresolvedTops2pFake",&NresolvedTops2pFake,"NresolvedTops2pFake/I");
    outputTree->Branch("NresolvedTops5pFake",&NresolvedTops5pFake,"NresolvedTops5pFake/I");
@@ -1440,6 +1444,10 @@ void step1::Loop(TString inTreeName, TString outTreeName )
     // HOT TAGGER -- SCALE FACTORS TO BE ADDED!!!
     // !!!! THIS SHOULD BE UPDATED WHEN FWLJMET NTUPLES ARE AVAILABLE WITH UPDATED HOTTAGGERCALC; i.e., WITH getBestGenTopMatch !!!!!!!
     // ----------------------------------------------------------------------------
+     NresolvedTops1pFakeNoSF = 0;
+     NresolvedTops2pFakeNoSF = 0;
+     NresolvedTops5pFakeNoSF = 0;
+     NresolvedTops10pFakeNoSF = 0;
      NresolvedTops1pFake = 0;
      NresolvedTops2pFake = 0;
      NresolvedTops5pFake = 0;
@@ -1506,28 +1514,46 @@ void step1::Loop(TString inTreeName, TString outTreeName )
 	    	     minDRtopD3 = minDRtopDs.at(0);
 	    	     }
           	   }
-          	
-          	float TopTagSF1p = 9.92093861103e-01; // for mistagging; apply to those that ARENT truth matched
-          	float TopTagSF2p = 9.60411310196e-01; // for mistagging; apply to those that ARENT truth matched
-          	float TopTagSF5p = 9.87441658974e-01; // for mistagging; apply to those that ARENT truth matched
-          	float TopTagSF10p = 1.00665986538e+00; // for mistagging; apply to those that ARENT truth matched
-          	float TopTagSF1pStat = 2.36706994474e-02; // for mistagging; apply to those that ARENT truth matched
+         	
+          	double TopTagSF1p = 1.0;
+          	double TopTagSF2p = 1.0;
+          	double TopTagSF5p = 1.0;
+          	double TopTagSF10p = 1.0;
+          	double TopTagSF1pStat = 0.0;
           	int NdaughterMatch = (minDRtopD1 < 0.4) + (minDRtopD2 < 0.4) + (minDRtopD3 < 0.4);
-          	if(minDRtop < 0.6 && NdaughterMatch > 1){ // requiring 2 or 3 daughter match!
-          	  TopTagSF1p = 9.57049369812e-01; // for tagging; apply to those that ARE truth matched
-          	  TopTagSF2p = 1.01395213604e+00; // for tagging; apply to those that ARE truth matched
-          	  TopTagSF5p = 1.01192998886e+00; // for tagging; apply to those that ARE truth matched
-          	  TopTagSF10p = 1.00117206573e+00; // for tagging; apply to those that ARE truth matched
-          	  TopTagSF1pStat = 0.0993947964162e-03; // for tagging; apply to those that ARE truth matched
-          	  }
-          	float TopTagEff1p = 1.; // TO BE CALCULATED !!!!!!!!!!!!
-          	float TopTagEff2p = 1.; // TO BE CALCULATED !!!!!!!!!!!!
-          	float TopTagEff5p = 1.; // TO BE CALCULATED !!!!!!!!!!!!
-          	float TopTagEff10p = 1.; // TO BE CALCULATED !!!!!!!!!!!!
+          	bool isGenMatched = ( (minDRtop < 0.6) && (NdaughterMatch > 1) );
+          	hardcodedConditions.GetHOTtaggingSF(topPt_HOTTaggerCalc->at(itop), &TopTagSF1p, &TopTagSF1pStat, Year, isGenMatched, "1pfake");
+          	hardcodedConditions.GetHOTtaggingSF(topPt_HOTTaggerCalc->at(itop), &TopTagSF2p, &TopTagSF1pStat, Year, isGenMatched, "2pfake");
+          	hardcodedConditions.GetHOTtaggingSF(topPt_HOTTaggerCalc->at(itop), &TopTagSF5p, &TopTagSF1pStat, Year, isGenMatched, "5pfake");
+          	hardcodedConditions.GetHOTtaggingSF(topPt_HOTTaggerCalc->at(itop), &TopTagSF10p,&TopTagSF1pStat, Year, isGenMatched, "10pfake");
+          	double TopTagEff1p = 1.0;
+          	double TopTagEff2p = 1.0;
+          	double TopTagEff5p = 1.0;
+          	double TopTagEff10p = 1.0;
+          	
+          	std::string sample_hot;
+          	if(isTTTT) sample_hot = "tttt";
+          	else if(isST) sample_hot = "singletop";
+          	else if(isTTVV) sample_hot = "TTVV";
+          	else if(isTTX) sample_hot = "TTTX";
+          	else if(isTT) sample_hot = "ttbar";
+          	else if(isTTToSemiLeptonHT500Njet9) sample_hot = "ttbarHT500Njet9";
+          	else if(isTTW) sample_hot = "ttWjets";
+          	else if(isTTHnonbb) sample_hot = "ttHToNonbb";
+          	else if(isTTHbb) sample_hot = "ttHTobb";
+
+          	if(TopTagSF1p>1)  hardcodedConditions.GetHOTtaggingEff(topPt_HOTTaggerCalc->at(itop), &TopTagEff1p, Year, sample_hot, -1, isGenMatched, "1pfake");
+          	if(TopTagSF2p>1)  hardcodedConditions.GetHOTtaggingEff(topPt_HOTTaggerCalc->at(itop), &TopTagEff2p, Year, sample_hot, -1, isGenMatched, "2pfake");
+          	if(TopTagSF5p>1)  hardcodedConditions.GetHOTtaggingEff(topPt_HOTTaggerCalc->at(itop), &TopTagEff5p, Year, sample_hot, -1, isGenMatched, "5pfake");
+          	if(TopTagSF10p>1) hardcodedConditions.GetHOTtaggingEff(topPt_HOTTaggerCalc->at(itop), &TopTagEff10p,Year, sample_hot, -1, isGenMatched, "10pfake");
           	bool isTtagged1p = topDiscriminator_HOTTaggerCalc->at(itop) > 0.95;
           	bool isTtagged2p = topDiscriminator_HOTTaggerCalc->at(itop) > 0.92;
           	bool isTtagged5p = topDiscriminator_HOTTaggerCalc->at(itop) > 0.85;
-          	bool isTtagged10p = topDiscriminator_HOTTaggerCalc->at(itop) > 0.75;
+          	bool isTtagged10p= topDiscriminator_HOTTaggerCalc->at(itop) > 0.75;
+          	NresolvedTops1pFakeNoSF += isTtagged1p;
+          	NresolvedTops2pFakeNoSF += isTtagged2p;
+          	NresolvedTops5pFakeNoSF += isTtagged5p;
+          	NresolvedTops10pFakeNoSF += isTtagged10p;
           	int tag_top_1p = applySF(isTtagged1p,TopTagSF1p,TopTagEff1p);
           	int tag_top_2p = applySF(isTtagged2p,TopTagSF2p,TopTagEff2p);
           	int tag_top_5p = applySF(isTtagged5p,TopTagSF5p,TopTagEff5p);

@@ -40,8 +40,15 @@ public :
    Bool_t          isSM;
    Bool_t          isSE;
    Bool_t          isTT;
+   Bool_t          isTTToSemiLeptonHT500Njet9;
    Bool_t          isTTV;
+   Bool_t          isTTW;
+   Bool_t          isTTHbb;
+   Bool_t          isTTHnonbb;
+   Bool_t          isTTX;
+   Bool_t          isTTVV;
    Bool_t          isVV;
+   Bool_t          isST;
    Bool_t          isSTt;
    Bool_t          isSTtW;
    Bool_t          isTTincMtt0to1000;
@@ -273,6 +280,10 @@ public :
    Float_t         genAntiTopPt;
    Float_t         topPtWeight13TeV;
 
+   Int_t           NresolvedTops1pFakeNoSF;
+   Int_t           NresolvedTops2pFakeNoSF;
+   Int_t           NresolvedTops5pFakeNoSF;
+   Int_t           NresolvedTops10pFakeNoSF;
    Int_t           NresolvedTops1pFake;
    Int_t           NresolvedTops2pFake;
    Int_t           NresolvedTops5pFake;
@@ -1238,14 +1249,21 @@ step1::step1(TString inputFileName, TString outputFileName) : inputTree(0), inpu
   isTOP = (inputFileName.Contains("Mtt") || inputFileName.Contains("ST") || inputFileName.Contains("ttZ") || inputFileName.Contains("ttW") || inputFileName.Contains("ttH") || inputFileName.Contains("TTTo"));
   isTT = (inputFileName.Contains("TT_Tune") || inputFileName.Contains("Mtt") || inputFileName.Contains("TTTo"));
   if(isSig) isTT = false;
+  isTTToSemiLeptonHT500Njet9 = inputFileName.Contains("TTToSemiLepton_HT500Njet9_Tune");
+  isST = (inputFileName.Contains("ST_t-channel") || inputFileName.Contains("ST_tW") || inputFileName.Contains("ST_s-channel"));
   isSTt = inputFileName.Contains("ST_t-channel");
   isSTtW = inputFileName.Contains("ST_tW");
   isTTV = (inputFileName.Contains("ttZ") || inputFileName.Contains("ttW") || inputFileName.Contains("ttH"));
+  isTTW = inputFileName.Contains("ttW");
+  isTTHbb = inputFileName.Contains("ttHTobb_");
+  isTTHnonbb = inputFileName.Contains("ttHToNonbb_");
+  isTTX = (inputFileName.Contains("TTTJ_Tune") || inputFileName.Contains("TTTW_Tune"));
+  isTTVV = (inputFileName.Contains("TTHH_Tune") || inputFileName.Contains("TTWH_Tune") || inputFileName.Contains("TTWW_Tune") || inputFileName.Contains("TTWZ_Tune") || inputFileName.Contains("TTZH_Tune") || inputFileName.Contains("TTZZ_Tune"));
   isVV = (inputFileName.Contains("WW_") || inputFileName.Contains("WZ_") || inputFileName.Contains("ZZ_"));
   isMC = !(inputFileName.Contains("Single") || inputFileName.Contains("Data18"));
   isSM = inputFileName.Contains("SingleMuon");
   isSE = (inputFileName.Contains("SingleElectron") || inputFileName.Contains("EGamma"));
-  
+          	  
   isTTincMtt0to700    = outputFileName.Contains("Mtt0to700");
   isTTincMtt0to1000   = outputFileName.Contains("Mtt0to1000");
   isTTincMtt700to1000 = outputFileName.Contains("Mtt700to1000");
