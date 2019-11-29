@@ -26,7 +26,7 @@ HardcodedConditions::~HardcodedConditions() {
   /  .-.                                                         .-.  \
  |  /   \                                                       /   \  |
  | |\_.  |                                                     |    /| |
- |\|  | /|              HOT TAGGER FACTOR SECTION              |\  | |/|
+ |\|  | /|           HOT TAGGER SCALE FACTOR SECTION           |\  | |/|
  | `---' |                                                     | `---' |
  |       |                                                     |       | 
  |       |-----------------------------------------------------|       |
@@ -34,97 +34,208 @@ HardcodedConditions::~HardcodedConditions() {
   \     /                                                       \     /
    `---'                                                         `---'*/
 
-void HardcodedConditions::GetHOTtaggingSF(double pt, double *hotsf, double *hotstatunc, int year, bool isGenMatched, std::string workingpoint)
+void HardcodedConditions::GetHOTtaggingSF(double pt, double *hotsf, double *hotstatunc, double *hotcspurunc, int year, bool isGenMatched, std::string workingpoint)
 {
   //The main getter for GetHOTtaggingSF Scale Factors
   *hotsf   = 1.000;
-  *hotstatunc = 1.000;
+  *hotstatunc = 0.000;
+  *hotcspurunc = 0.000;
   if(isGenMatched){
-  	if      (year==2016) GetHOTtaggingSF2016(pt, hotsf, hotstatunc, workingpoint);
-  	else if (year==2017) GetHOTtaggingSF2017(pt, hotsf, hotstatunc, workingpoint);
-  	else if (year==2018) GetHOTtaggingSF2018(pt, hotsf, hotstatunc, workingpoint);
+  	if      (year==2016) GetHOTtaggingSF2016(pt, hotsf, hotstatunc, hotcspurunc, workingpoint);
+  	else if (year==2017) GetHOTtaggingSF2017(pt, hotsf, hotstatunc, hotcspurunc, workingpoint);
+  	else if (year==2018) GetHOTtaggingSF2018(pt, hotsf, hotstatunc, hotcspurunc, workingpoint);
   	}
   else{
-  	if      (year==2016) GetHOTmistagSF2016(pt, hotsf, hotstatunc, workingpoint);
-  	else if (year==2017) GetHOTmistagSF2017(pt, hotsf, hotstatunc, workingpoint);
-  	else if (year==2018) GetHOTmistagSF2018(pt, hotsf, hotstatunc, workingpoint);
+  	if      (year==2016) GetHOTmistagSF2016(pt, hotsf, hotstatunc, hotcspurunc, workingpoint);
+  	else if (year==2017) GetHOTmistagSF2017(pt, hotsf, hotstatunc, hotcspurunc, workingpoint);
+  	else if (year==2018) GetHOTmistagSF2018(pt, hotsf, hotstatunc, hotcspurunc, workingpoint);
   	}
 }//end GetHOTtaggingSF
 
-void HardcodedConditions::GetHOTtaggingSF2016(double pt, double *hotsf, double *hotstatunc, std::string workingpoint)
-{
-	// TO-BE-IMPLEMENTED!!!!!!!
-	*hotsf = 1.000;
-	*hotstatunc = 0.000;
-}
-
-void HardcodedConditions::GetHOTmistagSF2016(double pt, double *hotsf, double *hotstatunc, std::string workingpoint)
-{
-	// TO-BE-IMPLEMENTED!!!!!!!
-	*hotsf = 1.000;
-	*hotstatunc = 0.000;
-}
-
-void HardcodedConditions::GetHOTtaggingSF2017(double pt, double *hotsf, double *hotstatunc, std::string workingpoint)
+void HardcodedConditions::GetHOTtaggingSF2016(double pt, double *hotsf, double *hotstatunc, double *hotcspurunc, std::string workingpoint)
 {
 	// VALUES from https://twiki.cern.ch/twiki/bin/viewauth/CMS/SUSYHOTGroup
+	ptMins = {0,150,250,300,350,400,450,500,600};
 	if (workingpoint=="1pfake"){
-		*hotsf = 9.57049369812e-01;
-		*hotstatunc = 0.0993947964162e-03;
+		*hotsf = 1.0234;
+		*hotstatunc = 0.0193;
+		hotCSpurUncs = {0.0356,0.0011,0.0015,0.002,0.0025,0.0051,0.0077,0.0037,0.0487};
+		int bin = findBin(pt, ptMins);
+		*hotcspurunc = hotCSpurUncs[bin];
 		}
 	else if (workingpoint=="2pfake"){
-		*hotsf = 1.01395213604e+00;
-		*hotstatunc = 0.0993947964162e-03;
+		*hotsf = 1.0470;
+		*hotstatunc = 0.0176;
+		hotCSpurUncs = {0.0376,0.0007,0.0017,0.002,0.003,0.0042,0.0065,0.0033,0.046};
+		int bin = findBin(pt, ptMins);
+		*hotcspurunc = hotCSpurUncs[bin];
 		}
 	else if (workingpoint=="5pfake"){
-		*hotsf = 1.01192998886e+00;
-		*hotstatunc = 0.0993947964162e-03;
+		*hotsf = 1.0055;
+		*hotstatunc = 0.0; //NOT PROVIDED in TWIKI, NOV 2019
+		*hotcspurunc = 0.0; //NOT PROVIDED in TWIKI, NOV 2019
 		}
 	else if (workingpoint=="10pfake"){
-		*hotsf = 1.00117206573e+00;
-		*hotstatunc = 0.0993947964162e-03;
+		*hotsf = 1.0093;
+		*hotstatunc = 0.0; //NOT PROVIDED in TWIKI, NOV 2019
+		*hotcspurunc = 0.0; //NOT PROVIDED in TWIKI, NOV 2019
 		}
-	else{
-		std::cout << "Working Point " << workingpoint << " not coded into GetHOTtaggingSF! Setting scale factors to ONE!" << std::endl;
-		}
+	else{ std::cerr << "Working Point " << workingpoint << " not coded into HardcodedConditions::GetHOTtaggingSF2016! Aborting ..." << std::endl; std::abort();}
 }
 
-void HardcodedConditions::GetHOTmistagSF2017(double pt, double *hotsf, double *hotstatunc, std::string workingpoint)
+void HardcodedConditions::GetHOTmistagSF2016(double pt, double *hotsf, double *hotstatunc, double *hotcspurunc, std::string workingpoint)
 {
 	// VALUES from https://twiki.cern.ch/twiki/bin/viewauth/CMS/SUSYHOTGroup
+	ptMins = {0,150,250,300,350,400,450,500,600};
 	if (workingpoint=="1pfake"){
-		*hotsf = 9.92093861103e-01;
-		*hotstatunc = 2.36706994474e-02;
+		*hotsf = 0.9071;
+		*hotstatunc = 0.0070;
+		hotCSpurUncs = {0.0278,0.0311,0.0342,0.0376,0.0403,0.0405,0.0375,0.0439,0.0648};
+		int bin = findBin(pt, ptMins);
+		*hotcspurunc = hotCSpurUncs[bin];
 		}
 	else if (workingpoint=="2pfake"){
-		*hotsf = 9.60411310196e-01;
-		*hotstatunc = 2.36706994474e-02;
+		*hotsf = 0.9126;
+		*hotstatunc = 0.0053;
+		hotCSpurUncs = {0.0168,0.0199,0.0231,0.0262,0.0286,0.0289,0.0268,0.0313,0.0467};
+		int bin = findBin(pt, ptMins);
+		*hotcspurunc = hotCSpurUncs[bin];
 		}
 	else if (workingpoint=="5pfake"){
-		*hotsf = 9.87441658974e-01;
-		*hotstatunc = 2.36706994474e-02;
+		*hotsf = 0.9298;
+		*hotstatunc = 0.0; //NOT PROVIDED in TWIKI, NOV 2019
+		*hotcspurunc = 0.0; //NOT PROVIDED in TWIKI, NOV 2019
 		}
 	else if (workingpoint=="10pfake"){
-		*hotsf = 1.00665986538e+00;
-		*hotstatunc = 2.36706994474e-02;
+		*hotsf = 0.9194;
+		*hotstatunc = 0.0; //NOT PROVIDED in TWIKI, NOV 2019
+		*hotcspurunc = 0.0; //NOT PROVIDED in TWIKI, NOV 2019
 		}
-	else{
-		std::cout << "Working Point " << workingpoint << " not coded into GetHOTtaggingSF! Setting scale factors to ONE!" << std::endl;
-		}
+	else{ std::cerr << "Working Point " << workingpoint << " not coded into HardcodedConditions::GetHOTmistagSF2016! Aborting ..." << std::endl; std::abort();}
 }
 
-void HardcodedConditions::GetHOTtaggingSF2018(double pt, double *hotsf, double *hotstatunc, std::string workingpoint)
+void HardcodedConditions::GetHOTtaggingSF2017(double pt, double *hotsf, double *hotstatunc, double *hotcspurunc, std::string workingpoint)
 {
-	// TO-BE-IMPLEMENTED!!!!!!!
-	*hotsf = 1.000;
-	*hotstatunc = 0.000;
+	// VALUES from https://twiki.cern.ch/twiki/bin/viewauth/CMS/SUSYHOTGroup
+	ptMins = {0,150,250,300,350,400,450,500,600};
+	if (workingpoint=="1pfake"){
+		*hotsf = 0.9570;
+		*hotstatunc = 0.0237;
+		hotCSpurUncs = {0.0825,0.0256,0.0276,0.0075,0.0244,0.0265,0.0343,0.0652,0.0095};
+		int bin = findBin(pt, ptMins);
+		*hotcspurunc = hotCSpurUncs[bin];
+		}
+	else if (workingpoint=="2pfake"){
+		*hotsf = 0.9604;
+		*hotstatunc = 0.0219;
+		hotCSpurUncs = {0.0463,0.026,0.0208,0.0104,0.0247,0.0253,0.0328,0.0486,0.0036};
+		int bin = findBin(pt, ptMins);
+		*hotcspurunc = hotCSpurUncs[bin];
+		}
+	else if (workingpoint=="5pfake"){
+		*hotsf = 0.9874;
+		*hotstatunc = 0.0; //NOT PROVIDED in TWIKI, NOV 2019
+		*hotcspurunc = 0.0; //NOT PROVIDED in TWIKI, NOV 2019
+		}
+	else if (workingpoint=="10pfake"){
+		*hotsf = 1.0067;
+		*hotstatunc = 0.0; //NOT PROVIDED in TWIKI, NOV 2019
+		*hotcspurunc = 0.0; //NOT PROVIDED in TWIKI, NOV 2019
+		}
+	else{ std::cerr << "Working Point " << workingpoint << " not coded into HardcodedConditions::GetHOTtaggingSF2017! Aborting ..." << std::endl; std::abort();}
 }
 
-void HardcodedConditions::GetHOTmistagSF2018(double pt, double *hotsf, double *hotstatunc, std::string workingpoint)
+void HardcodedConditions::GetHOTmistagSF2017(double pt, double *hotsf, double *hotstatunc, double *hotcspurunc, std::string workingpoint)
 {
-	// TO-BE-IMPLEMENTED!!!!!!!
-	*hotsf = 1.000;
-	*hotstatunc = 0.000;
+	// VALUES from https://twiki.cern.ch/twiki/bin/viewauth/CMS/SUSYHOTGroup
+	ptMins = {0,150,250,300,350,400,450,500,600};
+	if (workingpoint=="1pfake"){
+		*hotsf = 0.9921;
+		*hotstatunc = 0.0099;
+		hotCSpurUncs = {0.0303,0.0367,0.0406,0.0431,0.0499,0.0548,0.0623,0.0594,0.0571};
+		int bin = findBin(pt, ptMins);
+		*hotcspurunc = hotCSpurUncs[bin];
+		}
+	else if (workingpoint=="2pfake"){
+		*hotsf = 1.0140;
+		*hotstatunc = 0.0074;
+		hotCSpurUncs = {0.0189,0.0236,0.0276,0.0309,0.0355,0.0396,0.0459,0.0448,0.0427};
+		int bin = findBin(pt, ptMins);
+		*hotcspurunc = hotCSpurUncs[bin];
+		}
+	else if (workingpoint=="5pfake"){
+		*hotsf = 1.0119;
+		*hotstatunc = 0.0; //NOT PROVIDED in TWIKI, NOV 2019
+		*hotcspurunc = 0.0; //NOT PROVIDED in TWIKI, NOV 2019
+		}
+	else if (workingpoint=="10pfake"){
+		*hotsf = 1.0012;
+		*hotstatunc = 0.0; //NOT PROVIDED in TWIKI, NOV 2019
+		*hotcspurunc = 0.0; //NOT PROVIDED in TWIKI, NOV 2019
+		}
+	else{ std::cerr << "Working Point " << workingpoint << " not coded into HardcodedConditions::GetHOTmistagSF2017! Aborting ..." << std::endl; std::abort();}
+}
+
+void HardcodedConditions::GetHOTtaggingSF2018(double pt, double *hotsf, double *hotstatunc, double *hotcspurunc, std::string workingpoint)
+{
+	// VALUES from https://twiki.cern.ch/twiki/bin/viewauth/CMS/SUSYHOTGroup
+	ptMins = {0,150,250,300,350,400,450,500,600};
+	if (workingpoint=="1pfake"){
+		*hotsf = 0.9359;
+		*hotstatunc = 0.0239;
+		hotCSpurUncs = {0.0641,0.1004,0.0416,0.0583,0.0695,0.0457,0.0255,0.0553,0.03};
+		int bin = findBin(pt, ptMins);
+		*hotcspurunc = hotCSpurUncs[bin];
+		}
+	else if (workingpoint=="2pfake"){
+		*hotsf = 0.9483;
+		*hotstatunc = 0.0222;
+		hotCSpurUncs = {0.0644,0.0445,0.0437,0.0466,0.0694,0.0415,0.0269,0.0544,0.0133};
+		int bin = findBin(pt, ptMins);
+		*hotcspurunc = hotCSpurUncs[bin];
+		}
+	else if (workingpoint=="5pfake"){
+		*hotsf = 0.9769;
+		*hotstatunc = 0.0; //NOT PROVIDED in TWIKI, NOV 2019
+		*hotcspurunc = 0.0; //NOT PROVIDED in TWIKI, NOV 2019
+		}
+	else if (workingpoint=="10pfake"){
+		*hotsf = 0.9922;
+		*hotstatunc = 0.0; //NOT PROVIDED in TWIKI, NOV 2019
+		*hotcspurunc = 0.0; //NOT PROVIDED in TWIKI, NOV 2019
+		}
+	else{ std::cerr << "Working Point " << workingpoint << " not coded into HardcodedConditions::GetHOTtaggingSF2018! Aborting ..." << std::endl; std::abort();}
+}
+
+void HardcodedConditions::GetHOTmistagSF2018(double pt, double *hotsf, double *hotstatunc, double *hotcspurunc, std::string workingpoint)
+{
+	// VALUES from https://twiki.cern.ch/twiki/bin/viewauth/CMS/SUSYHOTGroup
+	ptMins = {0,150,250,300,350,400,450,500,600};
+	if (workingpoint=="1pfake"){
+		*hotsf = 0.9036;
+		*hotstatunc = 0.0128;
+		hotCSpurUncs = {0.0544,0.0523,0.0568,0.0608,0.0667,0.0769,0.0784,0.0732,0.0714};
+		int bin = findBin(pt, ptMins);
+		*hotcspurunc = hotCSpurUncs[bin];
+		}
+	else if (workingpoint=="2pfake"){
+		*hotsf = 0.9532;
+		*hotstatunc = 0.0096;
+		hotCSpurUncs = {0.032,0.0348,0.0413,0.0439,0.0486,0.0569,0.0586,0.0553,0.0543};
+		int bin = findBin(pt, ptMins);
+		*hotcspurunc = hotCSpurUncs[bin];
+		}
+	else if (workingpoint=="5pfake"){
+		*hotsf = 0.9753;
+		*hotstatunc = 0.0; //NOT PROVIDED in TWIKI, NOV 2019
+		*hotcspurunc = 0.0; //NOT PROVIDED in TWIKI, NOV 2019
+		}
+	else if (workingpoint=="10pfake"){
+		*hotsf = 0.9703;
+		*hotstatunc = 0.0; //NOT PROVIDED in TWIKI, NOV 2019
+		*hotcspurunc = 0.0; //NOT PROVIDED in TWIKI, NOV 2019
+		}
+	else{ std::cerr << "Working Point " << workingpoint << " not coded into HardcodedConditions::GetHOTmistagSF2018! Aborting ..." << std::endl; std::abort();}
 }
 
 
@@ -140,29 +251,29 @@ void HardcodedConditions::GetHOTmistagSF2018(double pt, double *hotsf, double *h
   \     /                                                       \     /
    `---'                                                         `---'*/
 
-void HardcodedConditions::GetHOTtaggingEff(double pt, double *eff, int year, std::string sample, int massIndex, bool isGenMatched, std::string workingpoint)
+void HardcodedConditions::GetHOTtaggingEff(double pt, double *eff, int year, std::string sample, bool isGenMatched, std::string workingpoint, int massIndex)
 {
   //The main getter for GetHOTtaggingEff Efficiencies
   *eff = 1.000;
   if(isGenMatched){
-  	if      (year==2016) GetHOTtaggingEff2016(pt, eff, sample, massIndex, workingpoint);
-  	else if (year==2017) GetHOTtaggingEff2017(pt, eff, sample, massIndex, workingpoint);
-  	else if (year==2018) GetHOTtaggingEff2018(pt, eff, sample, massIndex, workingpoint);
+  	if      (year==2016) GetHOTtaggingEff2016(pt, eff, sample, workingpoint, massIndex);
+  	else if (year==2017) GetHOTtaggingEff2017(pt, eff, sample, workingpoint, massIndex);
+  	else if (year==2018) GetHOTtaggingEff2018(pt, eff, sample, workingpoint, massIndex);
   	}
   else{
-  	if      (year==2016) GetHOTmistagEff2016(pt, eff, sample, massIndex, workingpoint);
-  	else if (year==2017) GetHOTmistagEff2017(pt, eff, sample, massIndex, workingpoint);
-  	else if (year==2018) GetHOTmistagEff2018(pt, eff, sample, massIndex, workingpoint);
+  	if      (year==2016) GetHOTmistagEff2016(pt, eff, sample, workingpoint, massIndex);
+  	else if (year==2017) GetHOTmistagEff2017(pt, eff, sample, workingpoint, massIndex);
+  	else if (year==2018) GetHOTmistagEff2018(pt, eff, sample, workingpoint, massIndex);
   	}
 }//end GetHOTtaggingEff
 
-void HardcodedConditions::GetHOTtaggingEff2016(double pt, double *eff, std::string sample, int massIndex, std::string workingpoint)
+void HardcodedConditions::GetHOTtaggingEff2016(double pt, double *eff, std::string sample, std::string workingpoint, int massIndex)
 {
 	// TO-BE-IMPLEMENTED!!!!!!!
 	*eff = 1.000;
 }
 
-void HardcodedConditions::GetHOTmistagEff2016(double pt, double *eff, std::string sample, int massIndex, std::string workingpoint)
+void HardcodedConditions::GetHOTmistagEff2016(double pt, double *eff, std::string sample, std::string workingpoint, int massIndex)
 {
 	// VALUES from Slide 20 in https://indico.cern.ch/event/828647/contributions/3468595/attachments/1863710/3063888/ResolvedTopTagger_HOT2.pdf
 	ptMins = {0,150,250,300,350,400,450,500,600};
@@ -171,14 +282,15 @@ void HardcodedConditions::GetHOTmistagEff2016(double pt, double *eff, std::strin
 	*eff = hotEffs[bin];
 }
 
-void HardcodedConditions::GetHOTtaggingEff2017(double pt, double *eff, std::string sample, int massIndex, std::string workingpoint)
+void HardcodedConditions::GetHOTtaggingEff2017(double pt, double *eff, std::string sample, std::string workingpoint, int massIndex)
 {
 	if(sample=="singletop"){
 		ptMins = {0,150,250,300,350,400,500};
-		hotEffs1p = {0.237813062035,0.343619378269,0.437629067366,0.48531499072,0.516744289199,0.505329876116,0.388888888889};
-		hotEffs2p = {0.369305827719,0.465133276992,0.541050399062,0.583906540015,0.6083388778,0.592336502449,0.468834688347};
-		hotEffs5p = {0.544446084879,0.612971380279,0.670257297539,0.708155912217,0.717453980927,0.707577067128,0.567750677507};
-		hotEffs10p= {0.672845139989,0.723658664718,0.766869453592,0.790260945518,0.79418939898,0.785364448286,0.65243902439};
+		hotEffs1p = {0.238703480146,0.344134347664,0.434589800443,0.475746268657,0.518656716418,0.507683863886,0.394703656999};
+		hotEffs2p = {0.368731908044,0.464867471993,0.537324464154,0.574419568823,0.607794361526,0.594401756312,0.471626733922};
+		hotEffs5p = {0.54382958838,0.612588516432,0.670467743638,0.697968490879,0.713515754561,0.708562019759,0.566204287516};
+		hotEffs10p= {0.671183976531,0.722995637209,0.76665610812,0.781301824212,0.790215588723,0.783754116356,0.645649432535};
+
 		int bin = findBin(pt, ptMins);
 		if(workingpoint=="1pfake"){*eff = hotEffs1p[bin];}
 		else if(workingpoint=="2pfake"){*eff = hotEffs2p[bin];}
@@ -293,7 +405,7 @@ void HardcodedConditions::GetHOTtaggingEff2017(double pt, double *eff, std::stri
 	else{ std::cerr << "The sample " << sample << " not coded into HardcodedConditions::GetHOTtaggingEff2017! Aborting ..." << std::endl; std::abort();}
 }
 
-void HardcodedConditions::GetHOTmistagEff2017(double pt, double *eff, std::string sample, int massIndex, std::string workingpoint)
+void HardcodedConditions::GetHOTmistagEff2017(double pt, double *eff, std::string sample, std::string workingpoint, int massIndex)
 {
 	// VALUES from Slide 24 in https://indico.cern.ch/event/828647/contributions/3468595/attachments/1863710/3063888/ResolvedTopTagger_HOT2.pdf
 	ptMins = {0,150,250,300,350,400,450,500,600};
@@ -302,13 +414,13 @@ void HardcodedConditions::GetHOTmistagEff2017(double pt, double *eff, std::strin
 	*eff = hotEffs[bin];
 }
 
-void HardcodedConditions::GetHOTtaggingEff2018(double pt, double *eff, std::string sample, int massIndex, std::string workingpoint)
+void HardcodedConditions::GetHOTtaggingEff2018(double pt, double *eff, std::string sample, std::string workingpoint, int massIndex)
 {
 	// TO-BE-IMPLEMENTED!!!!!!!
 	*eff = 1.000;
 }
 
-void HardcodedConditions::GetHOTmistagEff2018(double pt, double *eff, std::string sample, int massIndex, std::string workingpoint)
+void HardcodedConditions::GetHOTmistagEff2018(double pt, double *eff, std::string sample, std::string workingpoint, int massIndex)
 {
 	// VALUES from Slide 28 in https://indico.cern.ch/event/828647/contributions/3468595/attachments/1863710/3063888/ResolvedTopTagger_HOT2.pdf
 	ptMins = {0,150,250,300,350,400,450,500,600};

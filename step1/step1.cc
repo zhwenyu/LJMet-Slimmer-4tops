@@ -605,6 +605,8 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    cout << "isTTTT = " << isTTTT << ", isXX = " << isXX << ", isTpTp = " << isTpTp << ", isBpBp = " << isBpBp << endl;
    cout << "For W's: isTT = " << isTT << ", isSTt = " << isSTt << ", isSTtW = " << isSTtW << endl;
    cout << "For jets & PDF: isTOP = " << isTOP << ", isMadgraphBkg = " << isMadgraphBkg << endl;
+   cout << "For HOTTagger Efficiencies: isTTW = " << isTTW << ", isTTHbb = " << isTTHbb << ", isTTHnonbb = " << isTTHnonbb << ", isTTX = " << isTTX << endl;
+   cout << "isTTVV = " << isTTVV << ", isST = " << isST << ", isTTToSemiLeptonHT500Njet9 = " << isTTToSemiLeptonHT500Njet9 << endl;
    cout << "Pileup sample key: " << sample << std::endl;
    cout << "isTTincMtt0to700: " << isTTincMtt0to700 << endl;
    cout << "isTTincMtt0to1000: " << isTTincMtt0to1000 << endl;
@@ -1456,7 +1458,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
      NresolvedTops2pFake_shifts.clear();
      NresolvedTops5pFake_shifts.clear();
      NresolvedTops10pFake_shifts.clear();
-     for(int i = 0; i < 2; i++){
+     for(int i = 0; i < 4; i++){
      	NresolvedTops1pFake_shifts.push_back(0);
      	NresolvedTops2pFake_shifts.push_back(0);
      	NresolvedTops5pFake_shifts.push_back(0);
@@ -1520,12 +1522,19 @@ void step1::Loop(TString inTreeName, TString outTreeName )
           	double TopTagSF5p = 1.0;
           	double TopTagSF10p = 1.0;
           	double TopTagSF1pStat = 0.0;
+          	double TopTagSF2pStat = 0.0;
+          	double TopTagSF5pStat = 0.0;
+          	double TopTagSF10pStat = 0.0;
+          	double TopTagSF1pCSpur = 0.0;
+          	double TopTagSF2pCSpur = 0.0;
+          	double TopTagSF5pCSpur = 0.0;
+          	double TopTagSF10pCSpur = 0.0;
           	int NdaughterMatch = (minDRtopD1 < 0.4) + (minDRtopD2 < 0.4) + (minDRtopD3 < 0.4);
           	bool isGenMatched = ( (minDRtop < 0.6) && (NdaughterMatch > 1) );
-          	hardcodedConditions.GetHOTtaggingSF(topPt_HOTTaggerCalc->at(itop), &TopTagSF1p, &TopTagSF1pStat, Year, isGenMatched, "1pfake");
-          	hardcodedConditions.GetHOTtaggingSF(topPt_HOTTaggerCalc->at(itop), &TopTagSF2p, &TopTagSF1pStat, Year, isGenMatched, "2pfake");
-          	hardcodedConditions.GetHOTtaggingSF(topPt_HOTTaggerCalc->at(itop), &TopTagSF5p, &TopTagSF1pStat, Year, isGenMatched, "5pfake");
-          	hardcodedConditions.GetHOTtaggingSF(topPt_HOTTaggerCalc->at(itop), &TopTagSF10p,&TopTagSF1pStat, Year, isGenMatched, "10pfake");
+          	hardcodedConditions.GetHOTtaggingSF(topPt_HOTTaggerCalc->at(itop), &TopTagSF1p, &TopTagSF1pStat, &TopTagSF1pCSpur, Year, isGenMatched, "1pfake");
+          	hardcodedConditions.GetHOTtaggingSF(topPt_HOTTaggerCalc->at(itop), &TopTagSF2p, &TopTagSF2pStat, &TopTagSF2pCSpur, Year, isGenMatched, "2pfake");
+          	hardcodedConditions.GetHOTtaggingSF(topPt_HOTTaggerCalc->at(itop), &TopTagSF5p, &TopTagSF5pStat, &TopTagSF5pCSpur, Year, isGenMatched, "5pfake");
+          	hardcodedConditions.GetHOTtaggingSF(topPt_HOTTaggerCalc->at(itop), &TopTagSF10p,&TopTagSF10pStat,&TopTagSF10pCSpur,Year, isGenMatched, "10pfake");
           	double TopTagEff1p = 1.0;
           	double TopTagEff2p = 1.0;
           	double TopTagEff5p = 1.0;
@@ -1542,10 +1551,10 @@ void step1::Loop(TString inTreeName, TString outTreeName )
           	else if(isTTHnonbb) sample_hot = "ttHToNonbb";
           	else if(isTTHbb) sample_hot = "ttHTobb";
 
-          	if(TopTagSF1p>1)  hardcodedConditions.GetHOTtaggingEff(topPt_HOTTaggerCalc->at(itop), &TopTagEff1p, Year, sample_hot, -1, isGenMatched, "1pfake");
-          	if(TopTagSF2p>1)  hardcodedConditions.GetHOTtaggingEff(topPt_HOTTaggerCalc->at(itop), &TopTagEff2p, Year, sample_hot, -1, isGenMatched, "2pfake");
-          	if(TopTagSF5p>1)  hardcodedConditions.GetHOTtaggingEff(topPt_HOTTaggerCalc->at(itop), &TopTagEff5p, Year, sample_hot, -1, isGenMatched, "5pfake");
-          	if(TopTagSF10p>1) hardcodedConditions.GetHOTtaggingEff(topPt_HOTTaggerCalc->at(itop), &TopTagEff10p,Year, sample_hot, -1, isGenMatched, "10pfake");
+          	hardcodedConditions.GetHOTtaggingEff(topPt_HOTTaggerCalc->at(itop), &TopTagEff1p, Year, sample_hot, isGenMatched, "1pfake");
+          	hardcodedConditions.GetHOTtaggingEff(topPt_HOTTaggerCalc->at(itop), &TopTagEff2p, Year, sample_hot, isGenMatched, "2pfake");
+          	hardcodedConditions.GetHOTtaggingEff(topPt_HOTTaggerCalc->at(itop), &TopTagEff5p, Year, sample_hot, isGenMatched, "5pfake");
+          	hardcodedConditions.GetHOTtaggingEff(topPt_HOTTaggerCalc->at(itop), &TopTagEff10p,Year, sample_hot, isGenMatched, "10pfake");
           	bool isTtagged1p = topDiscriminator_HOTTaggerCalc->at(itop) > 0.95;
           	bool isTtagged2p = topDiscriminator_HOTTaggerCalc->at(itop) > 0.92;
           	bool isTtagged5p = topDiscriminator_HOTTaggerCalc->at(itop) > 0.85;
@@ -1558,14 +1567,45 @@ void step1::Loop(TString inTreeName, TString outTreeName )
           	int tag_top_2p = applySF(isTtagged2p,TopTagSF2p,TopTagEff2p);
           	int tag_top_5p = applySF(isTtagged5p,TopTagSF5p,TopTagEff5p);
           	int tag_top_10p = applySF(isTtagged10p,TopTagSF10p,TopTagEff10p);
+
           	int tag_top_1p_statup = applySF(isTtagged1p,TopTagSF1p+TopTagSF1pStat,TopTagEff1p);
           	int tag_top_1p_statdn = applySF(isTtagged1p,TopTagSF1p-TopTagSF1pStat,TopTagEff1p);
+          	int tag_top_2p_statup = applySF(isTtagged2p,TopTagSF2p+TopTagSF2pStat,TopTagEff2p);
+          	int tag_top_2p_statdn = applySF(isTtagged2p,TopTagSF2p-TopTagSF2pStat,TopTagEff2p);
+          	int tag_top_5p_statup = applySF(isTtagged5p,TopTagSF5p+TopTagSF5pStat,TopTagEff5p);
+          	int tag_top_5p_statdn = applySF(isTtagged5p,TopTagSF5p-TopTagSF5pStat,TopTagEff5p);
+          	int tag_top_10p_statup = applySF(isTtagged10p,TopTagSF10p+TopTagSF10pStat,TopTagEff10p);
+          	int tag_top_10p_statdn = applySF(isTtagged10p,TopTagSF10p-TopTagSF10pStat,TopTagEff10p);
+
+          	int tag_top_1p_cspurup = applySF(isTtagged1p,TopTagSF1p+TopTagSF1pCSpur,TopTagEff1p);
+          	int tag_top_1p_cspurdn = applySF(isTtagged1p,TopTagSF1p-TopTagSF1pCSpur,TopTagEff1p);
+          	int tag_top_2p_cspurup = applySF(isTtagged2p,TopTagSF2p+TopTagSF2pCSpur,TopTagEff2p);
+          	int tag_top_2p_cspurdn = applySF(isTtagged2p,TopTagSF2p-TopTagSF2pCSpur,TopTagEff2p);
+          	int tag_top_5p_cspurup = applySF(isTtagged5p,TopTagSF5p+TopTagSF5pCSpur,TopTagEff5p);
+          	int tag_top_5p_cspurdn = applySF(isTtagged5p,TopTagSF5p-TopTagSF5pCSpur,TopTagEff5p);
+          	int tag_top_10p_cspurup = applySF(isTtagged10p,TopTagSF10p+TopTagSF10pCSpur,TopTagEff10p);
+          	int tag_top_10p_cspurdn = applySF(isTtagged10p,TopTagSF10p-TopTagSF10pCSpur,TopTagEff10p);
+
           	NresolvedTops1pFake += tag_top_1p;
           	NresolvedTops2pFake += tag_top_2p;
           	NresolvedTops5pFake += tag_top_5p;
           	NresolvedTops10pFake += tag_top_10p;
           	NresolvedTops1pFake_shifts[0] += tag_top_1p_statup;
           	NresolvedTops1pFake_shifts[1] += tag_top_1p_statdn;
+          	NresolvedTops2pFake_shifts[0] += tag_top_2p_statup;
+          	NresolvedTops2pFake_shifts[1] += tag_top_2p_statdn;
+          	NresolvedTops5pFake_shifts[0] += tag_top_5p_statup;
+          	NresolvedTops5pFake_shifts[1] += tag_top_5p_statdn;
+          	NresolvedTops10pFake_shifts[0] += tag_top_10p_statup;
+          	NresolvedTops10pFake_shifts[1] += tag_top_10p_statdn;
+          	NresolvedTops1pFake_shifts[2] += tag_top_1p_cspurup;
+          	NresolvedTops1pFake_shifts[3] += tag_top_1p_cspurdn;
+          	NresolvedTops2pFake_shifts[2] += tag_top_2p_cspurup;
+          	NresolvedTops2pFake_shifts[3] += tag_top_2p_cspurdn;
+          	NresolvedTops5pFake_shifts[2] += tag_top_5p_cspurup;
+          	NresolvedTops5pFake_shifts[3] += tag_top_5p_cspurdn;
+          	NresolvedTops10pFake_shifts[2] += tag_top_10p_cspurup;
+          	NresolvedTops10pFake_shifts[3] += tag_top_10p_cspurdn;
           	}  
 
         else{ // Data
