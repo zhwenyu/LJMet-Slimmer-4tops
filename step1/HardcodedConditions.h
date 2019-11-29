@@ -12,6 +12,8 @@ public:
     
     HardcodedConditions();
     ~HardcodedConditions();
+
+    void GetPileupWeight(int nTrueInt, float *pileupweight, float *pileupweightup, float *pileupweightdn, int year = 2017, std::string sample = "");
     
     double GetEGammaGsfSF(double pt, double eta, int year = 2017);
     double GetElectronIdSF(double pt, double eta, int year = 2017);
@@ -21,12 +23,18 @@ public:
     double GetMuonIsoSF(double pt, double eta, int year = 2017);
     double GetMuonTriggerSF(double pt, double eta, int year = 2017);
 
+    void GetHOTtaggingSF(double pt, double *hotsf, double *hotstatunc, int year = 2017, bool isGenMatched=true, std::string workingpoint = "1pfake");
+    void GetHOTtaggingEff(double pt, double *eff, int year = 2017, std::string sample = "ttbar", int massIndex=-1, bool isGenMatched=true, std::string workingpoint = "1pfake");
     void GetTtaggingSF(double pt, double *tau32sf, double *tau32sfup, double *tau32sfdn, int year = 2017);
     void GetTtaggingEff(double pt, double *eff, int year = 2017, std::string sample = "ttbar", int massIndex=-1);
     void GetWtaggingSF(double pt, double *tau21sf, double *tau21sfup, double *tau21sfdn, double *tau21ptsfup, double *tau21ptsfdn, int year = 2017);
     void GetWtaggingEff(double pt, double *eff, int year = 2017, std::string sample = "ttbar", int massIndex=-1);
 
 private:
+
+    void GetPileupWeight2016(int nTrueInt, float *pileupweight, float *pileupweightup, float *pileupweightdn, std::string sample = "");
+    void GetPileupWeight2017(int nTrueInt, float *pileupweight, float *pileupweightup, float *pileupweightdn, std::string sample = "");
+    void GetPileupWeight2018(int nTrueInt, float *pileupweight, float *pileupweightup, float *pileupweightdn, std::string sample = "");
     
     double GetEGammaGsfSF2016(double pt, double eta);
     double GetEGammaGsfSF2017(double pt, double eta);
@@ -56,6 +64,20 @@ private:
     double GetMuonTriggerSF2017(double pt, double eta);
     double GetMuonTriggerSF2018(double pt, double eta);
 
+    void GetHOTtaggingSF2016(double pt, double *hotsf, double *hotstatunc, std::string workingpoint = "1pfake");
+    void GetHOTtaggingSF2017(double pt, double *hotsf, double *hotstatunc, std::string workingpoint = "1pfake");
+    void GetHOTtaggingSF2018(double pt, double *hotsf, double *hotstatunc, std::string workingpoint = "1pfake");
+    void GetHOTtaggingEff2016(double pt, double *eff, std::string sample = "ttbar", int massIndex=-1, std::string workingpoint = "1pfake");
+    void GetHOTtaggingEff2017(double pt, double *eff, std::string sample = "ttbar", int massIndex=-1, std::string workingpoint = "1pfake");
+    void GetHOTtaggingEff2018(double pt, double *eff, std::string sample = "ttbar", int massIndex=-1, std::string workingpoint = "1pfake");
+
+    void GetHOTmistagSF2016(double pt, double *hotsf, double *hotstatunc, std::string workingpoint = "1pfake");
+    void GetHOTmistagSF2017(double pt, double *hotsf, double *hotstatunc, std::string workingpoint = "1pfake");
+    void GetHOTmistagSF2018(double pt, double *hotsf, double *hotstatunc, std::string workingpoint = "1pfake");
+    void GetHOTmistagEff2016(double pt, double *eff, std::string sample = "ttbar", int massIndex=-1, std::string workingpoint = "1pfake");
+    void GetHOTmistagEff2017(double pt, double *eff, std::string sample = "ttbar", int massIndex=-1, std::string workingpoint = "1pfake");
+    void GetHOTmistagEff2018(double pt, double *eff, std::string sample = "ttbar", int massIndex=-1, std::string workingpoint = "1pfake");
+
     void GetTtaggingSF2016(double pt, double *tau32sf, double *tau32sfup, double *tau32sfdn);
     void GetTtaggingSF2017(double pt, double *tau32sf, double *tau32sfup, double *tau32sfdn);
     void GetTtaggingSF2018(double pt, double *tau32sf, double *tau32sfup, double *tau32sfdn);
@@ -69,7 +91,17 @@ private:
     void GetWtaggingEff2016(double pt, double *eff, std::string sample = "ttbar", int massIndex=-1);
     void GetWtaggingEff2017(double pt, double *eff, std::string sample = "ttbar", int massIndex=-1);
     void GetWtaggingEff2018(double pt, double *eff, std::string sample = "ttbar", int massIndex=-1);
-    
+
+    typedef std::vector< double > FVec;
+    typedef std::vector< int > IVec;
+    FVec ptMins, hotEffs1p, hotEffs2p, hotEffs5p, hotEffs10p, hotEffs;
+    IVec njRange11, njRange12, njRange15, njRange16;
+    inline int findBin(double pt, FVec ptRange){
+        return (std::upper_bound(ptRange.begin(), ptRange.end(), pt)-ptRange.begin())-1;
+    }    
+    inline int findBin(int njet, IVec njetRange){
+        return (std::upper_bound(njetRange.begin(), njetRange.end(), njet)-njetRange.begin())-1;
+    }    
 };
 
 

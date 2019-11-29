@@ -102,6 +102,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    //   inputTree->SetBranchStatus("nPV_MultiLepCalc",1);
    inputTree->SetBranchStatus("nTrueInteractions_MultiLepCalc",1);
    inputTree->SetBranchStatus("MCWeight_MultiLepCalc",1);
+   inputTree->SetBranchStatus("evtWeightsMC_MultiLepCalc",1);
    inputTree->SetBranchStatus("LHEweightids_MultiLepCalc",1);
    inputTree->SetBranchStatus("LHEweights_MultiLepCalc",1);
    inputTree->SetBranchStatus("NewPDFweights_MultiLepCalc",1);
@@ -193,10 +194,11 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    inputTree->SetBranchStatus("theJetEta_JetSubCalc",1);
    inputTree->SetBranchStatus("theJetPhi_JetSubCalc",1);
    inputTree->SetBranchStatus("theJetEnergy_JetSubCalc",1);
-   inputTree->SetBranchStatus("theJetDeepCSVb_JetSubCalc",1);
-   inputTree->SetBranchStatus("theJetDeepCSVbb_JetSubCalc",1);
-   inputTree->SetBranchStatus("theJetDeepCSVc_JetSubCalc",1);
-   inputTree->SetBranchStatus("theJetDeepCSVudsg_JetSubCalc",1);
+   inputTree->SetBranchStatus("theJetDeepFlavB_JetSubCalc",1);
+   // inputTree->SetBranchStatus("theJetDeepCSVb_JetSubCalc",1);
+   // inputTree->SetBranchStatus("theJetDeepCSVbb_JetSubCalc",1);
+   // inputTree->SetBranchStatus("theJetDeepCSVc_JetSubCalc",1);
+   // inputTree->SetBranchStatus("theJetDeepCSVudsg_JetSubCalc",1);
    inputTree->SetBranchStatus("theJetAK8DoubleB_JetSubCalc",1);
    inputTree->SetBranchStatus("theJetBTag_bSFup_JetSubCalc",1);
    inputTree->SetBranchStatus("theJetBTag_bSFdn_JetSubCalc",1);
@@ -309,6 +311,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    //weights
    outputTree->Branch("MCWeight_MultiLepCalc",&MCWeight_MultiLepCalc,"MCWeight_MultiLepCalc/D");
    outputTree->Branch("renormWeights",&renormWeights);
+   outputTree->Branch("renormPSWeights",&renormPSWeights);
    outputTree->Branch("pdfWeights",&pdfWeights);
    outputTree->Branch("pdfNewWeights",&pdfNewWeights);
    outputTree->Branch("pdfNewNominalWeight",&pdfNewNominalWeight,"pdfNewNominalWeight/F");
@@ -370,10 +373,11 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    outputTree->Branch("theJetEta_JetSubCalc_PtOrdered",&theJetEta_JetSubCalc_PtOrdered);
    outputTree->Branch("theJetPhi_JetSubCalc_PtOrdered",&theJetPhi_JetSubCalc_PtOrdered);
    outputTree->Branch("theJetEnergy_JetSubCalc_PtOrdered",&theJetEnergy_JetSubCalc_PtOrdered);
-   outputTree->Branch("theJetDeepCSVb_JetSubCalc_PtOrdered",&theJetDeepCSVb_JetSubCalc_PtOrdered);
-   outputTree->Branch("theJetDeepCSVbb_JetSubCalc_PtOrdered",&theJetDeepCSVbb_JetSubCalc_PtOrdered);
-   outputTree->Branch("theJetDeepCSVc_JetSubCalc_PtOrdered",&theJetDeepCSVc_JetSubCalc_PtOrdered);
-   outputTree->Branch("theJetDeepCSVudsg_JetSubCalc_PtOrdered",&theJetDeepCSVudsg_JetSubCalc_PtOrdered);
+   outputTree->Branch("theJetDeepFlavB_JetSubCalc_PtOrdered",&theJetDeepFlavB_JetSubCalc_PtOrdered);
+   // outputTree->Branch("theJetDeepCSVb_JetSubCalc_PtOrdered",&theJetDeepCSVb_JetSubCalc_PtOrdered);
+   // outputTree->Branch("theJetDeepCSVbb_JetSubCalc_PtOrdered",&theJetDeepCSVbb_JetSubCalc_PtOrdered);
+   // outputTree->Branch("theJetDeepCSVc_JetSubCalc_PtOrdered",&theJetDeepCSVc_JetSubCalc_PtOrdered);
+   // outputTree->Branch("theJetDeepCSVudsg_JetSubCalc_PtOrdered",&theJetDeepCSVudsg_JetSubCalc_PtOrdered);
    outputTree->Branch("theJetHFlav_JetSubCalc_PtOrdered",&theJetHFlav_JetSubCalc_PtOrdered);
    outputTree->Branch("theJetPFlav_JetSubCalc_PtOrdered",&theJetPFlav_JetSubCalc_PtOrdered);
    outputTree->Branch("theJetBTag_JetSubCalc_PtOrdered",&theJetBTag_JetSubCalc_PtOrdered);
@@ -501,6 +505,10 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    outputTree->Branch("topPhi_HOTTaggerCalc",&topPhi_HOTTaggerCalc);
    outputTree->Branch("topPt_HOTTaggerCalc",&topPt_HOTTaggerCalc);
    outputTree->Branch("topType_HOTTaggerCalc",&topType_HOTTaggerCalc);
+   outputTree->Branch("NresolvedTops1pFakeNoSF",&NresolvedTops1pFakeNoSF,"NresolvedTops1pFakeNoSF/I");
+   outputTree->Branch("NresolvedTops2pFakeNoSF",&NresolvedTops2pFakeNoSF,"NresolvedTops2pFakeNoSF/I");
+   outputTree->Branch("NresolvedTops5pFakeNoSF",&NresolvedTops5pFakeNoSF,"NresolvedTops5pFakeNoSF/I");
+   outputTree->Branch("NresolvedTops10pFakeNoSF",&NresolvedTops10pFakeNoSF,"NresolvedTops10pFakeNoSF/I");
    outputTree->Branch("NresolvedTops1pFake",&NresolvedTops1pFake,"NresolvedTops1pFake/I");
    outputTree->Branch("NresolvedTops2pFake",&NresolvedTops2pFake,"NresolvedTops2pFake/I");
    outputTree->Branch("NresolvedTops5pFake",&NresolvedTops5pFake,"NresolvedTops5pFake/I");
@@ -596,8 +604,8 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    cout << "isMC = " << isMC << ", isSig = " << isSig << ", SigMass = " << SigMass << endl;
    cout << "isTTTT = " << isTTTT << ", isXX = " << isXX << ", isTpTp = " << isTpTp << ", isBpBp = " << isBpBp << endl;
    cout << "For W's: isTT = " << isTT << ", isSTt = " << isSTt << ", isSTtW = " << isSTtW << endl;
-   cout << "Fot jets & PDF: isTOP = " << isTOP << ", isMadgraphBkg = " << isMadgraphBkg << endl;
-   cout << "Pileup index: " << pileupIndex << endl;
+   cout << "For jets & PDF: isTOP = " << isTOP << ", isMadgraphBkg = " << isMadgraphBkg << endl;
+   cout << "Pileup sample key: " << sample << std::endl;
    cout << "isTTincMtt0to700: " << isTTincMtt0to700 << endl;
    cout << "isTTincMtt0to1000: " << isTTincMtt0to1000 << endl;
    cout << "isTTincMtt700to1000: " << isTTincMtt700to1000 << endl;
@@ -693,15 +701,18 @@ void step1::Loop(TString inTreeName, TString outTreeName )
 	
       if(isMC){
 	if(nTrueInteractions_MultiLepCalc > 99) nTrueInteractions_MultiLepCalc = 99;
-        if(nTrueInteractions_MultiLepCalc > 79 && isSig) nTrueInteractions_MultiLepCalc = 79;
+    if(nTrueInteractions_MultiLepCalc > 79 && isSig && Year==2017) nTrueInteractions_MultiLepCalc = 79;
+    if(nTrueInteractions_MultiLepCalc > 74 && Year==2016) nTrueInteractions_MultiLepCalc = 74;
 	if(nTrueInteractions_MultiLepCalc < 0) nTrueInteractions_MultiLepCalc = 0;
-	if(pileupIndex < 0 || pileupIndex > 60){
-	  std::cout << "I don't know this pileup sample, using TTToSemiLeptonic's" << std::endl;
-	  pileupIndex = 26;
-	}
-	pileupWeight = pileupweight[pileupIndex][nTrueInteractions_MultiLepCalc];
-	pileupWeightUp = pileupweightUp[pileupIndex][nTrueInteractions_MultiLepCalc];
-	pileupWeightDown = pileupweightDn[pileupIndex][nTrueInteractions_MultiLepCalc];
+	try {
+		hardcodedConditions.GetPileupWeight(nTrueInteractions_MultiLepCalc, &pileupWeight, &pileupWeightUp, &pileupWeightDown, Year, sample);
+		}
+	catch(const std::out_of_range &e) {
+	  	std::cout << "I don't know this pileup sample, using TTToSemiLeptonic's: ";
+		sample = "TTToSemiLeptonic_TuneCP5_PSweights_13TeV-powheg-pythia8";
+	  	std::cout << sample << std::endl;
+		hardcodedConditions.GetPileupWeight(nTrueInteractions_MultiLepCalc, &pileupWeight, &pileupWeightUp, &pileupWeightDown, Year, sample);
+		}
       }
 
       // ----------------------------------------------------------------------------
@@ -894,8 +905,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
       ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
       ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////      
 
-      AK4HTpMETpLepPt = 0; //ST
-      AK4HTpMETpLepPt = AK4HT + corr_met_MultiLepCalc + leppt;
+      AK4HTpMETpLepPt = AK4HT + corr_met_MultiLepCalc + leppt; //ST
       
       // ----------------------------------------------------------------------------
       // Combine lepton variables into one set
@@ -929,10 +939,11 @@ void step1::Loop(TString inTreeName, TString outTreeName )
       theJetEta_JetSubCalc_PtOrdered.clear();
       theJetPhi_JetSubCalc_PtOrdered.clear();
       theJetEnergy_JetSubCalc_PtOrdered.clear();
-      theJetDeepCSVb_JetSubCalc_PtOrdered.clear();
-      theJetDeepCSVbb_JetSubCalc_PtOrdered.clear();
-      theJetDeepCSVc_JetSubCalc_PtOrdered.clear();
-      theJetDeepCSVudsg_JetSubCalc_PtOrdered.clear();
+      theJetDeepFlavB_JetSubCalc_PtOrdered.clear();
+      // theJetDeepCSVb_JetSubCalc_PtOrdered.clear();
+      // theJetDeepCSVbb_JetSubCalc_PtOrdered.clear();
+      // theJetDeepCSVc_JetSubCalc_PtOrdered.clear();
+      // theJetDeepCSVudsg_JetSubCalc_PtOrdered.clear();
       theJetHFlav_JetSubCalc_PtOrdered.clear();
       theJetPFlav_JetSubCalc_PtOrdered.clear();
       theJetBTag_JetSubCalc_PtOrdered.clear();
@@ -945,10 +956,11 @@ void step1::Loop(TString inTreeName, TString outTreeName )
       	theJetEta_JetSubCalc_PtOrdered.push_back(theJetEta_JetSubCalc->at(jetptindpair[ijet].second));
       	theJetPhi_JetSubCalc_PtOrdered.push_back(theJetPhi_JetSubCalc->at(jetptindpair[ijet].second));
       	theJetEnergy_JetSubCalc_PtOrdered.push_back(theJetEnergy_JetSubCalc->at(jetptindpair[ijet].second));
-      	theJetDeepCSVb_JetSubCalc_PtOrdered.push_back(theJetDeepCSVb_JetSubCalc->at(jetptindpair[ijet].second));
-		theJetDeepCSVbb_JetSubCalc_PtOrdered.push_back(theJetDeepCSVbb_JetSubCalc->at(jetptindpair[ijet].second));
-		theJetDeepCSVc_JetSubCalc_PtOrdered.push_back(theJetDeepCSVc_JetSubCalc->at(jetptindpair[ijet].second));
-		theJetDeepCSVudsg_JetSubCalc_PtOrdered.push_back(theJetDeepCSVudsg_JetSubCalc->at(jetptindpair[ijet].second));
+         theJetDeepFlavB_JetSubCalc_PtOrdered.push_back(theJetDeepFlavB_JetSubCalc->at(jetptindpair[ijet].second));
+  //     	theJetDeepCSVb_JetSubCalc_PtOrdered.push_back(theJetDeepCSVb_JetSubCalc->at(jetptindpair[ijet].second));
+		// theJetDeepCSVbb_JetSubCalc_PtOrdered.push_back(theJetDeepCSVbb_JetSubCalc->at(jetptindpair[ijet].second));
+		// theJetDeepCSVc_JetSubCalc_PtOrdered.push_back(theJetDeepCSVc_JetSubCalc->at(jetptindpair[ijet].second));
+		// theJetDeepCSVudsg_JetSubCalc_PtOrdered.push_back(theJetDeepCSVudsg_JetSubCalc->at(jetptindpair[ijet].second));
       	theJetHFlav_JetSubCalc_PtOrdered.push_back(theJetHFlav_JetSubCalc->at(jetptindpair[ijet].second));
       	theJetPFlav_JetSubCalc_PtOrdered.push_back(theJetPFlav_JetSubCalc->at(jetptindpair[ijet].second));
 		theJetBTag_JetSubCalc_PtOrdered.push_back(theJetBTag_JetSubCalc->at(jetptindpair[ijet].second));
@@ -1006,7 +1018,10 @@ void step1::Loop(TString inTreeName, TString outTreeName )
 
 	deltaR_lepJets.push_back(lepton_lv.DeltaR(jet_lv));
 
-   	if(theJetDeepCSVb_JetSubCalc_PtOrdered.at(ijet) + theJetDeepCSVbb_JetSubCalc_PtOrdered.at(ijet) > 0.4941){
+   	// if(theJetDeepCSVb_JetSubCalc_PtOrdered.at(ijet) + theJetDeepCSVbb_JetSubCalc_PtOrdered.at(ijet) > 0.4941){
+    //       NJetsCSV_JetSubCalc += 1;
+    //     }
+   if(theJetDeepFlavB_JetSubCalc_PtOrdered.at(ijet) > 0.3033){
           NJetsCSV_JetSubCalc += 1;
         }
 
@@ -1311,12 +1326,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
 	  double tau32eff = 1.0;
 	  if(isTmatched && matchedPt >= 400){	    
 	    hardcodedConditions.GetTtaggingSF(matchedPt, &tau32SF, &tau32SFup, &tau32SFdn, Year);
-	    //THESE ARE SET TO 1 SO AS TO NOT APPLY SF WHILE WAITING FOR EFFICIENCIES!!!!
-	    //REMOVE THEM WHEN YOU HAVE THE CORRECT EFFICIENCIES!!!!
-	    tau32SF = 1.0;
-	    tau32SFup = 1.0;
-	    tau32SFdn = 1.0;
-	    // Use matched T to find the efficiency -- calculated for TpTp and ttbar, EWK/QCD will almost never pass here (use ttbar eff when they do)
+	    // Use matched T to find the efficiency -- EWK/QCD will almost never pass here (use ttbar eff when they do)
 		if(isTTTT) {hardcodedConditions.GetTtaggingEff(matchedPt, &tau32eff, Year, "tttt");}
 		else if(isXX) {hardcodedConditions.GetTtaggingEff(matchedPt, &tau32eff, Year, "x53x53",SigMass);}		
 		else if(isTT) {hardcodedConditions.GetTtaggingEff(matchedPt, &tau32eff, Year, "ttbar");}
@@ -1362,19 +1372,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
 	  double tau21eff = 1.0;
 	  if(isWmatched && matchedPt >= 175 && massSD > 65 && massSD < 105 && theJetAK8Pt_JetSubCalc_PtOrdered.at(ijet) >= 200){	    
 	    hardcodedConditions.GetWtaggingSF(theJetAK8Pt_JetSubCalc_PtOrdered.at(ijet), &tau21SF, &tau21SFup, &tau21SFdn, &tau21ptSFup, &tau21ptSFdn, Year);
-	    //THESE ARE SET TO 1 SO AS TO NOT APPLY SF WHILE WAITING FOR EFFICIENCIES!!!!
-	    tau21SF = 1.0;
-	    tau21SFup = 1.0;
-	    tau21SFdn = 1.0;
-	    tau21ptSFup = 1.0;
-	    tau21ptSFdn = 1.0;
-	    
-	    // Use matched W to find the efficiency -- calculated for TpTp and ttbar, EWK/QCD will almost never pass here (use ttbar eff when they do)
-		if(isTTTT) {hardcodedConditions.GetTtaggingEff(matchedPt, &tau32eff, Year, "tttt");}
-		else if(isXX) {hardcodedConditions.GetTtaggingEff(matchedPt, &tau32eff, Year, "x53x53",SigMass);}		
-		else if(isTT) {hardcodedConditions.GetTtaggingEff(matchedPt, &tau32eff, Year, "ttbar");}
-		else {hardcodedConditions.GetTtaggingEff(matchedPt, &tau32eff, Year, "singletop");}
-
+	    // Use matched W to find the efficiency -- EWK/QCD will almost never pass here (use ttbar eff when they do)
 	    if(isXX) {hardcodedConditions.GetWtaggingEff(matchedPt, &tau21eff, Year, "x53x53",SigMass);}
 	    else if(isTpTp) {hardcodedConditions.GetWtaggingEff(matchedPt, &tau21eff, Year, "TpTp",SigMass);}
 	    else if(isBpBp) {hardcodedConditions.GetWtaggingEff(matchedPt, &tau21eff, Year, "BpBp",SigMass);}
@@ -1444,7 +1442,12 @@ void step1::Loop(TString inTreeName, TString outTreeName )
 
     // ----------------------------------------------------------------------------
     // HOT TAGGER -- SCALE FACTORS TO BE ADDED!!!
+    // !!!! THIS SHOULD BE UPDATED WHEN FWLJMET NTUPLES ARE AVAILABLE WITH UPDATED HOTTAGGERCALC; i.e., WITH getBestGenTopMatch !!!!!!!
     // ----------------------------------------------------------------------------
+     NresolvedTops1pFakeNoSF = 0;
+     NresolvedTops2pFakeNoSF = 0;
+     NresolvedTops5pFakeNoSF = 0;
+     NresolvedTops10pFakeNoSF = 0;
      NresolvedTops1pFake = 0;
      NresolvedTops2pFake = 0;
      NresolvedTops5pFake = 0;
@@ -1483,10 +1486,11 @@ void step1::Loop(TString inTreeName, TString outTreeName )
 	    	resolvedTopD1.SetPtEtaPhiE(theJetPt_JetSubCalc->at(idjet1),theJetEta_JetSubCalc->at(idjet1),theJetPhi_JetSubCalc->at(idjet1),theJetEnergy_JetSubCalc->at(idjet1));
 	    	resolvedTopD2.SetPtEtaPhiE(theJetPt_JetSubCalc->at(idjet2),theJetEta_JetSubCalc->at(idjet2),theJetPhi_JetSubCalc->at(idjet2),theJetEnergy_JetSubCalc->at(idjet2));
 	    	resolvedTopD3.SetPtEtaPhiE(theJetPt_JetSubCalc->at(idjet3),theJetEta_JetSubCalc->at(idjet3),theJetPhi_JetSubCalc->at(idjet3),theJetEnergy_JetSubCalc->at(idjet3));
-            cout<<"DEBUGGING: "<<topPt_TTbarMassCalc->size()<<" "<<topbPt_TTbarMassCalc->size()<<" "<<topWPt_TTbarMassCalc->size()<<endl;
+            //cout<<"DEBUGGING: "<<topPt_TTbarMassCalc->size()<<" "<<topbPt_TTbarMassCalc->size()<<" "<<topWPt_TTbarMassCalc->size()<<endl;
             for(unsigned int igtop=0; igtop < topPt_TTbarMassCalc->size(); igtop++){
-	    	   trueTop.SetPtEtaPhiE(topPt_TTbarMassCalc->at(igtop),topEta_TTbarMassCalc->at(igtop),topPhi_TTbarMassCalc->at(igtop),topEnergy_TTbarMassCalc->at(igtop));
 	    	   if(2*igtop>=topWPt_TTbarMassCalc->size()) continue; // DEBUGGING TEMPORARY EDITION
+	    	   if(abs(topWID_TTbarMassCalc->at(2*igtop))>5) continue; // select hadronically decaying tops
+	    	   trueTop.SetPtEtaPhiE(topPt_TTbarMassCalc->at(igtop),topEta_TTbarMassCalc->at(igtop),topPhi_TTbarMassCalc->at(igtop),topEnergy_TTbarMassCalc->at(igtop));
 	    	   if(resolvedTop.DeltaR(trueTop) < minDRtop){
 	    	     minDRtop = resolvedTop.DeltaR(trueTop);
 	    	     trueTopD1.SetPtEtaPhiE(topbPt_TTbarMassCalc->at(igtop),topbEta_TTbarMassCalc->at(igtop),topbPhi_TTbarMassCalc->at(igtop),topbEnergy_TTbarMassCalc->at(igtop));
@@ -1510,27 +1514,46 @@ void step1::Loop(TString inTreeName, TString outTreeName )
 	    	     minDRtopD3 = minDRtopDs.at(0);
 	    	     }
           	   }
+         	
+          	double TopTagSF1p = 1.0;
+          	double TopTagSF2p = 1.0;
+          	double TopTagSF5p = 1.0;
+          	double TopTagSF10p = 1.0;
+          	double TopTagSF1pStat = 0.0;
+          	int NdaughterMatch = (minDRtopD1 < 0.4) + (minDRtopD2 < 0.4) + (minDRtopD3 < 0.4);
+          	bool isGenMatched = ( (minDRtop < 0.6) && (NdaughterMatch > 1) );
+          	hardcodedConditions.GetHOTtaggingSF(topPt_HOTTaggerCalc->at(itop), &TopTagSF1p, &TopTagSF1pStat, Year, isGenMatched, "1pfake");
+          	hardcodedConditions.GetHOTtaggingSF(topPt_HOTTaggerCalc->at(itop), &TopTagSF2p, &TopTagSF1pStat, Year, isGenMatched, "2pfake");
+          	hardcodedConditions.GetHOTtaggingSF(topPt_HOTTaggerCalc->at(itop), &TopTagSF5p, &TopTagSF1pStat, Year, isGenMatched, "5pfake");
+          	hardcodedConditions.GetHOTtaggingSF(topPt_HOTTaggerCalc->at(itop), &TopTagSF10p,&TopTagSF1pStat, Year, isGenMatched, "10pfake");
+          	double TopTagEff1p = 1.0;
+          	double TopTagEff2p = 1.0;
+          	double TopTagEff5p = 1.0;
+          	double TopTagEff10p = 1.0;
           	
-          	float TopTagSF1p = 9.92093861103e-01; // for mistagging; apply to those that ARENT truth matched
-          	float TopTagSF2p = 9.60411310196e-01; // for mistagging; apply to those that ARENT truth matched
-          	float TopTagSF5p = 9.87441658974e-01; // for mistagging; apply to those that ARENT truth matched
-          	float TopTagSF10p = 1.00665986538e+00; // for mistagging; apply to those that ARENT truth matched
-          	float TopTagSF1pStat = 2.36706994474e-02; // for mistagging; apply to those that ARENT truth matched
-          	if(minDRtop < 0.6 && minDRtopD1 < 0.4 && minDRtopD2 < 0.4 && minDRtopD3 < 0.4){
-          	  TopTagSF1p = 9.57049369812e-01; // for tagging; apply to those that ARE truth matched
-          	  TopTagSF2p = 1.01395213604e+00; // for tagging; apply to those that ARE truth matched
-          	  TopTagSF5p = 1.01192998886e+00; // for tagging; apply to those that ARE truth matched
-          	  TopTagSF10p = 1.00117206573e+00; // for tagging; apply to those that ARE truth matched
-          	  TopTagSF1pStat = 0.0993947964162e-03; // for tagging; apply to those that ARE truth matched
-          	  }
-          	float TopTagEff1p = 1.; // TO BE CALCULATED !!!!!!!!!!!!
-          	float TopTagEff2p = 1.; // TO BE CALCULATED !!!!!!!!!!!!
-          	float TopTagEff5p = 1.; // TO BE CALCULATED !!!!!!!!!!!!
-          	float TopTagEff10p = 1.; // TO BE CALCULATED !!!!!!!!!!!!
+          	std::string sample_hot;
+          	if(isTTTT) sample_hot = "tttt";
+          	else if(isST) sample_hot = "singletop";
+          	else if(isTTVV) sample_hot = "TTVV";
+          	else if(isTTX) sample_hot = "TTTX";
+          	else if(isTT) sample_hot = "ttbar";
+          	else if(isTTToSemiLeptonHT500Njet9) sample_hot = "ttbarHT500Njet9";
+          	else if(isTTW) sample_hot = "ttWjets";
+          	else if(isTTHnonbb) sample_hot = "ttHToNonbb";
+          	else if(isTTHbb) sample_hot = "ttHTobb";
+
+          	if(TopTagSF1p>1)  hardcodedConditions.GetHOTtaggingEff(topPt_HOTTaggerCalc->at(itop), &TopTagEff1p, Year, sample_hot, -1, isGenMatched, "1pfake");
+          	if(TopTagSF2p>1)  hardcodedConditions.GetHOTtaggingEff(topPt_HOTTaggerCalc->at(itop), &TopTagEff2p, Year, sample_hot, -1, isGenMatched, "2pfake");
+          	if(TopTagSF5p>1)  hardcodedConditions.GetHOTtaggingEff(topPt_HOTTaggerCalc->at(itop), &TopTagEff5p, Year, sample_hot, -1, isGenMatched, "5pfake");
+          	if(TopTagSF10p>1) hardcodedConditions.GetHOTtaggingEff(topPt_HOTTaggerCalc->at(itop), &TopTagEff10p,Year, sample_hot, -1, isGenMatched, "10pfake");
           	bool isTtagged1p = topDiscriminator_HOTTaggerCalc->at(itop) > 0.95;
           	bool isTtagged2p = topDiscriminator_HOTTaggerCalc->at(itop) > 0.92;
           	bool isTtagged5p = topDiscriminator_HOTTaggerCalc->at(itop) > 0.85;
-          	bool isTtagged10p = topDiscriminator_HOTTaggerCalc->at(itop) > 0.75;
+          	bool isTtagged10p= topDiscriminator_HOTTaggerCalc->at(itop) > 0.75;
+          	NresolvedTops1pFakeNoSF += isTtagged1p;
+          	NresolvedTops2pFakeNoSF += isTtagged2p;
+          	NresolvedTops5pFakeNoSF += isTtagged5p;
+          	NresolvedTops10pFakeNoSF += isTtagged10p;
           	int tag_top_1p = applySF(isTtagged1p,TopTagSF1p,TopTagEff1p);
           	int tag_top_2p = applySF(isTtagged2p,TopTagSF2p,TopTagEff2p);
           	int tag_top_5p = applySF(isTtagged5p,TopTagSF5p,TopTagEff5p);
@@ -1560,9 +1583,23 @@ void step1::Loop(TString inTreeName, TString outTreeName )
       std::vector<double> renorm;
       std::vector<double> pdf;
       renormWeights.clear();
+      renormPSWeights.clear();
       pdfWeights.clear();
       pdfNewWeights.clear();
       pdfNewNominalWeight = 1.0;
+
+      //PSWEIGHTS
+      //https://twiki.cern.ch/twiki/bin/viewauth/CMS/TopModGen
+      //https://github.com/cms-sw/cmssw/commits/master/Configuration/Generator/python/PSweightsPythia/PythiaPSweightsSettings_cfi.py
+      // 2 = isrRedHi isr:muRfac=0.707, 3 = fsrRedHi fsr:muRfac=0.707, 4 = isrRedLo isr:muRfac=1.414, 5 = fsrRedLo fsr:muRfac=1.414, 
+      // 6 = isrDefHi isr:muRfac=0.5, 7 = fsrDefHi fsr:muRfac=0.5,  8 = isrDefLo isr:muRfac=2.0,   9 = fsrDefLo fsr:muRfac=2.0, 
+      // 10 = isrConHi isr:muRfac=0.25, 11 = fsrConHi fsr:muRfac=0.25, 12 = isrConLo isr:muRfac=4.0, 13 = fsrConLo fsr:muRfac=4.0
+      if (evtWeightsMC_MultiLepCalc->size()>=14)
+         for(auto & i: {6,7,8,9})
+            renormPSWeights.push_back(evtWeightsMC_MultiLepCalc->at(i)/evtWeightsMC_MultiLepCalc->at(0));
+      else renormPSWeights={1,1,1,1};
+
+      //ME-PS
       if(isSig && !isTTTT){
 	pdfNewNominalWeight = NewPDFweights_MultiLepCalc->at(0);
 	// SEEMS TO APPLY TO ALL B2G MG+PYTHIA SIGNALS. NNLO 4-FLAVOR PDF
