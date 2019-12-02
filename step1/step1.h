@@ -42,7 +42,6 @@ public :
    Bool_t          isTT=false;
    Bool_t          isTTToSemiLeptonHT500Njet9=false;
    Bool_t          isTTV=false;
-   Bool_t          isTTW=false;
    Bool_t          isTTHbb=false;
    Bool_t          isTTHnonbb=false;
    Bool_t          isTTX=false;
@@ -1254,7 +1253,6 @@ step1::step1(TString inputFileName, TString outputFileName) : inputTree(0), inpu
   isSTt = inputFileName.Contains("ST_t-channel");
   isSTtW = inputFileName.Contains("ST_tW");
   isTTV = (inputFileName.Contains("ttZ") || inputFileName.Contains("ttW") || inputFileName.Contains("ttH"));
-  isTTW = inputFileName.Contains("ttW");
   isTTHbb = inputFileName.Contains("ttHTobb_");
   isTTHnonbb = inputFileName.Contains("ttHToNonbb_");
   isTTX = (inputFileName.Contains("TTTJ_Tune") || inputFileName.Contains("TTTW_Tune"));
