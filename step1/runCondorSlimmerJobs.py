@@ -7,7 +7,8 @@ start_time = time.time()
 
 #IO directories must be full paths
 
-finalStateYear = 'singleLep2017' # or 2018
+Year = 2017 # or 2018
+finalStateYear = 'singleLep'+str(Year)
 relbase = '/uscms_data/d3/ssagir/CMSSW_10_2_10/'
 #inputDir='/eos/uscms/store/user/lpcljm/FWLJMET102X_1lep2017_052219/' # or 2018
 inputDir='/eos/uscms/store/user/lpcljm/FWLJMET102X_1lep2017_070919/' # or 2018
@@ -161,7 +162,7 @@ for sample in dirList:
                     idlist = idlist.strip()
                     print "Running IDs",idlist
                 
-                    dict={'RUNDIR':runDir, 'SAMPLE':sample, 'INPATHSUFFIX':pathsuffix, 'INPUTDIR':inDir, 'FILENAME':basefilename, 'OUTFILENAME':outsample, 'OUTPUTDIR':outDir, 'LIST':idlist, 'ID':tmpcount}
+                    dict={'RUNDIR':runDir, 'SAMPLE':sample, 'INPATHSUFFIX':pathsuffix, 'INPUTDIR':inDir, 'FILENAME':basefilename, 'OUTFILENAME':outsample, 'OUTPUTDIR':outDir, 'LIST':idlist, 'ID':tmpcount, 'YEAR':Year}
                     jdfName=condorDir+'/%(OUTFILENAME)s/%(OUTFILENAME)s_%(ID)s.job'%dict
                     print jdfName
                     jdf=open(jdfName,'w')
@@ -176,7 +177,7 @@ Output = %(OUTFILENAME)s_%(ID)s.out
 Error = %(OUTFILENAME)s_%(ID)s.err
 Log = %(OUTFILENAME)s_%(ID)s.log
 Notification = Never
-Arguments = "%(FILENAME)s %(OUTFILENAME)s %(INPUTDIR)s/%(SAMPLE)s/%(INPATHSUFFIX)s %(OUTPUTDIR)s/%(OUTFILENAME)s '%(LIST)s' %(ID)s"
+Arguments = "%(FILENAME)s %(OUTFILENAME)s %(INPUTDIR)s/%(SAMPLE)s/%(INPATHSUFFIX)s %(OUTPUTDIR)s/%(OUTFILENAME)s '%(LIST)s' %(ID)s %(YEAR)s"
 
 Queue 1"""%dict)
                     jdf.close()

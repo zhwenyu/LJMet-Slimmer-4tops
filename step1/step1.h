@@ -1200,7 +1200,7 @@ public :
    TBranch        *b_vsSelTriggersHad_MultiLepCalc;   //!
    TBranch        *b_vsSelTriggersMu_MultiLepCalc;   //!
  
-   step1(TString inputFileName, TString outputFileName);
+   step1(TString inputFileName, TString outputFileName, Int_t Year_);
    virtual ~step1();
    virtual Int_t    Cut(Long64_t entry);
    virtual Int_t    GetEntry(Long64_t entry);
@@ -1216,11 +1216,12 @@ public :
 #endif
 
 #ifdef step1_cxx
-step1::step1(TString inputFileName, TString outputFileName) : inputTree(0), inputFile(0), outputFile(0) 
+step1::step1(TString inputFileName, TString outputFileName, Int_t Year_) : inputTree(0), inputFile(0), outputFile(0) 
 {
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
 
+  Year = Year_;
   isSig  = (inputFileName.Contains("TTTT_Tune") || inputFileName.Contains("prime") || inputFileName.Contains("X53") || inputFileName.Contains("ChargedHiggs_Hplus"));
   if(isSig){
     if(inputFileName.Contains("Tprime")) isTpTp = true;

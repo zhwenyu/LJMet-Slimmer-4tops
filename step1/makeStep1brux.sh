@@ -9,6 +9,7 @@ inputDir=${3}
 outputDir=${4}
 idlist=${5}
 ID=${6}
+Year=${7}
 scratch=${PWD}
 
 source /cvmfs/cms.cern.ch/cmsset_default.sh
@@ -37,7 +38,7 @@ for iFile in $idlist; do
     fi
 
     echo "creating ${outfilename}_${iFile}.root by reading ${infilename}_${inFile}"
-    root -l -b -q makeStep1.C\(\"$macroDir\",\"$XRDpath/${infilename}_${inFile}.root\",\"${outfilename}_${iFile}.root\"\)
+    root -l -b -q makeStep1.C\(\"$macroDir\",\"$XRDpath/${infilename}_${inFile}.root\",\"${outfilename}_${iFile}.root\",Year\)
 done
 
 echo "ROOT Files:"
