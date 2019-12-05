@@ -86,8 +86,8 @@ void step1::Loop(TString inTreeName, TString outTreeName )
   // ----------------------------------------------------------------------------
   inputTree=(TTree*)inputFile->Get(inTreeName+"/"+inTreeName);
   if(inputTree->GetEntries()==0) {
-    std::cout<<"WARNING! Found 0 events in the tree!!!!"<<std::endl;;
-    exit(1);
+    std::cout<<"WARNING! Found 0 events in the tree!!!!"<<std::endl;
+    return;
   }
   Init(inputTree);
 
@@ -605,7 +605,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    cout << "isTTTT = " << isTTTT << ", isXX = " << isXX << ", isTpTp = " << isTpTp << ", isBpBp = " << isBpBp << endl;
    cout << "For W's: isTT = " << isTT << ", isSTt = " << isSTt << ", isSTtW = " << isSTtW << endl;
    cout << "For jets & PDF: isTOP = " << isTOP << ", isMadgraphBkg = " << isMadgraphBkg << endl;
-   cout << "For HOTTagger Efficiencies: isTTV = " << isTTV << ", isTTHbb = " << isTTHbb << ", isTTHnonbb = " << isTTHnonbb << ", isTTX = " << isTTX << endl;
+   cout << "For HOTTagger Efficiencies: isTTV = " << isTTV << ", isTTHbb = " << isTTHbb << ", isTTHnonbb = " << isTTHnonbb << ", isTTTX = " << isTTTX << endl;
    cout << "isTTVV = " << isTTVV << ", isST = " << isST << ", isTTToSemiLeptonHT500Njet9 = " << isTTToSemiLeptonHT500Njet9 << endl;
    cout << "Pileup sample key: " << sample << std::endl;
    cout << "isTTincMtt0to700: " << isTTincMtt0to700 << endl;
@@ -1548,7 +1548,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
           	if(isTTTT) sample_hot = "tttt";
           	else if(isST) sample_hot = "singletop";
           	else if(isTTVV) sample_hot = "TTVV";
-          	else if(isTTX) sample_hot = "TTTX";
+          	else if(isTTTX) sample_hot = "TTTX";
           	else if(isTT) sample_hot = "ttbar";
           	else if(isTTToSemiLeptonHT500Njet9) sample_hot = "ttbarHT500Njet9";
           	else if(isTTV) sample_hot = "ttVjets";

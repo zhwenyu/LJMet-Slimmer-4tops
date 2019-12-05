@@ -44,7 +44,7 @@ public :
    Bool_t          isTTV=false;
    Bool_t          isTTHbb=false;
    Bool_t          isTTHnonbb=false;
-   Bool_t          isTTX=false;
+   Bool_t          isTTTX=false;
    Bool_t          isTTVV=false;
    Bool_t          isVV=false;
    Bool_t          isST=false;
@@ -1253,10 +1253,10 @@ step1::step1(TString inputFileName, TString outputFileName, Int_t Year_) : input
   isST = (inputFileName.Contains("ST_t-channel") || inputFileName.Contains("ST_tW") || inputFileName.Contains("ST_s-channel"));
   isSTt = inputFileName.Contains("ST_t-channel");
   isSTtW = inputFileName.Contains("ST_tW");
-  isTTV = (inputFileName.Contains("ttZ") || inputFileName.Contains("ttW") || inputFileName.Contains("ttH"));
+  isTTV = (inputFileName.Contains("TTZTo") || inputFileName.Contains("TTWJetsTo"));
   isTTHbb = inputFileName.Contains("ttHTobb_");
   isTTHnonbb = inputFileName.Contains("ttHToNonbb_");
-  isTTX = (inputFileName.Contains("TTTJ_Tune") || inputFileName.Contains("TTTW_Tune"));
+  isTTTX = (inputFileName.Contains("TTTJ_Tune") || inputFileName.Contains("TTTW_Tune"));
   isTTVV = (inputFileName.Contains("TTHH_Tune") || inputFileName.Contains("TTWH_Tune") || inputFileName.Contains("TTWW_Tune") || inputFileName.Contains("TTWZ_Tune") || inputFileName.Contains("TTZH_Tune") || inputFileName.Contains("TTZZ_Tune"));
   isVV = (inputFileName.Contains("WW_") || inputFileName.Contains("WZ_") || inputFileName.Contains("ZZ_"));
   isMC = !(inputFileName.Contains("Single") || inputFileName.Contains("Data18"));
@@ -1269,6 +1269,7 @@ step1::step1(TString inputFileName, TString outputFileName, Int_t Year_) : input
   isTTincMtt1000toInf = outputFileName.Contains("Mtt1000toInf");
   isTTSemilepIncHT0Njet0 = outputFileName.Contains("HT0Njet0");
   isTTSemilepIncHT500Njet9 = outputFileName.Contains("HT500Njet9");
+  if(inputFileName.Contains("HT500Njet9")) isTTSemilepIncHT500Njet9 = false;
   isTTBB = outputFileName.Contains("_ttbb");
   isTTCC = outputFileName.Contains("_ttcc");
   isTTJJ = outputFileName.Contains("_ttjj");
