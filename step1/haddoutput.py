@@ -5,12 +5,9 @@ execfile("/uscms_data/d3/jmanagan/EOSSafeUtils.py")
 start_time = time.time()
 
 #IO directories must be full paths
-# input  = sys.argv[1]
-# output = sys.argv[2]
 shift = sys.argv[1]
-
-inputDir='/eos/uscms/store/user/lpcljm/FWLJMET102X_1lep2017_4t_100719_step1/'+shift+'/'
-outputDir='/eos/uscms/store/user/lpcljm/FWLJMET102X_1lep2017_4t_100719_step1hadds/'+shift+'/'
+inputDir='/eos/uscms/store/user/ssagir/FWLJMET102X_1lep2017_Oct2019_4t_120419_step1/'+shift+'/'
+outputDir='/eos/uscms/store/user/ssagir/FWLJMET102X_1lep2017_Oct2019_4t_120419_step1hadds/'+shift+'/'
 
 inDir=inputDir[10:]
 outDir=outputDir[10:]
@@ -37,26 +34,33 @@ dirList = [
 'ST_t-channel_top_4f_InclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8',
 'ST_tW_antitop_5f_inclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8',
 'ST_tW_top_5f_inclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8',
-# 'SingleElectron',
-# 'SingleMuon',
 'TTHH_TuneCP5_13TeV-madgraph-pythia8',
 'TTTJ_TuneCP5_13TeV-madgraph-pythia8',
 'TTTT_TuneCP5_13TeV-amcatnlo-pythia8',
+'TTTT_TuneCP5_PSweights_13TeV-amcatnlo-pythia8',
 'TTTW_TuneCP5_13TeV-madgraph-pythia8',
 'TTTo2L2Nu_TuneCP5_PSweights_13TeV-powheg-pythia8',
+'TTTo2L2Nu_TuneCP5down_PSweights_13TeV-powheg-pythia8',
+'TTTo2L2Nu_TuneCP5up_PSweights_13TeV-powheg-pythia8',
+'TTTo2L2Nu_hdampDOWN_TuneCP5_PSweights_13TeV-powheg-pythia8',
+'TTTo2L2Nu_hdampUP_TuneCP5_PSweights_13TeV-powheg-pythia8',
 'TTToHadronic_TuneCP5_PSweights_13TeV-powheg-pythia8',
+'TTToHadronic_TuneCP5down_PSweights_13TeV-powheg-pythia8',
+'TTToHadronic_TuneCP5up_PSweights_13TeV-powheg-pythia8',
+'TTToHadronic_hdampDOWN_TuneCP5_PSweights_13TeV-powheg-pythia8',
+'TTToHadronic_hdampUP_TuneCP5_PSweights_13TeV-powheg-pythia8',
 'TTToSemiLepton_HT500Njet9_TuneCP5_PSweights_13TeV-powheg-pythia8',
 'TTToSemiLeptonic_TuneCP5_PSweights_13TeV-powheg-pythia8',
+'TTToSemiLeptonic_hdampDOWN_TuneCP5_PSweights_13TeV-powheg-pythia8',
+'TTToSemiLeptonic_hdampUP_TuneCP5_PSweights_13TeV-powheg-pythia8',
 'TTWH_TuneCP5_13TeV-madgraph-pythia8',
 'TTWJetsToLNu_TuneCP5_PSweights_13TeV-amcatnloFXFX-madspin-pythia8',
-'TTWJetsToQQ_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8',
 'TTWW_TuneCP5_13TeV-madgraph-pythia8',
 'TTWZ_TuneCP5_13TeV-madgraph-pythia8',
 'TTZH_TuneCP5_13TeV-madgraph-pythia8',
 'TTZToLLNuNu_M-10_TuneCP5_PSweights_13TeV-amcatnlo-pythia8',
+'TTZToLL_M-1to10_TuneCP5_13TeV-amcatnlo-pythia8',
 'TTZZ_TuneCP5_13TeV-madgraph-pythia8',
-'TT_Mtt-1000toInf_TuneCP5_PSweights_13TeV-powheg-pythia8',
-'TT_Mtt-700to1000_TuneCP5_PSweights_13TeV-powheg-pythia8',
 'WJetsToLNu_HT-1200To2500_TuneCP5_13TeV-madgraphMLM-pythia8',
 'WJetsToLNu_HT-200To400_TuneCP5_13TeV-madgraphMLM-pythia8',
 'WJetsToLNu_HT-2500ToInf_TuneCP5_13TeV-madgraphMLM-pythia8',
@@ -73,13 +77,6 @@ dirList = [
 if shift=='nominal':
 	dirList.append('SingleElectron')
 	dirList.append('SingleMuon')
-
-dirList = [
-'TTTo2L2Nu_TuneCP5_PSweights_13TeV-powheg-pythia8',
-'TTToHadronic_TuneCP5_PSweights_13TeV-powheg-pythia8',
-'TTToSemiLepton_HT500Njet9_TuneCP5_PSweights_13TeV-powheg-pythia8',
-'TTToSemiLeptonic_TuneCP5_PSweights_13TeV-powheg-pythia8',
-]
 
 for sample in dirList:
     outList = ['none']

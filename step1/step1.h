@@ -44,7 +44,7 @@ public :
    Bool_t          isTTV=false;
    Bool_t          isTTHbb=false;
    Bool_t          isTTHnonbb=false;
-   Bool_t          isTTX=false;
+   Bool_t          isTTTX=false;
    Bool_t          isTTVV=false;
    Bool_t          isVV=false;
    Bool_t          isST=false;
@@ -1200,7 +1200,7 @@ public :
    TBranch        *b_vsSelTriggersHad_MultiLepCalc;   //!
    TBranch        *b_vsSelTriggersMu_MultiLepCalc;   //!
  
-   step1(TString inputFileName, TString outputFileName);
+   step1(TString inputFileName, TString outputFileName, Int_t Year_);
    virtual ~step1();
    virtual Int_t    Cut(Long64_t entry);
    virtual Int_t    GetEntry(Long64_t entry);
@@ -1216,11 +1216,12 @@ public :
 #endif
 
 #ifdef step1_cxx
-step1::step1(TString inputFileName, TString outputFileName) : inputTree(0), inputFile(0), outputFile(0) 
+step1::step1(TString inputFileName, TString outputFileName, Int_t Year_) : inputTree(0), inputFile(0), outputFile(0) 
 {
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
 
+  Year = Year_;
   isSig  = (inputFileName.Contains("TTTT_Tune") || inputFileName.Contains("prime") || inputFileName.Contains("X53") || inputFileName.Contains("ChargedHiggs_Hplus"));
   if(isSig){
     if(inputFileName.Contains("Tprime")) isTpTp = true;
@@ -1252,10 +1253,10 @@ step1::step1(TString inputFileName, TString outputFileName) : inputTree(0), inpu
   isST = (inputFileName.Contains("ST_t-channel") || inputFileName.Contains("ST_tW") || inputFileName.Contains("ST_s-channel"));
   isSTt = inputFileName.Contains("ST_t-channel");
   isSTtW = inputFileName.Contains("ST_tW");
-  isTTV = (inputFileName.Contains("ttZ") || inputFileName.Contains("ttW") || inputFileName.Contains("ttH"));
+  isTTV = (inputFileName.Contains("TTZTo") || inputFileName.Contains("TTWJetsTo"));
   isTTHbb = inputFileName.Contains("ttHTobb_");
   isTTHnonbb = inputFileName.Contains("ttHToNonbb_");
-  isTTX = (inputFileName.Contains("TTTJ_Tune") || inputFileName.Contains("TTTW_Tune"));
+  isTTTX = (inputFileName.Contains("TTTJ_Tune") || inputFileName.Contains("TTTW_Tune"));
   isTTVV = (inputFileName.Contains("TTHH_Tune") || inputFileName.Contains("TTWH_Tune") || inputFileName.Contains("TTWW_Tune") || inputFileName.Contains("TTWZ_Tune") || inputFileName.Contains("TTZH_Tune") || inputFileName.Contains("TTZZ_Tune"));
   isVV = (inputFileName.Contains("WW_") || inputFileName.Contains("WZ_") || inputFileName.Contains("ZZ_"));
   isMC = !(inputFileName.Contains("Single") || inputFileName.Contains("Data18"));
@@ -1268,6 +1269,7 @@ step1::step1(TString inputFileName, TString outputFileName) : inputTree(0), inpu
   isTTincMtt1000toInf = outputFileName.Contains("Mtt1000toInf");
   isTTSemilepIncHT0Njet0 = outputFileName.Contains("HT0Njet0");
   isTTSemilepIncHT500Njet9 = outputFileName.Contains("HT500Njet9");
+  if(inputFileName.Contains("HT500Njet9")) isTTSemilepIncHT500Njet9 = false;
   isTTBB = outputFileName.Contains("_ttbb");
   isTTCC = outputFileName.Contains("_ttcc");
   isTTJJ = outputFileName.Contains("_ttjj");
