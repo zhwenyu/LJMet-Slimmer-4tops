@@ -9,11 +9,11 @@ start_time = time.time()
 #IO directories must be full paths
 
 finalStateYear = 'singleLep2017' # or 2018
-relbase ='/user_data/ssagir/CMSSW_10_2_10/'
+#relbase ='/user_data/ssagir/CMSSW_10_2_10/'
 #inputDir='/eos/uscms/store/user/lpcljm/FWLJMET102X_1lep2017_052219/' # or 2018
-inputDir='/eos/uscms/store/user/lpcljm/FWLJMET102X_1lep2017_070919/' # or 2018
-outputDir='/mnt/hadoop/store/group/bruxljm/FWLJMET102X_1lep2017_4t_100719_step1/nominal/' # or 2018
-condorDir='/user_data/ssagir/CMSSW_10_2_10/src/LJMet-Slimmer-4tops/step1/FWLJMET102X_1lep2017_4t_100719_step1/' # or 2018
+inputDir='/eos/uscms/store/user/lpcljm/FWLJMET102X_1lep2017_Oct2019/' # or 2018
+outputDir='/mnt/hadoop/store/group/bruxljm/FWLJMET102X_1lep2017_4t_12022019_step1/nominal/' # or 2018
+condorDir='/home/wzhang/work/fwljmet_201905/CMSSW_10_2_16_UL/src/LJMet-Slimmer-4tops/step1/FWLJMET102X_1lep2017_4t_12022019_step1_logs/' # or 2018
 shifts = ['JECup','JECdown','JERup','JERdown']
 
 runDir=os.getcwd()
@@ -49,7 +49,7 @@ dirList = [
 # 'SingleMuon',
 # 'TTHH_TuneCP5_13TeV-madgraph-pythia8',
 # 'TTTJ_TuneCP5_13TeV-madgraph-pythia8',
-'TTTT_TuneCP5_13TeV-amcatnlo-pythia8',
+'TTTT_TuneCP5_PSweights_13TeV-amcatnlo-pythia8',
 # 'TTTW_TuneCP5_13TeV-madgraph-pythia8',
 # 'TTWH_TuneCP5_13TeV-madgraph-pythia8',
 # 'TTWJetsToLNu_TuneCP5_PSweights_13TeV-amcatnloFXFX-madspin-pythia8',
@@ -72,11 +72,11 @@ dirList = [
 # 'ttHTobb_M125_TuneCP5_13TeV-powheg-pythia8',
 ]
 
-dirList = [ # from 'FWLJMET102X_1lep2017_070919'
-'TTTo2L2Nu_TuneCP5_PSweights_13TeV-powheg-pythia8',
-'TTToHadronic_TuneCP5_PSweights_13TeV-powheg-pythia8',
-'TTToSemiLepton_HT500Njet9_TuneCP5_PSweights_13TeV-powheg-pythia8',
-'TTToSemiLeptonic_TuneCP5_PSweights_13TeV-powheg-pythia8',
+dirList += [ # from 'FWLJMET102X_1lep2017_070919'
+#'TTTo2L2Nu_TuneCP5_PSweights_13TeV-powheg-pythia8',
+#'TTToHadronic_TuneCP5_PSweights_13TeV-powheg-pythia8',
+#'TTToSemiLepton_HT500Njet9_TuneCP5_PSweights_13TeV-powheg-pythia8',
+#'TTToSemiLeptonic_TuneCP5_PSweights_13TeV-powheg-pythia8',
 # 'TT_Mtt-1000toInf_TuneCP5_PSweights_13TeV-powheg-pythia8',
 # 'TT_Mtt-700to1000_TuneCP5_PSweights_13TeV-powheg-pythia8',
 # 'TTTo2L2Nu_TuneCP5down_PSweights_13TeV-powheg-pythia8',
