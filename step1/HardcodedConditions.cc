@@ -655,13 +655,12 @@ void HardcodedConditions::GetTtaggingSF2017(double pt, double *tau32sf, double *
 
 void HardcodedConditions::GetTtaggingSF2018(double pt, double *tau32sf, double *tau32sfup, double *tau32sfdn)
 {
-	// CURRENTLY USING 2017 SFs WHILE WAITING FOR 2018 RECOMMENDATIONS!!!!!
 	// VALUES from the githup repository linked from https://twiki.cern.ch/twiki/bin/viewauth/CMS/JetTopTagging#13_TeV_Working_Points_and_Scale
 	// CORRESPONDING TO WP5 with tau32<0.80 and 105<mSD<220
-    ptMins= {300,400,480,600,1100};
-    tSFs   = {0.98331112,0.96821666,0.95967776,1.02111010,1.02111010};
-    tSFsUp = {1.02416270,0.99713147,0.99533176,1.06593850,1.11076690};
-    tSFsDn = {0.94245958,0.93930185,0.92402375,0.97628158,0.93145317};
+    ptMins= {300,400,480,600};
+    tSFs   = {0.99998647,1.00215673,0.99631429,0.97337210};
+    tSFsUp = {1.02159548, 1.01967812, 1.01507819, 1.00174773};
+    tSFsDn = {0.97837746, 0.98463523, 0.97755039, 0.94499648};
     int bin = findBin(pt, ptMins);
     *tau32sf  =tSFs[bin];
     *tau32sfup=tSFsUp[bin];
