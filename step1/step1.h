@@ -42,10 +42,9 @@ public :
    Bool_t          isTT=false;
    Bool_t          isTTToSemiLeptonHT500Njet9=false;
    Bool_t          isTTV=false;
-   Bool_t          isTTW=false;
    Bool_t          isTTHbb=false;
    Bool_t          isTTHnonbb=false;
-   Bool_t          isTTX=false;
+   Bool_t          isTTTX=false;
    Bool_t          isTTVV=false;
    Bool_t          isVV=false;
    Bool_t          isST=false;
@@ -124,6 +123,12 @@ public :
    Int_t           elTrigPresel_MultiLepCalc;
 
    Int_t           NJets_JetSubCalc;
+   Int_t           NJetsCSV_MultiLepCalc;
+   Int_t           NJetsCSVwithSF_MultiLepCalc;
+   Int_t           NJetsCSVwithSF_MultiLepCalc_bSFup;
+   Int_t           NJetsCSVwithSF_MultiLepCalc_bSFdn;
+   Int_t           NJetsCSVwithSF_MultiLepCalc_lSFup;
+   Int_t           NJetsCSVwithSF_MultiLepCalc_lSFdn;
    Int_t           NJetsCSV_JetSubCalc;
    Int_t           NJetsCSVwithSF_JetSubCalc;
    Int_t           NJetsCSVwithSF_JetSubCalc_bSFup;
@@ -147,10 +152,15 @@ public :
    vector<double>  theJetPhi_JetSubCalc_PtOrdered;
    vector<double>  theJetEnergy_JetSubCalc_PtOrdered;
    vector<double>  theJetDeepFlavB_JetSubCalc_PtOrdered;
-   // vector<double>  theJetDeepCSVb_JetSubCalc_PtOrdered;
-   // vector<double>  theJetDeepCSVbb_JetSubCalc_PtOrdered;
-   // vector<double>  theJetDeepCSVc_JetSubCalc_PtOrdered;
-   // vector<double>  theJetDeepCSVudsg_JetSubCalc_PtOrdered;
+   vector<double>  AK4JetDeepCSVb_MultiLepCalc_PtOrdered;
+   vector<double>  AK4JetDeepCSVbb_MultiLepCalc_PtOrdered;
+   vector<double>  AK4JetDeepCSVc_MultiLepCalc_PtOrdered;
+   vector<double>  AK4JetDeepCSVudsg_MultiLepCalc_PtOrdered;
+   vector<int>     AK4JetBTag_MultiLepCalc_PtOrdered;
+   vector<int>     AK4JetBTag_bSFup_MultiLepCalc_PtOrdered;
+   vector<int>     AK4JetBTag_bSFdn_MultiLepCalc_PtOrdered;
+   vector<int>     AK4JetBTag_lSFup_MultiLepCalc_PtOrdered;
+   vector<int>     AK4JetBTag_lSFdn_MultiLepCalc_PtOrdered;
    vector<int>     theJetHFlav_JetSubCalc_PtOrdered;
    vector<int>     theJetPFlav_JetSubCalc_PtOrdered;
    vector<int>     theJetBTag_JetSubCalc_PtOrdered;
@@ -1201,7 +1211,7 @@ public :
    TBranch        *b_vsSelTriggersHad_MultiLepCalc;   //!
    TBranch        *b_vsSelTriggersMu_MultiLepCalc;   //!
  
-   step1(TString inputFileName, TString outputFileName);
+   step1(TString inputFileName, TString outputFileName, Int_t Year_);
    virtual ~step1();
    virtual Int_t    Cut(Long64_t entry);
    virtual Int_t    GetEntry(Long64_t entry);
@@ -1217,11 +1227,12 @@ public :
 #endif
 
 #ifdef step1_cxx
-step1::step1(TString inputFileName, TString outputFileName) : inputTree(0), inputFile(0), outputFile(0) 
+step1::step1(TString inputFileName, TString outputFileName, Int_t Year_) : inputTree(0), inputFile(0), outputFile(0) 
 {
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
 
+  Year = Year_;
   isSig  = (inputFileName.Contains("TTTT_Tune") || inputFileName.Contains("prime") || inputFileName.Contains("X53") || inputFileName.Contains("ChargedHiggs_Hplus"));
   if(isSig){
     if(inputFileName.Contains("Tprime")) isTpTp = true;
@@ -1253,11 +1264,10 @@ step1::step1(TString inputFileName, TString outputFileName) : inputTree(0), inpu
   isST = (inputFileName.Contains("ST_t-channel") || inputFileName.Contains("ST_tW") || inputFileName.Contains("ST_s-channel"));
   isSTt = inputFileName.Contains("ST_t-channel");
   isSTtW = inputFileName.Contains("ST_tW");
-  isTTV = (inputFileName.Contains("ttZ") || inputFileName.Contains("ttW") || inputFileName.Contains("ttH"));
-  isTTW = inputFileName.Contains("ttW");
+  isTTV = (inputFileName.Contains("TTZTo") || inputFileName.Contains("TTWJetsTo"));
   isTTHbb = inputFileName.Contains("ttHTobb_");
   isTTHnonbb = inputFileName.Contains("ttHToNonbb_");
-  isTTX = (inputFileName.Contains("TTTJ_Tune") || inputFileName.Contains("TTTW_Tune"));
+  isTTTX = (inputFileName.Contains("TTTJ_Tune") || inputFileName.Contains("TTTW_Tune"));
   isTTVV = (inputFileName.Contains("TTHH_Tune") || inputFileName.Contains("TTWH_Tune") || inputFileName.Contains("TTWW_Tune") || inputFileName.Contains("TTWZ_Tune") || inputFileName.Contains("TTZH_Tune") || inputFileName.Contains("TTZZ_Tune"));
   isVV = (inputFileName.Contains("WW_") || inputFileName.Contains("WZ_") || inputFileName.Contains("ZZ_"));
   isMC = !(inputFileName.Contains("Single") || inputFileName.Contains("Data18"));
@@ -1270,6 +1280,7 @@ step1::step1(TString inputFileName, TString outputFileName) : inputTree(0), inpu
   isTTincMtt1000toInf = outputFileName.Contains("Mtt1000toInf");
   isTTSemilepIncHT0Njet0 = outputFileName.Contains("HT0Njet0");
   isTTSemilepIncHT500Njet9 = outputFileName.Contains("HT500Njet9");
+  if(inputFileName.Contains("HT500Njet9")) isTTSemilepIncHT500Njet9 = false;
   isTTBB = outputFileName.Contains("_ttbb");
   isTTCC = outputFileName.Contains("_ttcc");
   isTTJJ = outputFileName.Contains("_ttjj");
@@ -2063,12 +2074,10 @@ void step1::Init(TTree *tree)
    inputTree->SetBranchAddress("genBSLPt_MultiLepCalc", &genBSLPt_MultiLepCalc, &b_genBSLPt_MultiLepCalc);
    inputTree->SetBranchAddress("genEnergy_MultiLepCalc", &genEnergy_MultiLepCalc, &b_genEnergy_MultiLepCalc);
    inputTree->SetBranchAddress("genEta_MultiLepCalc", &genEta_MultiLepCalc, &b_genEta_MultiLepCalc);
-   if(isTT){
-      inputTree->SetBranchAddress("genJetEnergyNoClean_MultiLepCalc", &genJetEnergyNoClean_MultiLepCalc, &b_genJetEnergyNoClean_MultiLepCalc);
-      inputTree->SetBranchAddress("genJetEtaNoClean_MultiLepCalc", &genJetEtaNoClean_MultiLepCalc, &b_genJetEtaNoClean_MultiLepCalc);
-      inputTree->SetBranchAddress("genJetPhiNoClean_MultiLepCalc", &genJetPhiNoClean_MultiLepCalc, &b_genJetPhiNoClean_MultiLepCalc);
-      inputTree->SetBranchAddress("genJetPtNoClean_MultiLepCalc", &genJetPtNoClean_MultiLepCalc, &b_genJetPtNoClean_MultiLepCalc);
-   }
+   inputTree->SetBranchAddress("genJetEnergyNoClean_MultiLepCalc", &genJetEnergyNoClean_MultiLepCalc, &b_genJetEnergyNoClean_MultiLepCalc);
+   inputTree->SetBranchAddress("genJetEtaNoClean_MultiLepCalc", &genJetEtaNoClean_MultiLepCalc, &b_genJetEtaNoClean_MultiLepCalc);
+   inputTree->SetBranchAddress("genJetPhiNoClean_MultiLepCalc", &genJetPhiNoClean_MultiLepCalc, &b_genJetPhiNoClean_MultiLepCalc);
+   inputTree->SetBranchAddress("genJetPtNoClean_MultiLepCalc", &genJetPtNoClean_MultiLepCalc, &b_genJetPtNoClean_MultiLepCalc);
    inputTree->SetBranchAddress("genJetEnergy_MultiLepCalc", &genJetEnergy_MultiLepCalc, &b_genJetEnergy_MultiLepCalc);
    inputTree->SetBranchAddress("genJetEta_MultiLepCalc", &genJetEta_MultiLepCalc, &b_genJetEta_MultiLepCalc);
    inputTree->SetBranchAddress("genJetPhi_MultiLepCalc", &genJetPhi_MultiLepCalc, &b_genJetPhi_MultiLepCalc);

@@ -86,8 +86,8 @@ void step1::Loop(TString inTreeName, TString outTreeName )
   // ----------------------------------------------------------------------------
   inputTree=(TTree*)inputFile->Get(inTreeName+"/"+inTreeName);
   if(inputTree->GetEntries()==0) {
-    std::cout<<"WARNING! Found 0 events in the tree!!!!"<<std::endl;;
-    exit(1);
+    std::cout<<"WARNING! Found 0 events in the tree!!!!"<<std::endl;
+    return;
   }
   Init(inputTree);
 
@@ -180,12 +180,10 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    inputTree->SetBranchStatus("genJetEta_MultiLepCalc",1);
    inputTree->SetBranchStatus("genJetPhi_MultiLepCalc",1);
    inputTree->SetBranchStatus("genJetEnergy_MultiLepCalc",1);
-   if(isTT){
    inputTree->SetBranchStatus("genJetPtNoClean_MultiLepCalc",1);
    inputTree->SetBranchStatus("genJetEtaNoClean_MultiLepCalc",1);
    inputTree->SetBranchStatus("genJetPhiNoClean_MultiLepCalc",1);
    inputTree->SetBranchStatus("genJetEnergyNoClean_MultiLepCalc",1);
-   }                
 
    //JetSubCalc
    inputTree->SetBranchStatus("theJetHFlav_JetSubCalc",1);
@@ -199,6 +197,15 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    // inputTree->SetBranchStatus("theJetDeepCSVbb_JetSubCalc",1);
    // inputTree->SetBranchStatus("theJetDeepCSVc_JetSubCalc",1);
    // inputTree->SetBranchStatus("theJetDeepCSVudsg_JetSubCalc",1);
+   inputTree->SetBranchStatus("AK4JetDeepCSVb_MultiLepCalc",1);
+   inputTree->SetBranchStatus("AK4JetDeepCSVbb_MultiLepCalc",1);
+   inputTree->SetBranchStatus("AK4JetDeepCSVc_MultiLepCalc",1);
+   inputTree->SetBranchStatus("AK4JetDeepCSVudsg_MultiLepCalc",1);
+   inputTree->SetBranchStatus("AK4JetBTag_MultiLepCalc",1);
+   inputTree->SetBranchStatus("AK4JetBTag_bSFdn_MultiLepCalc",1);
+   inputTree->SetBranchStatus("AK4JetBTag_bSFup_MultiLepCalc",1);
+   inputTree->SetBranchStatus("AK4JetBTag_lSFdn_MultiLepCalc",1);
+   inputTree->SetBranchStatus("AK4JetBTag_lSFup_MultiLepCalc",1);
    inputTree->SetBranchStatus("theJetAK8DoubleB_JetSubCalc",1);
    inputTree->SetBranchStatus("theJetBTag_bSFup_JetSubCalc",1);
    inputTree->SetBranchStatus("theJetBTag_bSFdn_JetSubCalc",1);
@@ -374,16 +381,26 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    outputTree->Branch("theJetPhi_JetSubCalc_PtOrdered",&theJetPhi_JetSubCalc_PtOrdered);
    outputTree->Branch("theJetEnergy_JetSubCalc_PtOrdered",&theJetEnergy_JetSubCalc_PtOrdered);
    outputTree->Branch("theJetDeepFlavB_JetSubCalc_PtOrdered",&theJetDeepFlavB_JetSubCalc_PtOrdered);
-   // outputTree->Branch("theJetDeepCSVb_JetSubCalc_PtOrdered",&theJetDeepCSVb_JetSubCalc_PtOrdered);
-   // outputTree->Branch("theJetDeepCSVbb_JetSubCalc_PtOrdered",&theJetDeepCSVbb_JetSubCalc_PtOrdered);
-   // outputTree->Branch("theJetDeepCSVc_JetSubCalc_PtOrdered",&theJetDeepCSVc_JetSubCalc_PtOrdered);
-   // outputTree->Branch("theJetDeepCSVudsg_JetSubCalc_PtOrdered",&theJetDeepCSVudsg_JetSubCalc_PtOrdered);
+   outputTree->Branch("AK4JetDeepCSVb_MultiLepCalc_PtOrdered",&AK4JetDeepCSVb_MultiLepCalc_PtOrdered);
+   outputTree->Branch("AK4JetDeepCSVbb_MultiLepCalc_PtOrdered",&AK4JetDeepCSVbb_MultiLepCalc_PtOrdered);
+   outputTree->Branch("AK4JetDeepCSVc_MultiLepCalc_PtOrdered",&AK4JetDeepCSVc_MultiLepCalc_PtOrdered);
+   outputTree->Branch("AK4JetDeepCSVudsg_MultiLepCalc_PtOrdered",&AK4JetDeepCSVudsg_MultiLepCalc_PtOrdered);
+//    outputTree->Branch("AK4JetDeepCSVb_MultiLepCalc",&AK4JetDeepCSVb_MultiLepCalc);
+//    outputTree->Branch("AK4JetDeepCSVbb_MultiLepCalc",&AK4JetDeepCSVbb_MultiLepCalc);
+//    outputTree->Branch("AK4JetDeepCSVc_MultiLepCalc",&AK4JetDeepCSVc_MultiLepCalc);
+//    outputTree->Branch("AK4JetDeepCSVudsg_MultiLepCalc",&AK4JetDeepCSVudsg_MultiLepCalc);
    outputTree->Branch("theJetHFlav_JetSubCalc_PtOrdered",&theJetHFlav_JetSubCalc_PtOrdered);
    outputTree->Branch("theJetPFlav_JetSubCalc_PtOrdered",&theJetPFlav_JetSubCalc_PtOrdered);
    outputTree->Branch("theJetBTag_JetSubCalc_PtOrdered",&theJetBTag_JetSubCalc_PtOrdered);
    outputTree->Branch("AK4HTpMETpLepPt",&AK4HTpMETpLepPt,"AK4HTpMETpLepPt/F");
    outputTree->Branch("AK4HT",&AK4HT,"AK4HT/F");
    outputTree->Branch("NJets_JetSubCalc",&NJets_JetSubCalc,"NJets_JetSubCalc/I");
+   outputTree->Branch("NJetsCSV_MultiLepCalc",&NJetsCSV_MultiLepCalc,"NJetsCSV_MultiLepCalc/I");
+   outputTree->Branch("NJetsCSVwithSF_MultiLepCalc",&NJetsCSVwithSF_MultiLepCalc,"NJetsCSVwithSF_MultiLepCalc/I");
+   outputTree->Branch("NJetsCSVwithSF_MultiLepCalc_bSFup",&NJetsCSVwithSF_MultiLepCalc_bSFup,"NJetsCSVwithSF_MultiLepCalc_bSFup/I");
+   outputTree->Branch("NJetsCSVwithSF_MultiLepCalc_bSFdn",&NJetsCSVwithSF_MultiLepCalc_bSFdn,"NJetsCSVwithSF_MultiLepCalc_bSFdn/I");
+   outputTree->Branch("NJetsCSVwithSF_MultiLepCalc_lSFup",&NJetsCSVwithSF_MultiLepCalc_lSFup,"NJetsCSVwithSF_MultiLepCalc_lSFup/I");
+   outputTree->Branch("NJetsCSVwithSF_MultiLepCalc_lSFdn",&NJetsCSVwithSF_MultiLepCalc_lSFdn,"NJetsCSVwithSF_MultiLepCalc_lSFdn/I");
    outputTree->Branch("NJetsCSV_JetSubCalc",&NJetsCSV_JetSubCalc,"NJetsCSV_JetSubCalc/I");
    outputTree->Branch("NJetsCSVwithSF_JetSubCalc",&NJetsCSVwithSF_JetSubCalc,"NJetsCSVwithSF_JetSubCalc/I");
    outputTree->Branch("NJetsCSVwithSF_JetSubCalc_bSFup",&NJetsCSVwithSF_JetSubCalc_bSFup,"NJetsCSVwithSF_JetSubCalc_bSFup/I");
@@ -595,6 +612,17 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    poly2D->SetParameter(4,-9.42671e-14); 
    poly2D->SetParameter(5, 7.51924e-18); 
    poly2D->SetParameter(6,0.351156);
+   
+   float btagWPdjet = 0.3033; // 2017 WP
+   float btagWPdcsv = 0.4941; // 2017 WP
+   if(Year==2016){
+   	btagWPdjet = 0.3093; // 2016 WP
+   	btagWPdcsv = 0.6321; // 2016 WP
+   }
+   if(Year==2018){
+   	btagWPdjet = 0.2770; // 2018 WP
+   	btagWPdcsv = 0.4184; // 2018 WP
+   }
   
   // ----------------------------------------------------------------------------
   // RUN THE EVENT LOOP
@@ -605,9 +633,10 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    cout << "isTTTT = " << isTTTT << ", isXX = " << isXX << ", isTpTp = " << isTpTp << ", isBpBp = " << isBpBp << endl;
    cout << "For W's: isTT = " << isTT << ", isSTt = " << isSTt << ", isSTtW = " << isSTtW << endl;
    cout << "For jets & PDF: isTOP = " << isTOP << ", isMadgraphBkg = " << isMadgraphBkg << endl;
-   cout << "For HOTTagger Efficiencies: isTTW = " << isTTW << ", isTTHbb = " << isTTHbb << ", isTTHnonbb = " << isTTHnonbb << ", isTTX = " << isTTX << endl;
+   cout << "For HOTTagger Efficiencies: isTTV = " << isTTV << ", isTTHbb = " << isTTHbb << ", isTTHnonbb = " << isTTHnonbb << ", isTTTX = " << isTTTX << endl;
    cout << "isTTVV = " << isTTVV << ", isST = " << isST << ", isTTToSemiLeptonHT500Njet9 = " << isTTToSemiLeptonHT500Njet9 << endl;
    cout << "Pileup sample key: " << sample << std::endl;
+   cout << "b-tagging working points: " << btagWPdjet << "(DeepJet)" << btagWPdcsv << "(DeepCSV)" << std::endl;
    cout << "isTTincMtt0to700: " << isTTincMtt0to700 << endl;
    cout << "isTTincMtt0to1000: " << isTTincMtt0to1000 << endl;
    cout << "isTTincMtt700to1000: " << isTTincMtt700to1000 << endl;
@@ -732,7 +761,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
 //       eltriggers = {"Ele32_WPTight_Gsf","Ele35_WPTight_Gsf"};
 //       mutriggers = {"IsoMu24_eta2p1","IsoMu27"};
       eltriggers = {"Ele15_IsoVVVL_PFHT450","Ele50_IsoVVVL_PFHT450","Ele15_IsoVVVL_PFHT600","Ele35_WPTight_Gsf","Ele38_WPTight_Gsf"};
-      mutriggers = {"Mu15_IsoVVVL_PFHT450","Mu50_IsoVVVL_PFHT450","Mu15_IsoVVVL_PFHT600","Mu50","TkMu50"};
+      mutriggers = {"Mu15_IsoVVVL_PFHT450","Mu50_IsoVVVL_PFHT450","Mu15_IsoVVVL_PFHT600"};//,"Mu50","TkMu50"};
       if(isMC){ //MC triggers check
 	if(isElectron){
 	  for(unsigned int itrig=0; itrig < vsSelMCTriggersEl_MultiLepCalc->size(); itrig++){
@@ -832,7 +861,67 @@ void step1::Loop(TString inTreeName, TString outTreeName )
 	// ----------------------------------------------------------------------------
 
 	if(theJetPt_JetSubCalc->at(ijet) < jetPtCut || fabs(theJetEta_JetSubCalc->at(ijet)) > jetEtaCut) continue;
+	
+	// ----------------------------------------------------------------------------
+	// B TAGGING fix
+	// ----------------------------------------------------------------------------
+	
+	// First fix b tagging for DeepFlv
+	double btagSF = 1.0;
+	double btagSFerr = 0.0;
+	double btagEff = 1.0;
+	
+	// Set the initial tagged/untagged state
+	bool istagged = theJetDeepFlavB_JetSubCalc->at(ijet) > btagWPdjet;
+	double ijetPt = theJetPt_JetSubCalc->at(ijet);
+	double ijetEta= theJetEta_JetSubCalc->at(ijet);
+	int ijetHFlv  = theJetHFlav_JetSubCalc->at(ijet);
+	
+	// Get btag SF and uncertainty
+	hardcodedConditions.GetBtaggingSF(ijetPt, ijetEta, &btagSF, &btagSFerr, "DeepJetMEDIUM", ijetHFlv, Year);
+	// Get btag efficiency
+	hardcodedConditions.GetBtaggingEff(ijetPt, &btagEff, "DeepJetMEDIUM", ijetHFlv, Year);
+	
+	// Apply scale factors
+	theJetBTag_JetSubCalc->at(ijet) = applySF(istagged,btagSF,btagEff);
+	if(ijetHFlv == 5 || ijetHFlv == 4){
+		theJetBTag_bSFup_JetSubCalc->at(ijet) = applySF(istagged,btagSF+btagSFerr,btagEff);
+		theJetBTag_bSFdn_JetSubCalc->at(ijet) = applySF(istagged,btagSF-btagSFerr,btagEff);
+		theJetBTag_lSFup_JetSubCalc->at(ijet) = applySF(istagged,btagSF,btagEff);
+		theJetBTag_lSFdn_JetSubCalc->at(ijet) = applySF(istagged,btagSF,btagEff);
+		}
+	else{
+		theJetBTag_bSFup_JetSubCalc->at(ijet) = applySF(istagged,btagSF,btagEff);
+		theJetBTag_bSFdn_JetSubCalc->at(ijet) = applySF(istagged,btagSF,btagEff);
+		theJetBTag_lSFup_JetSubCalc->at(ijet) = applySF(istagged,btagSF+btagSFerr,btagEff);
+		theJetBTag_lSFdn_JetSubCalc->at(ijet) = applySF(istagged,btagSF-btagSFerr,btagEff);
+		}
 
+	// Second fix b tagging for DeepCSV
+	
+	// Set the initial tagged/untagged state
+	istagged = AK4JetDeepCSVb_MultiLepCalc->at(ijet) + AK4JetDeepCSVbb_MultiLepCalc->at(ijet) > btagWPdcsv;
+	
+	// Get btag SF and uncertainty
+	hardcodedConditions.GetBtaggingSF(ijetPt, ijetEta, &btagSF, &btagSFerr, "DeepCSVMEDIUM", ijetHFlv, Year);
+	// Get btag efficiency
+	hardcodedConditions.GetBtaggingEff(ijetPt, &btagEff, "DeepCSVMEDIUM", ijetHFlv, Year);
+	
+	// Apply scale factors
+	AK4JetBTag_MultiLepCalc->at(ijet) = applySF(istagged,btagSF,btagEff);
+	if(ijetHFlv == 5 || ijetHFlv == 4){
+		AK4JetBTag_bSFup_MultiLepCalc->at(ijet) = applySF(istagged,btagSF+btagSFerr,btagEff);
+		AK4JetBTag_bSFdn_MultiLepCalc->at(ijet) = applySF(istagged,btagSF-btagSFerr,btagEff);
+		AK4JetBTag_lSFup_MultiLepCalc->at(ijet) = applySF(istagged,btagSF,btagEff);
+		AK4JetBTag_lSFdn_MultiLepCalc->at(ijet) = applySF(istagged,btagSF,btagEff);
+		}
+	else{
+		AK4JetBTag_bSFup_MultiLepCalc->at(ijet) = applySF(istagged,btagSF,btagEff);
+		AK4JetBTag_bSFdn_MultiLepCalc->at(ijet) = applySF(istagged,btagSF,btagEff);
+		AK4JetBTag_lSFup_MultiLepCalc->at(ijet) = applySF(istagged,btagSF+btagSFerr,btagEff);
+		AK4JetBTag_lSFdn_MultiLepCalc->at(ijet) = applySF(istagged,btagSF-btagSFerr,btagEff);
+		}
+	  	  	
 	// ----------------------------------------------------------------------------
 	// Counts and pt ordering pair
 	// ----------------------------------------------------------------------------
@@ -942,10 +1031,10 @@ void step1::Loop(TString inTreeName, TString outTreeName )
       theJetPhi_JetSubCalc_PtOrdered.clear();
       theJetEnergy_JetSubCalc_PtOrdered.clear();
       theJetDeepFlavB_JetSubCalc_PtOrdered.clear();
-      // theJetDeepCSVb_JetSubCalc_PtOrdered.clear();
-      // theJetDeepCSVbb_JetSubCalc_PtOrdered.clear();
-      // theJetDeepCSVc_JetSubCalc_PtOrdered.clear();
-      // theJetDeepCSVudsg_JetSubCalc_PtOrdered.clear();
+      AK4JetDeepCSVb_MultiLepCalc_PtOrdered.clear();
+      AK4JetDeepCSVbb_MultiLepCalc_PtOrdered.clear();
+      AK4JetDeepCSVc_MultiLepCalc_PtOrdered.clear();
+      AK4JetDeepCSVudsg_MultiLepCalc_PtOrdered.clear();
       theJetHFlav_JetSubCalc_PtOrdered.clear();
       theJetPFlav_JetSubCalc_PtOrdered.clear();
       theJetBTag_JetSubCalc_PtOrdered.clear();
@@ -953,16 +1042,21 @@ void step1::Loop(TString inTreeName, TString outTreeName )
       theJetBTag_bSFdn_JetSubCalc_PtOrdered.clear();
       theJetBTag_lSFup_JetSubCalc_PtOrdered.clear();
       theJetBTag_lSFdn_JetSubCalc_PtOrdered.clear();
+      AK4JetBTag_MultiLepCalc_PtOrdered.clear();
+      AK4JetBTag_bSFup_MultiLepCalc_PtOrdered.clear();
+      AK4JetBTag_bSFdn_MultiLepCalc_PtOrdered.clear();
+      AK4JetBTag_lSFup_MultiLepCalc_PtOrdered.clear();
+      AK4JetBTag_lSFdn_MultiLepCalc_PtOrdered.clear();
       for(unsigned int ijet=0; ijet < jetptindpair.size(); ijet++){
       	theJetPt_JetSubCalc_PtOrdered.push_back(theJetPt_JetSubCalc->at(jetptindpair[ijet].second));
       	theJetEta_JetSubCalc_PtOrdered.push_back(theJetEta_JetSubCalc->at(jetptindpair[ijet].second));
       	theJetPhi_JetSubCalc_PtOrdered.push_back(theJetPhi_JetSubCalc->at(jetptindpair[ijet].second));
       	theJetEnergy_JetSubCalc_PtOrdered.push_back(theJetEnergy_JetSubCalc->at(jetptindpair[ijet].second));
          theJetDeepFlavB_JetSubCalc_PtOrdered.push_back(theJetDeepFlavB_JetSubCalc->at(jetptindpair[ijet].second));
-  //     	theJetDeepCSVb_JetSubCalc_PtOrdered.push_back(theJetDeepCSVb_JetSubCalc->at(jetptindpair[ijet].second));
-		// theJetDeepCSVbb_JetSubCalc_PtOrdered.push_back(theJetDeepCSVbb_JetSubCalc->at(jetptindpair[ijet].second));
-		// theJetDeepCSVc_JetSubCalc_PtOrdered.push_back(theJetDeepCSVc_JetSubCalc->at(jetptindpair[ijet].second));
-		// theJetDeepCSVudsg_JetSubCalc_PtOrdered.push_back(theJetDeepCSVudsg_JetSubCalc->at(jetptindpair[ijet].second));
+      	AK4JetDeepCSVb_MultiLepCalc_PtOrdered.push_back(AK4JetDeepCSVb_MultiLepCalc->at(jetptindpair[ijet].second));
+		AK4JetDeepCSVbb_MultiLepCalc_PtOrdered.push_back(AK4JetDeepCSVbb_MultiLepCalc->at(jetptindpair[ijet].second));
+		AK4JetDeepCSVc_MultiLepCalc_PtOrdered.push_back(AK4JetDeepCSVc_MultiLepCalc->at(jetptindpair[ijet].second));
+		AK4JetDeepCSVudsg_MultiLepCalc_PtOrdered.push_back(AK4JetDeepCSVudsg_MultiLepCalc->at(jetptindpair[ijet].second));
       	theJetHFlav_JetSubCalc_PtOrdered.push_back(theJetHFlav_JetSubCalc->at(jetptindpair[ijet].second));
       	theJetPFlav_JetSubCalc_PtOrdered.push_back(theJetPFlav_JetSubCalc->at(jetptindpair[ijet].second));
 		theJetBTag_JetSubCalc_PtOrdered.push_back(theJetBTag_JetSubCalc->at(jetptindpair[ijet].second));
@@ -970,6 +1064,11 @@ void step1::Loop(TString inTreeName, TString outTreeName )
 	theJetBTag_bSFdn_JetSubCalc_PtOrdered.push_back(theJetBTag_bSFdn_JetSubCalc->at(jetptindpair[ijet].second));
 	theJetBTag_lSFup_JetSubCalc_PtOrdered.push_back(theJetBTag_lSFup_JetSubCalc->at(jetptindpair[ijet].second));
 	theJetBTag_lSFdn_JetSubCalc_PtOrdered.push_back(theJetBTag_lSFdn_JetSubCalc->at(jetptindpair[ijet].second));
+		AK4JetBTag_MultiLepCalc_PtOrdered.push_back(AK4JetBTag_MultiLepCalc->at(jetptindpair[ijet].second));
+	AK4JetBTag_bSFup_MultiLepCalc_PtOrdered.push_back(AK4JetBTag_bSFup_MultiLepCalc->at(jetptindpair[ijet].second));
+	AK4JetBTag_bSFdn_MultiLepCalc_PtOrdered.push_back(AK4JetBTag_bSFdn_MultiLepCalc->at(jetptindpair[ijet].second));
+	AK4JetBTag_lSFup_MultiLepCalc_PtOrdered.push_back(AK4JetBTag_lSFup_MultiLepCalc->at(jetptindpair[ijet].second));
+	AK4JetBTag_lSFdn_MultiLepCalc_PtOrdered.push_back(AK4JetBTag_lSFdn_MultiLepCalc->at(jetptindpair[ijet].second));
       }
 
       // ----------------------------------------------------------------------------
@@ -1002,6 +1101,12 @@ void step1::Loop(TString inTreeName, TString outTreeName )
       deltaR_lepMinMlb_lSFup = 1e8;
       deltaR_lepMinMlb_lSFdn = 1e8;
       deltaR_lepMinMlj = 1e8;
+      NJetsCSV_MultiLepCalc = 0;
+	  NJetsCSVwithSF_MultiLepCalc = 0;
+	  NJetsCSVwithSF_MultiLepCalc_bSFup = 0;
+	  NJetsCSVwithSF_MultiLepCalc_bSFdn = 0;
+	  NJetsCSVwithSF_MultiLepCalc_lSFup = 0;
+	  NJetsCSVwithSF_MultiLepCalc_lSFdn = 0;
       NJetsCSV_JetSubCalc = 0;
       NJetsCSVwithSF_JetSubCalc = 0;
       NJetsCSVwithSF_JetSubCalc_bSFup = 0;
@@ -1010,6 +1115,12 @@ void step1::Loop(TString inTreeName, TString outTreeName )
       NJetsCSVwithSF_JetSubCalc_lSFdn = 0;
       TLorentzVector nu;
       nu.SetPtEtaPhiE(corr_met_MultiLepCalc,0,corr_met_phi_MultiLepCalc,corr_met_MultiLepCalc);
+      
+//       for(unsigned int ijet=0; ijet < AK4JetDeepCSVb_MultiLepCalc->size(); ijet++){
+//       	if(AK4JetDeepCSVb_MultiLepCalc->at(ijet) + AK4JetDeepCSVbb_MultiLepCalc->at(ijet) > btagWPdcsv){
+//       		NJetsCSV_MultiLepCalc += 1;
+//       		}
+//       	}
 
       for(unsigned int ijet=0; ijet < theJetPt_JetSubCalc_PtOrdered.size(); ijet++){
         jet_lv.SetPtEtaPhiE(theJetPt_JetSubCalc_PtOrdered.at(ijet),theJetEta_JetSubCalc_PtOrdered.at(ijet),theJetPhi_JetSubCalc_PtOrdered.at(ijet),theJetEnergy_JetSubCalc_PtOrdered.at(ijet));
@@ -1020,13 +1131,28 @@ void step1::Loop(TString inTreeName, TString outTreeName )
 
 	deltaR_lepJets.push_back(lepton_lv.DeltaR(jet_lv));
 
-   	// if(theJetDeepCSVb_JetSubCalc_PtOrdered.at(ijet) + theJetDeepCSVbb_JetSubCalc_PtOrdered.at(ijet) > 0.4941){
-    //       NJetsCSV_JetSubCalc += 1;
-    //     }
-   if(theJetDeepFlavB_JetSubCalc_PtOrdered.at(ijet) > 0.3033){
+   	if(AK4JetDeepCSVb_MultiLepCalc_PtOrdered.at(ijet) + AK4JetDeepCSVbb_MultiLepCalc_PtOrdered.at(ijet) > btagWPdcsv){
+          NJetsCSV_MultiLepCalc += 1;
+        }
+	if(AK4JetBTag_MultiLepCalc_PtOrdered.at(ijet) == 1){
+	  NJetsCSVwithSF_MultiLepCalc += 1;
+	}
+	if(AK4JetBTag_bSFup_MultiLepCalc_PtOrdered.at(ijet) == 1){
+	  NJetsCSVwithSF_MultiLepCalc_bSFup += 1;
+	}
+	if(AK4JetBTag_bSFdn_MultiLepCalc_PtOrdered.at(ijet) == 1){
+	  NJetsCSVwithSF_MultiLepCalc_bSFdn += 1;
+	}
+	if(AK4JetBTag_lSFup_MultiLepCalc_PtOrdered.at(ijet) == 1){
+	  NJetsCSVwithSF_MultiLepCalc_lSFup += 1;
+	}
+	if(AK4JetBTag_lSFdn_MultiLepCalc_PtOrdered.at(ijet) == 1){
+	  NJetsCSVwithSF_MultiLepCalc_lSFdn += 1;
+	}
+
+   if(theJetDeepFlavB_JetSubCalc_PtOrdered.at(ijet) > btagWPdjet){
           NJetsCSV_JetSubCalc += 1;
         }
-
 	if(theJetBTag_JetSubCalc_PtOrdered.at(ijet) == 1){
 	  NJetsCSVwithSF_JetSubCalc += 1;
           if(theJetPt_JetSubCalc_PtOrdered.at(ijet) > BJetLeadPt) BJetLeadPt = theJetPt_JetSubCalc_PtOrdered.at(ijet);
@@ -1458,7 +1584,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
      NresolvedTops2pFake_shifts.clear();
      NresolvedTops5pFake_shifts.clear();
      NresolvedTops10pFake_shifts.clear();
-     for(int i = 0; i < 4; i++){
+     for(int i = 0; i < 6; i++){
      	NresolvedTops1pFake_shifts.push_back(0);
      	NresolvedTops2pFake_shifts.push_back(0);
      	NresolvedTops5pFake_shifts.push_back(0);
@@ -1529,12 +1655,16 @@ void step1::Loop(TString inTreeName, TString outTreeName )
           	double TopTagSF2pCSpur = 0.0;
           	double TopTagSF5pCSpur = 0.0;
           	double TopTagSF10pCSpur = 0.0;
+          	double TopTagSF1pClosure = 0.0;
+          	double TopTagSF2pClosure = 0.0;
+          	double TopTagSF5pClosure = 0.0;
+          	double TopTagSF10pClosure = 0.0;
           	int NdaughterMatch = (minDRtopD1 < 0.4) + (minDRtopD2 < 0.4) + (minDRtopD3 < 0.4);
-          	bool isGenMatched = ( (minDRtop < 0.6) && (NdaughterMatch > 1) );
-          	hardcodedConditions.GetHOTtaggingSF(topPt_HOTTaggerCalc->at(itop), &TopTagSF1p, &TopTagSF1pStat, &TopTagSF1pCSpur, Year, isGenMatched, "1pfake");
-          	hardcodedConditions.GetHOTtaggingSF(topPt_HOTTaggerCalc->at(itop), &TopTagSF2p, &TopTagSF2pStat, &TopTagSF2pCSpur, Year, isGenMatched, "2pfake");
-          	hardcodedConditions.GetHOTtaggingSF(topPt_HOTTaggerCalc->at(itop), &TopTagSF5p, &TopTagSF5pStat, &TopTagSF5pCSpur, Year, isGenMatched, "5pfake");
-          	hardcodedConditions.GetHOTtaggingSF(topPt_HOTTaggerCalc->at(itop), &TopTagSF10p,&TopTagSF10pStat,&TopTagSF10pCSpur,Year, isGenMatched, "10pfake");
+          	bool isGenMatched = ( (minDRtop < 0.6) && (NdaughterMatch > 1) ); //Requires >=2 daughters matching, in line with the calculated efficiencies. Changing this to =3 daughters matching requires updating the efficiencies!
+          	hardcodedConditions.GetHOTtaggingSF(topPt_HOTTaggerCalc->at(itop), topNAK4_HOTTaggerCalc, &TopTagSF1p, &TopTagSF1pStat, &TopTagSF1pCSpur, &TopTagSF1pClosure, Year, isGenMatched, "1pfake");
+          	hardcodedConditions.GetHOTtaggingSF(topPt_HOTTaggerCalc->at(itop), topNAK4_HOTTaggerCalc, &TopTagSF2p, &TopTagSF2pStat, &TopTagSF2pCSpur, &TopTagSF2pClosure, Year, isGenMatched, "2pfake");
+          	hardcodedConditions.GetHOTtaggingSF(topPt_HOTTaggerCalc->at(itop), topNAK4_HOTTaggerCalc, &TopTagSF5p, &TopTagSF5pStat, &TopTagSF5pCSpur, &TopTagSF5pClosure, Year, isGenMatched, "5pfake");
+          	hardcodedConditions.GetHOTtaggingSF(topPt_HOTTaggerCalc->at(itop), topNAK4_HOTTaggerCalc, &TopTagSF10p,&TopTagSF10pStat,&TopTagSF10pCSpur,&TopTagSF10pClosure,Year, isGenMatched, "10pfake");
           	double TopTagEff1p = 1.0;
           	double TopTagEff2p = 1.0;
           	double TopTagEff5p = 1.0;
@@ -1544,10 +1674,10 @@ void step1::Loop(TString inTreeName, TString outTreeName )
           	if(isTTTT) sample_hot = "tttt";
           	else if(isST) sample_hot = "singletop";
           	else if(isTTVV) sample_hot = "TTVV";
-          	else if(isTTX) sample_hot = "TTTX";
+          	else if(isTTTX) sample_hot = "TTTX";
           	else if(isTT) sample_hot = "ttbar";
           	else if(isTTToSemiLeptonHT500Njet9) sample_hot = "ttbarHT500Njet9";
-          	else if(isTTW) sample_hot = "ttWjets";
+          	else if(isTTV) sample_hot = "ttVjets";
           	else if(isTTHnonbb) sample_hot = "ttHToNonbb";
           	else if(isTTHbb) sample_hot = "ttHTobb";
 
@@ -1586,6 +1716,25 @@ void step1::Loop(TString inTreeName, TString outTreeName )
           	int tag_top_10p_cspurup = applySF(isTtagged10p,TopTagSF10p+TopTagSF10pCSpur,TopTagEff10p);
           	int tag_top_10p_cspurdn = applySF(isTtagged10p,TopTagSF10p-TopTagSF10pCSpur,TopTagEff10p);
 
+          	int tag_top_1p_closureup = tag_top_1p;
+          	int tag_top_1p_closuredn = tag_top_1p;
+          	int tag_top_2p_closureup = tag_top_2p;
+          	int tag_top_2p_closuredn = tag_top_2p;
+          	int tag_top_5p_closureup = tag_top_5p;
+          	int tag_top_5p_closuredn = tag_top_5p;
+          	int tag_top_10p_closureup = tag_top_10p;
+          	int tag_top_10p_closuredn = tag_top_10p;
+          	if(!isGenMatched){ //Closure uncertainty is applied to fake tops only
+          		tag_top_1p_closureup = applySF(isTtagged1p,TopTagSF1p+TopTagSF1pClosure,TopTagEff1p);
+          		tag_top_1p_closuredn = applySF(isTtagged1p,TopTagSF1p-TopTagSF1pClosure,TopTagEff1p);
+          		tag_top_2p_closureup = applySF(isTtagged2p,TopTagSF2p+TopTagSF2pClosure,TopTagEff2p);
+          		tag_top_2p_closuredn = applySF(isTtagged2p,TopTagSF2p-TopTagSF2pClosure,TopTagEff2p);
+          		tag_top_5p_closureup = applySF(isTtagged5p,TopTagSF5p+TopTagSF5pClosure,TopTagEff5p);
+          		tag_top_5p_closuredn = applySF(isTtagged5p,TopTagSF5p-TopTagSF5pClosure,TopTagEff5p);
+          		tag_top_10p_closureup = applySF(isTtagged10p,TopTagSF10p+TopTagSF10pClosure,TopTagEff10p);
+          		tag_top_10p_closuredn = applySF(isTtagged10p,TopTagSF10p-TopTagSF10pClosure,TopTagEff10p);
+          	}
+
           	NresolvedTops1pFake += tag_top_1p;
           	NresolvedTops2pFake += tag_top_2p;
           	NresolvedTops5pFake += tag_top_5p;
@@ -1606,6 +1755,14 @@ void step1::Loop(TString inTreeName, TString outTreeName )
           	NresolvedTops5pFake_shifts[3] += tag_top_5p_cspurdn;
           	NresolvedTops10pFake_shifts[2] += tag_top_10p_cspurup;
           	NresolvedTops10pFake_shifts[3] += tag_top_10p_cspurdn;
+          	NresolvedTops1pFake_shifts[4] += tag_top_1p_closureup;
+          	NresolvedTops1pFake_shifts[5] += tag_top_1p_closuredn;
+          	NresolvedTops2pFake_shifts[4] += tag_top_2p_closureup;
+          	NresolvedTops2pFake_shifts[5] += tag_top_2p_closuredn;
+          	NresolvedTops5pFake_shifts[4] += tag_top_5p_closureup;
+          	NresolvedTops5pFake_shifts[5] += tag_top_5p_closuredn;
+          	NresolvedTops10pFake_shifts[4] += tag_top_10p_closureup;
+          	NresolvedTops10pFake_shifts[5] += tag_top_10p_closuredn;
           	}  
 
         else{ // Data

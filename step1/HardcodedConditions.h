@@ -23,7 +23,9 @@ public:
     double GetMuonIsoSF(double pt, double eta, int year = 2017);
     double GetMuonTriggerSF(double pt, double eta, int year = 2017);
 
-    void GetHOTtaggingSF(double pt, double *hotsf, double *hotstatunc, double *hotcspurunc, int year = 2017, bool isGenMatched=true, std::string workingpoint = "1pfake");
+    void GetBtaggingSF(double pt, double eta, double *btagsf, double *btagsfunc, std::string tagger="CSVM", int jetHFlav = 5, int year = 2017);
+    void GetBtaggingEff(double pt, double *eff, std::string tagger="CSVM", int jetHFlav = 5, int year = 2017);
+    void GetHOTtaggingSF(double pt, int njet, double *hotsf, double *hotstatunc, double *hotcspurunc, double *hotclosureunc, int year = 2017, bool isGenMatched=true, std::string workingpoint = "1pfake");
     void GetHOTtaggingEff(double pt, double *eff, int year = 2017, std::string sample = "ttbar", bool isGenMatched=true, std::string workingpoint = "1pfake", int massIndex=-1);
     void GetTtaggingSF(double pt, double *tau32sf, double *tau32sfup, double *tau32sfdn, int year = 2017);
     void GetTtaggingEff(double pt, double *eff, int year = 2017, std::string sample = "ttbar", int massIndex=-1);
@@ -64,16 +66,35 @@ private:
     double GetMuonTriggerSF2017(double pt, double eta);
     double GetMuonTriggerSF2018(double pt, double eta);
 
-    void GetHOTtaggingSF2016(double pt, double *hotsf, double *hotstatunc, double *hotcspurunc, std::string workingpoint = "1pfake");
-    void GetHOTtaggingSF2017(double pt, double *hotsf, double *hotstatunc, double *hotcspurunc, std::string workingpoint = "1pfake");
-    void GetHOTtaggingSF2018(double pt, double *hotsf, double *hotstatunc, double *hotcspurunc, std::string workingpoint = "1pfake");
+    void GetBtaggingSF2016(double pt, double eta, double *btagsf, double *btagsfunc, std::string tagger="CSVM");
+    void GetCtaggingSF2016(double pt, double eta, double *btagsf, double *btagsfunc, std::string tagger="CSVM");
+    void GetLtaggingSF2016(double pt, double eta, double *btagsf, double *btagsfunc, std::string tagger="CSVM");
+    void GetBtaggingSF2017(double pt, double eta, double *btagsf, double *btagsfunc, std::string tagger="CSVM");
+    void GetCtaggingSF2017(double pt, double eta, double *btagsf, double *btagsfunc, std::string tagger="CSVM");
+    void GetLtaggingSF2017(double pt, double eta, double *btagsf, double *btagsfunc, std::string tagger="CSVM");
+    void GetBtaggingSF2018(double pt, double eta, double *btagsf, double *btagsfunc, std::string tagger="CSVM");
+    void GetCtaggingSF2018(double pt, double eta, double *btagsf, double *btagsfunc, std::string tagger="CSVM");
+    void GetLtaggingSF2018(double pt, double eta, double *btagsf, double *btagsfunc, std::string tagger="CSVM");
+    void GetBtaggingEff2016(double pt, double *eff, std::string tagger="CSVM");
+    void GetCtaggingEff2016(double pt, double *eff, std::string tagger="CSVM");
+    void GetLtaggingEff2016(double pt, double *eff, std::string tagger="CSVM");
+    void GetBtaggingEff2017(double pt, double *eff, std::string tagger="CSVM");
+    void GetCtaggingEff2017(double pt, double *eff, std::string tagger="CSVM");
+    void GetLtaggingEff2017(double pt, double *eff, std::string tagger="CSVM");
+    void GetBtaggingEff2018(double pt, double *eff, std::string tagger="CSVM");
+    void GetCtaggingEff2018(double pt, double *eff, std::string tagger="CSVM");
+    void GetLtaggingEff2018(double pt, double *eff, std::string tagger="CSVM");
+
+    void GetHOTtaggingSF2016(double pt, int njet, double *hotsf, double *hotstatunc, double *hotcspurunc, double *hotclosureunc, std::string workingpoint = "1pfake");
+    void GetHOTtaggingSF2017(double pt, int njet, double *hotsf, double *hotstatunc, double *hotcspurunc, double *hotclosureunc, std::string workingpoint = "1pfake");
+    void GetHOTtaggingSF2018(double pt, int njet, double *hotsf, double *hotstatunc, double *hotcspurunc, double *hotclosureunc, std::string workingpoint = "1pfake");
     void GetHOTtaggingEff2016(double pt, double *eff, std::string sample = "ttbar", std::string workingpoint = "1pfake", int massIndex=-1);
     void GetHOTtaggingEff2017(double pt, double *eff, std::string sample = "ttbar", std::string workingpoint = "1pfake", int massIndex=-1);
     void GetHOTtaggingEff2018(double pt, double *eff, std::string sample = "ttbar", std::string workingpoint = "1pfake", int massIndex=-1);
 
-    void GetHOTmistagSF2016(double pt, double *hotsf, double *hotstatunc, double *hotcspurunc, std::string workingpoint = "1pfake");
-    void GetHOTmistagSF2017(double pt, double *hotsf, double *hotstatunc, double *hotcspurunc, std::string workingpoint = "1pfake");
-    void GetHOTmistagSF2018(double pt, double *hotsf, double *hotstatunc, double *hotcspurunc, std::string workingpoint = "1pfake");
+    void GetHOTmistagSF2016(double pt, int njet, double *hotsf, double *hotstatunc, double *hotcspurunc, double *hotclosureunc, std::string workingpoint = "1pfake");
+    void GetHOTmistagSF2017(double pt, int njet, double *hotsf, double *hotstatunc, double *hotcspurunc, double *hotclosureunc, std::string workingpoint = "1pfake");
+    void GetHOTmistagSF2018(double pt, int njet, double *hotsf, double *hotstatunc, double *hotcspurunc, double *hotclosureunc, std::string workingpoint = "1pfake");
     void GetHOTmistagEff2016(double pt, double *eff, std::string sample = "ttbar", std::string workingpoint = "1pfake", int massIndex=-1);
     void GetHOTmistagEff2017(double pt, double *eff, std::string sample = "ttbar", std::string workingpoint = "1pfake", int massIndex=-1);
     void GetHOTmistagEff2018(double pt, double *eff, std::string sample = "ttbar", std::string workingpoint = "1pfake", int massIndex=-1);
@@ -94,11 +115,12 @@ private:
 
     typedef std::vector< double > FVec;
     typedef std::vector< int > IVec;
-    FVec ptMins, hotEffs1p, hotEffs2p, hotEffs5p, hotEffs10p, hotEffs, hotCSpurUncs;
-    IVec njRange11, njRange12, njRange15, njRange16;
+    FVec ptMins, hotEffs1p, hotEffs2p, hotEffs5p, hotEffs10p, hotEffs, hotCSpurUncs, hotClosureUncs;
+    FVec tSFs, tSFsUp, tSFsDn;
+    IVec njetMins;
     inline int findBin(double pt, FVec ptRange){
         return (std::upper_bound(ptRange.begin(), ptRange.end(), pt)-ptRange.begin())-1;
-    }    
+    }   
     inline int findBin(int njet, IVec njetRange){
         return (std::upper_bound(njetRange.begin(), njetRange.end(), njet)-njetRange.begin())-1;
     }    
