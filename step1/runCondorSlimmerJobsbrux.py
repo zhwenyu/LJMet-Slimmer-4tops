@@ -8,12 +8,13 @@ start_time = time.time()
 
 #IO directories must be full paths
 
+#relbase ='/user_data/ssagir/CMSSW_10_2_10/'
+#inputDir='/eos/uscms/store/user/lpcljm/FWLJMET102X_1lep2017_052219/' # or 2018
+inputDir='/eos/uscms/store/user/lpcljm/FWLJMET102X_1lep2017_Oct2019/' # or 2018
+outputDir='/mnt/hadoop/store/group/bruxljm/FWLJMET102X_1lep2017_4t_12022019_step1/nominal/' # or 2018
+condorDir='/home/wzhang/work/fwljmet_201905/CMSSW_10_2_16_UL/src/LJMet-Slimmer-4tops/step1/FWLJMET102X_1lep2017_4t_12022019_step1_logs/' # or 2018
 Year = 2017 # or 2018
 finalStateYear = 'singleLep'+str(Year)
-relbase ='/user_data/ssagir/CMSSW_10_2_10/'
-inputDir='/eos/uscms/store/user/lpcljm/FWLJMET102X_1lep2017_Oct2019/' # or 2018
-outputDir='/mnt/hadoop/store/group/bruxljm/FWLJMET102X_1lep2017_4t_100719_step1/nominal/' # or 2018
-condorDir='/user_data/ssagir/CMSSW_10_2_10/src/LJMet-Slimmer-4tops/step1/FWLJMET102X_1lep2017_4t_100719_step1/' # or 2018
 shifts = ['JECup','JECdown','JERup','JERdown']
 
 runDir=os.getcwd()

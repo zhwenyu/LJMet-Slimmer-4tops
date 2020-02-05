@@ -7,11 +7,11 @@ shift = sys.argv[1]
 
 #IO directories must be full paths
 foldnum = '-1'
-relbase   = '/user_data/jlee/TTTT/CMSSW_9_4_6_patch1/'
+relbase   = '/home/wzhang/work/fwljmet_201905/CMSSW_10_2_16_UL/'
 # inputDir  = '/mnt/hadoop/users/ssagir/LJMet94X_1lepTT_020619_step1hadds/'+shift+'/'
-inputDir  = '/mnt/hadoop/store/user/jblee/TTTT/LJMet94X_1lep_013019_step1_hadds/'+shift+'/'
+inputDir  = '/mnt/hadoop/store/group/bruxljm/FWLJMET102X_1lep2017_Oct2019_4t_120419_step1hadds/'+shift+'/'
 # outputDir = '/mnt/hadoop/users/jlee/TTTT/LJMet94X_1lepTT_022219_step2/'+shift+'/'
-outputDir = '/mnt/hadoop/store/user/jblee/TTTT/LJMet94X_1lepTT_013019_step2/'+shift+'/'
+outputDir = '/mnt/hadoop/store/group/bruxljm/FWLJMET102X_1lep2017_Oct2019_4t_12122019_step2/'+shift+'/'
 runDir=os.getcwd()
 gROOT.ProcessLine('.x compileStep2.C')
 
@@ -28,7 +28,8 @@ os.system('mkdir -p '+condorDir)
 
 for file in rootfiles:
     if 'root' not in file: continue
-    if 'TTTo' not in file: continue
+    if 'TTTT' not in file: continue
+#    if 'TTTo' not in file: continue
     rawname = file[:-6]
     count+=1
     dict={'RUNDIR':runDir, 'CONDORDIR':condorDir, 'INPUTDIR':inputDir, 'FILENAME':rawname, 'CMSSWBASE':relbase, 'OUTPUTDIR':outputDir}
