@@ -403,6 +403,17 @@ public :
    vector<int>     *NresolvedTops2pFake_shifts;
    vector<int>     *NresolvedTops5pFake_shifts;
    vector<int>     *NresolvedTops10pFake_shifts;
+//   vector<double>  *genJetPtNoClean_MultiLepCalc;
+//   vector<double>  *genJetEtaNoClean_MultiLepCalc;
+//   vector<double>  *genJetPhiNoClean_MultiLepCalc;
+//   vector<double>  *genJetEnergyNoClean_MultiLepCalc;
+   Int_t           NJetsCSV_MultiLepCalc;
+   Int_t           NJetsCSVwithSF_MultiLepCalc;
+   Int_t           NJetsCSVwithSF_MultiLepCalc_bSFup;
+   Int_t           NJetsCSVwithSF_MultiLepCalc_bSFdn;
+   Int_t           NJetsCSVwithSF_MultiLepCalc_lSFup;
+   Int_t           NJetsCSVwithSF_MultiLepCalc_lSFdn;
+
 
    // List of branches
    TBranch        *b_event_CommonCalc;   //!
@@ -611,7 +622,16 @@ public :
    TBranch        *b_NresolvedTops2pFake_shifts;   //!
    TBranch        *b_NresolvedTops5pFake_shifts;   //!
    TBranch        *b_NresolvedTops10pFake_shifts;   //!
-
+//   TBranch        *b_genJetPtNoClean_MultiLepCalc;   //!
+//   TBranch        *b_genJetEtaNoClean_MultiLepCalc;   //!
+//   TBranch        *b_genJetPhiNoClean_MultiLepCalc;   //!
+//   TBranch        *b_genJetEnergyNoClean_MultiLepCalc;   //!
+   TBranch        *b_NJetsCSV_MultiLepCalc;   //!
+   TBranch        *b_NJetsCSVwithSF_MultiLepCalc;   //!
+   TBranch        *b_NJetsCSVwithSF_MultiLepCalc_bSFup;   //!
+   TBranch        *b_NJetsCSVwithSF_MultiLepCalc_bSFdn;   //!
+   TBranch        *b_NJetsCSVwithSF_MultiLepCalc_lSFup;   //!
+   TBranch        *b_NJetsCSVwithSF_MultiLepCalc_lSFdn;   //!
 
    step2(TString inputFileName, TString outputFileName);
    virtual ~step2();
@@ -816,32 +836,38 @@ void step2::Init(TTree *tree)
    topPt_HOTTaggerCalc = 0;
    topType_HOTTaggerCalc = 0;
    genTtbarIdCategory_TTbarMassCalc = 0;
-    topEnergy_TTbarMassCalc = 0;
-    topEta_TTbarMassCalc = 0;
-    topMass_TTbarMassCalc = 0;
-    topPhi_TTbarMassCalc = 0;
-    topPt_TTbarMassCalc = 0;
-    topID_TTbarMassCalc = 0;
-    topWEnergy_TTbarMassCalc = 0;
-    topWEta_TTbarMassCalc = 0;
-    topWPhi_TTbarMassCalc = 0;
-    topWPt_TTbarMassCalc = 0;
-    topWID_TTbarMassCalc = 0;
-    topbEnergy_TTbarMassCalc = 0;
-    topbEta_TTbarMassCalc = 0;
-    topbPhi_TTbarMassCalc = 0;
-    topbPt_TTbarMassCalc = 0;
-    topbID_TTbarMassCalc = 0;
-    elMother_id_MultiLepCalc = 0;
-    elNumberOfMothers_MultiLepCalc = 0;
-    muMother_id_MultiLepCalc = 0;
-    muNumberOfMothers_MultiLepCalc = 0;
-    theJetDeepFlavB_JetSubCalc_PtOrdered = 0;
-    NresolvedTops1pFake_shifts = 0;
-    NresolvedTops2pFake_shifts = 0;
-    NresolvedTops5pFake_shifts = 0;
-    NresolvedTops10pFake_shifts = 0;
+   topEnergy_TTbarMassCalc = 0;
+   topEta_TTbarMassCalc = 0;
+   topMass_TTbarMassCalc = 0;
+   topPhi_TTbarMassCalc = 0;
+   topPt_TTbarMassCalc = 0;
+   topID_TTbarMassCalc = 0;
+   topWEnergy_TTbarMassCalc = 0;
+   topWEta_TTbarMassCalc = 0;
+   topWPhi_TTbarMassCalc = 0;
+   topWPt_TTbarMassCalc = 0;
+   topWID_TTbarMassCalc = 0;
+   topbEnergy_TTbarMassCalc = 0;
+   topbEta_TTbarMassCalc = 0;
+   topbPhi_TTbarMassCalc = 0;
+   topbPt_TTbarMassCalc = 0;
+   topbID_TTbarMassCalc = 0;
+   elMother_id_MultiLepCalc = 0;
+   elNumberOfMothers_MultiLepCalc = 0;
+   muMother_id_MultiLepCalc = 0;
+   muNumberOfMothers_MultiLepCalc = 0;
+   theJetDeepFlavB_JetSubCalc_PtOrdered = 0;
+   NresolvedTops1pFake_shifts = 0;
+   NresolvedTops2pFake_shifts = 0;
+   NresolvedTops5pFake_shifts = 0;
+   NresolvedTops10pFake_shifts = 0;
    renormPSWeights = 0;
+//   genJetPtNoClean_MultiLepCalc = 0;
+//   genJetEtaNoClean_MultiLepCalc = 0;
+//   genJetPhiNoClean_MultiLepCalc = 0;
+//   genJetEnergyNoClean_MultiLepCalc = 0;
+
+
 
    // Set branch addresses and branch pointers
    if (!tree) return;
@@ -1025,36 +1051,47 @@ void step2::Init(TTree *tree)
    inputTree->SetBranchAddress("WJetLeadPt", &WJetLeadPt, &b_WJetLeadPt);
    inputTree->SetBranchAddress("TJetLeadPt", &TJetLeadPt, &b_TJetLeadPt);
    inputTree->SetBranchAddress("genTtbarIdCategory_TTbarMassCalc", &genTtbarIdCategory_TTbarMassCalc, &b_genTtbarIdCategory_TTbarMassCalc);
-    inputTree->SetBranchAddress("renormPSWeights", &renormPSWeights, &b_renormPSWeights);
-    inputTree->SetBranchAddress("topEnergy_TTbarMassCalc", &topEnergy_TTbarMassCalc, &b_topEnergy_TTbarMassCalc);
-    inputTree->SetBranchAddress("topEta_TTbarMassCalc", &topEta_TTbarMassCalc, &b_topEta_TTbarMassCalc);
-    inputTree->SetBranchAddress("topMass_TTbarMassCalc", &topMass_TTbarMassCalc, &b_topMass_TTbarMassCalc);
-    inputTree->SetBranchAddress("topPhi_TTbarMassCalc", &topPhi_TTbarMassCalc, &b_topPhi_TTbarMassCalc);
-    inputTree->SetBranchAddress("topPt_TTbarMassCalc", &topPt_TTbarMassCalc, &b_topPt_TTbarMassCalc);
-    inputTree->SetBranchAddress("topID_TTbarMassCalc", &topID_TTbarMassCalc, &b_topID_TTbarMassCalc);
-    inputTree->SetBranchAddress("topWEnergy_TTbarMassCalc", &topWEnergy_TTbarMassCalc, &b_topWEnergy_TTbarMassCalc);
-    inputTree->SetBranchAddress("topWEta_TTbarMassCalc", &topWEta_TTbarMassCalc, &b_topWEta_TTbarMassCalc);
-    inputTree->SetBranchAddress("topWPhi_TTbarMassCalc", &topWPhi_TTbarMassCalc, &b_topWPhi_TTbarMassCalc);
-    inputTree->SetBranchAddress("topWPt_TTbarMassCalc", &topWPt_TTbarMassCalc, &b_topWPt_TTbarMassCalc);
-    inputTree->SetBranchAddress("topWID_TTbarMassCalc", &topWID_TTbarMassCalc, &b_topWID_TTbarMassCalc);
-    inputTree->SetBranchAddress("topbEnergy_TTbarMassCalc", &topbEnergy_TTbarMassCalc, &b_topbEnergy_TTbarMassCalc);
-    inputTree->SetBranchAddress("topbEta_TTbarMassCalc", &topbEta_TTbarMassCalc, &b_topbEta_TTbarMassCalc);
-    inputTree->SetBranchAddress("topbPhi_TTbarMassCalc", &topbPhi_TTbarMassCalc, &b_topbPhi_TTbarMassCalc);
-    inputTree->SetBranchAddress("topbPt_TTbarMassCalc", &topbPt_TTbarMassCalc, &b_topbPt_TTbarMassCalc);
-    inputTree->SetBranchAddress("topbID_TTbarMassCalc", &topbID_TTbarMassCalc, &b_topbID_TTbarMassCalc);
-    inputTree->SetBranchAddress("elMother_id_MultiLepCalc", &elMother_id_MultiLepCalc, &b_elMother_id_MultiLepCalc);
-    inputTree->SetBranchAddress("elNumberOfMothers_MultiLepCalc", &elNumberOfMothers_MultiLepCalc, &b_elNumberOfMothers_MultiLepCalc);
-    inputTree->SetBranchAddress("muMother_id_MultiLepCalc", &muMother_id_MultiLepCalc, &b_muMother_id_MultiLepCalc);
-    inputTree->SetBranchAddress("muNumberOfMothers_MultiLepCalc", &muNumberOfMothers_MultiLepCalc, &b_muNumberOfMothers_MultiLepCalc);
-    inputTree->SetBranchAddress("theJetDeepFlavB_JetSubCalc_PtOrdered", &theJetDeepFlavB_JetSubCalc_PtOrdered, &b_theJetDeepFlavB_JetSubCalc_PtOrdered);
-    inputTree->SetBranchAddress("NresolvedTops1pFakeNoSF", &NresolvedTops1pFakeNoSF, &b_NresolvedTops1pFakeNoSF);
-    inputTree->SetBranchAddress("NresolvedTops2pFakeNoSF", &NresolvedTops2pFakeNoSF, &b_NresolvedTops2pFakeNoSF);
-    inputTree->SetBranchAddress("NresolvedTops5pFakeNoSF", &NresolvedTops5pFakeNoSF, &b_NresolvedTops5pFakeNoSF);
-    inputTree->SetBranchAddress("NresolvedTops10pFakeNoSF", &NresolvedTops10pFakeNoSF, &b_NresolvedTops10pFakeNoSF);
-    inputTree->SetBranchAddress("NresolvedTops1pFake_shifts", &NresolvedTops1pFake_shifts, &b_NresolvedTops1pFake_shifts);
-    inputTree->SetBranchAddress("NresolvedTops2pFake_shifts", &NresolvedTops2pFake_shifts, &b_NresolvedTops2pFake_shifts);
-    inputTree->SetBranchAddress("NresolvedTops5pFake_shifts", &NresolvedTops5pFake_shifts, &b_NresolvedTops5pFake_shifts);
-    inputTree->SetBranchAddress("NresolvedTops10pFake_shifts", &NresolvedTops10pFake_shifts, &b_NresolvedTops10pFake_shifts);
+   inputTree->SetBranchAddress("renormPSWeights", &renormPSWeights, &b_renormPSWeights);
+   inputTree->SetBranchAddress("topEnergy_TTbarMassCalc", &topEnergy_TTbarMassCalc, &b_topEnergy_TTbarMassCalc);
+   inputTree->SetBranchAddress("topEta_TTbarMassCalc", &topEta_TTbarMassCalc, &b_topEta_TTbarMassCalc);
+   inputTree->SetBranchAddress("topMass_TTbarMassCalc", &topMass_TTbarMassCalc, &b_topMass_TTbarMassCalc);
+   inputTree->SetBranchAddress("topPhi_TTbarMassCalc", &topPhi_TTbarMassCalc, &b_topPhi_TTbarMassCalc);
+   inputTree->SetBranchAddress("topPt_TTbarMassCalc", &topPt_TTbarMassCalc, &b_topPt_TTbarMassCalc);
+   inputTree->SetBranchAddress("topID_TTbarMassCalc", &topID_TTbarMassCalc, &b_topID_TTbarMassCalc);
+   inputTree->SetBranchAddress("topWEnergy_TTbarMassCalc", &topWEnergy_TTbarMassCalc, &b_topWEnergy_TTbarMassCalc);
+   inputTree->SetBranchAddress("topWEta_TTbarMassCalc", &topWEta_TTbarMassCalc, &b_topWEta_TTbarMassCalc);
+   inputTree->SetBranchAddress("topWPhi_TTbarMassCalc", &topWPhi_TTbarMassCalc, &b_topWPhi_TTbarMassCalc);
+   inputTree->SetBranchAddress("topWPt_TTbarMassCalc", &topWPt_TTbarMassCalc, &b_topWPt_TTbarMassCalc);
+   inputTree->SetBranchAddress("topWID_TTbarMassCalc", &topWID_TTbarMassCalc, &b_topWID_TTbarMassCalc);
+   inputTree->SetBranchAddress("topbEnergy_TTbarMassCalc", &topbEnergy_TTbarMassCalc, &b_topbEnergy_TTbarMassCalc);
+   inputTree->SetBranchAddress("topbEta_TTbarMassCalc", &topbEta_TTbarMassCalc, &b_topbEta_TTbarMassCalc);
+   inputTree->SetBranchAddress("topbPhi_TTbarMassCalc", &topbPhi_TTbarMassCalc, &b_topbPhi_TTbarMassCalc);
+   inputTree->SetBranchAddress("topbPt_TTbarMassCalc", &topbPt_TTbarMassCalc, &b_topbPt_TTbarMassCalc);
+   inputTree->SetBranchAddress("topbID_TTbarMassCalc", &topbID_TTbarMassCalc, &b_topbID_TTbarMassCalc);
+   inputTree->SetBranchAddress("elMother_id_MultiLepCalc", &elMother_id_MultiLepCalc, &b_elMother_id_MultiLepCalc);
+   inputTree->SetBranchAddress("elNumberOfMothers_MultiLepCalc", &elNumberOfMothers_MultiLepCalc, &b_elNumberOfMothers_MultiLepCalc);
+   inputTree->SetBranchAddress("muMother_id_MultiLepCalc", &muMother_id_MultiLepCalc, &b_muMother_id_MultiLepCalc);
+   inputTree->SetBranchAddress("muNumberOfMothers_MultiLepCalc", &muNumberOfMothers_MultiLepCalc, &b_muNumberOfMothers_MultiLepCalc);
+   inputTree->SetBranchAddress("theJetDeepFlavB_JetSubCalc_PtOrdered", &theJetDeepFlavB_JetSubCalc_PtOrdered, &b_theJetDeepFlavB_JetSubCalc_PtOrdered);
+   inputTree->SetBranchAddress("NresolvedTops1pFakeNoSF", &NresolvedTops1pFakeNoSF, &b_NresolvedTops1pFakeNoSF);
+   inputTree->SetBranchAddress("NresolvedTops2pFakeNoSF", &NresolvedTops2pFakeNoSF, &b_NresolvedTops2pFakeNoSF);
+   inputTree->SetBranchAddress("NresolvedTops5pFakeNoSF", &NresolvedTops5pFakeNoSF, &b_NresolvedTops5pFakeNoSF);
+   inputTree->SetBranchAddress("NresolvedTops10pFakeNoSF", &NresolvedTops10pFakeNoSF, &b_NresolvedTops10pFakeNoSF);
+   inputTree->SetBranchAddress("NresolvedTops1pFake_shifts", &NresolvedTops1pFake_shifts, &b_NresolvedTops1pFake_shifts);
+   inputTree->SetBranchAddress("NresolvedTops2pFake_shifts", &NresolvedTops2pFake_shifts, &b_NresolvedTops2pFake_shifts);
+   inputTree->SetBranchAddress("NresolvedTops5pFake_shifts", &NresolvedTops5pFake_shifts, &b_NresolvedTops5pFake_shifts);
+   inputTree->SetBranchAddress("NresolvedTops10pFake_shifts", &NresolvedTops10pFake_shifts, &b_NresolvedTops10pFake_shifts);
+//   inputTree->SetBranchAddress("genJetPtNoClean_MultiLepCalc", &genJetPtNoClean_MultiLepCalc, &b_genJetPtNoClean_MultiLepCalc);
+//   inputTree->SetBranchAddress("genJetEtaNoClean_MultiLepCalc", &genJetEtaNoClean_MultiLepCalc, &b_genJetEtaNoClean_MultiLepCalc);
+//   inputTree->SetBranchAddress("genJetPhiNoClean_MultiLepCalc", &genJetPhiNoClean_MultiLepCalc, &b_genJetPhiNoClean_MultiLepCalc);
+//   inputTree->SetBranchAddress("genJetEnergyNoClean_MultiLepCalc", &genJetEnergyNoClean_MultiLepCalc, &b_genJetEnergyNoClean_MultiLepCalc);
+   inputTree->SetBranchAddress("NJetsCSV_MultiLepCalc", &NJetsCSV_MultiLepCalc, &b_NJetsCSV_MultiLepCalc);
+   inputTree->SetBranchAddress("NJetsCSVwithSF_MultiLepCalc", &NJetsCSVwithSF_MultiLepCalc, &b_NJetsCSVwithSF_MultiLepCalc);
+   inputTree->SetBranchAddress("NJetsCSVwithSF_MultiLepCalc_bSFup", &NJetsCSVwithSF_MultiLepCalc_bSFup, &b_NJetsCSVwithSF_MultiLepCalc_bSFup);
+   inputTree->SetBranchAddress("NJetsCSVwithSF_MultiLepCalc_bSFdn", &NJetsCSVwithSF_MultiLepCalc_bSFdn, &b_NJetsCSVwithSF_MultiLepCalc_bSFdn);
+   inputTree->SetBranchAddress("NJetsCSVwithSF_MultiLepCalc_lSFup", &NJetsCSVwithSF_MultiLepCalc_lSFup, &b_NJetsCSVwithSF_MultiLepCalc_lSFup);
+   inputTree->SetBranchAddress("NJetsCSVwithSF_MultiLepCalc_lSFdn", &NJetsCSVwithSF_MultiLepCalc_lSFdn, &b_NJetsCSVwithSF_MultiLepCalc_lSFdn);
+
 
    Notify();
 }

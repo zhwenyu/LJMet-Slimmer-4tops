@@ -623,15 +623,15 @@ void step2::Loop()
      for(unsigned int ijet = 0; ijet < theJetPt_JetSubCalc_PtOrdered->size(); ijet++){
 //		if(theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet) > 0.4941){
  	if(theJetBTag_JetSubCalc_PtOrdered->at(ijet) == 1) {
-		   //changed to > in line above because we want jets that pass the csv cut 
-		   njetscsv+=1;
-		   totalPtCSV += theJetPt_JetSubCalc_PtOrdered->at(ijet);
-//		   aveCSV += theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet); 
-//		   aveCSVpt += (theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet))*theJetPt_JetSubCalc_PtOrdered->at(ijet);
-		   aveCSV += AK4JetDeepCSVb_MultiLepCalc_PtOrdered->at(ijet)+ AK4JetDeepCSVbb_MultiLepCalc_PtOrdered->at(ijet);
-		   aveCSVpt += (AK4JetDeepCSVb_MultiLepCalc_PtOrdered->at(ijet)+ AK4JetDeepCSVbb_MultiLepCalc_PtOrdered->at(ijet))*theJetPt_JetSubCalc_PtOrdered->at(ijet);
- 
-//		   aveCSVpt += theJetDeepFlavB_JetSubCalc_PtOrdered->at(ijet)*theJetPt_JetSubCalc_PtOrdered->at(ijet);
+	   //changed to > in line above because we want jets that pass the csv cut 
+	   njetscsv+=1;
+	   totalPtCSV += theJetPt_JetSubCalc_PtOrdered->at(ijet);
+//	   aveCSV += theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet); 
+//	   aveCSVpt += (theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet))*theJetPt_JetSubCalc_PtOrdered->at(ijet);
+	   aveCSV += AK4JetDeepCSVb_MultiLepCalc_PtOrdered->at(ijet)+ AK4JetDeepCSVbb_MultiLepCalc_PtOrdered->at(ijet);
+	   aveCSVpt += (AK4JetDeepCSVb_MultiLepCalc_PtOrdered->at(ijet)+ AK4JetDeepCSVbb_MultiLepCalc_PtOrdered->at(ijet))*theJetPt_JetSubCalc_PtOrdered->at(ijet);
+
+//	   aveCSVpt += theJetDeepFlavB_JetSubCalc_PtOrdered->at(ijet)*theJetPt_JetSubCalc_PtOrdered->at(ijet);
 	}
 	if (ijet==1){
             secondJetPt = theJetPt_JetSubCalc_PtOrdered->at(ijet);
@@ -663,41 +663,42 @@ void step2::Loop()
             tmpJetInd = ijet;
           }        
         }
+
         bool stop = 0;
         if (tmpJetInd==0){
-            bjetTmp.SetPtEtaPhiE(theJetPt_JetSubCalc_PtOrdered->at(tmpJetInd),theJetEta_JetSubCalc_PtOrdered->at(tmpJetInd),theJetPhi_JetSubCalc_PtOrdered->at(tmpJetInd),theJetEnergy_JetSubCalc_PtOrdered->at(tmpJetInd)); 
-            for(unsigned int ijet = 1; ijet < theJetPt_JetSubCalc_PtOrdered->size(); ijet++){        
-//                if((theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet) > 0.4941) && stop == 0 ){
-		if((theJetBTag_JetSubCalc_PtOrdered->at(ijet) == 1) && stop == 0 ){
-                    stop = 1;
-                    bjetTmp.SetPtEtaPhiE(theJetPt_JetSubCalc_PtOrdered->at(ijet),theJetEta_JetSubCalc_PtOrdered->at(ijet),theJetPhi_JetSubCalc_PtOrdered->at(ijet),theJetEnergy_JetSubCalc_PtOrdered->at(ijet)); 
-                    deltaR_lepbJetNotInMinMlb = bjetTmp.DeltaR(lep);        
-                }
-            }     
+          bjetTmp.SetPtEtaPhiE(theJetPt_JetSubCalc_PtOrdered->at(tmpJetInd),theJetEta_JetSubCalc_PtOrdered->at(tmpJetInd),theJetPhi_JetSubCalc_PtOrdered->at(tmpJetInd),theJetEnergy_JetSubCalc_PtOrdered->at(tmpJetInd)); 
+          for(unsigned int ijet = 1; ijet < theJetPt_JetSubCalc_PtOrdered->size(); ijet++){        
+//          if((theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet) > 0.4941) && stop == 0 ){
+	    if((theJetBTag_JetSubCalc_PtOrdered->at(ijet) == 1) && stop == 0 ){
+              stop = 1;
+              bjetTmp.SetPtEtaPhiE(theJetPt_JetSubCalc_PtOrdered->at(ijet),theJetEta_JetSubCalc_PtOrdered->at(ijet),theJetPhi_JetSubCalc_PtOrdered->at(ijet),theJetEnergy_JetSubCalc_PtOrdered->at(ijet)); 
+              deltaR_lepbJetNotInMinMlb = bjetTmp.DeltaR(lep);        
+            }
+          }     
         }
         if (tmpJetInd>0){        
-            stop = 0;
-            for(unsigned int ijet = 0; ijet < tmpJetInd; ijet++){        
+          stop = 0;
+          for(unsigned int ijet = 0; ijet < tmpJetInd; ijet++){        
 //                if((theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet) > 0.4941) && stop == 0 ){
-		if((theJetBTag_JetSubCalc_PtOrdered->at(ijet) == 1) && stop == 0 ){
-                    stop = 1;
-                    bjetTmp.SetPtEtaPhiE(theJetPt_JetSubCalc_PtOrdered->at(ijet),theJetEta_JetSubCalc_PtOrdered->at(ijet),theJetPhi_JetSubCalc_PtOrdered->at(ijet),theJetEnergy_JetSubCalc_PtOrdered->at(ijet)); 
-                    deltaR_lepbJetNotInMinMlb = bjetTmp.DeltaR(lep);        
-                }
+            if((theJetBTag_JetSubCalc_PtOrdered->at(ijet) == 1) && stop == 0 ){
+              stop = 1;
+              bjetTmp.SetPtEtaPhiE(theJetPt_JetSubCalc_PtOrdered->at(ijet),theJetEta_JetSubCalc_PtOrdered->at(ijet),theJetPhi_JetSubCalc_PtOrdered->at(ijet),theJetEnergy_JetSubCalc_PtOrdered->at(ijet)); 
+              deltaR_lepbJetNotInMinMlb = bjetTmp.DeltaR(lep);        
             }
-            if (stop == 0){
-                for(unsigned int ijet = tmpJetInd+1; ijet < theJetPt_JetSubCalc_PtOrdered->size(); ijet++){        
+          }
+          if (stop == 0){
+            for(unsigned int ijet = tmpJetInd+1; ijet < theJetPt_JetSubCalc_PtOrdered->size(); ijet++){        
 //                    if((theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet) > 0.4941) && stop == 0 ){
-		    if((theJetBTag_JetSubCalc_PtOrdered->at(ijet) == 1) && stop == 0 ){	
-                        stop = 1;
-                        bjetTmp.SetPtEtaPhiE(theJetPt_JetSubCalc_PtOrdered->at(ijet),theJetEta_JetSubCalc_PtOrdered->at(ijet),theJetPhi_JetSubCalc_PtOrdered->at(ijet),theJetEnergy_JetSubCalc_PtOrdered->at(ijet)); 
-                        deltaR_lepbJetNotInMinMlb = bjetTmp.DeltaR(lep);        
-                    }
-                }                
-            }
+	      if((theJetBTag_JetSubCalc_PtOrdered->at(ijet) == 1) && stop == 0 ){	
+                stop = 1;
+                bjetTmp.SetPtEtaPhiE(theJetPt_JetSubCalc_PtOrdered->at(ijet),theJetEta_JetSubCalc_PtOrdered->at(ijet),theJetPhi_JetSubCalc_PtOrdered->at(ijet),theJetEnergy_JetSubCalc_PtOrdered->at(ijet)); 
+                deltaR_lepbJetNotInMinMlb = bjetTmp.DeltaR(lep);        
+              }
+            }                
+          }
         }     
 
-	    v_allJets.push_back(jetTmp);
+        v_allJets.push_back(jetTmp);
 //        v_DCSV_allJets.push_back(theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet));
 //	    csvJet1 = theJetDeepCSVb_JetSubCalc_PtOrdered->at(0)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(0);
 //	    csvJet2 = theJetDeepCSVb_JetSubCalc_PtOrdered->at(1)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(1);
@@ -717,79 +718,79 @@ void step2::Loop()
 //          csvJet3 = theJetDeepFlavB_JetSubCalc_PtOrdered->at(2);
 //          csvJet4 = theJetDeepFlavB_JetSubCalc_PtOrdered->at(3);	  
         	    
-		totalJetPt+=theJetPt_JetSubCalc_PtOrdered->at(ijet);
-		totalJetE+=theJetEnergy_JetSubCalc_PtOrdered->at(ijet);
-		deltaPhifromMET_ = TVector2::Phi_mpi_pi(theJetPhi_JetSubCalc_PtOrdered->at(ijet) - corr_met_phi_MultiLepCalc);
-		deltaPhi_METjets.push_back(deltaPhifromMET_);
-		if(min_deltaPhi_METjets>fabs(deltaPhifromMET_)){min_deltaPhi_METjets=fabs(deltaPhifromMET_);}
-		if(abs(deltaPhifromMET_)>TMath::Pi()/2){hemiout+=theJetPt_JetSubCalc_PtOrdered->at(ijet);}				
-		
+	totalJetPt+=theJetPt_JetSubCalc_PtOrdered->at(ijet);
+	totalJetE+=theJetEnergy_JetSubCalc_PtOrdered->at(ijet);
+	deltaPhifromMET_ = TVector2::Phi_mpi_pi(theJetPhi_JetSubCalc_PtOrdered->at(ijet) - corr_met_phi_MultiLepCalc);
+	deltaPhi_METjets.push_back(deltaPhifromMET_);
+	if(min_deltaPhi_METjets>fabs(deltaPhifromMET_)){min_deltaPhi_METjets=fabs(deltaPhifromMET_);}
+	if(abs(deltaPhifromMET_)>TMath::Pi()/2){hemiout+=theJetPt_JetSubCalc_PtOrdered->at(ijet);}				
+	
 //		if(!(theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet) > 0.4941)) continue; //without b-tag SFs
-		if(!(theJetBTag_JetSubCalc_PtOrdered->at(ijet) == 1) ) continue;
-		
-		bjet1.SetPtEtaPhiE(theJetPt_JetSubCalc_PtOrdered->at(ijet),theJetEta_JetSubCalc_PtOrdered->at(ijet),theJetPhi_JetSubCalc_PtOrdered->at(ijet),theJetEnergy_JetSubCalc_PtOrdered->at(ijet));	
-		HT_bjets+=theJetPt_JetSubCalc_PtOrdered->at(ijet);
-		if (theJetPt_JetSubCalc_PtOrdered->at(ijet) < BJetLeadPt-0.001 && theJetPt_JetSubCalc_PtOrdered->at(ijet) >= BjetSecondPt) BjetSecondPt = theJetPt_JetSubCalc_PtOrdered->at(ijet);
+	if(!(theJetBTag_JetSubCalc_PtOrdered->at(ijet) == 1) ) continue;
+	
+	bjet1.SetPtEtaPhiE(theJetPt_JetSubCalc_PtOrdered->at(ijet),theJetEta_JetSubCalc_PtOrdered->at(ijet),theJetPhi_JetSubCalc_PtOrdered->at(ijet),theJetEnergy_JetSubCalc_PtOrdered->at(ijet));	
+	HT_bjets+=theJetPt_JetSubCalc_PtOrdered->at(ijet);
+	if (theJetPt_JetSubCalc_PtOrdered->at(ijet) < BJetLeadPt-0.001 && theJetPt_JetSubCalc_PtOrdered->at(ijet) >= BjetSecondPt) BjetSecondPt = theJetPt_JetSubCalc_PtOrdered->at(ijet);
 		//different float precision between theJetPt_JetSubCalc_PtOrdered->at(ijet) and BJetLeadPt
 		//require at least 0.001 between them to avoid double counting the leading bjet pt
 
-		double lbdr_ = (bjet1).DeltaR(lep);
-		double masslb = (lep+bjet1).M();
-		double ptlb = (lep+bjet1).Pt();
-		if(lbdr_<minDR_lepBJet){
-			minDR_lepBJet=lbdr_;
-			mass_lepBJet_mindr=masslb;
-			}
-		if(mass_lepBJet0<0){
-			mass_lepBJet0 = masslb;
-			deltaR_lepBJets0 = lbdr_;
-			BJetLeadPt = theJetPt_JetSubCalc_PtOrdered->at(ijet);
-		}
-		if(ptlb>maxLBpt){
-			maxLBpt = ptlb;
-			deltaR_lepBJet_maxpt = lbdr_;
-			}
+	double lbdr_ = (bjet1).DeltaR(lep);
+	double masslb = (lep+bjet1).M();
+	double ptlb = (lep+bjet1).Pt();
+	if(lbdr_<minDR_lepBJet){
+	  minDR_lepBJet=lbdr_;
+	  mass_lepBJet_mindr=masslb;
+	}
+	if(mass_lepBJet0<0){
+	  mass_lepBJet0 = masslb;
+	  deltaR_lepBJets0 = lbdr_;
+	  BJetLeadPt = theJetPt_JetSubCalc_PtOrdered->at(ijet);
+	}
+	if(ptlb>maxLBpt){
+	  maxLBpt = ptlb;
+	  deltaR_lepBJet_maxpt = lbdr_;
+	}
 		        
-		for(unsigned int jjet = ijet + 1; jjet < theJetPt_JetSubCalc_PtOrdered->size(); jjet++){
-		  if(jjet >= theJetPt_JetSubCalc_PtOrdered->size()) continue;
+	for(unsigned int jjet = ijet + 1; jjet < theJetPt_JetSubCalc_PtOrdered->size(); jjet++){
+	  if(jjet >= theJetPt_JetSubCalc_PtOrdered->size()) continue;
 //		  if(!(theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet) > 0.4941)) continue; //without b-tag SFs	  
-		  if(!(theJetBTag_JetSubCalc_PtOrdered->at(jjet) == 1) ) continue;
-		  bjet2.SetPtEtaPhiE(theJetPt_JetSubCalc_PtOrdered->at(jjet),theJetEta_JetSubCalc_PtOrdered->at(jjet),theJetPhi_JetSubCalc_PtOrdered->at(jjet),theJetEnergy_JetSubCalc_PtOrdered->at(jjet));		  
+	  if(!(theJetBTag_JetSubCalc_PtOrdered->at(jjet) == 1) ) continue;
+	  bjet2.SetPtEtaPhiE(theJetPt_JetSubCalc_PtOrdered->at(jjet),theJetEta_JetSubCalc_PtOrdered->at(jjet),theJetPhi_JetSubCalc_PtOrdered->at(jjet),theJetEnergy_JetSubCalc_PtOrdered->at(jjet));		  
           MT2bb = mt2(bjet1,bjet2,met);
           deltaR_lepBJets1 = (bjet2).DeltaR(lep);		  
-		  npairs += 1.0;
-		  double pairmass = (bjet1+bjet2).M();
-		  double pairmasslep = (lep+bjet1+bjet2).M();
-		  double pairdr = (bjet1).DeltaR(bjet2);
-		  double pairdphi = (bjet1).DeltaPhi(bjet2);
-		  double pairdeta = bjet1.Eta() - bjet2.Eta();
-		  double pairpt = (bjet1+bjet2).Pt();
-		  aveBBdr += (bjet1).DeltaR(bjet2);
-		  if(pairmass > maxBBmass){
-			maxBBmass = pairmass;	    
-			mass_maxBBmass = pairmass;
-		  }
-		  if(pairdr < minBBdr){
-			minBBdr = pairdr;
-			mass_minBBdr = pairmass;
-			lepDR_minBBdr = (bjet1+bjet2).DeltaR(lep);
-			mass_lepBB_minBBdr = pairmasslep;
-			deltaR_minBB = pairdr; 
-		  }
-		  if(fabs(pairdphi) > maxBBdphi){
-			maxBBdphi = fabs(pairdphi);
-			deltaPhi_maxBB = pairdphi;
-		  }		  
-		  if(fabs(pairdeta) > maxBBdeta){
-			maxBBdeta = fabs(pairdeta);
-			deltaEta_maxBB = pairdeta;
-		  }
-		  if(pairpt > maxBBpt){
-			maxBBpt = pairpt;
-			mass_maxBBpt = pairmass;
-		  }		  
-		}
-	  }  // jet loop     
+	  npairs += 1.0;
+	  double pairmass = (bjet1+bjet2).M();
+	  double pairmasslep = (lep+bjet1+bjet2).M();
+	  double pairdr = (bjet1).DeltaR(bjet2);
+	  double pairdphi = (bjet1).DeltaPhi(bjet2);
+	  double pairdeta = bjet1.Eta() - bjet2.Eta();
+	  double pairpt = (bjet1+bjet2).Pt();
+	  aveBBdr += (bjet1).DeltaR(bjet2);
+	  if(pairmass > maxBBmass){
+	    maxBBmass = pairmass;	    
+	    mass_maxBBmass = pairmass;
+	  }
+	  if(pairdr < minBBdr){
+	    minBBdr = pairdr;
+	    mass_minBBdr = pairmass;
+	    lepDR_minBBdr = (bjet1+bjet2).DeltaR(lep);
+	    mass_lepBB_minBBdr = pairmasslep;
+	    deltaR_minBB = pairdr; 
+	  }
+	  if(fabs(pairdphi) > maxBBdphi){
+	    maxBBdphi = fabs(pairdphi);
+	    deltaPhi_maxBB = pairdphi;
+	  }		  
+	  if(fabs(pairdeta) > maxBBdeta){
+	    maxBBdeta = fabs(pairdeta);
+	    deltaEta_maxBB = pairdeta;
+	  }
+	  if(pairpt > maxBBpt){
+	    maxBBpt = pairpt;
+       	    mass_maxBBpt = pairmass;
+	  }		  
+	}
+     }  // jet loop     
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////HT without the best jet where best jet is the one used in leptonic top reconstruction//////////////////////////
@@ -1453,93 +1454,93 @@ void step2::Loop()
 /////////////////////////////////////////////////////////////////////////////////
 
 	  
-	  b_isTraining->Fill();
+      b_isTraining->Fill();
       b_xsecEff->Fill();
-	  b_deltaR_minBB->Fill();
-	  b_aveBBdr->Fill();
-	  b_deltaEta_maxBB->Fill();
-	  b_FW_momentum_2->Fill();
-	  b_centrality->Fill();
-	  b_aveCSVpt->Fill();
-	  b_mass_maxJJJpt->Fill();
-	  b_lepDR_minBBdr->Fill();
-	  b_HT_bjets->Fill();
-	  b_HT_ratio->Fill();
-	  b_HT_2m->Fill();
-	  b_firstcsvb_bb->Fill();
-	  b_secondcsvb_bb->Fill();
-	  b_thirdcsvb_bb->Fill();
-	  b_fourthcsvb_bb->Fill();
-	  b_PtFifthJet->Fill();
+      b_deltaR_minBB->Fill();
+      b_aveBBdr->Fill();
+      b_deltaEta_maxBB->Fill();
+      b_FW_momentum_2->Fill();
+      b_centrality->Fill();
+      b_aveCSVpt->Fill();
+      b_mass_maxJJJpt->Fill();
+      b_lepDR_minBBdr->Fill();
+      b_HT_bjets->Fill();
+      b_HT_ratio->Fill();
+      b_HT_2m->Fill();
+      b_firstcsvb_bb->Fill();
+      b_secondcsvb_bb->Fill();
+      b_thirdcsvb_bb->Fill();
+      b_fourthcsvb_bb->Fill();
+      b_PtFifthJet->Fill();
       b_MHRE->Fill();
       b_HTx->Fill();
-	  b_mass_lepJets0->Fill();
-	  b_mass_lepJets1->Fill();
-	  b_mass_lepJets2->Fill();	  	  
-	  b_mass_minBBdr->Fill();
-	  b_mass_minLLdr->Fill();
-	  b_mass_maxBBpt->Fill();
-	  b_mass_maxBBmass->Fill();
-	  b_theJetLeadPt->Fill();
-	  b_deltaR_lepBJets0->Fill();
-	  b_deltaR_lepBJets1->Fill();	  
-	  b_minDR_lepBJet->Fill();
-	  b_minBBdr->Fill();
-	  b_mass_lepBJet0->Fill();
-	  b_mass_lepBB_minBBdr->Fill();
-	  b_mass_lepJJ_minJJdr->Fill();
-	  b_mass_lepBJet_mindr->Fill();
-	  b_deltaR_lepBJet_maxpt->Fill();
-	  b_deltaPhi_maxBB->Fill();
-	  b_corr_met->Fill();
-	  b_deltaPhi_lepMET->Fill();
-	  b_min_deltaPhi_METjets->Fill();
-	  b_deltaPhi_METjets->Fill();
-	  b_aveCSV->Fill();
-	  b_deltaPhi_j1j2->Fill();
-	  b_alphaT->Fill();
-	  b_FW_momentum_0->Fill();
-	  b_FW_momentum_1->Fill();
-	  b_FW_momentum_3->Fill();
-	  b_FW_momentum_4->Fill();
-	  b_FW_momentum_5->Fill();
-	  b_FW_momentum_6->Fill();
+      b_mass_lepJets0->Fill();
+      b_mass_lepJets1->Fill();
+      b_mass_lepJets2->Fill();	  	  
+      b_mass_minBBdr->Fill();
+      b_mass_minLLdr->Fill();
+      b_mass_maxBBpt->Fill();
+      b_mass_maxBBmass->Fill();
+      b_theJetLeadPt->Fill();
+      b_deltaR_lepBJets0->Fill();
+      b_deltaR_lepBJets1->Fill();	  
+      b_minDR_lepBJet->Fill();
+      b_minBBdr->Fill();
+      b_mass_lepBJet0->Fill();
+      b_mass_lepBB_minBBdr->Fill();
+      b_mass_lepJJ_minJJdr->Fill();
+      b_mass_lepBJet_mindr->Fill();
+      b_deltaR_lepBJet_maxpt->Fill();
+      b_deltaPhi_maxBB->Fill();
+      b_corr_met->Fill();
+      b_deltaPhi_lepMET->Fill();
+      b_min_deltaPhi_METjets->Fill();
+      b_deltaPhi_METjets->Fill();
+      b_aveCSV->Fill();
+      b_deltaPhi_j1j2->Fill();
+      b_alphaT->Fill();
+      b_FW_momentum_0->Fill();
+      b_FW_momentum_1->Fill();
+      b_FW_momentum_3->Fill();
+      b_FW_momentum_4->Fill();
+      b_FW_momentum_5->Fill();
+      b_FW_momentum_6->Fill();
       b_csvJet1->Fill();
       b_csvJet2->Fill();
       b_csvJet3->Fill();
       b_csvJet4->Fill();      
-	  b_GD_pTrat->Fill();
-	  b_BD_pTrat->Fill();	  
+      b_GD_pTrat->Fill();
+      b_BD_pTrat->Fill();	  
       b_GD_DR_Tridijet->Fill();
-	  b_BD_DR_Tridijet->Fill();
-	  b_GD_Ttrijet_TopMass->Fill();
-	  b_BD_Ttrijet_TopMass->Fill();
+      b_BD_DR_Tridijet->Fill();
+      b_GD_Ttrijet_TopMass->Fill();
+      b_BD_Ttrijet_TopMass->Fill();
       b_GD_DCSV_jetNotdijet->Fill();
       b_BD_DCSV_jetNotdijet->Fill();      
-	  b_GD_Mass_minDR_dijet->Fill();	  
-	  b_BD_Mass_minDR_dijet->Fill();	  	  
-	  b_GD_DR_Trijet_jetNotdijet->Fill();
-	  b_BD_DR_Trijet_jetNotdijet->Fill();
-	  b_deltaR_lepbJetNotInMinMlb->Fill();
-	  b_deltaR_lepJetInMinMljet->Fill();
-	  b_deltaPhi_lepJetInMinMljet->Fill();	  
-	  b_deltaR_lepbJetInMinMlb->Fill();
-	  b_deltaPhi_lepbJetInMinMlb->Fill();	  
-	  b_HT_woBESTjet->Fill();	  
-	  b_MT_woBESTjet->Fill();	  
-	  b_PT_woBESTjet->Fill();	  
-	  b_M_woBESTjet->Fill();
-	  b_M_allJet_W->Fill();
-	  b_ratio_HTdHT4leadjets->Fill();
-	  b_W_PtdM->Fill();	 
-	  b_pTjet5_6->Fill(); 
+      b_GD_Mass_minDR_dijet->Fill();	  
+      b_BD_Mass_minDR_dijet->Fill();	  	  
+      b_GD_DR_Trijet_jetNotdijet->Fill();
+      b_BD_DR_Trijet_jetNotdijet->Fill();
+      b_deltaR_lepbJetNotInMinMlb->Fill();
+      b_deltaR_lepJetInMinMljet->Fill();
+      b_deltaPhi_lepJetInMinMljet->Fill();	  
+      b_deltaR_lepbJetInMinMlb->Fill();
+      b_deltaPhi_lepbJetInMinMlb->Fill();	  
+      b_HT_woBESTjet->Fill();	  
+      b_MT_woBESTjet->Fill();	  
+      b_PT_woBESTjet->Fill();	  
+      b_M_woBESTjet->Fill();
+      b_M_allJet_W->Fill();
+      b_ratio_HTdHT4leadjets->Fill();
+      b_W_PtdM->Fill();	 
+      b_pTjet5_6->Fill(); 
       b_mean_csv->Fill();
-	  b_invM_jet34->Fill(); 
-	  b_invM_jet35->Fill(); 
-	  b_invM_jet36->Fill(); 
-	  b_invM_jet45->Fill(); 
-	  b_invM_jet46->Fill(); 
-	  b_invM_jet56->Fill(); 
+      b_invM_jet34->Fill(); 
+      b_invM_jet35->Fill(); 
+      b_invM_jet36->Fill(); 
+      b_invM_jet45->Fill(); 
+      b_invM_jet46->Fill(); 
+      b_invM_jet56->Fill(); 
       b_Sphericity->Fill(); 
       b_Aplanarity->Fill(); 
       b_pT_3rdcsvJet->Fill(); //added 31 March 2019
@@ -1554,6 +1555,7 @@ void step2::Loop()
       b_secondJetPt->Fill(); 
       b_fifthJetPt->Fill(); 
       b_sixthJetPt->Fill(); 
+      b_hemiout->Fill();
 
       b_BDTtrijet2->Fill();	     
       b_BDTtrijet1->Fill();
