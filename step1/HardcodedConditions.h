@@ -23,6 +23,8 @@ public:
     double GetMuonIsoSF(double pt, double eta, int year = 2017);
     double GetMuonTriggerSF(double pt, double eta, int year = 2017);
 
+    void GetBtaggingSF(double pt, double eta, double *btagsf, double *btagsfunc, std::string tagger="CSVM", int jetHFlav = 5, int year = 2017);
+    void GetBtaggingEff(double pt, double *eff, std::string tagger="CSVM", int jetHFlav = 5, int year = 2017);
     void GetHOTtaggingSF(double pt, int njet, double *hotsf, double *hotstatunc, double *hotcspurunc, double *hotclosureunc, int year = 2017, bool isGenMatched=true, std::string workingpoint = "1pfake");
     void GetHOTtaggingEff(double pt, double *eff, int year = 2017, std::string sample = "ttbar", bool isGenMatched=true, std::string workingpoint = "1pfake", int massIndex=-1);
     void GetTtaggingSF(double pt, double *tau32sf, double *tau32sfup, double *tau32sfdn, int year = 2017);
@@ -63,6 +65,25 @@ private:
     double GetMuonTriggerSF2016(double pt, double eta);
     double GetMuonTriggerSF2017(double pt, double eta);
     double GetMuonTriggerSF2018(double pt, double eta);
+
+    void GetBtaggingSF2016(double pt, double eta, double *btagsf, double *btagsfunc, std::string tagger="CSVM");
+    void GetCtaggingSF2016(double pt, double eta, double *btagsf, double *btagsfunc, std::string tagger="CSVM");
+    void GetLtaggingSF2016(double pt, double eta, double *btagsf, double *btagsfunc, std::string tagger="CSVM");
+    void GetBtaggingSF2017(double pt, double eta, double *btagsf, double *btagsfunc, std::string tagger="CSVM");
+    void GetCtaggingSF2017(double pt, double eta, double *btagsf, double *btagsfunc, std::string tagger="CSVM");
+    void GetLtaggingSF2017(double pt, double eta, double *btagsf, double *btagsfunc, std::string tagger="CSVM");
+    void GetBtaggingSF2018(double pt, double eta, double *btagsf, double *btagsfunc, std::string tagger="CSVM");
+    void GetCtaggingSF2018(double pt, double eta, double *btagsf, double *btagsfunc, std::string tagger="CSVM");
+    void GetLtaggingSF2018(double pt, double eta, double *btagsf, double *btagsfunc, std::string tagger="CSVM");
+    void GetBtaggingEff2016(double pt, double *eff, std::string tagger="CSVM");
+    void GetCtaggingEff2016(double pt, double *eff, std::string tagger="CSVM");
+    void GetLtaggingEff2016(double pt, double *eff, std::string tagger="CSVM");
+    void GetBtaggingEff2017(double pt, double *eff, std::string tagger="CSVM");
+    void GetCtaggingEff2017(double pt, double *eff, std::string tagger="CSVM");
+    void GetLtaggingEff2017(double pt, double *eff, std::string tagger="CSVM");
+    void GetBtaggingEff2018(double pt, double *eff, std::string tagger="CSVM");
+    void GetCtaggingEff2018(double pt, double *eff, std::string tagger="CSVM");
+    void GetLtaggingEff2018(double pt, double *eff, std::string tagger="CSVM");
 
     void GetHOTtaggingSF2016(double pt, int njet, double *hotsf, double *hotstatunc, double *hotcspurunc, double *hotclosureunc, std::string workingpoint = "1pfake");
     void GetHOTtaggingSF2017(double pt, int njet, double *hotsf, double *hotstatunc, double *hotcspurunc, double *hotclosureunc, std::string workingpoint = "1pfake");

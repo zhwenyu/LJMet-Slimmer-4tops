@@ -123,6 +123,12 @@ public :
    Int_t           elTrigPresel_MultiLepCalc;
 
    Int_t           NJets_JetSubCalc;
+   Int_t           NJetsCSV_MultiLepCalc;
+   Int_t           NJetsCSVwithSF_MultiLepCalc;
+   Int_t           NJetsCSVwithSF_MultiLepCalc_bSFup;
+   Int_t           NJetsCSVwithSF_MultiLepCalc_bSFdn;
+   Int_t           NJetsCSVwithSF_MultiLepCalc_lSFup;
+   Int_t           NJetsCSVwithSF_MultiLepCalc_lSFdn;
    Int_t           NJetsCSV_JetSubCalc;
    Int_t           NJetsCSVwithSF_JetSubCalc;
    Int_t           NJetsCSVwithSF_JetSubCalc_bSFup;
@@ -146,10 +152,15 @@ public :
    vector<double>  theJetPhi_JetSubCalc_PtOrdered;
    vector<double>  theJetEnergy_JetSubCalc_PtOrdered;
    vector<double>  theJetDeepFlavB_JetSubCalc_PtOrdered;
-   // vector<double>  theJetDeepCSVb_JetSubCalc_PtOrdered;
-   // vector<double>  theJetDeepCSVbb_JetSubCalc_PtOrdered;
-   // vector<double>  theJetDeepCSVc_JetSubCalc_PtOrdered;
-   // vector<double>  theJetDeepCSVudsg_JetSubCalc_PtOrdered;
+   vector<double>  AK4JetDeepCSVb_MultiLepCalc_PtOrdered;
+   vector<double>  AK4JetDeepCSVbb_MultiLepCalc_PtOrdered;
+   vector<double>  AK4JetDeepCSVc_MultiLepCalc_PtOrdered;
+   vector<double>  AK4JetDeepCSVudsg_MultiLepCalc_PtOrdered;
+   vector<int>     AK4JetBTag_MultiLepCalc_PtOrdered;
+   vector<int>     AK4JetBTag_bSFup_MultiLepCalc_PtOrdered;
+   vector<int>     AK4JetBTag_bSFdn_MultiLepCalc_PtOrdered;
+   vector<int>     AK4JetBTag_lSFup_MultiLepCalc_PtOrdered;
+   vector<int>     AK4JetBTag_lSFdn_MultiLepCalc_PtOrdered;
    vector<int>     theJetHFlav_JetSubCalc_PtOrdered;
    vector<int>     theJetPFlav_JetSubCalc_PtOrdered;
    vector<int>     theJetBTag_JetSubCalc_PtOrdered;
@@ -2063,12 +2074,10 @@ void step1::Init(TTree *tree)
    inputTree->SetBranchAddress("genBSLPt_MultiLepCalc", &genBSLPt_MultiLepCalc, &b_genBSLPt_MultiLepCalc);
    inputTree->SetBranchAddress("genEnergy_MultiLepCalc", &genEnergy_MultiLepCalc, &b_genEnergy_MultiLepCalc);
    inputTree->SetBranchAddress("genEta_MultiLepCalc", &genEta_MultiLepCalc, &b_genEta_MultiLepCalc);
-   if(isTT){
-      inputTree->SetBranchAddress("genJetEnergyNoClean_MultiLepCalc", &genJetEnergyNoClean_MultiLepCalc, &b_genJetEnergyNoClean_MultiLepCalc);
-      inputTree->SetBranchAddress("genJetEtaNoClean_MultiLepCalc", &genJetEtaNoClean_MultiLepCalc, &b_genJetEtaNoClean_MultiLepCalc);
-      inputTree->SetBranchAddress("genJetPhiNoClean_MultiLepCalc", &genJetPhiNoClean_MultiLepCalc, &b_genJetPhiNoClean_MultiLepCalc);
-      inputTree->SetBranchAddress("genJetPtNoClean_MultiLepCalc", &genJetPtNoClean_MultiLepCalc, &b_genJetPtNoClean_MultiLepCalc);
-   }
+   inputTree->SetBranchAddress("genJetEnergyNoClean_MultiLepCalc", &genJetEnergyNoClean_MultiLepCalc, &b_genJetEnergyNoClean_MultiLepCalc);
+   inputTree->SetBranchAddress("genJetEtaNoClean_MultiLepCalc", &genJetEtaNoClean_MultiLepCalc, &b_genJetEtaNoClean_MultiLepCalc);
+   inputTree->SetBranchAddress("genJetPhiNoClean_MultiLepCalc", &genJetPhiNoClean_MultiLepCalc, &b_genJetPhiNoClean_MultiLepCalc);
+   inputTree->SetBranchAddress("genJetPtNoClean_MultiLepCalc", &genJetPtNoClean_MultiLepCalc, &b_genJetPtNoClean_MultiLepCalc);
    inputTree->SetBranchAddress("genJetEnergy_MultiLepCalc", &genJetEnergy_MultiLepCalc, &b_genJetEnergy_MultiLepCalc);
    inputTree->SetBranchAddress("genJetEta_MultiLepCalc", &genJetEta_MultiLepCalc, &b_genJetEta_MultiLepCalc);
    inputTree->SetBranchAddress("genJetPhi_MultiLepCalc", &genJetPhi_MultiLepCalc, &b_genJetPhi_MultiLepCalc);
