@@ -564,7 +564,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    float metCut=20;
    float htCut=0;
    int   nAK8jetsCut=0;
-   float lepPtCut=25;
+   float lepPtCut=20.0;
    float elEtaCut=2.1;
    float muEtaCut=2.1;
    int   njetsCut=4;
