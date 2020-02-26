@@ -376,6 +376,10 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    outputTree->Branch("minDPhi_MetJet",&minDPhi_MetJet,"minDPhi_MetJet/F");
 
    // AK4
+   outputTree->Branch("theJetPt_JetSubCalc",&theJetPt_JetSubCalc);
+   outputTree->Branch("theJetEta_JetSubCalc",&theJetEta_JetSubCalc);
+   outputTree->Branch("theJetPhi_JetSubCalc",&theJetPhi_JetSubCalc);
+   outputTree->Branch("theJetEnergy_JetSubCalc",&theJetEnergy_JetSubCalc);
    outputTree->Branch("theJetPt_JetSubCalc_PtOrdered",&theJetPt_JetSubCalc_PtOrdered);
    outputTree->Branch("theJetEta_JetSubCalc_PtOrdered",&theJetEta_JetSubCalc_PtOrdered);
    outputTree->Branch("theJetPhi_JetSubCalc_PtOrdered",&theJetPhi_JetSubCalc_PtOrdered);
@@ -385,10 +389,11 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    outputTree->Branch("AK4JetDeepCSVbb_MultiLepCalc_PtOrdered",&AK4JetDeepCSVbb_MultiLepCalc_PtOrdered);
    outputTree->Branch("AK4JetDeepCSVc_MultiLepCalc_PtOrdered",&AK4JetDeepCSVc_MultiLepCalc_PtOrdered);
    outputTree->Branch("AK4JetDeepCSVudsg_MultiLepCalc_PtOrdered",&AK4JetDeepCSVudsg_MultiLepCalc_PtOrdered);
-//    outputTree->Branch("AK4JetDeepCSVb_MultiLepCalc",&AK4JetDeepCSVb_MultiLepCalc);
-//    outputTree->Branch("AK4JetDeepCSVbb_MultiLepCalc",&AK4JetDeepCSVbb_MultiLepCalc);
-//    outputTree->Branch("AK4JetDeepCSVc_MultiLepCalc",&AK4JetDeepCSVc_MultiLepCalc);
-//    outputTree->Branch("AK4JetDeepCSVudsg_MultiLepCalc",&AK4JetDeepCSVudsg_MultiLepCalc);
+   outputTree->Branch("AK4JetBTag_MultiLepCalc_PtOrdered",&AK4JetBTag_MultiLepCalc_PtOrdered);
+   outputTree->Branch("AK4JetDeepCSVb_MultiLepCalc",&AK4JetDeepCSVb_MultiLepCalc);
+   outputTree->Branch("AK4JetDeepCSVbb_MultiLepCalc",&AK4JetDeepCSVbb_MultiLepCalc);
+   outputTree->Branch("AK4JetDeepCSVc_MultiLepCalc",&AK4JetDeepCSVc_MultiLepCalc);
+   outputTree->Branch("AK4JetDeepCSVudsg_MultiLepCalc",&AK4JetDeepCSVudsg_MultiLepCalc);
    outputTree->Branch("theJetHFlav_JetSubCalc_PtOrdered",&theJetHFlav_JetSubCalc_PtOrdered);
    outputTree->Branch("theJetPFlav_JetSubCalc_PtOrdered",&theJetPFlav_JetSubCalc_PtOrdered);
    outputTree->Branch("theJetBTag_JetSubCalc_PtOrdered",&theJetBTag_JetSubCalc_PtOrdered);
@@ -656,7 +661,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
       nb = inputTree->GetEntry(jentry);   nbytes += nb;
       if (Cut(ientry) != 1) continue;
       
-      //      if (ientry > 5000) continue;
+            if (ientry > 5000) continue;
       
       if(jentry % 1000 ==0) std::cout<<"Completed "<<jentry<<" out of "<<nentries<<" events"<<std::endl;
 
@@ -1136,6 +1141,10 @@ void step1::Loop(TString inTreeName, TString outTreeName )
         }
 	if(AK4JetBTag_MultiLepCalc_PtOrdered.at(ijet) == 1){
 	  NJetsCSVwithSF_MultiLepCalc += 1;
+          if((lepton_lv + jet_lv).M() < minMleppBjet) {
+            minMleppBjet = fabs( (lepton_lv + jet_lv).M() );
+            deltaR_lepMinMlb = jet_lv.DeltaR(lepton_lv);
+          }
 	}
 	if(AK4JetBTag_bSFup_MultiLepCalc_PtOrdered.at(ijet) == 1){
 	  NJetsCSVwithSF_MultiLepCalc_bSFup += 1;
@@ -1150,7 +1159,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
 	  NJetsCSVwithSF_MultiLepCalc_lSFdn += 1;
 	}
 
-   if(theJetDeepFlavB_JetSubCalc_PtOrdered.at(ijet) > btagWPdjet){
+  	if(theJetDeepFlavB_JetSubCalc_PtOrdered.at(ijet) > btagWPdjet){
           NJetsCSV_JetSubCalc += 1;
         }
 	if(theJetBTag_JetSubCalc_PtOrdered.at(ijet) == 1){
@@ -1158,10 +1167,6 @@ void step1::Loop(TString inTreeName, TString outTreeName )
           if(theJetPt_JetSubCalc_PtOrdered.at(ijet) > BJetLeadPt) BJetLeadPt = theJetPt_JetSubCalc_PtOrdered.at(ijet);
           deltaR_lepBJets.push_back(lepton_lv.DeltaR(jet_lv));
 	  
-          if((lepton_lv + jet_lv).M() < minMleppBjet) {
-            minMleppBjet = fabs( (lepton_lv + jet_lv).M() );
-	    deltaR_lepMinMlb = jet_lv.DeltaR(lepton_lv);
-          }
 	}
 	if(theJetBTag_bSFup_JetSubCalc_PtOrdered.at(ijet) == 1){
 	  NJetsCSVwithSF_JetSubCalc_bSFup += 1;
