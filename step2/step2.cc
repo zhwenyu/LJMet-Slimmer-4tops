@@ -478,9 +478,9 @@ void step2::Loop()
      tmp_minMleppBjet = 1e9;          
      aveCSVpt = 0;
      MT2bb = 0;      
-     deltaR_minBB = 1e9;
+     deltaR_minBB = 20.;
      aveBBdr = -1;      
-     deltaEta_maxBB = 1e9;                  
+     deltaEta_maxBB = 10;                  
      lepDR_minBBdr = -1;
      mass_maxJJJpt = -1;      
      FW_momentum_0=0; FW_momentum_1=0; FW_momentum_2=0; FW_momentum_3=0; FW_momentum_4=0; FW_momentum_5=0; FW_momentum_6=0;
@@ -548,7 +548,7 @@ void step2::Loop()
      mass_minLLdr = -1;
      mass_maxBBpt = -1;
      mass_maxBBmass = -1;
-     minDR_lepBJet = 1e9;
+     minDR_lepBJet = 20.;
      mass_lepBB_minBBdr = -1;
      mass_lepJJ_minJJdr = -1;
      mass_lepBJet0 = -1;
@@ -558,8 +558,8 @@ void step2::Loop()
      deltaR_lepBJet_maxpt = -1;
      deltaR_lepJetInMinMljet = -99;
      deltaPhi_lepJetInMinMljet = -99;
-     deltaR_lepbJetInMinMlb = -99;
-     deltaPhi_lepbJetInMinMlb = -99;
+     deltaR_lepbJetInMinMlb = -10.;
+     deltaPhi_lepbJetInMinMlb = -10.;
      deltaR_lepbJetNotInMinMlb = -99;
      deltaPhi_maxBB = 1e9;
      hemiout = -1;
