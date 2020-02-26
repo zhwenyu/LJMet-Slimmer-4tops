@@ -2603,70 +2603,53 @@ double HardcodedConditions::GetElectronIsoSF2018(double pt, double eta)
   \     /                                                       \     /
    `---'                                                         `---'*/
 
-double HardcodedConditions::GetElectronTriggerSF(double pt, double eta, int year)
+double HardcodedConditions::GetElectronTriggerSF(double pt, double ht, int year)
 {
   //The main getter for Electron Trigger Scale Factors
-  if      (year==2016) return GetElectronTriggerSF2016(pt, eta);
-  else if (year==2017) return GetElectronTriggerSF2017(pt, eta);
-  else if (year==2018) return GetElectronTriggerSF2018(pt, eta);
+  if      (year==2016) return GetElectronTriggerSF2016(pt, ht);
+  else if (year==2017) return GetElectronTriggerSF2017(pt, ht);
+  else if (year==2018) return GetElectronTriggerSF2018(pt, ht);
   else return 0.;
 }//end GetElectronTriggerSF
 
-double HardcodedConditions::GetElectronTriggerSF2016(double pt, double eta)
+double HardcodedConditions::GetElectronTriggerSF2016(double pt, double ht)
 {
 	// TO-BE-IMPLEMENTED!!!!!!!
 	return 1.000;
 
 }
 
-double HardcodedConditions::GetElectronTriggerSF2017(double pt, double eta)
+double HardcodedConditions::GetElectronTriggerSF2017(double pt, double ht)
 {
 	// Trigger Scale Factors, SF2017B_Bkg_LepPtEta_EOR.png & SF2017CDEF_Bkg_LepPtEta_EOR.png
 	float triggerSFB = 1.0;
-	float triggerSFCDEF = 1.0;
-	if (fabs(eta) < 0.8){
-	    if (pt < 50) {triggerSFB = 1.0; triggerSFCDEF = 1.0;}
-	    else if (pt < 55) {triggerSFB = 0.800; triggerSFCDEF = 1.009;}
-	    else if (pt < 60) {triggerSFB = 0.797; triggerSFCDEF = 1.000;}
-	    else if (pt < 70) {triggerSFB = 0.796; triggerSFCDEF = 1.003;}
-	    else if (pt < 100) {triggerSFB = 0.795; triggerSFCDEF = 1.016;}
-	    else if (pt < 200) {triggerSFB = 0.780; triggerSFCDEF = 1.006;}
-	    else {triggerSFB = 0.785; triggerSFCDEF = 0.988;}
-	}else if (fabs(eta) < 1.442){
-        if (pt < 50) {triggerSFB = 1.0; triggerSFCDEF = 1.0;}
-        else if (pt < 55) {triggerSFB = 0.824; triggerSFCDEF = 1.007;}
-        else if (pt < 60) {triggerSFB = 0.795; triggerSFCDEF = 1.024;}
-        else if (pt < 70) {triggerSFB = 0.727; triggerSFCDEF = 1.015;}
-        else if (pt < 100) {triggerSFB = 0.764; triggerSFCDEF = 0.991;}
-        else if (pt < 200) {triggerSFB = 0.783; triggerSFCDEF = 0.999;}
-        else {triggerSFB = 0.756; triggerSFCDEF = 0.962;}
-	}else if (fabs(eta) < 1.566) {triggerSFB = 1.0; triggerSFCDEF = 1.0;}
-	else if (fabs(eta) < 2.0){
-        if (pt < 50) {triggerSFB = 1.0; triggerSFCDEF = 1.0;}
-        else if (pt < 55) {triggerSFB = 0.764; triggerSFCDEF = 0.952;}
-        else if (pt < 60) {triggerSFB = 0.685; triggerSFCDEF = 0.984;}
-        else if (pt < 70) {triggerSFB = 0.764; triggerSFCDEF = 0.972;}
-        else if (pt < 100) {triggerSFB = 0.780; triggerSFCDEF = 0.940;}
-        else if (pt < 200) {triggerSFB = 0.693; triggerSFCDEF = 0.938;}
-        else {triggerSFB = 0.562; triggerSFCDEF = 0.726;}
-	}else {
-        if (pt < 50) {triggerSFB = 1.0; triggerSFCDEF = 1.0;}
-        else if (pt < 55) {triggerSFB = 0.713; triggerSFCDEF = 1.022;}
-        else if (pt < 60) {triggerSFB = 0.773; triggerSFCDEF = 1.027;}
-        else if (pt < 70) {triggerSFB = 0.670; triggerSFCDEF = 1.031;}
-        else if (pt < 100) {triggerSFB = 0.868; triggerSFCDEF = 1.088;}
-        else if (pt < 200) {triggerSFB = 0.828; triggerSFCDEF = 1.041;}
-        else {triggerSFB = 0.562; triggerSFCDEF = 0.814;}
+	float triggerSFC = 1.0;
+	float triggerSFDEF = 1.0;
+	if (ht > 500.0 && ht < 750.0){
+	  if (pt > 20.0 && pt < 50.0){triggerSFB = 0.907;triggerSFC = 0.931;triggerSFDEF = 0.967;}
+	  else if (pt >=50.0 && pt <= 300.0){triggerSFB = 0.997;triggerSFC = 0.999;triggerSFDEF = 0.999;}
 	}
-	return (4.823*triggerSFB + 36.734*triggerSFCDEF)/41.557;
+	else if (ht >= 750.0 && ht < 3000.0){
+	    if (pt > 20.0 && pt < 50.0){triggerSFB = 0.888;triggerSFC = 0.923;triggerSFDEF = 0.963;}
+	    else if (pt >=50.0 && pt <= 300.0){triggerSFB = 0.996;triggerSFC = 1.000;triggerSFDEF = 0.999;}
+	}
+	return (4.823*triggerSFB+ 9.664*triggerSFC + 27.07*triggerSFDEF)/41.557;
 
 }
 
-double HardcodedConditions::GetElectronTriggerSF2018(double pt, double eta)
+double HardcodedConditions::GetElectronTriggerSF2018(double pt, double ht)
 {
-	// TO-BE-IMPLEMENTED!!!!!!!
-	return 1.000;
-
+  float triggerSFAB = 1.0;
+  float triggerSFCD = 1.0;
+  if (ht > 500.0 && ht < 750.0){
+    if (pt > 20.0 && pt < 50.0){triggerSFAB = 0.970;triggerSFCD = 0.981;}
+    else if (pt >=50.0 && pt <= 300.0){triggerSFAB = 0.999;triggerSFCD = 1.000;}
+  }
+  else if (ht >= 750.0 && ht < 3000.0){
+    if (pt > 20.0 && pt < 50.0){triggerSFAB = 0.959;triggerSFCD = 0.990;}
+    else if (pt >=50.0 && pt <= 300.0){triggerSFAB = 0.998;triggerSFCD = 0.999;}
+  }
+  return (21.10*triggerSFAB+ 38.87*triggerSFCD)/59.97;
 }
 
 /*.-----------------------------------------------------------------.
@@ -2721,9 +2704,9 @@ double HardcodedConditions::GetMuonIdSF2016(double pt, double eta)
 	    else if (pt < 120.0 && pt > 60.0) return 0.9898057377093389;
 	    else if (pt < 40.0 && pt > 30.0) return 0.9907753279135898;
 	    else if (pt < 50.0 && pt > 40.0) return 0.9892483588952047; }
-    else{
-      	std::cerr << "The pt=" << pt << ",eta=" << eta << " range is not coded into GetMuonIdSF2016!" << std::endl;
-      	return 0;}		    
+	else{
+	  std::cerr << "The pt=" << pt << ",eta=" << eta << " range is not coded into GetMuonIdSF2016!" << std::endl;
+	  return 0;}		    
 }
 
 double HardcodedConditions::GetMuonIdSF2017(double pt, double eta)
@@ -2922,12 +2905,12 @@ double HardcodedConditions::GetMuonIsoSF2018(double pt, double eta)
   \     /                                                       \     /
    `---'                                                         `---'*/
 
-double HardcodedConditions::GetMuonTriggerSF(double pt, double eta, int year)
+double HardcodedConditions::GetMuonTriggerSF(double pt, double ht, int year)
 {
   //The main getter for Muon Trigger Scale Factors
-  if      (year==2016) return GetMuonTriggerSF2016(pt, eta);
-  else if (year==2017) return GetMuonTriggerSF2017(pt, eta);
-  else if (year==2018) return GetMuonTriggerSF2018(pt, eta);
+  if      (year==2016) return GetMuonTriggerSF2016(pt, ht);
+  else if (year==2017) return GetMuonTriggerSF2017(pt, ht);
+  else if (year==2018) return GetMuonTriggerSF2018(pt, ht);
   else return 0.;
 }//end GetMuonTriggerSF
 
@@ -2938,52 +2921,36 @@ double HardcodedConditions::GetMuonTriggerSF2016(double pt, double eta)
 
 }
 
-double HardcodedConditions::GetMuonTriggerSF2017(double pt, double eta)
+double HardcodedConditions::GetMuonTriggerSF2017(double pt, double ht)
 {
 	float triggerSFB = 1.0;
-    float triggerSFCDEF = 1.0;
-	if (fabs(eta) < 0.90){
-	    if (pt < 50.0){triggerSFB = 1.0;triggerSFCDEF = 1.027;}
-	    else if (pt < 55.0){triggerSFB = 0.872;triggerSFCDEF = 1.014;}
-	    else if (pt < 60.0){triggerSFB = 0.978;triggerSFCDEF = 1.026;}
-	    else if (pt < 70.0){triggerSFB = 1.003;triggerSFCDEF = 1.021;}
-	    else if (pt < 100){triggerSFB = 0.990;triggerSFCDEF = 1.013;}
-	    else if (pt < 200){triggerSFB = 0.979;triggerSFCDEF = 1.014;}
-	    else{triggerSFB = 0.949;triggerSFCDEF = 1.006;}
-	}else if (fabs(eta) < 1.20){
-	    if (pt < 50.0){triggerSFB = 1.0;triggerSFCDEF = 1.020;}
-	    else if (pt < 55.0){triggerSFB = 0.897;triggerSFCDEF = 1.015;}
-	    else if (pt < 60.0){triggerSFB = 1.024;triggerSFCDEF = 0.995;}
-	    else if (pt < 70.0){triggerSFB = 0.958;triggerSFCDEF = 0.995;}
-	    else if (pt < 100){triggerSFB = 0.990;triggerSFCDEF = 1.004;}
-	    else if (pt < 200){triggerSFB = 0.951;triggerSFCDEF = 1.000;}
-	    else{triggerSFB = 0.884;triggerSFCDEF = 0.994;}
-	}else if (fabs(eta) < 2.10){
-	    if (pt < 50.0){triggerSFB = 1.0;triggerSFCDEF = 1.052;}
-	    else if (pt < 55.0){triggerSFB = 0.800;triggerSFCDEF = 1.064;}
-	    else if (pt < 60.0){triggerSFB = 0.936;triggerSFCDEF = 1.052;}
-	    else if (pt < 70.0){triggerSFB = 0.993;triggerSFCDEF = 1.038;}
-	    else if (pt < 100){triggerSFB = 0.984;triggerSFCDEF = 1.041;}
-	    else if (pt < 200){triggerSFB = 0.963;triggerSFCDEF = 1.024;}
-	    else{triggerSFB = 0.991;triggerSFCDEF = 1.018;}
-	}else{
-	    if (pt < 50.0){triggerSFB = 1.0;triggerSFCDEF = 1.109;}
-	    else  if (pt < 55.0){triggerSFB = 1.0;triggerSFCDEF = 1.061;}
-	    else if (pt < 60.0){triggerSFB = 0.751;triggerSFCDEF = 1.086;}
-	    else if (pt < 70.0){triggerSFB = 0.804;triggerSFCDEF = 1.113;}
-	    else if (pt < 100){triggerSFB = 0.915;triggerSFCDEF = 1.105;}
-	    else if (pt < 200){triggerSFB = 1.032;triggerSFCDEF = 1.146;}
-	    else{triggerSFB = 0.835;triggerSFCDEF = 1.136;}
+	float triggerSFC = 1.0;
+	float triggerSFDEF = 1.0;
+	if (ht > 500.0 && ht < 750.0){
+	  if (pt > 20.0 && pt < 50.0){triggerSFB = 0.907;triggerSFC = 0.968;triggerSFDEF = 0.970;}
+	  else if (pt >=50.0 && pt <= 300.0){triggerSFB = 0.904;triggerSFC = 0.997;triggerSFDEF = 0.998;}
 	}
-	return (4.823*triggerSFB+36.734*triggerSFCDEF)/41.557;
+	else if (ht >= 750.0 && ht < 3000.0){
+	    if (pt > 20.0 && pt < 50.0){triggerSFB = 0.882;triggerSFC = 0.992;triggerSFDEF = 0.930;}
+	    else if (pt >=50.0 && pt <= 300.0){triggerSFB = 0.891;triggerSFC = 0.983;triggerSFDEF = 0.983;}
+	}
+	return (4.823*triggerSFB+ 9.664*triggerSFC + 27.07*triggerSFDEF)/41.557;
 
 }
 
-double HardcodedConditions::GetMuonTriggerSF2018(double pt, double eta)
+double HardcodedConditions::GetMuonTriggerSF2018(double pt, double ht)
 {
-	// TO-BE-IMPLEMENTED!!!!!!!
-	return 1.000;
-
+	float triggerSFAB = 1.0;
+	float triggerSFCD = 1.0;
+	if (ht > 500.0 && ht < 750.0){
+	  if (pt > 20.0 && pt < 50.0){triggerSFAB = 0.938;triggerSFCD = 0.948;}
+	  else if (pt >=50.0 && pt <= 300.0){triggerSFAB = 0.985;triggerSFCD = 0.996;}
+	}
+	else if (ht >= 750.0 && ht < 3000.0){
+	    if (pt > 20.0 && pt < 50.0){triggerSFAB = 0.921;triggerSFCD = 0.941;}
+	    else if (pt >=50.0 && pt <= 300.0){triggerSFAB = 0.974;triggerSFCD = 0.984;}
+	}
+	return (21.10*triggerSFAB+ 38.87*triggerSFCD)/59.97;
 }
 
 
