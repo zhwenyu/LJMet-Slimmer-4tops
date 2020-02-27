@@ -39,6 +39,7 @@ public :
    Bool_t          isMC=false;
    Bool_t          isSM=false;
    Bool_t          isSE=false;
+   Bool_t          isHad=false;
    Bool_t          isTT=false;
    Bool_t          isTTToSemiLeptonHT500Njet9=false;
    Bool_t          isTTV=false;
@@ -61,6 +62,7 @@ public :
    Bool_t          isTTJJ=false;
    Int_t           SigMass=-1;
    Int_t           Year=2017;
+   TString         Era="";
    TString         sample_="";
    std::string     sample="";
    
@@ -71,10 +73,14 @@ public :
    Int_t           isElectron;
    Int_t           isMuon;
    Int_t           MCPastTrigger;
+   Int_t           MCLepPastTrigger;
+   Int_t           MCHadPastTrigger;
    Int_t           MCPastTriggerOR;
    Int_t           MCPastTriggerLepTight;
    Int_t           MCPastTriggerHTTight;
    Int_t           DataPastTrigger;
+   Int_t           DataLepPastTrigger;
+   Int_t           DataHadPastTrigger;
    Int_t           DataPastTriggerOR;
    Int_t           DataPastTriggerLepTight;
    Int_t           DataPastTriggerHTTight;
@@ -1256,6 +1262,18 @@ step1::step1(TString inputFileName, TString outputFileName, Int_t Year_) : input
   }  
   else SigMass = -1;
   
+  if(inputFileName.Contains("17B")) Era = "17B";
+  else if(inputFileName.Contains("17C")) Era = "17C";
+  else if(inputFileName.Contains("17D")) Era = "17DEF";
+  else if(inputFileName.Contains("17E")) Era = "17DEF";
+  else if(inputFileName.Contains("17F")) Era = "17DEF";
+  else if(inputFileName.Contains("18A")) Era = "18AB";
+  else if(inputFileName.Contains("18B")) Era = "18AB";
+  else if(inputFileName.Contains("18C")) Era = "18CD";
+  else if(inputFileName.Contains("18D")) Era = "18CD";
+  else Era = "";
+  
+
   isMadgraphBkg = (inputFileName.Contains("QCD") || inputFileName.Contains("madgraphMLM"));
   isTOP = (inputFileName.Contains("Mtt") || inputFileName.Contains("ST") || inputFileName.Contains("ttZ") || inputFileName.Contains("ttW") || inputFileName.Contains("ttH") || inputFileName.Contains("TTTo"));
   isTT = (inputFileName.Contains("TT_Tune") || inputFileName.Contains("Mtt") || inputFileName.Contains("TTTo"));
@@ -1270,9 +1288,10 @@ step1::step1(TString inputFileName, TString outputFileName, Int_t Year_) : input
   isTTTX = (inputFileName.Contains("TTTJ_Tune") || inputFileName.Contains("TTTW_Tune"));
   isTTVV = (inputFileName.Contains("TTHH_Tune") || inputFileName.Contains("TTWH_Tune") || inputFileName.Contains("TTWW_Tune") || inputFileName.Contains("TTWZ_Tune") || inputFileName.Contains("TTZH_Tune") || inputFileName.Contains("TTZZ_Tune"));
   isVV = (inputFileName.Contains("WW_") || inputFileName.Contains("WZ_") || inputFileName.Contains("ZZ_"));
-  isMC = !(inputFileName.Contains("Single") || inputFileName.Contains("Data18"));
+  isMC = !(inputFileName.Contains("Single") || inputFileName.Contains("Data18") || inputFileName.Contains("JetHTRun20"));
   isSM = inputFileName.Contains("SingleMuon");
   isSE = (inputFileName.Contains("SingleElectron") || inputFileName.Contains("EGamma"));
+  isHad = (inputFileName.Contains("JetHT") || inputFileName.Contains("HTMHT"));
           	  
   isTTincMtt0to700    = outputFileName.Contains("Mtt0to700");
   isTTincMtt0to1000   = outputFileName.Contains("Mtt0to1000");
