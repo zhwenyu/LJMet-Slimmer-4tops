@@ -13,7 +13,7 @@ void makeStep1(TString macroDir, TString inputFile, TString outputFile, Int_t Ye
   incl+=macroDir;
   gSystem->AddIncludePath(incl);
 
-  if ( inputFile.Contains("Run2017") || inputFile.Contains("Run2018") || inputFile.Contains("Single") || inputFile.Contains("Double") || inputFile.Contains("MuonEG") || inputFile.Contains("EGamma") ) { 
+  if ( inputFile.Contains("Run2017") || inputFile.Contains("Run2018") || inputFile.Contains("Single") || inputFile.Contains("Double") || inputFile.Contains("MuonEG") || inputFile.Contains("EGamma") || inputFile.Contains("JetHT") ) { 
     step1 t(inputFile,outputFile.ReplaceAll(".root","nominal.root"),Year);
     t.Loop("ljmet", "ljmet"); 
     }
