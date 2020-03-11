@@ -72,12 +72,14 @@ public :
    Int_t           isHTgt500Njetge9;
    Int_t           isElectron;
    Int_t           isMuon;
+   Int_t           MCPastTriggerX;
    Int_t           MCPastTrigger;
    Int_t           MCLepPastTrigger;
    Int_t           MCHadPastTrigger;
    Int_t           MCPastTriggerOR;
    Int_t           MCPastTriggerLepTight;
    Int_t           MCPastTriggerHTTight;
+   Int_t           DataPastTriggerX;
    Int_t           DataPastTrigger;
    Int_t           DataLepPastTrigger;
    Int_t           DataHadPastTrigger;
