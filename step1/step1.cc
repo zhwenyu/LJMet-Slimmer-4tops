@@ -318,6 +318,10 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    outputTree->Branch("DataPastTriggerX",&DataPastTriggerX,"DataPastTriggerX/I");
    outputTree->Branch("MCPastTrigger",&MCPastTrigger,"MCPastTrigger/I");
    outputTree->Branch("DataPastTrigger",&DataPastTrigger,"DataPastTrigger/I");
+   outputTree->Branch("MCLepPastTrigger",&MCLepPastTrigger,"MCLepPastTrigger/I");
+   outputTree->Branch("DataLepPastTrigger",&DataLepPastTrigger,"DataLepPastTrigger/I");
+   outputTree->Branch("MCHadPastTrigger",&MCHadPastTrigger,"MCHadPastTrigger/I");
+   outputTree->Branch("DataHadPastTrigger",&DataHadPastTrigger,"DataHadPastTrigger/I");
    outputTree->Branch("L1NonPrefiringProb_CommonCalc",&L1NonPrefiringProb_CommonCalc,"L1NonPrefiringProb_CommonCalc/D");
    outputTree->Branch("L1NonPrefiringProbUp_CommonCalc",&L1NonPrefiringProbUp_CommonCalc,"L1NonPrefiringProbUp_CommonCalc/D");
    outputTree->Branch("L1NonPrefiringProbDown_CommonCalc",&L1NonPrefiringProbDown_CommonCalc,"L1NonPrefiringProbDown_CommonCalc/D");
@@ -339,6 +343,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    outputTree->Branch("EGammaGsfSF",&EGammaGsfSF,"EGammaGsfSF/F");
    outputTree->Branch("lepIdSF",&lepIdSF,"lepIdSF/F");
    outputTree->Branch("triggerSF",&triggerSF,"triggerSF/F");
+   outputTree->Branch("triggerXSF",&triggerXSF,"triggerXSF/F");
    outputTree->Branch("isoSF",&isoSF,"isoSF/F");
    
    //ttbar generator
@@ -776,11 +781,18 @@ void step1::Loop(TString inTreeName, TString outTreeName )
       EGammaGsfSF = 1.0;
       lepIdSF = 1.0;
       triggerSF = 1.0;
+      triggerXSF = 1.0;
       isoSF = 1.0;
       std::vector<std::string> eltriggersX;
       std::vector<std::string> mutriggersX;
+      if(Year==2017){
       eltriggersX = {"Ele15_IsoVVVL_PFHT450","Ele50_IsoVVVL_PFHT450","Ele15_IsoVVVL_PFHT600","Ele35_WPTight_Gsf","Ele38_WPTight_Gsf"};
-      mutriggersX = {"Mu15_IsoVVVL_PFHT450","Mu50_IsoVVVL_PFHT450","Mu15_IsoVVVL_PFHT600"};//,"Mu50","TkMu50"};
+      mutriggersX = {"Mu15_IsoVVVL_PFHT450","Mu50_IsoVVVL_PFHT450","Mu15_IsoVVVL_PFHT600","Mu50"};
+      }
+      else if(Year==2018){
+      eltriggersX = {"Ele15_IsoVVVL_PFHT450","Ele50_IsoVVVL_PFHT450","Ele15_IsoVVVL_PFHT600","Ele35_WPTight_Gsf","Ele38_WPTight_Gsf","Ele15_IsoVVVL_PFHT450_PFMET50"};
+      mutriggersX = {"Mu15_IsoVVVL_PFHT450","Mu50_IsoVVVL_PFHT450","Mu15_IsoVVVL_PFHT600","Mu50","TkMu50","Mu15_IsoVVVL_PFHT450_PFMET50"};
+      }
       std::string eltrigger;
       std::string mutrigger;
       std::string hadtrigger;
@@ -826,6 +838,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
 	  lepIdSF = hardcodedConditions.GetElectronIdSF(leppt, lepeta, Year);
 	  isoSF = hardcodedConditions.GetElectronIsoSF(leppt, lepeta, Year);
 	  triggerSF = hardcodedConditions.GetElectronTriggerSF(leppt, AK4HT, Year);
+	  triggerXSF = hardcodedConditions.GetElectronTriggerXSF(leppt, lepeta, Year);
 	}
 	if(isMuon){
 	  for(unsigned int itrig=0; itrig < vsSelMCTriggersMu_MultiLepCalc->size(); itrig++){
@@ -847,9 +860,12 @@ void step1::Loop(TString inTreeName, TString outTreeName )
 	  lepIdSF = hardcodedConditions.GetMuonIdSF(leppt, lepeta, Year);
 	  isoSF = hardcodedConditions.GetMuonIsoSF(leppt, lepeta, Year);	  
 	  triggerSF = hardcodedConditions.GetMuonTriggerSF(leppt, AK4HT, Year); 
+	  triggerXSF = hardcodedConditions.GetMuonTriggerXSF(leppt, lepeta, Year); 
 	}
 	DataPastTrigger = 1;
 	DataPastTriggerX = 1;
+	DataLepPastTrigger = 1;
+	DataHadPastTrigger = 1;
         // Trigger SF Muon 
       }
       else{ //Data triggers check
@@ -897,6 +913,8 @@ void step1::Loop(TString inTreeName, TString outTreeName )
 	}
 	MCPastTrigger = 1;
 	MCPastTriggerX = 1;
+	MCLepPastTrigger = 1;
+	MCHadPastTrigger = 1;
       }
       
       if(isMC && MCPastTrigger) npass_trigger+=1;

@@ -2652,6 +2652,139 @@ double HardcodedConditions::GetElectronTriggerSF2018(double pt, double ht)
   return (21.10*triggerSFAB+ 38.87*triggerSFCD)/59.97;
 }
 
+
+/*.-----------------------------------------------------------------.
+  /  .-.                                                         .-.  \
+ |  /   \                                                       /   \  |
+ | |\_.  |                                                     |    /| |
+ |\|  | /|        ELECTRON TRIGGER SCALE FACTOR SECTION        |\  | |/|
+ | `---' |           (using cross triggers from VLQ)           | `---' |
+ |       |                                                     |       | 
+ |       |-----------------------------------------------------|       |
+ \       |                                                     |       /
+  \     /                                                       \     /
+   `---'                                                         `---'*/
+
+double HardcodedConditions::GetElectronTriggerXSF(double pt, double eta, int year)
+{
+  //The main getter for Electron Trigger Scale Factors
+  if      (year==2016) return GetElectronTriggerXSF2016(pt, eta);
+  else if (year==2017) return GetElectronTriggerXSF2017(pt, eta);
+  else if (year==2018) return GetElectronTriggerXSF2018(pt, eta);
+  else return 0.;
+}//end GetElectronTriggerXSF
+
+double HardcodedConditions::GetElectronTriggerXSF2016(double pt, double eta)
+{
+	// TO-BE-IMPLEMENTED!!!!!!!
+	return 1.000;
+
+}
+
+double HardcodedConditions::GetElectronTriggerXSF2017(double leppt, double lepeta)
+{
+	  // Trigger Scale Factors, SF2017B_Bkg_LepPtEta_EOR.png & SF2017CDEF_Bkg_LepPtEta_EOR.png
+	  float trigSFB = 1.0;
+	  float trigSFCDEF = 1.0;
+	  float trigSFBunc = 0.0;
+	  float trigSFCDEFunc = 0.0;
+	  if (fabs(lepeta) < 0.8){
+	    if (leppt < 50) {trigSFB = 0.697; trigSFBunc = 0.075; trigSFCDEF = 1.051; trigSFCDEFunc = 0.018;}
+	    else if (leppt < 60) {trigSFB = 0.818; trigSFBunc = 0.069; trigSFCDEF = 1.029; trigSFCDEFunc = 0.016;}
+	    else if (leppt < 70) {trigSFB = 0.761; trigSFBunc = 0.081;  trigSFCDEF = 0.988; trigSFCDEFunc = 0.019;}
+	    else if (leppt < 100) {trigSFB = 0.693; trigSFBunc = 0.053;  trigSFCDEF = 0.972; trigSFCDEFunc = 0.012;}
+	    else if (leppt < 200) {trigSFB = 0.679; trigSFBunc = 0.050;  trigSFCDEF = 0.972; trigSFCDEFunc = 0.009;}
+	    else {trigSFB = 0.953; trigSFBunc = 0.066;  trigSFCDEF = 0.964; trigSFCDEFunc = 0.019;}
+	  }else if (fabs(lepeta) < 1.442){
+            if (leppt < 50) {trigSFB = 0.793; trigSFBunc = 0.142;  trigSFCDEF = 1.020; trigSFCDEFunc = 0.029;}
+            else if (leppt < 60) {trigSFB = 0.853; trigSFBunc = 0.112;  trigSFCDEF = 1.063; trigSFCDEFunc = 0.024;}
+            else if (leppt < 70) {trigSFB = 0.721; trigSFBunc = 0.116;  trigSFCDEF = 0.962; trigSFCDEFunc = 0.031;}
+            else if (leppt < 100) {trigSFB = 0.731; trigSFBunc = 0.075;  trigSFCDEF = 0.923; trigSFCDEFunc = 0.020;}
+            else if (leppt < 200) {trigSFB = 0.815; trigSFBunc = 0.060;  trigSFCDEF = 0.957; trigSFCDEFunc = 0.015;}
+            else {trigSFB = 0.801; trigSFBunc = 0.143;  trigSFCDEF = 1.015; trigSFCDEFunc = 0.015;}
+	  }else if (fabs(lepeta) < 1.566) {trigSFB = 1.0; trigSFCDEF = 1.0;}
+	  else if (fabs(lepeta) < 2.0){
+            if (leppt < 50) {trigSFB = 1.024; trigSFBunc = 0.157;  trigSFCDEF = 1.060; trigSFCDEFunc = 0.059;}
+            else if (leppt < 60) {trigSFB = 0.695; trigSFBunc = 0.228;  trigSFCDEF = 1.109; trigSFCDEFunc = 0.045;}
+            else if (leppt < 70) {trigSFB = 0.675; trigSFBunc = 0.202;  trigSFCDEF = 1.061; trigSFCDEFunc = 0.054;}
+            else if (leppt < 100) {trigSFB = 0.752; trigSFBunc = 0.124;  trigSFCDEF = 0.996; trigSFCDEFunc = 0.035;}
+            else if (leppt < 200) {trigSFB = 0.672; trigSFBunc = 0.174;  trigSFCDEF = 0.960; trigSFCDEFunc = 0.039;}
+            else {trigSFB = 1.108; trigSFBunc = 0.022;  trigSFCDEF = 0.924; trigSFCDEFunc = 0.099;}
+	  }else {
+            if (leppt < 50) {trigSFB = 1.026; trigSFBunc = 0.297;  trigSFCDEF = 1.007; trigSFCDEFunc = 0.087;}
+            else if (leppt < 60) {trigSFB = 1.216; trigSFBunc = 0.024;  trigSFCDEF = 0.903; trigSFCDEFunc = 0.092;}
+            else if (leppt < 70) {trigSFB = 1.000; trigSFBunc = 0.050;  trigSFCDEF = 1.037; trigSFCDEFunc = 0.077;}
+            else if (leppt < 100) {trigSFB = 0.977; trigSFBunc = 0.151;  trigSFCDEF = 1.027; trigSFCDEFunc = 0.045;}
+            else if (leppt < 200) {trigSFB = 0.366; trigSFBunc = 0.299;  trigSFCDEF = 0.910; trigSFCDEFunc = 0.071;}
+            else {trigSFB = 1.000; trigSFBunc = 0.050;  trigSFCDEF = 0.440; trigSFCDEFunc = 0.242;}
+	  }
+	  float triggerSF = (4.823*trigSFB + 36.734*trigSFCDEF)/41.557;
+	  float triggerSFUncert = sqrt( pow(4.823*trigSFBunc/41.557,2) + pow(36.734*trigSFCDEFunc/41.557,2) );
+
+	return triggerSF;
+
+}
+
+double HardcodedConditions::GetElectronTriggerXSF2018(double leppt, double lepeta)
+{
+	  //Trigger SF calculated by JHogan, HT > 430, ttbar tag/probe, Id+iso applied
+	float triggSF = 1.0;
+	float triggSFUncert = 1.0;
+	  if (fabs(lepeta) < 0.8){
+	if (leppt < 30) {triggSF = 0.924; triggSFUncert = 0.025;}
+	else if (leppt < 40) {triggSF = 1.030; triggSFUncert = 0.018;}
+		else if (leppt < 50) {triggSF = 1.033; triggSFUncert = 0.015;}
+		else if (leppt < 60) {triggSF = 1.029; triggSFUncert = 0.014;}
+		else if (leppt < 70) {triggSF = 1.001; triggSFUncert = 0.014;}
+		else if (leppt < 100) {triggSF = 1.001; triggSFUncert = 0.010;}
+		else if (leppt < 200) {triggSF = 0.980; triggSFUncert = 0.010;}
+		else {triggSF = 0.983; triggSFUncert = 0.013;}
+  }
+	  else if (fabs(lepeta) < 1.442){
+	if (leppt < 30) {triggSF = 0.929; triggSFUncert = 0.037;}
+		else if (leppt < 40) {triggSF = 1.057; triggSFUncert = 0.025;}
+		else if (leppt < 50) {triggSF = 1.076; triggSFUncert = 0.023;}
+		else if (leppt < 60) {triggSF = 1.035; triggSFUncert = 0.020;}
+		else if (leppt < 70) {triggSF = 1.023; triggSFUncert = 0.021;}
+		else if (leppt < 100) {triggSF = 1.010; triggSFUncert = 0.013;}
+		else if (leppt < 200) {triggSF = 1.002; triggSFUncert = 0.010;}
+		else {triggSF = 0.982; triggSFUncert = 0.021;}
+	  }
+	  else if (fabs(lepeta) < 1.556) {
+	if (leppt < 30) {triggSF = 0.673; triggSFUncert = 0.171;}
+		else if (leppt < 40) {triggSF = 1.197; triggSFUncert = 0.116;}
+		else if (leppt < 50) {triggSF = 1.143; triggSFUncert = 0.087;}
+		else if (leppt < 60) {triggSF = 0.928; triggSFUncert = 0.092;}
+		else if (leppt < 70) {triggSF = 1.082; triggSFUncert = 0.076;}
+		else if (leppt < 100) {triggSF = 0.951; triggSFUncert = 0.054;}
+		else if (leppt < 200) {triggSF = 1.016; triggSFUncert = 0.029;}
+		else {triggSF = 0.978; triggSFUncert = 0.062;}
+  }
+	  else if (fabs(lepeta) < 2.0){ 
+	if (leppt < 30) {triggSF = 0.827; triggSFUncert = 0.073;}
+		else if (leppt < 40) {triggSF = 0.976; triggSFUncert = 0.052;}
+		else if (leppt < 50) {triggSF = 1.114; triggSFUncert = 0.042;}
+		else if (leppt < 60) {triggSF = 1.099; triggSFUncert = 0.041;}
+		else if (leppt < 70) {triggSF = 1.030; triggSFUncert = 0.040;}
+		else if (leppt < 100) {triggSF = 0.990; triggSFUncert = 0.032;}
+		else if (leppt < 200) {triggSF = 1.028; triggSFUncert = 0.022;}
+		else {triggSF = 0.948; triggSFUncert = 0.058;}
+	  }	  
+	  else{ 
+		if (leppt < 30) {triggSF = 1.047; triggSFUncert = 0.093;}
+		else if (leppt < 40) {triggSF = 1.150; triggSFUncert = 0.080;}
+		else if (leppt < 50) {triggSF = 1.094; triggSFUncert = 0.061;}
+		else if (leppt < 60) {triggSF = 1.063; triggSFUncert = 0.060;}
+		else if (leppt < 70) {triggSF = 1.073; triggSFUncert = 0.058;}
+		else if (leppt < 100) {triggSF = 1.005; triggSFUncert = 0.039;}
+		else if (leppt < 200) {triggSF = 0.978; triggSFUncert = 0.041;}
+		else {triggSF = 1.103; triggSFUncert = 0.035;}
+	 }
+
+  return triggSF;
+}
+
+
 /*.-----------------------------------------------------------------.
   /  .-.                                                         .-.  \
  |  /   \                                                       /   \  |
@@ -2951,6 +3084,200 @@ double HardcodedConditions::GetMuonTriggerSF2018(double pt, double ht)
 	    else if (pt >=50.0 && pt <= 300.0){triggerSFAB = 0.974;triggerSFCD = 0.984;}
 	}
 	return (21.10*triggerSFAB+ 38.87*triggerSFCD)/59.97;
+}
+
+
+/*.-----------------------------------------------------------------.
+  /  .-.                                                         .-.  \
+ |  /   \                                                       /   \  |
+ | |\_.  |                                                     |    /| |
+ |\|  | /|          MUON TRIGGER SCALE FACTOR SECTION          |\  | |/|
+ | `---' |           (using cross triggers from VLQ)           | `---' |
+ |       |                                                     |       | 
+ |       |-----------------------------------------------------|       |
+ \       |                                                     |       /
+  \     /                                                       \     /
+   `---'                                                         `---'*/
+
+double HardcodedConditions::GetMuonTriggerXSF(double pt, double eta, int year)
+{
+  //The main getter for Muon Trigger Scale Factors
+  if      (year==2016) return GetMuonTriggerXSF2016(pt, eta);
+  else if (year==2017) return GetMuonTriggerXSF2017(pt, eta);
+  else if (year==2018) return GetMuonTriggerXSF2018(pt, eta);
+  else return 0.;
+}//end GetMuonTriggerXSF
+
+double HardcodedConditions::GetMuonTriggerXSF2016(double pt, double eta)
+{
+	// TO-BE-IMPLEMENTED!!!!!!!
+	return 1.000;
+
+}
+
+double HardcodedConditions::GetMuonTriggerXSF2017(double leppt, double lepeta)
+{
+	  float triggerSFB = 1.0;
+	  float triggerSFCDEF = 1.0;
+	  float triggerSFBunc = 0.0;
+	  float triggerSFCDEFunc = 0.0;
+	  if (fabs(lepeta) < 0.90){
+		if (leppt < 50.0){
+		  triggerSFB = 1.0; triggerSFBunc = 0.0;
+		  triggerSFCDEF = 1.034; triggerSFCDEFunc = 0.014;
+		}
+		else if (leppt < 60.0){
+		  triggerSFB = 0.905; triggerSFBunc = 0.057;
+		  triggerSFCDEF = 0.980;  triggerSFCDEFunc = 0.015;
+		}
+		else if (leppt < 70.0){
+		  triggerSFB = 0.978; triggerSFBunc = 0.050;
+		  triggerSFCDEF = 0.983;  triggerSFCDEFunc = 0.016;
+		}
+		else if (leppt < 100){
+		  triggerSFB = 0.924; triggerSFBunc = 0.039;
+		  triggerSFCDEF = 1.006;  triggerSFCDEFunc = 0.008;
+		}
+		else if (leppt < 200){
+		  triggerSFB = 0.972; triggerSFBunc = 0.028;
+		  triggerSFCDEF = 0.971;  triggerSFCDEFunc = 0.010;
+		}
+		else{
+		  triggerSFB = 0.976; triggerSFBunc = 0.063;
+		  triggerSFCDEF = 0.976;  triggerSFCDEFunc = 0.024;
+		}
+	  }
+	  else if (fabs(lepeta) < 1.20){
+		if (leppt < 50.0){
+		  triggerSFB = 1.0; triggerSFBunc = 0.0;
+		  triggerSFCDEF = 1.005; triggerSFCDEFunc = 0.028;
+		}
+		else if (leppt < 60.0){
+		  triggerSFB = 0.931; triggerSFBunc = 0.125;
+		  triggerSFCDEF = 1.030;  triggerSFCDEFunc = 0.021;
+		}
+		else if (leppt < 70.0){
+		  triggerSFB = 1.051; triggerSFBunc = 0.008;
+		  triggerSFCDEF = 0.976;  triggerSFCDEFunc = 0.033;
+		}
+		else if (leppt < 100){
+		  triggerSFB = 0.978; triggerSFBunc = 0.048;
+		  triggerSFCDEF = 0.953;  triggerSFCDEFunc = 0.022;
+		}
+		else if (leppt < 200){
+		  triggerSFB = 0.982; triggerSFBunc = 0.044;
+		  triggerSFCDEF = 0.954;  triggerSFCDEFunc = 0.022;
+		}
+		else{
+		  triggerSFB = 1.047; triggerSFBunc = 0.010;
+		  triggerSFCDEF = 1.012;  triggerSFCDEFunc = 0.036;
+		}
+	  }
+	  else if (fabs(lepeta) < 2.10){
+		if (leppt < 50.0){
+		  triggerSFB = 0.047; triggerSFBunc = 0.046;
+		  triggerSFCDEF = 1.086; triggerSFCDEFunc = 0.027;
+		}
+		else if (leppt < 60.0){
+		  triggerSFB = 0.803; triggerSFBunc = 0.110;
+		  triggerSFCDEF = 1.065;  triggerSFCDEFunc = 0.017;
+		}
+		else if (leppt < 70.0){
+		  triggerSFB = 1.027; triggerSFBunc = 0.056;
+		  triggerSFCDEF = 1.031;  triggerSFCDEFunc = 0.024;
+		}
+		else if (leppt < 100){
+		  triggerSFB = 0.928; triggerSFBunc = 0.053;
+		  triggerSFCDEF = 1.012;  triggerSFCDEFunc = 0.015;
+		}
+		else if (leppt < 200){
+		  triggerSFB = 0.977; triggerSFBunc = 0.018;
+		  triggerSFCDEF = 0.974;  triggerSFCDEFunc = 0.021;
+		}
+		else{
+		  triggerSFB = 0.524; triggerSFBunc = 0.370;
+		  triggerSFCDEF = 1.047;  triggerSFCDEFunc = 0.009;
+		}
+	  }
+	  else{
+		if (leppt < 50.0){
+		  triggerSFB = 1.0; triggerSFBunc = 0.0;
+		  triggerSFCDEF = 1.166; triggerSFCDEFunc = 0.033;
+		}
+		else if (leppt < 60.0){
+		  triggerSFB = 1.126; triggerSFBunc = 0.029;
+		  triggerSFCDEF = 1.126;  triggerSFCDEFunc = 0.029;
+		}
+		else if (leppt < 70.0){
+		  triggerSFB = 0.726; triggerSFBunc = 0.297;
+		  triggerSFCDEF = 0.953;  triggerSFCDEFunc = 0.092;
+		}
+		else if (leppt < 100){
+		  triggerSFB = 1.075; triggerSFBunc = 0.016;
+		  triggerSFCDEF = 1.032;  triggerSFCDEFunc = 0.045;
+		}
+		else if (leppt < 200){
+		  triggerSFB = 1.059; triggerSFBunc = 0.014;
+		  triggerSFCDEF = 0.934;  triggerSFCDEFunc = 0.084;
+		}
+		else{
+		  triggerSFB = 1.00; triggerSFBunc = 0.050;
+		  triggerSFCDEF = 1.006;  triggerSFCDEFunc = 0.04;
+		}
+	  }
+	  float triggerSF = (4.823*triggerSFB+36.734*triggerSFCDEF)/41.557;
+	  float triggerSFUncert = sqrt( pow(4.823*triggerSFBunc/41.557,2) + pow(36.734*triggerSFCDEFunc/41.557,2) );
+
+	return triggerSF;
+
+}
+
+double HardcodedConditions::GetMuonTriggerXSF2018(double leppt, double lepeta)
+{
+	float triggSF = 1.0;
+	float triggSFUncert = 1.0;
+	if (fabs(lepeta) < 0.9){
+		if (leppt < 30) {triggSF = 0.995; triggSFUncert = 0.014;}
+		else if (leppt < 40) {triggSF = 1.047; triggSFUncert = 0.013;} 
+		else if (leppt < 50) {triggSF = 1.050; triggSFUncert = 0.012;}
+		else if (leppt < 60) {triggSF = 1.019; triggSFUncert = 0.009;}
+		else if (leppt < 70) {triggSF = 1.035; triggSFUncert = 0.007;}
+		else if (leppt < 100) {triggSF = 0.997; triggSFUncert = 0.007;}
+		else if (leppt < 200) {triggSF = 0.989; triggSFUncert = 0.007;}
+		else {triggSF = 0.960; triggSFUncert = 0.021;}
+	  }	  
+	else if (fabs(lepeta) < 1.2){ 
+		if (leppt < 30) {triggSF = 0.944; triggSFUncert = 0.030;}
+		else if (leppt < 40) {triggSF = 1.017; triggSFUncert = 0.022;}
+		else if (leppt < 50) {triggSF = 0.986; triggSFUncert = 0.024;}
+		else if (leppt < 60) {triggSF = 0.987; triggSFUncert = 0.016;}
+		else if (leppt < 70) {triggSF = 0.988; triggSFUncert = 0.018;}
+		else if (leppt < 100) {triggSF = 0.982; triggSFUncert = 0.013;}
+		else if (leppt < 200) {triggSF = 0.983; triggSFUncert = 0.012;}
+		else {triggSF = 0.997; triggSFUncert = 0.021;}
+	  }
+	else if (fabs(lepeta) < 2.1){ 
+		if (leppt < 30) {triggSF = 0.989; triggSFUncert = 0.021;}
+		else if (leppt < 40) {triggSF = 1.041; triggSFUncert = 0.018;}
+		else if (leppt < 50) {triggSF = 1.050; triggSFUncert = 0.020;}
+		else if (leppt < 60) {triggSF = 1.033; triggSFUncert = 0.012;}
+		else if (leppt < 70) {triggSF = 0.981; triggSFUncert = 0.018;}
+		else if (leppt < 100) {triggSF = 1.008; triggSFUncert = 0.009;}
+		else if (leppt < 200) {triggSF = 1.001; triggSFUncert = 0.010;}
+		else {triggSF = 0.938; triggSFUncert = 0.045;}
+	  }	  
+	else{
+		if (leppt < 30) {triggSF = 0.964; triggSFUncert = 0.078;}
+		else if (leppt < 40) {triggSF = 1.069; triggSFUncert = 0.066;}
+		else if (leppt < 50) {triggSF = 1.088; triggSFUncert = 0.053;}
+		else if (leppt < 60) {triggSF = 1.067; triggSFUncert = 0.055;}
+		else if (leppt < 70) {triggSF = 1.017; triggSFUncert = 0.055;}
+		else if (leppt < 100) {triggSF = 1.128; triggSFUncert = 0.020;}
+		else if (leppt < 200) {triggSF = 0.958; triggSFUncert = 0.067;}
+		else {triggSF = 1.066; triggSFUncert = 0.042;}
+	 }	  
+
+	return triggSF;
 }
 
 

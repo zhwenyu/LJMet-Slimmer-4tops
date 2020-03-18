@@ -19,9 +19,11 @@ public:
     double GetElectronIdSF(double pt, double eta, int year = 2017);
     double GetElectronIsoSF(double pt, double eta, int year = 2017);
     double GetElectronTriggerSF(double pt, double eta, int year = 2017);
+    double GetElectronTriggerXSF(double pt, double eta, int year = 2017);
     double GetMuonIdSF(double pt, double eta, int year = 2017);
     double GetMuonIsoSF(double pt, double eta, int year = 2017);
     double GetMuonTriggerSF(double pt, double eta, int year = 2017);
+    double GetMuonTriggerXSF(double pt, double eta, int year = 2017);
 
     void GetBtaggingSF(double pt, double eta, double *btagsf, double *btagsfunc, std::string tagger="CSVM", int jetHFlav = 5, int year = 2017);
     void GetBtaggingEff(double pt, double *eff, std::string tagger="CSVM", int jetHFlav = 5, int year = 2017);
@@ -54,6 +56,10 @@ private:
     double GetElectronTriggerSF2017(double pt, double eta);
     double GetElectronTriggerSF2018(double pt, double eta);
 
+    double GetElectronTriggerXSF2016(double pt, double eta);
+    double GetElectronTriggerXSF2017(double pt, double eta);
+    double GetElectronTriggerXSF2018(double pt, double eta);
+
     double GetMuonIdSF2016(double pt, double eta);
     double GetMuonIdSF2017(double pt, double eta);
     double GetMuonIdSF2018(double pt, double eta);
@@ -65,6 +71,10 @@ private:
     double GetMuonTriggerSF2016(double pt, double eta);
     double GetMuonTriggerSF2017(double pt, double eta);
     double GetMuonTriggerSF2018(double pt, double eta);
+
+    double GetMuonTriggerXSF2016(double pt, double eta);
+    double GetMuonTriggerXSF2017(double pt, double eta);
+    double GetMuonTriggerXSF2018(double pt, double eta);
 
     void GetBtaggingSF2016(double pt, double eta, double *btagsf, double *btagsfunc, std::string tagger="CSVM");
     void GetCtaggingSF2016(double pt, double eta, double *btagsf, double *btagsfunc, std::string tagger="CSVM");
