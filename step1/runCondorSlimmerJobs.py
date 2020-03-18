@@ -9,17 +9,19 @@ start_time = time.time()
 
 #IO directories must be full paths
 
-Year = 2018 # or 2018
+Year = 2017 # or 2018
 finalStateYear = 'singleLep'+str(Year)
-#inputDir='/eos/uscms/store/user/lpcljm/FWLJMET102X_1lep'+str(Year)+'_Oct2019/' # or 2018
-inputDir='/isilon/hadoop/store/group/bruxljm/FWLJMET102X_1lep'+str(Year)+'_Oct2019/' # or 2018
-outputDir='/eos/uscms/store/user/ssagir/FWLJMET102X_1lep'+str(Year)+'_Oct2019_4t_022720_step1/nominal/' # or 2018
-condorDir='/uscms_data/d3/ssagir/FWLJMET102X_1lep'+str(Year)+'_Oct2019_4t_022720_step1/' # or 2018
+inputDir='/eos/uscms/store/user/lpcljm/FWLJMET102X_1lep'+str(Year)+'_Oct2019/' # or 2018
+#inputDir='/isilon/hadoop/store/group/bruxljm/FWLJMET102X_1lep'+str(Year)+'_Oct2019/' # or 2018
+outputDir='/eos/uscms/store/user/ssagir/FWLJMET102X_1lep'+str(Year)+'_Oct2019_4t_031520_step1/nominal/' # or 2018
+condorDir='/uscms_data/d3/ssagir/FWLJMET102X_1lep'+str(Year)+'_Oct2019_4t_031520_step1/' # or 2018
 shifts = ['JECup','JECdown','JERup','JERdown']
-inputLoc='brux' if inputDir.startswith('/isilon/hadoop/') else inputLoc='lpc'
+inputLoc='lpc'
+if inputDir.startswith('/isilon/hadoop/'): inputLoc='brux'
 
 runDir=os.getcwd()
-inDir=inputDir if inputLoc=='brux' else inDir=inputDir[10:]
+inDir=inputDir[10:]
+if inputLoc=='brux': inDir=inputDir
 outDir=outputDir[10:]
 
 gROOT.ProcessLine('.x compileStep1.C')
@@ -52,7 +54,6 @@ dirList17 = [
 'SingleMuon',
 'TTHH_TuneCP5_13TeV-madgraph-pythia8',
 'TTTJ_TuneCP5_13TeV-madgraph-pythia8',
-'TTTT_TuneCP5_13TeV-amcatnlo-pythia8',
 'TTTT_TuneCP5_PSweights_13TeV-amcatnlo-pythia8',
 'TTTW_TuneCP5_13TeV-madgraph-pythia8',
 'TTTo2L2Nu_TuneCP5_PSweights_13TeV-powheg-pythia8',
@@ -168,7 +169,9 @@ dirList18brux = [
 ]
 
 dirList = dirList17[:]
-if Year==2018: dirList = dirList18brux[:] if inputLoc=='brux' else dirList = dirList18lpc[:]
+if Year==2018: 
+	dirList = dirList18lpc[:]
+	if inputLoc=='brux': dirList = dirList18brux[:]
 
 for sample in dirList:
     print "------------ Sample:",sample,"---------------"
