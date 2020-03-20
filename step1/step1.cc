@@ -856,12 +856,14 @@ void step1::Loop(TString inTreeName, TString outTreeName )
       }
       else{
 	if (Year==2017){
-	  TRandom3 *r = new TRandom3(0);
+	  TRandom3 *r = new TRandom3();
 	  Double_t randLumi = r->Rndm();
 	  TString Era17;
-	  if(randLumi>=0 && randLumi<=(4.823/41.557)) Era17="17B";
-	  if(randLumi>(4.823/41.557) && randLumi<=(14.487/41.557)) Era17="17C";
-	  if(randLumi>(14.487/41.557) && randLumi<= 1) Era17="17DEF";
+	  Double_t eraBupperLumi = (4.823/41.557);
+	  Double_t eraCupperLumi = (14.487/41.557);
+	  if(randLumi>=0 && randLumi<= eraBupperLumi) Era17="17B";
+	  else if(randLumi>eraBupperLumi && randLumi<=eraCupperLumi) Era17="17C";
+	  else if(eraCupperLumi && randLumi<= 1) Era17="17DEF";
 	  eltrigger = mctriggers.at(Era17).at(0);
 	  mutrigger =  mctriggers.at(Era17).at(1);
 	  hadtrigger = mctriggers.at(Era17).at(2);
