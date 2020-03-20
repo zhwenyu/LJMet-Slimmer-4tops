@@ -856,14 +856,16 @@ void step1::Loop(TString inTreeName, TString outTreeName )
       }
       else{
 	if (Year==2017){
-	  TRandom3 *r = new TRandom3();
-	  Double_t randLumi = r->Rndm();
+	  TRandom3 r;
+	  //TRandom3 *r = new TRandom3();
+	  float randLumi = r.Uniform(1.);    
+	  //Double_t randLumi = r->Rndm();
 	  TString Era17;
-	  Double_t eraBupperLumi = (4.823/41.557);
-	  Double_t eraCupperLumi = (14.487/41.557);
+	  float eraBupperLumi = (4.823/41.557);
+	  float eraCupperLumi = (14.487/41.557);
 	  if(randLumi>=0 && randLumi<= eraBupperLumi) Era17="17B";
 	  else if(randLumi>eraBupperLumi && randLumi<=eraCupperLumi) Era17="17C";
-	  else if(eraCupperLumi && randLumi<= 1) Era17="17DEF";
+	  else Era17="17DEF";
 	  eltrigger = mctriggers.at(Era17).at(0);
 	  mutrigger =  mctriggers.at(Era17).at(1);
 	  hadtrigger = mctriggers.at(Era17).at(2);
@@ -877,6 +879,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
       
       if(isMC){
 	for(unsigned int itrig=0; itrig < vsSelMCTriggersHad_MultiLepCalc->size(); itrig++){
+	  cout << hadtrigger << std::endl;
 	  if(vsSelMCTriggersHad_MultiLepCalc->at(itrig).find(hadtrigger) != std::string::npos && viSelMCTriggersHad_MultiLepCalc->at(itrig) > 0) MCHadPastTrigger = 1;
 	  if(vsSelMCTriggersHad_MultiLepCalc->at(itrig).find("HLT_PFHT380_SixPFJet32_DoublePFBTagDeepCSV_2p2") != std::string::npos && viSelMCTriggersHad_MultiLepCalc->at(itrig) > 0) HLT_PFHT380_SixPFJet32_DoublePFBTagDeepCSV_2p2 = 1;
 	  if(vsSelMCTriggersHad_MultiLepCalc->at(itrig).find("HLT_PFHT380_SixPFJet32_DoublePFBTagCSV_2p2") != std::string::npos && viSelMCTriggersHad_MultiLepCalc->at(itrig) > 0) HLT_PFHT380_SixPFJet32_DoublePFBTagCSV_2p2 = 1;
