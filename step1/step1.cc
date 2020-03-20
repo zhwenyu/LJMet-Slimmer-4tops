@@ -1292,10 +1292,6 @@ void step1::Loop(TString inTreeName, TString outTreeName )
 	    deltaR_lepMinMlb_lSFdn = jet_lv.DeltaR(lepton_lv);
           }
 	}
-      // ----------------------------------------------------------------------------
-      // Skip events that fail # of btag requirement
-      // ----------------------------------------------------------------------------  
-      if(NJetsCSVwithSF_MultiLepCalc<nbjetsCut && NJetsCSVwithSF_MultiLepCalc_bSFup<nbjetsCut && NJetsCSVwithSF_MultiLepCalc_bSFdn<nbjetsCut && NJetsCSVwithSF_MultiLepCalc_lSFup<nbjetsCut && NJetsCSVwithSF_MultiLepCalc_lSFdn<nbjetsCut) continue;
 
   	if(theJetDeepFlavB_JetSubCalc_PtOrdered.at(ijet) > btagWPdjet){
           NJetsCSV_JetSubCalc += 1;
@@ -1323,6 +1319,11 @@ void step1::Loop(TString inTreeName, TString outTreeName )
 	  ptRel_lepJet = lepton_lv.P()*(jet_lv.Vect().Cross(lepton_lv.Vect()).Mag()/jet_lv.P()/lepton_lv.P());
 	}
       }
+
+      // ----------------------------------------------------------------------------
+      // Skip events that fail # of btag requirement
+      // ----------------------------------------------------------------------------  
+      if(NJetsCSVwithSF_MultiLepCalc<nbjetsCut && NJetsCSVwithSF_MultiLepCalc_bSFup<nbjetsCut && NJetsCSVwithSF_MultiLepCalc_bSFdn<nbjetsCut && NJetsCSVwithSF_MultiLepCalc_lSFup<nbjetsCut && NJetsCSVwithSF_MultiLepCalc_lSFdn<nbjetsCut) continue;
 
       // ----------------------------------------------------------------------------
       // 13TeV Top pT reweighting -- TTbarMassCalc top vectors are the wrong tops....
