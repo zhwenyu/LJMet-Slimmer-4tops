@@ -86,6 +86,23 @@ public :
    Int_t           DataPastTriggerOR;
    Int_t           DataPastTriggerLepTight;
    Int_t           DataPastTriggerHTTight;
+
+   Int_t           HLT_Ele15_IsoVVVL_PFHT450 = 0;
+   Int_t           HLT_Ele28_eta2p1_WPTight_Gsf_HT150 = 0;
+   Int_t           HLT_Ele30_eta2p1_WPTight_Gsf_CentralPFJet35_EleCleaned = 0;
+   Int_t           HLT_Mu15_IsoVVVL_PFHT450 = 0;
+   Int_t           HLT_PFHT400_SixJet30_DoubleBTagCSV_p056 = 0;
+   Int_t           HLT_Ele32_WPTight_Gsf = 0;
+   Int_t           HLT_Ele35_WPTight_Gsf = 0;
+   Int_t           HLT_IsoMu24 = 0;
+   Int_t           HLT_IsoMu24_eta2p1 = 0;
+   Int_t           HLT_IsoMu27 = 0;
+   Int_t           HLT_PFHT380_SixJet32_DoubleBTagCSV_p075 = 0;
+   Int_t           HLT_PFHT380_SixPFJet32_DoublePFBTagDeepCSV_2p2 = 0;
+   Int_t           HLT_PFHT380_SixPFJet32_DoublePFBTagCSV_2p2 = 0;
+   Int_t           HLT_PFHT400_SixPFJet32_DoublePFBTagDeepCSV_2p94 = 0;
+
+
    Float_t         pileupWeight;
    Float_t         pileupWeightUp;
    Float_t         pileupWeightDown;
