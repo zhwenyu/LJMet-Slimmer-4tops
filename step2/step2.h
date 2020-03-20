@@ -198,6 +198,12 @@ public :
    Int_t           isMuon;
    Int_t           MCPastTrigger;
    Int_t           DataPastTrigger;
+   Int_t           MCPastTriggerX;
+   Int_t           DataPastTriggerX;
+   Int_t           MCLepPastTrigger;
+   Int_t           DataLepPastTrigger;
+   Int_t           MCHadPastTrigger;
+   Int_t           DataHadPastTrigger;
    Double_t        L1NonPrefiringProb_CommonCalc;
    Double_t        L1NonPrefiringProbUp_CommonCalc;
    Double_t        L1NonPrefiringProbDown_CommonCalc;
@@ -231,6 +237,7 @@ public :
    Float_t         leptonMVAValue_MultiLepCalc;
    Float_t         leptonMiniIso_MultiLepCalc;
    Float_t         leptonRelIso_MultiLepCalc;
+   Float_t         triggerXSF;
 
 //////////////ADD IN STEP1///////////////////
    vector<int>     *elMother_id_MultiLepCalc;
@@ -259,6 +266,15 @@ public :
    Float_t         MT_lepMet;
    Float_t         MT_lepMetmod;
    Float_t         minDPhi_MetJet;
+   vector<double>  *theJetPt_JetSubCalc;
+   vector<double>  *theJetEta_JetSubCalc;
+   vector<double>  *theJetPhi_JetSubCalc;
+   vector<double>  *theJetEnergy_JetSubCalc;
+   vector<int>     *AK4JetBTag_MultiLepCalc_PtOrdered;
+   vector<double>  *AK4JetDeepCSVb_MultiLepCalc;
+   vector<double>  *AK4JetDeepCSVbb_MultiLepCalc;
+   vector<double>  *AK4JetDeepCSVc_MultiLepCalc;
+   vector<double>  *AK4JetDeepCSVudsg_MultiLepCalc;
    vector<double>  *theJetPt_JetSubCalc_PtOrdered;
    vector<double>  *theJetEta_JetSubCalc_PtOrdered;
    vector<double>  *theJetPhi_JetSubCalc_PtOrdered;
@@ -277,6 +293,7 @@ public :
    Float_t         AK4HTpMETpLepPt;
    Float_t         AK4HT;
    Int_t           NJets_JetSubCalc;
+   Float_t         NJets_JetSubCalc_float;
    Int_t           NJetsCSV_JetSubCalc;
    Int_t           NJetsCSVwithSF_JetSubCalc;
    Int_t           NJetsCSVwithSF_JetSubCalc_bSFup;
@@ -360,8 +377,10 @@ public :
    vector<int>     *theJetAK8SDSubjetNDeepCSVL_JetSubCalc_PtOrdered;
    vector<int>     *theJetAK8Indx_Wtagged;
    Int_t           NJetsWtagged;
+   Float_t 	   NJetsWtagged_float;
    vector<int>     *NJetsWtagged_shifts;
    Int_t           NJetsTtagged;
+   Float_t 	   NJetsTtagged_float;
    vector<int>     *NJetsTtagged_shifts;
    vector<int>     *topJet1Index_HOTTaggerCalc;
    vector<int>     *topJet2Index_HOTTaggerCalc;
@@ -379,6 +398,7 @@ public :
    vector<double>  *topPt_HOTTaggerCalc;
    vector<double>  *topType_HOTTaggerCalc;
    Int_t           NresolvedTops1pFake;
+   Float_t 	   NresolvedTops1pFake_float;
    Int_t           NresolvedTops2pFake;
    Int_t           NresolvedTops5pFake;
    Int_t           NresolvedTops10pFake;
@@ -409,6 +429,7 @@ public :
 //   vector<double>  *genJetEnergyNoClean_MultiLepCalc;
    Int_t           NJetsCSV_MultiLepCalc;
    Int_t           NJetsCSVwithSF_MultiLepCalc;
+   Float_t 	   NJetsCSVwithSF_MultiLepCalc_float;
    Int_t           NJetsCSVwithSF_MultiLepCalc_bSFup;
    Int_t           NJetsCSVwithSF_MultiLepCalc_bSFdn;
    Int_t           NJetsCSVwithSF_MultiLepCalc_lSFup;
@@ -632,6 +653,22 @@ public :
    TBranch        *b_NJetsCSVwithSF_MultiLepCalc_bSFdn;   //!
    TBranch        *b_NJetsCSVwithSF_MultiLepCalc_lSFup;   //!
    TBranch        *b_NJetsCSVwithSF_MultiLepCalc_lSFdn;   //!
+   TBranch        *b_theJetPt_JetSubCalc;   //!
+   TBranch        *b_theJetEta_JetSubCalc;   //!
+   TBranch        *b_theJetPhi_JetSubCalc;   //!
+   TBranch        *b_theJetEnergy_JetSubCalc;   //!
+   TBranch        *b_AK4JetBTag_MultiLepCalc_PtOrdered;   //!
+   TBranch        *b_AK4JetDeepCSVb_MultiLepCalc;   //!
+   TBranch        *b_AK4JetDeepCSVbb_MultiLepCalc;   //!
+   TBranch        *b_AK4JetDeepCSVc_MultiLepCalc;   //!
+   TBranch        *b_AK4JetDeepCSVudsg_MultiLepCalc;   //!
+   TBranch        *b_MCPastTriggerX;   //!
+   TBranch        *b_DataPastTriggerX;   //!
+   TBranch        *b_MCLepPastTrigger;   //!
+   TBranch        *b_DataLepPastTrigger;   //!
+   TBranch        *b_MCHadPastTrigger;   //!
+   TBranch        *b_DataHadPastTrigger;   //!
+   TBranch        *b_triggerXSF;   //!
 
    step2(TString inputFileName, TString outputFileName);
    virtual ~step2();
@@ -866,7 +903,15 @@ void step2::Init(TTree *tree)
 //   genJetEtaNoClean_MultiLepCalc = 0;
 //   genJetPhiNoClean_MultiLepCalc = 0;
 //   genJetEnergyNoClean_MultiLepCalc = 0;
-
+   theJetPt_JetSubCalc = 0;
+   theJetEta_JetSubCalc = 0;
+   theJetPhi_JetSubCalc = 0;
+   theJetEnergy_JetSubCalc = 0;
+   AK4JetBTag_MultiLepCalc_PtOrdered = 0;
+   AK4JetDeepCSVb_MultiLepCalc = 0;
+   AK4JetDeepCSVbb_MultiLepCalc = 0;
+   AK4JetDeepCSVc_MultiLepCalc = 0;
+   AK4JetDeepCSVudsg_MultiLepCalc = 0;
 
 
    // Set branch addresses and branch pointers
@@ -1091,6 +1136,22 @@ void step2::Init(TTree *tree)
    inputTree->SetBranchAddress("NJetsCSVwithSF_MultiLepCalc_bSFdn", &NJetsCSVwithSF_MultiLepCalc_bSFdn, &b_NJetsCSVwithSF_MultiLepCalc_bSFdn);
    inputTree->SetBranchAddress("NJetsCSVwithSF_MultiLepCalc_lSFup", &NJetsCSVwithSF_MultiLepCalc_lSFup, &b_NJetsCSVwithSF_MultiLepCalc_lSFup);
    inputTree->SetBranchAddress("NJetsCSVwithSF_MultiLepCalc_lSFdn", &NJetsCSVwithSF_MultiLepCalc_lSFdn, &b_NJetsCSVwithSF_MultiLepCalc_lSFdn);
+   inputTree->SetBranchAddress("theJetPt_JetSubCalc", &theJetPt_JetSubCalc, &b_theJetPt_JetSubCalc);
+   inputTree->SetBranchAddress("theJetEta_JetSubCalc", &theJetEta_JetSubCalc, &b_theJetEta_JetSubCalc);
+   inputTree->SetBranchAddress("theJetPhi_JetSubCalc", &theJetPhi_JetSubCalc, &b_theJetPhi_JetSubCalc);
+   inputTree->SetBranchAddress("theJetEnergy_JetSubCalc", &theJetEnergy_JetSubCalc, &b_theJetEnergy_JetSubCalc);
+   inputTree->SetBranchAddress("AK4JetBTag_MultiLepCalc_PtOrdered", &AK4JetBTag_MultiLepCalc_PtOrdered, &b_AK4JetBTag_MultiLepCalc_PtOrdered);
+   inputTree->SetBranchAddress("AK4JetDeepCSVb_MultiLepCalc", &AK4JetDeepCSVb_MultiLepCalc, &b_AK4JetDeepCSVb_MultiLepCalc);
+   inputTree->SetBranchAddress("AK4JetDeepCSVbb_MultiLepCalc", &AK4JetDeepCSVbb_MultiLepCalc, &b_AK4JetDeepCSVbb_MultiLepCalc);
+   inputTree->SetBranchAddress("AK4JetDeepCSVc_MultiLepCalc", &AK4JetDeepCSVc_MultiLepCalc, &b_AK4JetDeepCSVc_MultiLepCalc);
+   inputTree->SetBranchAddress("AK4JetDeepCSVudsg_MultiLepCalc", &AK4JetDeepCSVudsg_MultiLepCalc, &b_AK4JetDeepCSVudsg_MultiLepCalc);
+   inputTree->SetBranchAddress("MCPastTriggerX", &MCPastTriggerX, &b_MCPastTriggerX);
+   inputTree->SetBranchAddress("DataPastTriggerX", &DataPastTriggerX, &b_DataPastTriggerX);
+   inputTree->SetBranchAddress("MCLepPastTrigger", &MCLepPastTrigger, &b_MCLepPastTrigger);
+   inputTree->SetBranchAddress("DataLepPastTrigger", &DataLepPastTrigger, &b_DataLepPastTrigger);
+   inputTree->SetBranchAddress("MCHadPastTrigger", &MCHadPastTrigger, &b_MCHadPastTrigger);
+   inputTree->SetBranchAddress("DataHadPastTrigger", &DataHadPastTrigger, &b_DataHadPastTrigger);
+   inputTree->SetBranchAddress("triggerXSF", &triggerXSF, &b_triggerXSF);
 
 
    Notify();
