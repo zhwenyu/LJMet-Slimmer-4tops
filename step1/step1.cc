@@ -879,7 +879,6 @@ void step1::Loop(TString inTreeName, TString outTreeName )
       
       if(isMC){
 	for(unsigned int itrig=0; itrig < vsSelMCTriggersHad_MultiLepCalc->size(); itrig++){
-	  cout << hadtrigger << std::endl;
 	  if(vsSelMCTriggersHad_MultiLepCalc->at(itrig).find(hadtrigger) != std::string::npos && viSelMCTriggersHad_MultiLepCalc->at(itrig) > 0) MCHadPastTrigger = 1;
 	  if(vsSelMCTriggersHad_MultiLepCalc->at(itrig).find("HLT_PFHT380_SixPFJet32_DoublePFBTagDeepCSV_2p2") != std::string::npos && viSelMCTriggersHad_MultiLepCalc->at(itrig) > 0) HLT_PFHT380_SixPFJet32_DoublePFBTagDeepCSV_2p2 = 1;
 	  if(vsSelMCTriggersHad_MultiLepCalc->at(itrig).find("HLT_PFHT380_SixPFJet32_DoublePFBTagCSV_2p2") != std::string::npos && viSelMCTriggersHad_MultiLepCalc->at(itrig) > 0) HLT_PFHT380_SixPFJet32_DoublePFBTagCSV_2p2 = 1;
@@ -898,6 +897,11 @@ void step1::Loop(TString inTreeName, TString outTreeName )
 	      if(vsSelMCTriggersEl_MultiLepCalc->at(itrig).find(eltriggersX.at(jtrig)) != std::string::npos && viSelMCTriggersEl_MultiLepCalc->at(itrig) > 0) MCPastTriggerX = 1;
 	    }
 	  }
+          EGammaGsfSF = hardcodedConditions.GetEGammaGsfSF(leppt, lepeta, Year);
+          lepIdSF = hardcodedConditions.GetElectronIdSF(leppt, lepeta, Year);
+          isoSF = hardcodedConditions.GetElectronIsoSF(leppt, lepeta, Year);
+          triggerSF = hardcodedConditions.GetElectronTriggerSF(leppt, AK4HT, Year);
+          triggerXSF = hardcodedConditions.GetElectronTriggerXSF(leppt, lepeta, Year);
 	}
 	if(isMuon){
 	  for(unsigned int itrig=0; itrig < vsSelMCTriggersMu_MultiLepCalc->size(); itrig++){
@@ -910,14 +914,14 @@ void step1::Loop(TString inTreeName, TString outTreeName )
 	    	if(vsSelMCTriggersMu_MultiLepCalc->at(itrig).find(mutriggersX.at(jtrig)) != std::string::npos && viSelMCTriggersMu_MultiLepCalc->at(itrig) > 0) MCPastTriggerX = 1;
 	    }
 	  }
+	  lepIdSF = hardcodedConditions.GetMuonIdSF(leppt, lepeta, Year);
+	  isoSF = hardcodedConditions.GetMuonIsoSF(leppt, lepeta, Year);	  
+	  triggerSF = hardcodedConditions.GetMuonTriggerSF(leppt, AK4HT, Year); 
+	  triggerXSF = hardcodedConditions.GetMuonTriggerXSF(leppt, lepeta, Year); 
 	}
 	if (MCLepPastTrigger == 1 || MCHadPastTrigger == 1){
 	  MCPastTrigger = 1;
 	}
-	lepIdSF = hardcodedConditions.GetMuonIdSF(leppt, lepeta, Year);
-	isoSF = hardcodedConditions.GetMuonIsoSF(leppt, lepeta, Year);	  
-	triggerSF = hardcodedConditions.GetMuonTriggerSF(leppt, AK4HT, Year); 
-	triggerXSF = hardcodedConditions.GetMuonTriggerXSF(leppt, lepeta, Year); 
 
 	DataPastTrigger = 1;
 	DataPastTriggerX = 1;
