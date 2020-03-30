@@ -693,28 +693,33 @@ step2::step2(TString inputFileName, TString outputFileName)// : inputTree(0), in
    if (inputFileName.Contains("TTToSemiLeptonic_TuneCP5_PSweights_13TeV-powheg-pythia8_Mtt0to700")) xsecEff = 0.137784841012;
    else if (inputFileName.Contains("TTToSemiLeptonic_TuneCP5_PSweights_13TeV-powheg-pythia8_Mtt1000toInf")) xsecEff = 0.0309363357165;
    else if (inputFileName.Contains("TTToSemiLeptonic_TuneCP5_PSweights_13TeV-powheg-pythia8_Mtt700to1000")) xsecEff = 0.0514566653858;
+
    else if (inputFileName.Contains("TTToSemiLeptonic_TuneCP5_PSweights_13TeV-powheg-pythia8_HT0Njet0")) xsecEff = 0.138647459815; 
-   else if (inputFileName.Contains("TTToSemiLepton_HT500Njet9_TuneCP5_PSweights_13TeV-powheg-pythia8")) xsecEff = 0.00919983850288;
+   else if (inputFileName.Contains("TTToSemiLepton_HT500Njet9_TuneCP5_PSweights_13TeV-powheg-pythia8")) xsecEff = 0.00930297719566;
+   else if (inputFileName.Contains("TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8_HT0Njet0")) xsecEff = 0.217217486269; // 2018
+   else if (inputFileName.Contains("TTToSemiLepton_HT500Njet9_TuneCP5_13TeV-powheg-pythia8")) xsecEff = 0.0138805494029; // 2018
  
    //TTToHadronic
    else if (inputFileName.Contains("TTToHadronic_TuneCP5_PSweights_13TeV-powheg-pythia8_Mtt0to700")) xsecEff =  0.121490806141;
    else if (inputFileName.Contains("TTToHadronic_TuneCP5_PSweights_13TeV-powheg-pythia8_Mtt1000toInf")) xsecEff = 0.030031985381;
    else if (inputFileName.Contains("TTToHadronic_TuneCP5_PSweights_13TeV-powheg-pythia8_Mtt700to1000")) xsecEff = 0.0490022856079;
-   else if (inputFileName.Contains("TTToHadronic_TuneCP5_PSweights_13TeV-powheg-pythia8")) xsecEff = 0.122282466552;
- 
+   else if (inputFileName.Contains("TTToHadronic_TuneCP5_PSweights_13TeV-powheg-pythia8")) xsecEff = 0.122285168091;
+   else if (inputFileName.Contains("TTToHadronic_TuneCP5_13TeV-powheg-pythia8")) xsecEff = 0.172212015144; // 2018 
+
    //TTTo2l2nu
    else if (inputFileName.Contains("TTTo2L2Nu_TuneCP5_PSweights_13TeV-powheg-pythia8_Mtt0to700")) xsecEff = 0.0525799344238;
    else if (inputFileName.Contains("TTTo2L2Nu_TuneCP5_PSweights_13TeV-powheg-pythia8_Mtt1000toInf")) xsecEff = 0.0226832371713;
    else if (inputFileName.Contains("TTTo2L2Nu_TuneCP5_PSweights_13TeV-powheg-pythia8_Mtt700to1000")) xsecEff = 0.0320566270444;
-   else if (inputFileName.Contains("TTTo2L2Nu_TuneCP5_PSweights_13TeV-powheg-pythia8")) xsecEff =  0.0528753130084;
+   else if (inputFileName.Contains("TTTo2L2Nu_TuneCP5_PSweights_13TeV-powheg-pythia8")) xsecEff =  0.0529890846128;
+   else if (inputFileName.Contains("TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8")) xsecEff = 0.0821029333006; // 2018
    //TT high mass 
    else if (inputFileName.Contains("TT_Mtt-1000toInf_TuneCP5_PSweights_13TeV-powheg-pythia8")) xsecEff = 0.0294081434678;
    else if (inputFileName.Contains("TT_Mtt-700to1000_TuneCP5_13TeV-powheg-pythia8")) xsecEff = 0.0473629131251;
    
    //TTTT signal below
    
-   else if (inputFileName.Contains("TTTT_TuneCP5_PSweights_13TeV-amcatnlo-pythia8")) xsecEff = 0.000912643457646; //0.0485879401951
-
+   else if (inputFileName.Contains("TTTT_TuneCP5_PSweights_13TeV-amcatnlo-pythia8")) xsecEff = 0.000586330715183; 
+   else if (inputFileName.Contains("TTTT_TuneCP5_13TeV-amcatnlo-pythia8")) xsecEff = 0.000815849917354; // 2018
    //For everything else, just have this branch be dummy at the moment, 1 will do nothing
    else xsecEff = 1.0;
    isTTbar = false;
