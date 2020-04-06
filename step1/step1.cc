@@ -408,6 +408,11 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    outputTree->Branch("MT_lepMetmod",&MT_lepMetmod,"MT_lepMetmod/F");
    outputTree->Branch("minDPhi_MetJet",&minDPhi_MetJet,"minDPhi_MetJet/F");
 
+   outputTree->Branch("recLeptonicTopPt",&recLeptonicTopPt,"recLeptonicTopPt/F");
+   outputTree->Branch("recLeptonicTopEta",&recLeptonicTopEta,"recLeptonicTopEta/F");
+   outputTree->Branch("recLeptonicTopPhi",&recLeptonicTopPhi,"recLeptonicTopPhi/F");
+   outputTree->Branch("recLeptonicTopMass",&recLeptonicTopMass,"recLeptonicTopMass/F");
+
    // AK4
    outputTree->Branch("theJetPt_JetSubCalc",&theJetPt_JetSubCalc);
    outputTree->Branch("theJetEta_JetSubCalc",&theJetEta_JetSubCalc);
@@ -1424,6 +1429,94 @@ void step1::Loop(TString inTreeName, TString outTreeName )
 	}
       }
 
+      // ----------------------------------------------------------------------------
+      // W --> l nu with mass constraint
+      // ----------------------------------------------------------------------------
+
+      double metpx = corr_met_MultiLepCalc*cos(corr_met_phi_MultiLepCalc);
+      double metpy = corr_met_MultiLepCalc*sin(corr_met_phi_MultiLepCalc);
+      double metpt = corr_met_MultiLepCalc;
+
+      double Dtmp = (MW*MW)-(lepM*lepM)+2*((lepton_lv.Px())*(metpx)+(lepton_lv.Py())*(metpy));
+      double Atmp = 4.0*((lepton_lv.Energy())*(lepton_lv.Energy())-(lepton_lv.Pz())*(lepton_lv.Pz()));
+      double Btmp = -4.0*Dtmp*(lepton_lv.Pz());
+      double Ctmp = 4.0*(lepton_lv.Energy())*(lepton_lv.Energy())*(metpt)*(metpt)-Dtmp*Dtmp;
+      
+      double nuPz_1;
+      double nuPz_2;
+      
+      double DETtmp = Btmp*Btmp-4.0*Atmp*Ctmp;
+      
+      TLorentzVector Wlv_1, Wlv_2, Wlv, lvTop;
+      if(DETtmp >= 0) {
+	nuPz_1 = (-Btmp+TMath::Sqrt(DETtmp))/(2.0*Atmp);
+	nuPz_2 = (-Btmp-TMath::Sqrt(DETtmp))/(2.0*Atmp);
+	TLorentzVector Nulv_1(metpx,metpy,nuPz_1,TMath::Sqrt((metpt)*(metpt)+(nuPz_1)*(nuPz_1)));
+	TLorentzVector Nulv_2(metpx,metpy,nuPz_2,TMath::Sqrt((metpt)*(metpt)+(nuPz_2)*(nuPz_2)));
+	Wlv_1 = Nulv_1+lepton_lv;
+	Wlv_2 = Nulv_2+lepton_lv;
+      }
+      if(DETtmp < 0) {
+	nuPz_1 = (-Btmp)/(2.0*Atmp);
+	nuPz_2 = (-Btmp)/(2.0*Atmp);
+	double alpha = (lepton_lv.Px())*(metpx)/(metpt)+(lepton_lv.Py())*(metpy)/(metpt);
+	double Delta = (MW*MW)-(lepM*lepM);
+	Atmp = 4.0*((lepton_lv.Pz())*(lepton_lv.Pz())-(lepton_lv.Energy())*(lepton_lv.Energy())+(alpha*alpha));
+	Btmp = 4.0*alpha*Delta;
+	Ctmp = Delta*Delta;
+	DETtmp = Btmp*Btmp-4.0*Atmp*Ctmp;
+	double pTnu_1 = (-Btmp+TMath::Sqrt(DETtmp))/(2.0*Atmp);
+	double pTnu_2 = (-Btmp-TMath::Sqrt(DETtmp))/(2.0*Atmp);
+	TLorentzVector Nulv_1(metpx*(pTnu_1)/(metpt),metpy*(pTnu_1)/(metpt),nuPz_1,TMath::Sqrt((pTnu_1)*(pTnu_1)+(nuPz_1)*(nuPz_1)));
+	TLorentzVector Nulv_2(metpx*(pTnu_2)/(metpt),metpy*(pTnu_2)/(metpt),nuPz_2,TMath::Sqrt((pTnu_2)*(pTnu_2)+(nuPz_2)*(nuPz_2)));
+	Wlv_1 = Nulv_1+lepton_lv;
+	Wlv_2 = Nulv_2+lepton_lv;
+	if (fabs(Wlv_1.M()-MW) < fabs(Wlv_2.M()-MW)) Wlv_2 = Wlv_1;
+	else Wlv_1 = Wlv_2;
+      }
+      
+      // ----------------------------------------------------------------------------
+      // top --> W b --> l nu b using W from above
+      // ----------------------------------------------------------------------------
+
+      double dMTOP = 1e8;
+      unsigned int topIndex = 0;
+      bool firstW = true;
+      double MTop_1, MTop_2;
+      for(unsigned int ijet=0; ijet < theJetPt_JetSubCalc_PtOrdered.size(); ijet++){
+	jet_lv.SetPtEtaPhiE(theJetPt_JetSubCalc_PtOrdered.at(ijet),theJetEta_JetSubCalc_PtOrdered.at(ijet),theJetPhi_JetSubCalc_PtOrdered.at(ijet),theJetEnergy_JetSubCalc_PtOrdered.at(ijet));
+	MTop_1 = (jet_lv + Wlv_1).M();
+	MTop_2 = (jet_lv + Wlv_2).M();
+	if(fabs(MTop_1 - MTOP) < dMTOP) {
+	  if(fabs(MTop_1 - MTOP) < fabs(MTop_2 - MTOP)) {
+	    firstW = true;
+	    topIndex = ijet;
+	    dMTOP = fabs(MTop_1 - MTOP);
+	  }
+	  else {
+	    firstW = false;
+	    topIndex = ijet;
+	    dMTOP = fabs(MTop_2 - MTOP);
+	  }
+	}
+	else if(fabs(MTop_2 - MTOP) < dMTOP) {
+	  firstW = false;
+	  topIndex = ijet;
+	  dMTOP = fabs(MTop_2 - MTOP);
+	}
+      }
+
+      if(firstW) {Wlv = Wlv_1;}
+      else{Wlv = Wlv_2;}
+
+      jet_lv.SetPtEtaPhiE(theJetPt_JetSubCalc_PtOrdered.at(topIndex),theJetEta_JetSubCalc_PtOrdered.at(topIndex),theJetPhi_JetSubCalc_PtOrdered.at(topIndex),theJetEnergy_JetSubCalc_PtOrdered.at(topIndex));
+      lvTop = jet_lv + Wlv; //Top LV
+
+      recLeptonicTopPt = lvTop.Pt();
+      recLeptonicTopEta = lvTop.Eta();
+      recLeptonicTopPhi = lvTop.Phi();
+      recLeptonicTopMass = lvTop.M();
+      
       // ----------------------------------------------------------------------------
       // Apply pt ordering to AK8 vectors 
       // ----------------------------------------------------------------------------

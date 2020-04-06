@@ -307,9 +307,10 @@ public :
    Float_t         TJetLeadPt;
    vector<int>     NJetsTtagged_shifts;
    
-   Float_t         topPt;
-   Float_t         topPtGen;
-   Float_t         topMass;
+   Float_t         recLeptonicTopPt;
+   Float_t         recLeptonicTopEta;
+   Float_t         recLeptonicTopPhi;
+   Float_t         recLeptonicTopMass;
    Float_t         tmass;
    Float_t         wmass;
    Float_t         genTopPt;
