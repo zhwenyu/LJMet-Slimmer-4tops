@@ -736,7 +736,10 @@ void step1::Loop(TString inTreeName, TString outTreeName )
       
       if( isTTJJ && genTtbarIdCategory_TTbarMassCalc->at(0)!=0 ) continue;
       if( isTTCC && genTtbarIdCategory_TTbarMassCalc->at(0)!=1 ) continue;
-      if( isTTBB && (genTtbarIdCategory_TTbarMassCalc->at(0)==0 || genTtbarIdCategory_TTbarMassCalc->at(0)==1) ) continue;
+      //if( isTTBB && (genTtbarIdCategory_TTbarMassCalc->at(0)==0 || genTtbarIdCategory_TTbarMassCalc->at(0)==1) ) continue;
+      if( isTT1B && genTtbarIdCategory_TTbarMassCalc->at(0)!=2 ) continue;
+      if( isTTBB && genTtbarIdCategory_TTbarMassCalc->at(0)!=3 ) continue;
+      if( isTT2B && genTtbarIdCategory_TTbarMassCalc->at(0)!=4 ) continue;
 
       // ----------------------------------------------------------------------------
       // Assign as electron or muon event

@@ -58,6 +58,8 @@ public :
    Bool_t          isTTSemilepIncHT0Njet0=false;
    Bool_t          isTTSemilepIncHT500Njet9=false;
    Bool_t          isTTBB=false;
+   Bool_t          isTT2B=false;
+   Bool_t          isTT1B=false;
    Bool_t          isTTCC=false;
    Bool_t          isTTJJ=false;
    Int_t           SigMass=-1;
@@ -1322,6 +1324,8 @@ step1::step1(TString inputFileName, TString outputFileName, Int_t Year_) : input
   isTTSemilepIncHT500Njet9 = outputFileName.Contains("HT500Njet9");
   if(inputFileName.Contains("HT500Njet9")) isTTSemilepIncHT500Njet9 = false;
   isTTBB = outputFileName.Contains("_ttbb");
+  isTT2B = outputFileName.Contains("_tt2b");
+  isTT1B = outputFileName.Contains("_tt1b");
   isTTCC = outputFileName.Contains("_ttcc");
   isTTJJ = outputFileName.Contains("_ttjj");
     

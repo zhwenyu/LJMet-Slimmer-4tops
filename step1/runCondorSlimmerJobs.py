@@ -13,8 +13,8 @@ Year = 2017 # or 2018
 finalStateYear = 'singleLep'+str(Year)
 inputDir='/eos/uscms/store/user/lpcljm/FWLJMET102X_1lep'+str(Year)+'_Oct2019/' # or 2018
 #inputDir='/isilon/hadoop/store/group/bruxljm/FWLJMET102X_1lep'+str(Year)+'_Oct2019/' # or 2018
-outputDir='/eos/uscms/store/user/ssagir/FWLJMET102X_1lep'+str(Year)+'_Oct2019_4t_031520_step1/nominal/' # or 2018
-condorDir='/uscms_data/d3/ssagir/FWLJMET102X_1lep'+str(Year)+'_Oct2019_4t_031520_step1/' # or 2018
+outputDir='/eos/uscms/store/user/ssagir/FWLJMET102X_1lep'+str(Year)+'_Oct2019_4t_041220_step1/nominal/' # or 2018
+condorDir='/uscms_data/d3/ssagir/FWLJMET102X_1lep'+str(Year)+'_Oct2019_4t_041220_step1/' # or 2018
 shifts = ['JECup','JECdown','JERup','JERdown']
 inputLoc='lpc'
 if inputDir.startswith('/isilon/hadoop/'): inputLoc='brux'
@@ -182,12 +182,12 @@ for sample in dirList:
     #elif 'TTTo' in sample: outList = ['Mtt0to700','Mtt700to1000','Mtt1000toInf']
     if 'TuneCP5down' in sample or 'TuneCP5up' in sample or 'hdampDOWN' in sample or 'hdampUP' in sample: outList = ['none']
     if 'TTTo' in sample or 'TT_Mtt' in sample: 
-    	if outList==['none']: outList = ['ttbb','ttcc','ttjj']
+    	if outList==['none']: outList = ['ttbb','tt2b','tt1b','ttcc','ttjj']
     	else:
     		outList_ = outList[:]
     		outList = []
     		for outlabel in outList_:
-    			for flv in ['ttbb','ttcc','ttjj']: outList.append(outlabel+'_'+flv)
+    			for flv in ['ttbb','tt2b','tt1b','ttcc','ttjj']: outList.append(outlabel+'_'+flv)
 
     isData = False
     if 'Single' in sample or 'EGamma' in sample or 'JetHT' in sample: isData = True
