@@ -261,6 +261,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    inputTree->SetBranchStatus("allTopsStatus_TTbarMassCalc",1);
 
    inputTree->SetBranchStatus("genTtbarIdCategory_TTbarMassCalc",1);
+   inputTree->SetBranchStatus("genTtbarId_TTbarMassCalc",1);
 
    //top W
    inputTree->SetBranchStatus("topWEnergy_TTbarMassCalc",1);
@@ -588,6 +589,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    outputTree->Branch("TJetLeadPt",&TJetLeadPt,"TJetLeadPt/F"); 
 
    outputTree->Branch("genTtbarIdCategory_TTbarMassCalc",&genTtbarIdCategory_TTbarMassCalc);    
+   outputTree->Branch("genTtbarId_TTbarMassCalc",&genTtbarId_TTbarMassCalc);    
   
   // ----------------------------------------------------------------------------
   // Define and initialize objects / cuts / efficiencies
@@ -689,9 +691,11 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    cout << "isTTincMtt1000toInf: " << isTTincMtt1000toInf << endl;
    cout << "isTTSemilepIncHT0Njet0: " << isTTSemilepIncHT0Njet0 << endl;
    cout << "isTTSemilepIncHT500Njet9: " << isTTSemilepIncHT500Njet9 << endl;
-   cout << "isTTJJ: " << isTTJJ << endl;
-   cout << "isTTCC: " << isTTCC << endl;
-   cout << "isTTBB: " << isTTBB << endl;
+   cout << "outTTLF: " << outTTLF << endl;
+   cout << "outTTCC: " << outTTCC << endl;
+   cout << "outTTBB: " << outTTBB << endl;
+   cout << "outTT1B: " << outTT1B << endl;
+   cout << "outTT2B: " << outTT2B << endl;
    
    Long64_t nentries = inputTree->GetEntriesFast();
 
@@ -734,12 +738,30 @@ void step1::Loop(TString inTreeName, TString outTreeName )
       if( isTTSemilepIncHT0Njet0   && isHTgt500Njetge9==1 ) continue;
       if( isTTSemilepIncHT500Njet9 && isHTgt500Njetge9==0 ) continue;
       
-      if( isTTJJ && genTtbarIdCategory_TTbarMassCalc->at(0)!=0 ) continue;
-      if( isTTCC && genTtbarIdCategory_TTbarMassCalc->at(0)!=1 ) continue;
-      //if( isTTBB && (genTtbarIdCategory_TTbarMassCalc->at(0)==0 || genTtbarIdCategory_TTbarMassCalc->at(0)==1) ) continue;
-      if( isTT1B && genTtbarIdCategory_TTbarMassCalc->at(0)!=2 ) continue;
-      if( isTTBB && genTtbarIdCategory_TTbarMassCalc->at(0)!=3 ) continue;
-      if( isTT2B && genTtbarIdCategory_TTbarMassCalc->at(0)!=4 ) continue;
+//       if( outTTLF && genTtbarIdCategory_TTbarMassCalc->at(0)!=0 ) continue;
+//       if( outTTCC && genTtbarIdCategory_TTbarMassCalc->at(0)!=1 ) continue;
+//       //if( outTTBB && (genTtbarIdCategory_TTbarMassCalc->at(0)==0 || genTtbarIdCategory_TTbarMassCalc->at(0)==1) ) continue;
+//       if( outTT1B && genTtbarIdCategory_TTbarMassCalc->at(0)!=2 ) continue;
+//       if( outTTBB && genTtbarIdCategory_TTbarMassCalc->at(0)!=3 ) continue;
+//       if( outTT2B && genTtbarIdCategory_TTbarMassCalc->at(0)!=4 ) continue;
+
+// https://twiki.cern.ch/twiki/bin/view/CMSPublic/GenHFHadronMatcher#Event_categorization_example_1
+// Each event enters one of the following categories in the given order, i.e. it enters the first category where it fulfills the criterion. The categorisation scheme used is:
+// xxx51: tt+b (one additional b jet containing a single b hadron)
+// xxx52: tt+2b (one additional b jet containing at least 2 b hadrons)
+// xxx53, xxx54, xxx55: tt+bb (at least two additional b jets, independent of the number of b hadrons in each)
+// xxx41, xxx42, xxx43, xxx44, xxx45: tt+cc (at least one additional c jet, independent of the number of c hadrons in each)
+// xxx00: tt+LF (no additional b/c jets)
+// The three digits xxx at the beginning of the ID are not relevant in this classification scheme, each x can take values 0, 1, 2 depending on the number of b jets from top, of b jets from W (of the top decay) and of c jets from W (of the top decay).
+      int ttCategory = genTtbarId_TTbarMassCalc->at(0)%100;
+      bool ttCategoryExist = false;
+      if( (ttCategory>50 && ttCategory<56) || (ttCategory>40 && ttCategory<46) || ttCategory==0 ) ttCategoryExist = true;
+      if(isTT && !ttCategoryExist) std::cout<<"WARNING! Event does not have defined ttbar category!!!"<<std::endl;
+      if( outTT1B && ttCategory != 51 ) continue;
+      if( outTT2B && ttCategory != 52 ) continue;
+      if( outTTBB && !(ttCategory>=53 && ttCategory<=55) ) continue;
+      if( outTTCC && !(ttCategory>=41 && ttCategory<=45) ) continue;
+      if( outTTLF && ttCategory != 0 ) continue;
 
       // ----------------------------------------------------------------------------
       // Assign as electron or muon event
