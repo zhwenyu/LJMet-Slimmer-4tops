@@ -7,8 +7,8 @@ start_time = time.time()
 #IO directories must be full paths
 shift = sys.argv[1]
 Year = 2017
-inputDir='/eos/uscms/store/user/ssagir/FWLJMET102X_1lep'+str(Year)+'_Oct2019_4t_031520_step1/'+shift+'/'
-outputDir='/eos/uscms/store/user/ssagir/FWLJMET102X_1lep'+str(Year)+'_Oct2019_4t_031520_step1hadds/'+shift+'/'
+inputDir='/eos/uscms/store/user/ssagir/FWLJMET102X_1lep'+str(Year)+'_Oct2019_4t_041220_step1/'+shift+'/'
+outputDir='/eos/uscms/store/user/ssagir/FWLJMET102X_1lep'+str(Year)+'_Oct2019_4t_041220_step1hadds/'+shift+'/'
 
 inDir=inputDir[10:]
 outDir=outputDir[10:]
@@ -156,12 +156,12 @@ for sample in dirList:
     #elif 'TTTo' in sample: outList = ['Mtt0to700','Mtt700to1000','Mtt1000toInf']
     if 'TuneCP5down' in sample or 'TuneCP5up' in sample or 'hdampDOWN' in sample or 'hdampUP' in sample: outList = ['none']
     if 'TTTo' in sample or 'TT_Mtt' in sample: 
-    	if outList==['none']: outList = ['ttbb','ttcc','ttjj']
+    	if outList==['none']: outList = ['ttbb','tt2b','tt1b','ttcc','ttjj']
     	else:
     		outList_ = outList[:]
     		outList = []
     		for outlabel in outList_:
-    			for flv in ['ttbb','ttcc','ttjj']: outList.append(outlabel+'_'+flv)
+    			for flv in ['ttbb','tt2b','tt1b','ttcc','ttjj']: outList.append(outlabel+'_'+flv)
 
     for outlabel in outList:
 

@@ -57,9 +57,11 @@ public :
    Bool_t          isTTincMtt1000toInf=false;
    Bool_t          isTTSemilepIncHT0Njet0=false;
    Bool_t          isTTSemilepIncHT500Njet9=false;
-   Bool_t          isTTBB=false;
-   Bool_t          isTTCC=false;
-   Bool_t          isTTJJ=false;
+   Bool_t          outTTBB=false;
+   Bool_t          outTT2B=false;
+   Bool_t          outTT1B=false;
+   Bool_t          outTTCC=false;
+   Bool_t          outTTLF=false;
    Int_t           SigMass=-1;
    Int_t           Year=2017;
    TString         Era="";
@@ -307,9 +309,10 @@ public :
    Float_t         TJetLeadPt;
    vector<int>     NJetsTtagged_shifts;
    
-   Float_t         topPt;
-   Float_t         topPtGen;
-   Float_t         topMass;
+   Float_t         recLeptonicTopPt;
+   Float_t         recLeptonicTopEta;
+   Float_t         recLeptonicTopPhi;
+   Float_t         recLeptonicTopMass;
    Float_t         tmass;
    Float_t         wmass;
    Float_t         genTopPt;
@@ -1320,9 +1323,11 @@ step1::step1(TString inputFileName, TString outputFileName, Int_t Year_) : input
   isTTSemilepIncHT0Njet0 = outputFileName.Contains("HT0Njet0");
   isTTSemilepIncHT500Njet9 = outputFileName.Contains("HT500Njet9");
   if(inputFileName.Contains("HT500Njet9")) isTTSemilepIncHT500Njet9 = false;
-  isTTBB = outputFileName.Contains("_ttbb");
-  isTTCC = outputFileName.Contains("_ttcc");
-  isTTJJ = outputFileName.Contains("_ttjj");
+  outTTBB = outputFileName.Contains("_ttbb");
+  outTT2B = outputFileName.Contains("_tt2b");
+  outTT1B = outputFileName.Contains("_tt1b");
+  outTTCC = outputFileName.Contains("_ttcc");
+  outTTLF = outputFileName.Contains("_ttjj");
     
   std::cout<<"Opening file: "<<inputFileName<<std::endl;
   //Get the sample name from "inputFileName" for pileupWeights

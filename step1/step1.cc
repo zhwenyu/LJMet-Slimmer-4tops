@@ -261,6 +261,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    inputTree->SetBranchStatus("allTopsStatus_TTbarMassCalc",1);
 
    inputTree->SetBranchStatus("genTtbarIdCategory_TTbarMassCalc",1);
+   inputTree->SetBranchStatus("genTtbarId_TTbarMassCalc",1);
 
    //top W
    inputTree->SetBranchStatus("topWEnergy_TTbarMassCalc",1);
@@ -407,6 +408,11 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    outputTree->Branch("MT_lepMet",&MT_lepMet,"MT_lepMet/F");
    outputTree->Branch("MT_lepMetmod",&MT_lepMetmod,"MT_lepMetmod/F");
    outputTree->Branch("minDPhi_MetJet",&minDPhi_MetJet,"minDPhi_MetJet/F");
+
+   outputTree->Branch("recLeptonicTopPt",&recLeptonicTopPt,"recLeptonicTopPt/F");
+   outputTree->Branch("recLeptonicTopEta",&recLeptonicTopEta,"recLeptonicTopEta/F");
+   outputTree->Branch("recLeptonicTopPhi",&recLeptonicTopPhi,"recLeptonicTopPhi/F");
+   outputTree->Branch("recLeptonicTopMass",&recLeptonicTopMass,"recLeptonicTopMass/F");
 
    // AK4
    outputTree->Branch("theJetPt_JetSubCalc",&theJetPt_JetSubCalc);
@@ -583,6 +589,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    outputTree->Branch("TJetLeadPt",&TJetLeadPt,"TJetLeadPt/F"); 
 
    outputTree->Branch("genTtbarIdCategory_TTbarMassCalc",&genTtbarIdCategory_TTbarMassCalc);    
+   outputTree->Branch("genTtbarId_TTbarMassCalc",&genTtbarId_TTbarMassCalc);    
   
   // ----------------------------------------------------------------------------
   // Define and initialize objects / cuts / efficiencies
@@ -684,9 +691,11 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    cout << "isTTincMtt1000toInf: " << isTTincMtt1000toInf << endl;
    cout << "isTTSemilepIncHT0Njet0: " << isTTSemilepIncHT0Njet0 << endl;
    cout << "isTTSemilepIncHT500Njet9: " << isTTSemilepIncHT500Njet9 << endl;
-   cout << "isTTJJ: " << isTTJJ << endl;
-   cout << "isTTCC: " << isTTCC << endl;
-   cout << "isTTBB: " << isTTBB << endl;
+   cout << "outTTLF: " << outTTLF << endl;
+   cout << "outTTCC: " << outTTCC << endl;
+   cout << "outTTBB: " << outTTBB << endl;
+   cout << "outTT1B: " << outTT1B << endl;
+   cout << "outTT2B: " << outTT2B << endl;
    
    Long64_t nentries = inputTree->GetEntriesFast();
 
@@ -729,9 +738,30 @@ void step1::Loop(TString inTreeName, TString outTreeName )
       if( isTTSemilepIncHT0Njet0   && isHTgt500Njetge9==1 ) continue;
       if( isTTSemilepIncHT500Njet9 && isHTgt500Njetge9==0 ) continue;
       
-      if( isTTJJ && genTtbarIdCategory_TTbarMassCalc->at(0)!=0 ) continue;
-      if( isTTCC && genTtbarIdCategory_TTbarMassCalc->at(0)!=1 ) continue;
-      if( isTTBB && (genTtbarIdCategory_TTbarMassCalc->at(0)==0 || genTtbarIdCategory_TTbarMassCalc->at(0)==1) ) continue;
+//       if( outTTLF && genTtbarIdCategory_TTbarMassCalc->at(0)!=0 ) continue;
+//       if( outTTCC && genTtbarIdCategory_TTbarMassCalc->at(0)!=1 ) continue;
+//       //if( outTTBB && (genTtbarIdCategory_TTbarMassCalc->at(0)==0 || genTtbarIdCategory_TTbarMassCalc->at(0)==1) ) continue;
+//       if( outTT1B && genTtbarIdCategory_TTbarMassCalc->at(0)!=2 ) continue;
+//       if( outTTBB && genTtbarIdCategory_TTbarMassCalc->at(0)!=3 ) continue;
+//       if( outTT2B && genTtbarIdCategory_TTbarMassCalc->at(0)!=4 ) continue;
+
+// https://twiki.cern.ch/twiki/bin/view/CMSPublic/GenHFHadronMatcher#Event_categorization_example_1
+// Each event enters one of the following categories in the given order, i.e. it enters the first category where it fulfills the criterion. The categorisation scheme used is:
+// xxx51: tt+b (one additional b jet containing a single b hadron)
+// xxx52: tt+2b (one additional b jet containing at least 2 b hadrons)
+// xxx53, xxx54, xxx55: tt+bb (at least two additional b jets, independent of the number of b hadrons in each)
+// xxx41, xxx42, xxx43, xxx44, xxx45: tt+cc (at least one additional c jet, independent of the number of c hadrons in each)
+// xxx00: tt+LF (no additional b/c jets)
+// The three digits xxx at the beginning of the ID are not relevant in this classification scheme, each x can take values 0, 1, 2 depending on the number of b jets from top, of b jets from W (of the top decay) and of c jets from W (of the top decay).
+      int ttCategory = genTtbarId_TTbarMassCalc->at(0)%100;
+      bool ttCategoryExist = false;
+      if( (ttCategory>50 && ttCategory<56) || (ttCategory>40 && ttCategory<46) || ttCategory==0 ) ttCategoryExist = true;
+      if(isTT && !ttCategoryExist) std::cout<<"WARNING! Event does not have defined ttbar category!!!"<<std::endl;
+      if( outTT1B && ttCategory != 51 ) continue;
+      if( outTT2B && ttCategory != 52 ) continue;
+      if( outTTBB && !(ttCategory>=53 && ttCategory<=55) ) continue;
+      if( outTTCC && !(ttCategory>=41 && ttCategory<=45) ) continue;
+      if( outTTLF && ttCategory != 0 ) continue;
 
       // ----------------------------------------------------------------------------
       // Assign as electron or muon event
@@ -1424,6 +1454,94 @@ void step1::Loop(TString inTreeName, TString outTreeName )
 	}
       }
 
+      // ----------------------------------------------------------------------------
+      // W --> l nu with mass constraint
+      // ----------------------------------------------------------------------------
+
+      double metpx = corr_met_MultiLepCalc*cos(corr_met_phi_MultiLepCalc);
+      double metpy = corr_met_MultiLepCalc*sin(corr_met_phi_MultiLepCalc);
+      double metpt = corr_met_MultiLepCalc;
+
+      double Dtmp = (MW*MW)-(lepM*lepM)+2*((lepton_lv.Px())*(metpx)+(lepton_lv.Py())*(metpy));
+      double Atmp = 4.0*((lepton_lv.Energy())*(lepton_lv.Energy())-(lepton_lv.Pz())*(lepton_lv.Pz()));
+      double Btmp = -4.0*Dtmp*(lepton_lv.Pz());
+      double Ctmp = 4.0*(lepton_lv.Energy())*(lepton_lv.Energy())*(metpt)*(metpt)-Dtmp*Dtmp;
+      
+      double nuPz_1;
+      double nuPz_2;
+      
+      double DETtmp = Btmp*Btmp-4.0*Atmp*Ctmp;
+      
+      TLorentzVector Wlv_1, Wlv_2, Wlv, lvTop;
+      if(DETtmp >= 0) {
+	nuPz_1 = (-Btmp+TMath::Sqrt(DETtmp))/(2.0*Atmp);
+	nuPz_2 = (-Btmp-TMath::Sqrt(DETtmp))/(2.0*Atmp);
+	TLorentzVector Nulv_1(metpx,metpy,nuPz_1,TMath::Sqrt((metpt)*(metpt)+(nuPz_1)*(nuPz_1)));
+	TLorentzVector Nulv_2(metpx,metpy,nuPz_2,TMath::Sqrt((metpt)*(metpt)+(nuPz_2)*(nuPz_2)));
+	Wlv_1 = Nulv_1+lepton_lv;
+	Wlv_2 = Nulv_2+lepton_lv;
+      }
+      if(DETtmp < 0) {
+	nuPz_1 = (-Btmp)/(2.0*Atmp);
+	nuPz_2 = (-Btmp)/(2.0*Atmp);
+	double alpha = (lepton_lv.Px())*(metpx)/(metpt)+(lepton_lv.Py())*(metpy)/(metpt);
+	double Delta = (MW*MW)-(lepM*lepM);
+	Atmp = 4.0*((lepton_lv.Pz())*(lepton_lv.Pz())-(lepton_lv.Energy())*(lepton_lv.Energy())+(alpha*alpha));
+	Btmp = 4.0*alpha*Delta;
+	Ctmp = Delta*Delta;
+	DETtmp = Btmp*Btmp-4.0*Atmp*Ctmp;
+	double pTnu_1 = (-Btmp+TMath::Sqrt(DETtmp))/(2.0*Atmp);
+	double pTnu_2 = (-Btmp-TMath::Sqrt(DETtmp))/(2.0*Atmp);
+	TLorentzVector Nulv_1(metpx*(pTnu_1)/(metpt),metpy*(pTnu_1)/(metpt),nuPz_1,TMath::Sqrt((pTnu_1)*(pTnu_1)+(nuPz_1)*(nuPz_1)));
+	TLorentzVector Nulv_2(metpx*(pTnu_2)/(metpt),metpy*(pTnu_2)/(metpt),nuPz_2,TMath::Sqrt((pTnu_2)*(pTnu_2)+(nuPz_2)*(nuPz_2)));
+	Wlv_1 = Nulv_1+lepton_lv;
+	Wlv_2 = Nulv_2+lepton_lv;
+	if (fabs(Wlv_1.M()-MW) < fabs(Wlv_2.M()-MW)) Wlv_2 = Wlv_1;
+	else Wlv_1 = Wlv_2;
+      }
+      
+      // ----------------------------------------------------------------------------
+      // top --> W b --> l nu b using W from above
+      // ----------------------------------------------------------------------------
+
+      double dMTOP = 1e8;
+      unsigned int topIndex = 0;
+      bool firstW = true;
+      double MTop_1, MTop_2;
+      for(unsigned int ijet=0; ijet < theJetPt_JetSubCalc_PtOrdered.size(); ijet++){
+	jet_lv.SetPtEtaPhiE(theJetPt_JetSubCalc_PtOrdered.at(ijet),theJetEta_JetSubCalc_PtOrdered.at(ijet),theJetPhi_JetSubCalc_PtOrdered.at(ijet),theJetEnergy_JetSubCalc_PtOrdered.at(ijet));
+	MTop_1 = (jet_lv + Wlv_1).M();
+	MTop_2 = (jet_lv + Wlv_2).M();
+	if(fabs(MTop_1 - MTOP) < dMTOP) {
+	  if(fabs(MTop_1 - MTOP) < fabs(MTop_2 - MTOP)) {
+	    firstW = true;
+	    topIndex = ijet;
+	    dMTOP = fabs(MTop_1 - MTOP);
+	  }
+	  else {
+	    firstW = false;
+	    topIndex = ijet;
+	    dMTOP = fabs(MTop_2 - MTOP);
+	  }
+	}
+	else if(fabs(MTop_2 - MTOP) < dMTOP) {
+	  firstW = false;
+	  topIndex = ijet;
+	  dMTOP = fabs(MTop_2 - MTOP);
+	}
+      }
+
+      if(firstW) {Wlv = Wlv_1;}
+      else{Wlv = Wlv_2;}
+
+      jet_lv.SetPtEtaPhiE(theJetPt_JetSubCalc_PtOrdered.at(topIndex),theJetEta_JetSubCalc_PtOrdered.at(topIndex),theJetPhi_JetSubCalc_PtOrdered.at(topIndex),theJetEnergy_JetSubCalc_PtOrdered.at(topIndex));
+      lvTop = jet_lv + Wlv; //Top LV
+
+      recLeptonicTopPt = lvTop.Pt();
+      recLeptonicTopEta = lvTop.Eta();
+      recLeptonicTopPhi = lvTop.Phi();
+      recLeptonicTopMass = lvTop.M();
+      
       // ----------------------------------------------------------------------------
       // Apply pt ordering to AK8 vectors 
       // ----------------------------------------------------------------------------
