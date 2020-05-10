@@ -459,6 +459,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    outputTree->Branch("minMleppJet",&minMleppJet,"mixnMleppJet/F");
    outputTree->Branch("minDR_lepJet",&minDR_lepJet,"minDR_lepJet/F");
    outputTree->Branch("ptRel_lepJet",&ptRel_lepJet,"ptRel_lepJet/F");
+   outputTree->Branch("minDR_jetJets",&minDR_jetJets);
    outputTree->Branch("deltaR_lepJets",&deltaR_lepJets);
    outputTree->Branch("deltaR_lepBJets",&deltaR_lepBJets);
    outputTree->Branch("deltaR_lepBJets_bSFup",&deltaR_lepBJets_bSFup);
@@ -618,6 +619,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
 
    // Lorentz vectors
    TLorentzVector jet_lv;
+   TLorentzVector kjet_lv;
    TLorentzVector bjet_lv;
    TLorentzVector wjet1_lv;
    TLorentzVector tjet1_lv;
@@ -720,8 +722,8 @@ void step1::Loop(TString inTreeName, TString outTreeName )
       double genHT = 0;
       int Ngenjet = 0;
       for(unsigned int ijet=0; ijet < genJetPtNoClean_MultiLepCalc->size(); ijet++){
-	if(genJetPtNoClean_MultiLepCalc->at(ijet) > 30) Ngenjet+=1;
-	if(genJetPtNoClean_MultiLepCalc->at(ijet) > 30 && fabs(genJetEtaNoClean_MultiLepCalc->at(ijet)) < 2.4) genHT+=genJetPtNoClean_MultiLepCalc->at(ijet);
+	    if(genJetPtNoClean_MultiLepCalc->at(ijet) > 30) Ngenjet+=1;
+	    if(genJetPtNoClean_MultiLepCalc->at(ijet) > 30 && fabs(genJetEtaNoClean_MultiLepCalc->at(ijet)) < 2.4) genHT+=genJetPtNoClean_MultiLepCalc->at(ijet);
       }
       if(genHT>500 && Ngenjet>=9) {isHTgt500Njetge9 = 1;}
       }
@@ -840,15 +842,15 @@ void step1::Loop(TString inTreeName, TString outTreeName )
       mctriggers = {{"17B", {"Ele35_WPTight_Gsf", "IsoMu24_eta2p1" , "PFHT380_SixPFJet32_DoublePFBTagDeepCSV_2p2" }},
 		    {"17C",{"Ele35_WPTight_Gsf", "IsoMu27" , "PFHT380_SixPFJet32_DoublePFBTagCSV_2p2" }},
 		    {"17DEF",{"Ele32_WPTight_Gsf", "IsoMu27" , "PFHT380_SixPFJet32_DoublePFBTagDeepCSV_2p2" }},
-		    {"18",{"Ele32_WPTight_Gsf", "IsoMu24" , "PFHT400_SixPFJet32_DoublePFBTagDeep_CSV_2p94" }}};
+		    {"18",{"Ele32_WPTight_Gsf", "IsoMu24" , "PFHT400_SixPFJet32_DoublePFBTagDeepCSV_2p94" }}};
 
 
       std::map<TString, std::vector<std::string>> datatriggers;
       datatriggers = {{"17B", {"Ele35_WPTight_Gsf", "IsoMu24_eta2p1" , "PFHT380_SixJet32_DoubleBTagCSV_p075" }},
 		      {"17C",{"Ele35_WPTight_Gsf", "IsoMu27" , "PFHT380_SixPFJet32_DoublePFBTagCSV_2p2" }},
 		      {"17DEF",{"Ele32_WPTight_Gsf", "IsoMu27" , "PFHT380_SixPFJet32_DoublePFBTagDeepCSV_2p2" }},
-		      {"18AB", {"Ele32_WPTight_Gsf", "IsoMu24" , "PFHT380_SixPFJet32_DoublePFBTagDeep_CSV_2p2" }},
-		      {"18CD",{"Ele32_WPTight_Gsf", "IsoMu24" , "PFHT400_SixPFJet32_DoublePFBTagDeep_CSV_2p94" }}};
+		      {"18AB", {"Ele32_WPTight_Gsf", "IsoMu24" , "PFHT380_SixPFJet32_DoublePFBTagDeepCSV_2p2" }},
+		      {"18CD",{"Ele32_WPTight_Gsf", "IsoMu24" , "PFHT400_SixPFJet32_DoublePFBTagDeepCSV_2p94" }}};
       if (!isMC){
 	eltrigger = datatriggers.at(Era).at(0);
 	mutrigger =  datatriggers.at(Era).at(1);
@@ -991,10 +993,10 @@ void step1::Loop(TString inTreeName, TString outTreeName )
       HTSF_PolDn = 1;
 
       if(isMadgraphBkg){
-	// Piece-wise splice with a flat line. Uncertainty from upper/lower error bar fits
-	HTSF_Pol = poly2->Eval(HTfromHEPUEP_MultiLepCalc);
-	HTSF_PolUp = poly2U->Eval(HTfromHEPUEP_MultiLepCalc);
-	HTSF_PolDn = poly2D->Eval(HTfromHEPUEP_MultiLepCalc);
+	    // Piece-wise splice with a flat line. Uncertainty from upper/lower error bar fits
+	    HTSF_Pol = poly2->Eval(HTfromHEPUEP_MultiLepCalc);
+	    HTSF_PolUp = poly2U->Eval(HTfromHEPUEP_MultiLepCalc);
+	    HTSF_PolDn = poly2D->Eval(HTfromHEPUEP_MultiLepCalc);
       }
 
       // ----------------------------------------------------------------------------
@@ -1005,14 +1007,14 @@ void step1::Loop(TString inTreeName, TString outTreeName )
       double lepM;
       double lepphi;
       if (isMuon){ 
-	lepM = 0.105658367;
-	lepphi = muPhi_MultiLepCalc->at(0);
-	lepton_lv.SetPtEtaPhiM(muPt_MultiLepCalc->at(0),muEta_MultiLepCalc->at(0),muPhi_MultiLepCalc->at(0),lepM);
+	    lepM = 0.105658367;
+	    lepphi = muPhi_MultiLepCalc->at(0);
+	    lepton_lv.SetPtEtaPhiM(muPt_MultiLepCalc->at(0),muEta_MultiLepCalc->at(0),muPhi_MultiLepCalc->at(0),lepM);
       }
       else{
-	lepM = 0.00051099891;
-	lepphi = elPhi_MultiLepCalc->at(0);
-	lepton_lv.SetPtEtaPhiM(elPt_MultiLepCalc->at(0),elEta_MultiLepCalc->at(0),elPhi_MultiLepCalc->at(0),lepM);
+	    lepM = 0.00051099891;
+	    lepphi = elPhi_MultiLepCalc->at(0);
+	    lepton_lv.SetPtEtaPhiM(elPt_MultiLepCalc->at(0),elEta_MultiLepCalc->at(0),elPhi_MultiLepCalc->at(0),lepM);
       }      
 
       MT_lepMet = sqrt(2*leppt*corr_met_MultiLepCalc*(1 - cos(lepphi - corr_met_phi_MultiLepCalc)));
@@ -1259,6 +1261,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
       minDPhi_MetJet = 1e8;
       minDR_lepJet = 1e8;
       ptRel_lepJet = -99;
+      minDR_jetJets.clear();
       deltaR_lepJets.clear();
       deltaR_lepBJets.clear();
       deltaR_lepBJets_bSFup.clear();
@@ -1380,6 +1383,18 @@ void step1::Loop(TString inTreeName, TString outTreeName )
 	  minDR_lepJet = deltaR_lepJets[ijet];
 	  ptRel_lepJet = lepton_lv.P()*(jet_lv.Vect().Cross(lepton_lv.Vect()).Mag()/jet_lv.P()/lepton_lv.P());
 	}
+
+	minDR_jetJet = 1e8;
+	for(unsigned int kjet=0; kjet < theJetPt_JetSubCalc_PtOrdered.size(); kjet++){
+	    if(ijet == kjet){continue;}
+	    kjet_lv.SetPtEtaPhiE(theJetPt_JetSubCalc_PtOrdered.at(kjet),theJetEta_JetSubCalc_PtOrdered.at(kjet),theJetPhi_JetSubCalc_PtOrdered.at(kjet),theJetEnergy_JetSubCalc_PtOrdered.at(kjet));
+	    deltaR_jetJets = jet_lv.DeltaR(kjet_lv);
+	    if(deltaR_jetJets < minDR_jetJet) {
+	        minDR_jetJet = deltaR_jetJets;
+	    }
+	}
+	minDR_jetJets.push_back(minDR_jetJet);
+
       }
 
       // ----------------------------------------------------------------------------

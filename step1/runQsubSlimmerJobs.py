@@ -2,8 +2,8 @@ import os,shutil,datetime,time
 import getpass
 from ROOT import *
 from XRootD import client
-xrdClient = client.FileSystem("root://brux11.hep.brown.edu:1094/")
-execfile("/uscms_data/d3/jmanagan/EOSSafeUtils.py")
+xrdClient = client.FileSystem("root://cmseos.fnal.gov/")
+#execfile("/uscms_data/d3/jmanagan/EOSSafeUtils.py")
 
 start_time = time.time()
 
@@ -15,9 +15,9 @@ inputDir='/eos/uscms/store/user/lpcljm/FWLJMET102X_1lep'+str(Year)+'_Oct2019/'  
 #inputDir='/isilon/hadoop/store/group/bruxljm/FWLJMET102X_1lep'+str(Year)+'_Oct2019/' # or 2018
 outputDir='/pnfs/iihe/cms/store/user/$USER/FWLJMET102X_1lep'+str(Year)+'_Oct2019_4t_031520_step1/nominal/'
     #'/eos/uscms/store/user/ssagir/FWLJMET102X_1lep'+str(Year)+'_Oct2019_4t_031520_step1/nominal/'  # or 2018
-condorDir='/uscms_data/d3/ssagir/FWLJMET102X_1lep'+str(Year)+'_Oct2019_4t_031520_step1/'  # or 2018
+condorDir='/user/nistylia/BrUFrame/CMSSW_10_2_16/src/LJMet-Slimmer-4tops/step1/FWLJMET102X_1lep'+str(Year)+'_Oct2019_4t_031520_step1/'  # or 2018
 shifts = ['JECup','JECdown','JERup','JERdown']
-inputLoc='lpc'
+inputLoc='brux'
 if inputDir.startswith('/isilon/hadoop/'): inputLoc='brux'
 
 runDir=os.getcwd()
@@ -207,6 +207,7 @@ for sample in dirList:
         #    runlist = EOSlistdir(inputDir+'/'+sample+'/'+finalStateYear+'/')
         if inputLoc=='brux':
             status, dirList = xrdClient.dirlist(inDir+'/'+sample+'/'+finalStateYear+'/')
+            print status
             runlist = [item.name for item in dirList]
         print "Running",len(runlist),"crab directories"
 
@@ -283,7 +284,7 @@ cp %(RUNDIR)s/makeStep1.sh .
 source makeStep1.sh %(FILENAME)s %(OUTFILENAME)s %(INPUTDIR)s/%(SAMPLE)s/%(INPATHSUFFIX)s %(OUTPUTDIR)s/%(OUTFILENAME)s '%(LIST)s' %(ID)s %(YEAR)s""" % dict)
                     jdf.close()
                     os.chdir('%s/%s' % (condorDir,outsample))
-                    os.system('echo "qsub -q localgrid -o %(OUTFILENAME)s_%(ID)s.out -e %(OUTFILENAME)s_%(ID)s.err %(OUTFILENAME)s_%(ID)s.sh" >> job.txt' % dict)
+                    os.system('echo "qsub -q localgrid -o %(OUTFILENAME)s_%(ID)s.out -e %(OUTFILENAME)s_%(ID)s.err %(OUTFILENAME)s_%(ID)s.sh" >> jobStep1All.txt' % dict)
                     #os.system('condor_submit %(OUTFILENAME)s_%(ID)s.job' % dict)
                     os.system('sleep 0.5')                                
                     os.chdir('%s' % (runDir))
