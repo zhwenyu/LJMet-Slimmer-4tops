@@ -23,7 +23,7 @@ if inputDir.startswith('/isilon/hadoop/'): inputLoc='brux'
 runDir=os.getcwd()
 inDir=inputDir[10:]
 if inputLoc=='brux': inDir=inputDir
-outDir=outputDir[10:]
+outDir=outputDir
 
 gROOT.ProcessLine('.x compileStep1.C')
 
@@ -263,7 +263,7 @@ for sample in dirList:
                     idlist = idlist.strip()
                     print "Running IDs",idlist
                 
-                    dict={'RUNDIR':runDir, 'SAMPLE':sample, 'INPATHSUFFIX':pathsuffix, 'INPUTDIR':inDir, 'FILENAME':basefilename, 'OUTFILENAME':outsample, 'OUTPUTDIR':outDir, 'LIST':idlist, 'ID':tmpcount, 'YEAR':Year}
+                    dict={'RUNDIR':runDir, 'SAMPLE':sample, 'INPATHSUFFIX':pathsuffix, 'INPUTDIR':inDir, 'FILENAME':basefilename, 'OUTFILENAME':outsample, 'OUTPUTDIR':outDir, 'LIST':idlist, 'ID':tmpcount, 'YEAR':Year, "CONDORDIR":condorDir}
                     jdfName=condorDir+'/%(OUTFILENAME)s/%(OUTFILENAME)s_%(ID)s.sh' % dict
                     print jdfName
                     jdf=open(jdfName,'w')
@@ -283,8 +283,8 @@ cp %(RUNDIR)s/HardcodedConditions.h .
 cp %(RUNDIR)s/makeStep1.sh .
 source makeStep1.sh %(FILENAME)s %(OUTFILENAME)s %(INPUTDIR)s/%(SAMPLE)s/%(INPATHSUFFIX)s %(OUTPUTDIR)s/%(OUTFILENAME)s '%(LIST)s' %(ID)s %(YEAR)s""" % dict)
                     jdf.close()
-                    os.chdir('%s/%s' % (condorDir,outsample))
-                    os.system('echo "qsub -q localgrid -o %(OUTFILENAME)s_%(ID)s.out -e %(OUTFILENAME)s_%(ID)s.err %(OUTFILENAME)s_%(ID)s.sh" >> jobStep1All.txt' % dict)
+                    #os.chdir('%s/%s' % (condorDir,outsample))
+                    os.system('echo "qsub -q localgrid -o %(CONDORDIR)s/%(OUTFILENAME)s/%(OUTFILENAME)s_%(ID)s.out -e %(CONDORDIR)s/%(OUTFILENAME)s/%(OUTFILENAME)s_%(ID)s.err %(CONDORDIR)s/%(OUTFILENAME)s/%(OUTFILENAME)s_%(ID)s.sh" >> jobStep1All.txt' % dict)
                     #os.system('condor_submit %(OUTFILENAME)s_%(ID)s.job' % dict)
                     os.system('sleep 0.5')                                
                     os.chdir('%s' % (runDir))

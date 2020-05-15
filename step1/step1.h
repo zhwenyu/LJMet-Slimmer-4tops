@@ -114,6 +114,7 @@ public :
    Float_t         MuTrkSF;
    Float_t         EGammaGsfSF;
    Float_t         triggerSF;
+   Float_t         triggerHadSF;
    Float_t         triggerXSF;
    Float_t         JetSF_80X;
    Float_t         JetSFup_80X;
