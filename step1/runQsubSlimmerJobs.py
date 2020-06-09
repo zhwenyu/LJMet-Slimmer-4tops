@@ -284,10 +284,11 @@ cp %(RUNDIR)s/makeStep1.sh .
 source makeStep1.sh %(FILENAME)s %(OUTFILENAME)s %(INPUTDIR)s/%(SAMPLE)s/%(INPATHSUFFIX)s %(OUTPUTDIR)s/%(OUTFILENAME)s '%(LIST)s' %(ID)s %(YEAR)s""" % dict)
                     jdf.close()
                     #os.chdir('%s/%s' % (condorDir,outsample))
-                    os.system('echo "qsub -q localgrid -o %(CONDORDIR)s/%(OUTFILENAME)s/%(OUTFILENAME)s_%(ID)s.out -e %(CONDORDIR)s/%(OUTFILENAME)s/%(OUTFILENAME)s_%(ID)s.err %(CONDORDIR)s/%(OUTFILENAME)s/%(OUTFILENAME)s_%(ID)s.sh" >> jobStep1All.txt' % dict)
+                    os.system('echo "qsub -q localgrid -o %(CONDORDIR)s/%(OUTFILENAME)s/%(OUTFILENAME)s_%(ID)s.out -e %(CONDORDIR)s/%(OUTFILENAME)s/%(OUTFILENAME)s_%(ID)s.err %(CONDORDIR)s/%(OUTFILENAME)s/%(OUTFILENAME)s_%(ID)s.sh" >> jobStep1All2.txt' % dict)
                     #os.system('condor_submit %(OUTFILENAME)s_%(ID)s.job' % dict)
                     os.system('sleep 0.5')                                
                     os.chdir('%s' % (runDir))
-                    print count, "jobs submitted!!!"
+                    print count, "job script created!!!"
+                    # print count, "jobs submitted!!!"
         
 print("--- %s minutes ---" % (round(time.time() - start_time, 2)/60))
