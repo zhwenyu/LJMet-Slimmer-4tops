@@ -1325,6 +1325,19 @@ void HardcodedConditions::GetHOTtaggingEff2016(double pt, double *eff, std::stri
 		else if(workingpoint=="10pfake"){*eff = hotEffs10p[bin];}
 		else{ std::cerr << "Working Point " << workingpoint << " not coded into HardcodedConditions::GetHOTtaggingEff2017! Aborting ..." << std::endl; std::abort();}
 		}
+	else if(sample=="ttbarHT500Njet9"){
+		ptMins = {0,150,250,300,350,400,450,500,550,600};
+		hotEffs1p = {0.407909294843,0.487360654607,0.554943124203,0.585792903693,0.607100158595,0.624351331646,0.610264067903,0.570180155956,0.529164477141,0.417211703959};
+		hotEffs2p = {0.568257255093,0.618534948399,0.665471923536,0.685199131064,0.698426253507,0.708109962688,0.696007544797,0.66415703146,0.621650026274,0.499139414802};
+		hotEffs5p = {0.736228265173,0.755602546717,0.781532684758,0.791745112238,0.799609613273,0.804949178711,0.792675259352,0.767410594246,0.723068838676,0.618244406196};
+		hotEffs10p= {0.834972644315,0.840545199623,0.854462214994,0.860637219406,0.867268512871,0.87095252391,0.857041810751,0.837859639688,0.800840777719,0.702925989673};
+		int bin = findBin(pt, ptMins);
+		if(workingpoint=="1pfake"){*eff = hotEffs1p[bin];}
+		else if(workingpoint=="2pfake"){*eff = hotEffs2p[bin];}
+		else if(workingpoint=="5pfake"){*eff = hotEffs5p[bin];}
+		else if(workingpoint=="10pfake"){*eff = hotEffs10p[bin];}
+		else{ std::cerr << "Working Point " << workingpoint << " not coded into HardcodedConditions::GetHOTtaggingEff2017! Aborting ..." << std::endl; std::abort();}
+		}
 	else if(sample=="ttbar"){
 		ptMins = {0,150,250,300,350,400,450,500,550,600};
 		hotEffs1p = {0.252959824309,0.361397414942,0.459087366036,0.504119254456,0.534357717034,0.550922369278,0.535451420581,0.492177755604,0.438544880534,0.298526640397};
