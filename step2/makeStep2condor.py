@@ -9,9 +9,9 @@ shift = sys.argv[1]
 foldnum = '-1'
 relbase   = '/user_data/jlee/TTTT/CMSSW_9_4_6_patch1/'
 # inputDir  = '/mnt/hadoop/users/ssagir/LJMet94X_1lepTT_020619_step1hadds/'+shift+'/'
-inputDir  = '/mnt/hadoop/store/user/jblee/TTTT/LJMet94X_1lep_013019_step1_hadds/'+shift+'/'
+inputDir  = '/eos/uscms/store/user/lpcljm/FWLJMET102X_1lep2017_Oct2019_4t_120419_step1hadds/'+shift+'/'
 # outputDir = '/mnt/hadoop/users/jlee/TTTT/LJMet94X_1lepTT_022219_step2/'+shift+'/'
-outputDir = '/mnt/hadoop/store/user/jblee/TTTT/LJMet94X_1lepTT_013019_step2/'+shift+'/'
+outputDir = '/store/user/lpcljm/FWLJMET102X_1lep2017_Oct2019_4t_12122019_step2/'+shift+'/'
 runDir=os.getcwd()
 gROOT.ProcessLine('.x compileStep2.C')
 
@@ -23,12 +23,13 @@ print 'Starting submission'
 count=0
 
 rootfiles = os.popen('ls '+inputDir)
-os.system('mkdir -p '+outputDir)
+#os.system('mkdir -p '+outputDir)
 os.system('mkdir -p '+condorDir)
 
+inputDir = inputDir[10:]
 for file in rootfiles:
     if 'root' not in file: continue
-    if 'TTTo' not in file: continue
+    if 'TTTT' not in file: continue
     rawname = file[:-6]
     count+=1
     dict={'RUNDIR':runDir, 'CONDORDIR':condorDir, 'INPUTDIR':inputDir, 'FILENAME':rawname, 'CMSSWBASE':relbase, 'OUTPUTDIR':outputDir}
@@ -37,6 +38,7 @@ for file in rootfiles:
     jdf=open(jdfName,'w')
     jdf.write(
 """universe = vanilla
+use_x509userproxy = true
 Executable = %(RUNDIR)s/makeStep2.sh
 Should_Transfer_Files = YES
 WhenToTransferOutput = ON_EXIT
@@ -55,6 +57,7 @@ Queue 1"""%dict)
     os.system('sleep 0.5')                                
     os.chdir('%s'%(runDir))
     print count, "jobs submitted!!!"
+    break # debug
 
 print("--- %s minutes ---" % (round(time.time() - start_time, 2)/60))
 

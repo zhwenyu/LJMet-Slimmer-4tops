@@ -43,7 +43,7 @@ vector<double>& v_BD_DCSV_jets,
 
 vector<double>* topPt_TTbarMassCalc,
 
-vector<double>* topWID_TTbarMassCalc,
+vector<int>* topWID_TTbarMassCalc,
 vector<double>* topWPt_TTbarMassCalc,
 vector<double>* topWEta_TTbarMassCalc,
 vector<double>* topWPhi_TTbarMassCalc,
@@ -272,12 +272,25 @@ TLorentzVector bestJet( const double corr_met_phi,
 
 
 void step2::Loop()
-{   
+{  
+
+   inputTree = (TTree*)inputFile->Get("ljmet");
+  if(inputTree->GetEntries()==0) {
+    std::cout<<"WARNING! Found 0 events in the tree!!!!"<<std::endl;
+    return;
+  }
+   Init(inputTree);
+ 
    if (inputTree == 0) return;
+inputTree->SetBranchStatus("*",1);
+   cout << " Start Loop ";
    outputFile->cd();
 //    gROOT->SetBatch(kTRUE);   
-   TTree *outputTree = inputTree->CloneTree(); //Copy of Input Tree
-//    TTree *outputTree = new TTree("ljmet","ljmet"); //No Copy of Input Tree   
+//    TTree *outputTree = inputTree->CloneTree(); //Copy of Input Tree
+//   cout << " after CloneTree " ;  // debug
+    TTree *outputTree = new TTree("ljmet","ljmet"); //No Copy of Input Tree   
+      cout << " after Create Tree " ; // debug
+
    TBranch *b_isTraining            = outputTree->Branch("isTraining",&isTraining,"isTraining/I");
    TBranch *b_xsecEff               = outputTree->Branch("xsecEff",&xsecEff,"xsecEff/F");
    TBranch *b_deltaR_minBB          = outputTree->Branch("deltaR_minBB",&deltaR_minBB,"deltaR_minBB/F");
@@ -392,6 +405,7 @@ void step2::Loop()
    TBranch *b_Aplanarity                = outputTree->Branch("Aplanarity",&Aplanarity,"Aplanarity/F");                              
 
    Long64_t nentries = inputTree->GetEntriesFast();
+   cout << " nentries = " << nentries; // debug
    Long64_t nbytes = 0, nb = 0;
    TLorentzVector bjet1, bjet2, jet1, jet2, jet3, lep, met, jetTmp, BestTOPjet1, BestTOPjet2, BestTOPjet3, BADTOPjet1, BADTOPjet2, BADTOPjet3, BestGenTop, BestGenTopW1, BestGenTopW2, BestGenTopb;   
    bool bool_TopMassCut = 0;
@@ -399,10 +413,14 @@ void step2::Loop()
    int allMatchingCount = 0;   
              
    for (Long64_t jentry=0; jentry<nentries;jentry++) {
+     cout << " Event # " << jentry << " "; // debug
      Long64_t ientry = LoadTree(jentry);
+   cout << " After LoadTree "; // debug
      if (ientry < 0) break;
      nb = inputTree->GetEntry(jentry);   nbytes += nb;
+  // cout << " After GetEntry ";
      if (Cut(ientry) != 1) continue;
+     if (jentry > 5000 ) break;  // debug
      if(jentry % 1000 ==0) std::cout<<"Completed "<<jentry<<" out of "<<nentries<<" events"<<std::endl;      
 
      std::vector<TLorentzVector> GoodRecoJet1;         
@@ -561,11 +579,13 @@ void step2::Loop()
 
 
      for(unsigned int ijet = 0; ijet < theJetPt_JetSubCalc_PtOrdered->size(); ijet++){
-		if(theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet) > 0.4941){
+//		if(theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet) > 0.4941){
+ 		if(theJetBTag_JetSubCalc_PtOrdered->at(ijet) == 1) {
 		   //changed to > in line above because we want jets that pass the csv cut 
 		   njetscsv+=1;
 		   totalPtCSV += theJetPt_JetSubCalc_PtOrdered->at(ijet);
-		   aveCSVpt += (theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet))*theJetPt_JetSubCalc_PtOrdered->at(ijet);
+//		   aveCSVpt += (theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet))*theJetPt_JetSubCalc_PtOrdered->at(ijet);
+		   aveCSVpt += theJetDeepFlavB_JetSubCalc_PtOrdered->at(ijet)*theJetPt_JetSubCalc_PtOrdered->at(ijet);
 		}
 
 		if (ijet==1){
@@ -580,14 +600,16 @@ void step2::Loop()
         		
         TLorentzVector jetTmp, bjetTmp;   		
 		jetTmp.SetPtEtaPhiE(theJetPt_JetSubCalc_PtOrdered->at(ijet),theJetEta_JetSubCalc_PtOrdered->at(ijet),theJetPhi_JetSubCalc_PtOrdered->at(ijet),theJetEnergy_JetSubCalc_PtOrdered->at(ijet));	
-        v_pair_jet_CSV.push_back(make_pair(jetTmp, theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet)));        
-        
+//        v_pair_jet_CSV.push_back(make_pair(jetTmp, theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet)));        
+	v_pair_jet_CSV.push_back(make_pair(jetTmp, theJetDeepFlavB_JetSubCalc_PtOrdered->at(ijet) ));       
+ 
         if((lep + jetTmp).M() < minMleppJet) {
           minMleppJet = fabs((lep + jetTmp).M());
           deltaR_lepJetInMinMljet  = jetTmp.DeltaR(lep);
           deltaPhi_lepJetInMinMljet = jetTmp.DeltaPhi(lep);
         }		
-		if(theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet) > 0.4941){        
+//		if(theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet) > 0.4941){        
+		if(theJetBTag_JetSubCalc_PtOrdered->at(ijet) == 1) {
           if((lep + jetTmp).M() < tmp_minMleppBjet) {
             tmp_minMleppBjet = fabs((lep + jetTmp).M() );
             deltaR_lepbJetInMinMlb = jetTmp.DeltaR(lep);
@@ -599,7 +621,8 @@ void step2::Loop()
         if (tmpJetInd==0){
             bjetTmp.SetPtEtaPhiE(theJetPt_JetSubCalc_PtOrdered->at(tmpJetInd),theJetEta_JetSubCalc_PtOrdered->at(tmpJetInd),theJetPhi_JetSubCalc_PtOrdered->at(tmpJetInd),theJetEnergy_JetSubCalc_PtOrdered->at(tmpJetInd)); 
             for(unsigned int ijet = 1; ijet < theJetPt_JetSubCalc_PtOrdered->size(); ijet++){        
-                if((theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet) > 0.4941) && stop == 0 ){
+//                if((theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet) > 0.4941) && stop == 0 ){
+		if((theJetBTag_JetSubCalc_PtOrdered->at(ijet) == 1) && stop == 0 ){
                     stop = 1;
                     bjetTmp.SetPtEtaPhiE(theJetPt_JetSubCalc_PtOrdered->at(ijet),theJetEta_JetSubCalc_PtOrdered->at(ijet),theJetPhi_JetSubCalc_PtOrdered->at(ijet),theJetEnergy_JetSubCalc_PtOrdered->at(ijet)); 
                     deltaR_lepbJetNotInMinMlb = bjetTmp.DeltaR(lep);        
@@ -609,7 +632,8 @@ void step2::Loop()
         if (tmpJetInd>0){        
             stop = 0;
             for(unsigned int ijet = 0; ijet < tmpJetInd; ijet++){        
-                if((theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet) > 0.4941) && stop == 0 ){
+//                if((theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet) > 0.4941) && stop == 0 ){
+		if((theJetBTag_JetSubCalc_PtOrdered->at(ijet) == 1) && stop == 0 ){
                     stop = 1;
                     bjetTmp.SetPtEtaPhiE(theJetPt_JetSubCalc_PtOrdered->at(ijet),theJetEta_JetSubCalc_PtOrdered->at(ijet),theJetPhi_JetSubCalc_PtOrdered->at(ijet),theJetEnergy_JetSubCalc_PtOrdered->at(ijet)); 
                     deltaR_lepbJetNotInMinMlb = bjetTmp.DeltaR(lep);        
@@ -617,7 +641,8 @@ void step2::Loop()
             }
             if (stop == 0){
                 for(unsigned int ijet = tmpJetInd+1; ijet < theJetPt_JetSubCalc_PtOrdered->size(); ijet++){        
-                    if((theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet) > 0.4941) && stop == 0 ){
+//                    if((theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet) > 0.4941) && stop == 0 ){
+		if((theJetBTag_JetSubCalc_PtOrdered->at(ijet) == 1) && stop == 0 ){	
                         stop = 1;
                         bjetTmp.SetPtEtaPhiE(theJetPt_JetSubCalc_PtOrdered->at(ijet),theJetEta_JetSubCalc_PtOrdered->at(ijet),theJetPhi_JetSubCalc_PtOrdered->at(ijet),theJetEnergy_JetSubCalc_PtOrdered->at(ijet)); 
                         deltaR_lepbJetNotInMinMlb = bjetTmp.DeltaR(lep);        
@@ -627,11 +652,16 @@ void step2::Loop()
         }     
 
 	    v_allJets.push_back(jetTmp);
-        v_DCSV_allJets.push_back(theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet));
-	    csvJet1 = theJetDeepCSVb_JetSubCalc_PtOrdered->at(0)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(0);
-	    csvJet2 = theJetDeepCSVb_JetSubCalc_PtOrdered->at(1)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(1);
-	    csvJet3 = theJetDeepCSVb_JetSubCalc_PtOrdered->at(2)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(2);
-	    csvJet4 = theJetDeepCSVb_JetSubCalc_PtOrdered->at(3)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(3);	    
+//        v_DCSV_allJets.push_back(theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet));
+//	    csvJet1 = theJetDeepCSVb_JetSubCalc_PtOrdered->at(0)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(0);
+//	    csvJet2 = theJetDeepCSVb_JetSubCalc_PtOrdered->at(1)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(1);
+//	    csvJet3 = theJetDeepCSVb_JetSubCalc_PtOrdered->at(2)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(2);
+//	    csvJet4 = theJetDeepCSVb_JetSubCalc_PtOrdered->at(3)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(3);	    
+	v_DCSV_allJets.push_back(theJetDeepFlavB_JetSubCalc_PtOrdered->at(ijet));
+	  csvJet1 = theJetDeepFlavB_JetSubCalc_PtOrdered->at(0);
+          csvJet2 = theJetDeepFlavB_JetSubCalc_PtOrdered->at(1);
+          csvJet3 = theJetDeepFlavB_JetSubCalc_PtOrdered->at(2);
+          csvJet4 = theJetDeepFlavB_JetSubCalc_PtOrdered->at(3);	  
         	    
 		totalJetPt+=theJetPt_JetSubCalc_PtOrdered->at(ijet);
 		totalJetE+=theJetEnergy_JetSubCalc_PtOrdered->at(ijet);
@@ -640,7 +670,8 @@ void step2::Loop()
 		if(min_deltaPhi_METjets>fabs(deltaPhifromMET_)){min_deltaPhi_METjets=fabs(deltaPhifromMET_);}
 		if(abs(deltaPhifromMET_)>TMath::Pi()/2){hemiout+=theJetPt_JetSubCalc_PtOrdered->at(ijet);}				
 		
-		if(!(theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet) > 0.4941)) continue; //without b-tag SFs
+//		if(!(theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet) > 0.4941)) continue; //without b-tag SFs
+		if(!(theJetBTag_JetSubCalc_PtOrdered->at(ijet) == 1) ) continue;
 		
 		bjet1.SetPtEtaPhiE(theJetPt_JetSubCalc_PtOrdered->at(ijet),theJetEta_JetSubCalc_PtOrdered->at(ijet),theJetPhi_JetSubCalc_PtOrdered->at(ijet),theJetEnergy_JetSubCalc_PtOrdered->at(ijet));	
 		HT_bjets+=theJetPt_JetSubCalc_PtOrdered->at(ijet);
@@ -667,7 +698,8 @@ void step2::Loop()
 		        
 		for(unsigned int jjet = ijet + 1; jjet < theJetPt_JetSubCalc_PtOrdered->size(); jjet++){
 		  if(jjet >= theJetPt_JetSubCalc_PtOrdered->size()) continue;
-		  if(!(theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet) > 0.4941)) continue; //without b-tag SFs	  
+//		  if(!(theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet) > 0.4941)) continue; //without b-tag SFs	  
+		  if(!(theJetBTag_JetSubCalc_PtOrdered->at(jjet) == 1) ) continue;
 		  bjet2.SetPtEtaPhiE(theJetPt_JetSubCalc_PtOrdered->at(jjet),theJetEta_JetSubCalc_PtOrdered->at(jjet),theJetPhi_JetSubCalc_PtOrdered->at(jjet),theJetEnergy_JetSubCalc_PtOrdered->at(jjet));		  
           MT2bb = mt2(bjet1,bjet2,met);
           deltaR_lepBJets1 = (bjet1).DeltaR(lep);		  
@@ -730,262 +762,262 @@ void step2::Loop()
 ////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////// trijet selection ///////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
-     bool mom_W = false;
-     bool WfromTop = false;
-     bool WnotFromTop = false;
-     if (isElectron==1){
-        for(int ind = 0; ind < elNumberOfMothers_MultiLepCalc->at(0); ind++){
-            if(abs(elMother_id_MultiLepCalc->at(ind))==24) {mom_W=true;}
-            if(abs(elMother_id_MultiLepCalc->at(ind))==6 && mom_W) {WfromTop=true;}            
-        }
-	 }  
-
-     if (isMuon==1){
-        for(int ind = 0; ind < muNumberOfMothers_MultiLepCalc->at(0); ind++){
-            if(abs(muMother_id_MultiLepCalc->at(ind))==24) {mom_W=true;}
-            if(abs(muMother_id_MultiLepCalc->at(ind))==6 && mom_W) {WfromTop=true;}            
-        }
-	 }
-
-     std::string bitmask(3,1);
-     bitmask.resize(v_allJets.size(),0);
-     double tempTtrijetMass = 0;
-     double Mag_Trijet = 1e9;         
-     double ScalarSumpT_Trijet = 1e9;
-     double DCSV_BestTOPjet1 = 0;
-     double DCSV_BestTOPjet2 = 0;
-     double DCSV_BestTOPjet3 = 0;  
-     double trijetVectSumPt = 0;  
-     GD_DCSV_jetNotdijet.clear();
-     GD_pTrat.clear();
-     nGD_trijet = -10;             
-    TLorentzVector genLepton;
-    int genLeptonCounter=0;
-
-    is_genMissingDaughter = false;
-    is_genFourTopsOnelepton = false;
-    
-    std::vector<TLorentzVector> genTops;
-    std::vector<double> v_minDR_GenRecoTop;
-        
-    if(topPt_TTbarMassCalc->size()*2 != topWPt_TTbarMassCalc->size()){
-        is_genMissingDaughter = true;
-    }
-
-    int genleptonCount = 0;
-    for(unsigned int nTop = 0; nTop < (topWID_TTbarMassCalc->size()); nTop++){
-        if(abs(topWID_TTbarMassCalc->at(nTop)) == 11 || abs(topWID_TTbarMassCalc->at(nTop)) == 13 || abs(topWID_TTbarMassCalc->at(nTop)) == 15){ 
-            genleptonCount++;
-        }
-    }
-    int num_genJets_passCuts = 0;
-    TLorentzVector tempGenWd1, tempGenWd2;    
-    TLorentzVector tempGenb;
-    
-    unsigned int nGenTop = 0;
-    if(isTTbar) nGenTop = 2;
-    if(isTTTT) nGenTop = 4;
-    if (topPt_TTbarMassCalc->size() == nGenTop && genleptonCount == 1 && !is_genMissingDaughter){
-        allLeptonicWcount++;
-        is_genFourTopsOnelepton = true;
-        for(unsigned int nTop = 0; nTop < topPt_TTbarMassCalc->size(); nTop++){
-            if(abs(topWID_TTbarMassCalc->at(nTop*2)) > 6 || abs(topWID_TTbarMassCalc->at(nTop*2+1)) > 6){ 
-                continue; 
-            }
-            tempGenWd1.SetPtEtaPhiE(topWPt_TTbarMassCalc->at(nTop*2),topWEta_TTbarMassCalc->at(nTop*2),topWPhi_TTbarMassCalc->at(nTop*2),topWEnergy_TTbarMassCalc->at(nTop*2));	
-            tempGenWd2.SetPtEtaPhiE(topWPt_TTbarMassCalc->at(nTop*2+1),topWEta_TTbarMassCalc->at(nTop*2+1),topWPhi_TTbarMassCalc->at(nTop*2+1),topWEnergy_TTbarMassCalc->at(nTop*2+1));	        
-            tempGenb.SetPtEtaPhiE(topbPt_TTbarMassCalc->at(nTop),topbEta_TTbarMassCalc->at(nTop),topbPhi_TTbarMassCalc->at(nTop),topbEnergy_TTbarMassCalc->at(nTop));
-            if((tempGenWd1.Pt()>30 && tempGenWd2.Pt()>30 && tempGenb.Pt()>30) && (tempGenWd1.Eta()<2.4 && tempGenWd2.Eta()<2.4 && tempGenb.Eta()<2.4)){num_genJets_passCuts++;}
-        }        
-    }
-    std::cout<<"is_genMissingDaughter : "<<is_genMissingDaughter<<std::endl;
-    std::cout<<"is_genFourTopsOnelepton : "<<is_genFourTopsOnelepton<<std::endl;    
-    std::cout<<"num_genJets_passCuts : "<<num_genJets_passCuts<<std::endl;        
-    std::cout<<"WfromTop : "<<WfromTop<<std::endl;            
-    if (!is_genMissingDaughter && is_genFourTopsOnelepton && num_genJets_passCuts>0 && (WfromTop)){
-        TLorentzVector tempGenTop;
-        TLorentzVector tempGenTopWd1, tempGenTopWd2;    
-        TLorentzVector tempGenTopb;
-
-        int idx_minDR = -10;
-        std::vector<double> v_deltalR;        
-        std::vector<TLorentzVector> v_GD_Trijets;                    
-        std::vector<TLorentzVector> v_GD_jets;                        
-        std::vector<double> v_GD_DCSV_jets;                            
-
-        std::vector<TLorentzVector> v_BD_Trijets;                    
-        std::vector<TLorentzVector> v_BD_jets;                        
-        std::vector<double> v_BD_DCSV_jets;                            
-        
-        Trijet(
-            v_trijet, 
-            v_DCSV_trijet, 
-            v_allJets, 
-            v_DCSV_allJets,
-
-            v_GD_Trijets,                    
-            v_GD_jets,                     
-            v_GD_DCSV_jets,                          
-
-            v_BD_Trijets,                   
-            v_BD_jets,                       
-            v_BD_DCSV_jets,                            
-
-            topPt_TTbarMassCalc,
-
-            topWID_TTbarMassCalc,
-            topWPt_TTbarMassCalc,
-            topWEta_TTbarMassCalc,
-            topWPhi_TTbarMassCalc,
-            topWEnergy_TTbarMassCalc,
-
-            topbPt_TTbarMassCalc,
-            topbEta_TTbarMassCalc,
-            topbPhi_TTbarMassCalc,
-            topbEnergy_TTbarMassCalc, 
-            num_GD_trijet,
-            num_BD_trijet
-        );  
-
-        nGD_trijet = num_GD_trijet;
-
-        double tempMinDR = 10000;
-        int tempBestTrijetIdx = -10;
-        if(v_GD_Trijets.size()>0){
-            for(unsigned int idx = 0; idx<v_GD_Trijets.size(); idx++){
-                for(unsigned int nTop = 0; nTop < topPt_TTbarMassCalc->size(); nTop++){
-                    if(abs(topWID_TTbarMassCalc->at(nTop*2)) > 6 || abs(topWID_TTbarMassCalc->at(nTop*2+1)) > 6){
-                        continue; 
-                    }
-                    tempGenTop.SetPtEtaPhiE(topPt_TTbarMassCalc->at(nTop),topEta_TTbarMassCalc->at(nTop),topPhi_TTbarMassCalc->at(nTop),topEnergy_TTbarMassCalc->at(nTop));
-                    if(v_GD_Trijets[idx].DeltaR(tempGenTop)<tempMinDR){
-                        tempMinDR = v_GD_Trijets[idx].DeltaR(tempGenTop);
-                        tempBestTrijetIdx = idx;
-                    }
-                }
-            }
-            if(num_genJets_passCuts == 2 and v_GD_Trijets.size()==1){
-                TLorentzVector testGenWd1, testGenWd2;
-                TLorentzVector testGenb;                
-                for(unsigned int nTop = 0; nTop < topPt_TTbarMassCalc->size(); nTop++){
-                    if(abs(topWID_TTbarMassCalc->at(nTop*2)) > 6 || abs(topWID_TTbarMassCalc->at(nTop*2+1)) > 6){ 
-                        continue; 
-                    }
-                    testGenWd1.SetPtEtaPhiE(topWPt_TTbarMassCalc->at(nTop*2),topWEta_TTbarMassCalc->at(nTop*2),topWPhi_TTbarMassCalc->at(nTop*2),topWEnergy_TTbarMassCalc->at(nTop*2));	
-                    testGenWd2.SetPtEtaPhiE(topWPt_TTbarMassCalc->at(nTop*2+1),topWEta_TTbarMassCalc->at(nTop*2+1),topWPhi_TTbarMassCalc->at(nTop*2+1),topWEnergy_TTbarMassCalc->at(nTop*2+1));	        
-                    testGenb.SetPtEtaPhiE(topbPt_TTbarMassCalc->at(nTop),topbEta_TTbarMassCalc->at(nTop),topbPhi_TTbarMassCalc->at(nTop),topbEnergy_TTbarMassCalc->at(nTop));
-                }
-            }
-            BestTOPjet1 = v_GD_jets[tempBestTrijetIdx*3];
-            BestTOPjet2 = v_GD_jets[tempBestTrijetIdx*3+1];
-            BestTOPjet3 = v_GD_jets[tempBestTrijetIdx*3+2];
-            DCSV_BestTOPjet1= v_GD_DCSV_jets[tempBestTrijetIdx*3];
-            DCSV_BestTOPjet2= v_GD_DCSV_jets[tempBestTrijetIdx*3+1];
-            DCSV_BestTOPjet3= v_GD_DCSV_jets[tempBestTrijetIdx*3+2];
-        
-            Mag_Trijet = (BestTOPjet1+BestTOPjet2+BestTOPjet3).Mag();
-            trijetVectSumPt = TMath::Sqrt(pow((BestTOPjet1+BestTOPjet2+BestTOPjet3).Px(),2)+pow((BestTOPjet1+BestTOPjet2+BestTOPjet3).Py(),2));
-            ScalarSumpT_Trijet = (BestTOPjet1.Pt()+BestTOPjet2.Pt()+BestTOPjet3.Pt());  
-            GD_pTrat.push_back(trijetVectSumPt/ScalarSumpT_Trijet);                                            
-            GD_Ttrijet_TopMass.push_back((BestTOPjet1+BestTOPjet2+BestTOPjet3).M());
-            double v_dr[3];
-            TLorentzVector dijet, jetNotdijet;     
-            v_dr[0] = BestTOPjet1.DeltaR(BestTOPjet2);
-            v_dr[1] = BestTOPjet1.DeltaR(BestTOPjet3);
-            v_dr[2] = BestTOPjet2.DeltaR(BestTOPjet3); 
-            int idx_minDR_jetCombo = std::min_element(v_dr, v_dr+3) - v_dr;
-            if(idx_minDR_jetCombo==0){
-             dijet = BestTOPjet1+BestTOPjet2;
-             jetNotdijet = BestTOPjet3;
-             GD_DCSV_jetNotdijet.push_back(DCSV_BestTOPjet3);
-            }
-            else if (idx_minDR_jetCombo==1){                                     
-             dijet = BestTOPjet1+BestTOPjet3;
-             jetNotdijet = BestTOPjet2;
-             GD_DCSV_jetNotdijet.push_back(DCSV_BestTOPjet2);         
-            }
-            else if (idx_minDR_jetCombo==2){
-             dijet = BestTOPjet2+BestTOPjet3;     
-             jetNotdijet = BestTOPjet1;
-             GD_DCSV_jetNotdijet.push_back(DCSV_BestTOPjet1);         
-            }
-            GD_Mass_minDR_dijet.push_back(dijet.M());
-            GD_DR_Tridijet.push_back((BestTOPjet1+BestTOPjet2+BestTOPjet3).DeltaR(dijet));
-            GD_DR_Trijet_jetNotdijet.push_back((BestTOPjet1+BestTOPjet2+BestTOPjet3).DeltaR(jetNotdijet));
-            TLorentzVector totalSumJetVect, totalSumJetVect_noTrijet;
-            for(unsigned int njet = 0; njet < v_allJets.size(); ++njet){
-            totalSumJetVect += v_allJets[njet];
-            }
-            totalSumJetVect_noTrijet = totalSumJetVect-BestTOPjet1-BestTOPjet2-BestTOPjet3;
-            MHRE = totalSumJetVect_noTrijet.M();
-            HTx = AK4HT-BestTOPjet1.Pt()-BestTOPjet2.Pt()-BestTOPjet3.Pt();
-        }
-        else{
-            GD_pTrat.clear();
-            GD_Ttrijet_TopMass.clear();
-            GD_DCSV_jetNotdijet.clear();
-            GD_Mass_minDR_dijet.clear();           
-            GD_DR_Tridijet.clear();
-            GD_DR_Trijet_jetNotdijet.clear();
-            MHRE = -10;
-            HTx = -10;            
-        }
-        double DCSV_BADTOPjet1=0;
-        double DCSV_BADTOPjet2=0;
-        double DCSV_BADTOPjet3=0;
-        trijetVectSumPt = 0;     
-        BD_pTrat.clear();
-        BD_DCSV_jetNotdijet.clear();
-        for (unsigned int idx = 0; idx < v_BD_Trijets.size(); idx++){
-            BADTOPjet1     = v_BD_jets[idx*3];
-            BADTOPjet2     = v_BD_jets[idx*3+1];                
-            BADTOPjet3     = v_BD_jets[idx*3+2];                            
-            DCSV_BADTOPjet1     = v_BD_DCSV_jets[idx*3];
-            DCSV_BADTOPjet2     = v_BD_DCSV_jets[idx*3+1];                
-            DCSV_BADTOPjet3     = v_BD_DCSV_jets[idx*3+2];     
-            BD_Ttrijet_TopMass.push_back((BADTOPjet1+BADTOPjet2+BADTOPjet3).M());        
-            double v_BADdr[3];
-            TLorentzVector BAD_dijet, jetNotdijet;     
-            v_BADdr[0] = BADTOPjet1.DeltaR(BADTOPjet2);
-            v_BADdr[1] = BADTOPjet2.DeltaR(BADTOPjet3);
-            v_BADdr[2] = BADTOPjet2.DeltaR(BADTOPjet3); 
-
-            int idx_minDR_jetCombo = std::min_element(v_BADdr, v_BADdr+3) - v_BADdr;
-            if(idx_minDR_jetCombo==0){
-                BAD_dijet = BADTOPjet1+BADTOPjet2;
-                jetNotdijet = BADTOPjet3;
-                BD_DCSV_jetNotdijet.push_back(DCSV_BADTOPjet3);
-            }
-            else if (idx_minDR_jetCombo==1){                                     
-                BAD_dijet = BADTOPjet1+BADTOPjet3;
-                jetNotdijet = BADTOPjet2;
-                BD_DCSV_jetNotdijet.push_back(DCSV_BADTOPjet2);
-            } 
-            else if (idx_minDR_jetCombo==2){ 
-                BAD_dijet = BADTOPjet2+BADTOPjet3;     
-                jetNotdijet = BADTOPjet1;
-                BD_DCSV_jetNotdijet.push_back(DCSV_BADTOPjet1);
-            }
-            BD_Mass_minDR_dijet.push_back(BAD_dijet.M());
-            trijetVectSumPt = TMath::Sqrt(pow((BADTOPjet1+BADTOPjet2+BADTOPjet3).Px(),2)+pow((BADTOPjet1+BADTOPjet2+BADTOPjet3).Py(),2));
-            ScalarSumpT_Trijet = (BADTOPjet1.Pt()+BADTOPjet2.Pt()+BADTOPjet3.Pt());
-            BD_pTrat.push_back(trijetVectSumPt/ScalarSumpT_Trijet);
-            BD_DR_Tridijet.push_back((BADTOPjet1+BADTOPjet2+BADTOPjet3).DeltaR(BAD_dijet));                                                                            
-            BD_DR_Trijet_jetNotdijet.push_back((BADTOPjet1+BADTOPjet2+BADTOPjet3).DeltaR(jetNotdijet));
-        }
-    }
-    else{
-        GD_pTrat.clear();
-        GD_Ttrijet_TopMass.clear();
-        GD_DCSV_jetNotdijet.clear();
-        GD_Mass_minDR_dijet.clear();           
-        GD_DR_Tridijet.clear();
-        GD_DR_Trijet_jetNotdijet.clear();    
-        num_GD_trijet = -10;
-        num_BD_trijet = -10;            
-        MHRE = -10;
-        HTx = -10;            
-    }
+//     bool mom_W = false;
+//     bool WfromTop = false;
+//     bool WnotFromTop = false;
+//     if (isElectron==1){
+//        for(int ind = 0; ind < elNumberOfMothers_MultiLepCalc->at(0); ind++){
+//            if(abs(elMother_id_MultiLepCalc->at(ind))==24) {mom_W=true;}
+//            if(abs(elMother_id_MultiLepCalc->at(ind))==6 && mom_W) {WfromTop=true;}            
+//        }
+//	 }  
+//
+//     if (isMuon==1){
+//        for(int ind = 0; ind < muNumberOfMothers_MultiLepCalc->at(0); ind++){
+//            if(abs(muMother_id_MultiLepCalc->at(ind))==24) {mom_W=true;}
+//            if(abs(muMother_id_MultiLepCalc->at(ind))==6 && mom_W) {WfromTop=true;}            
+//        }
+//	 }
+//
+//     std::string bitmask(3,1);
+//     bitmask.resize(v_allJets.size(),0);
+//     double tempTtrijetMass = 0;
+//     double Mag_Trijet = 1e9;         
+//     double ScalarSumpT_Trijet = 1e9;
+//     double DCSV_BestTOPjet1 = 0;
+//     double DCSV_BestTOPjet2 = 0;
+//     double DCSV_BestTOPjet3 = 0;  
+//     double trijetVectSumPt = 0;  
+//     GD_DCSV_jetNotdijet.clear();
+//     GD_pTrat.clear();
+//     nGD_trijet = -10;             
+//    TLorentzVector genLepton;
+//    int genLeptonCounter=0;
+//
+//    is_genMissingDaughter = false;
+//    is_genFourTopsOnelepton = false;
+//    
+//    std::vector<TLorentzVector> genTops;
+//    std::vector<double> v_minDR_GenRecoTop;
+//        
+//    if(topPt_TTbarMassCalc->size()*2 != topWPt_TTbarMassCalc->size()){
+//        is_genMissingDaughter = true;
+//    }
+//
+//    int genleptonCount = 0;
+//    for(unsigned int nTop = 0; nTop < (topWID_TTbarMassCalc->size()); nTop++){
+//        if(abs(topWID_TTbarMassCalc->at(nTop)) == 11 || abs(topWID_TTbarMassCalc->at(nTop)) == 13 || abs(topWID_TTbarMassCalc->at(nTop)) == 15){ 
+//            genleptonCount++;
+//        }
+//    }
+//    int num_genJets_passCuts = 0;
+//    TLorentzVector tempGenWd1, tempGenWd2;    
+//    TLorentzVector tempGenb;
+//    
+//    unsigned int nGenTop = 0;
+//    if(isTTbar) nGenTop = 2;
+//    if(isTTTT) nGenTop = 4;
+//    if (topPt_TTbarMassCalc->size() == nGenTop && genleptonCount == 1 && !is_genMissingDaughter){
+//        allLeptonicWcount++;
+//        is_genFourTopsOnelepton = true;
+//        for(unsigned int nTop = 0; nTop < topPt_TTbarMassCalc->size(); nTop++){
+//            if(abs(topWID_TTbarMassCalc->at(nTop*2)) > 6 || abs(topWID_TTbarMassCalc->at(nTop*2+1)) > 6){ 
+//                continue; 
+//            }
+//            tempGenWd1.SetPtEtaPhiE(topWPt_TTbarMassCalc->at(nTop*2),topWEta_TTbarMassCalc->at(nTop*2),topWPhi_TTbarMassCalc->at(nTop*2),topWEnergy_TTbarMassCalc->at(nTop*2));	
+//            tempGenWd2.SetPtEtaPhiE(topWPt_TTbarMassCalc->at(nTop*2+1),topWEta_TTbarMassCalc->at(nTop*2+1),topWPhi_TTbarMassCalc->at(nTop*2+1),topWEnergy_TTbarMassCalc->at(nTop*2+1));	        
+//            tempGenb.SetPtEtaPhiE(topbPt_TTbarMassCalc->at(nTop),topbEta_TTbarMassCalc->at(nTop),topbPhi_TTbarMassCalc->at(nTop),topbEnergy_TTbarMassCalc->at(nTop));
+//            if((tempGenWd1.Pt()>30 && tempGenWd2.Pt()>30 && tempGenb.Pt()>30) && (tempGenWd1.Eta()<2.4 && tempGenWd2.Eta()<2.4 && tempGenb.Eta()<2.4)){num_genJets_passCuts++;}
+//        }        
+//    }
+//    std::cout<<"is_genMissingDaughter : "<<is_genMissingDaughter<<std::endl;
+//    std::cout<<"is_genFourTopsOnelepton : "<<is_genFourTopsOnelepton<<std::endl;    
+//    std::cout<<"num_genJets_passCuts : "<<num_genJets_passCuts<<std::endl;        
+//    std::cout<<"WfromTop : "<<WfromTop<<std::endl;            
+//    if (!is_genMissingDaughter && is_genFourTopsOnelepton && num_genJets_passCuts>0 && (WfromTop)){
+//        TLorentzVector tempGenTop;
+//        TLorentzVector tempGenTopWd1, tempGenTopWd2;    
+//        TLorentzVector tempGenTopb;
+//
+//        int idx_minDR = -10;
+//        std::vector<double> v_deltalR;        
+//        std::vector<TLorentzVector> v_GD_Trijets;                    
+//        std::vector<TLorentzVector> v_GD_jets;                        
+//        std::vector<double> v_GD_DCSV_jets;                            
+//
+//        std::vector<TLorentzVector> v_BD_Trijets;                    
+//        std::vector<TLorentzVector> v_BD_jets;                        
+//        std::vector<double> v_BD_DCSV_jets;                            
+//        
+//        Trijet(
+//            v_trijet, 
+//            v_DCSV_trijet, 
+//            v_allJets, 
+//            v_DCSV_allJets,
+//
+//            v_GD_Trijets,                    
+//            v_GD_jets,                     
+//            v_GD_DCSV_jets,                          
+//
+//            v_BD_Trijets,                   
+//            v_BD_jets,                       
+//            v_BD_DCSV_jets,                            
+//
+//            topPt_TTbarMassCalc,
+//
+//            topWID_TTbarMassCalc,
+//            topWPt_TTbarMassCalc,
+//            topWEta_TTbarMassCalc,
+//            topWPhi_TTbarMassCalc,
+//            topWEnergy_TTbarMassCalc,
+//
+//            topbPt_TTbarMassCalc,
+//            topbEta_TTbarMassCalc,
+//            topbPhi_TTbarMassCalc,
+//            topbEnergy_TTbarMassCalc, 
+//            num_GD_trijet,
+//            num_BD_trijet
+//        );  
+//
+//        nGD_trijet = num_GD_trijet;
+//
+//        double tempMinDR = 10000;
+//        int tempBestTrijetIdx = -10;
+//        if(v_GD_Trijets.size()>0){
+//            for(unsigned int idx = 0; idx<v_GD_Trijets.size(); idx++){
+//                for(unsigned int nTop = 0; nTop < topPt_TTbarMassCalc->size(); nTop++){
+//                    if(abs(topWID_TTbarMassCalc->at(nTop*2)) > 6 || abs(topWID_TTbarMassCalc->at(nTop*2+1)) > 6){
+//                        continue; 
+//                    }
+//                    tempGenTop.SetPtEtaPhiE(topPt_TTbarMassCalc->at(nTop),topEta_TTbarMassCalc->at(nTop),topPhi_TTbarMassCalc->at(nTop),topEnergy_TTbarMassCalc->at(nTop));
+//                    if(v_GD_Trijets[idx].DeltaR(tempGenTop)<tempMinDR){
+//                        tempMinDR = v_GD_Trijets[idx].DeltaR(tempGenTop);
+//                        tempBestTrijetIdx = idx;
+//                    }
+//                }
+//            }
+//            if(num_genJets_passCuts == 2 and v_GD_Trijets.size()==1){
+//                TLorentzVector testGenWd1, testGenWd2;
+//                TLorentzVector testGenb;                
+//                for(unsigned int nTop = 0; nTop < topPt_TTbarMassCalc->size(); nTop++){
+//                    if(abs(topWID_TTbarMassCalc->at(nTop*2)) > 6 || abs(topWID_TTbarMassCalc->at(nTop*2+1)) > 6){ 
+//                        continue; 
+//                    }
+//                    testGenWd1.SetPtEtaPhiE(topWPt_TTbarMassCalc->at(nTop*2),topWEta_TTbarMassCalc->at(nTop*2),topWPhi_TTbarMassCalc->at(nTop*2),topWEnergy_TTbarMassCalc->at(nTop*2));	
+//                    testGenWd2.SetPtEtaPhiE(topWPt_TTbarMassCalc->at(nTop*2+1),topWEta_TTbarMassCalc->at(nTop*2+1),topWPhi_TTbarMassCalc->at(nTop*2+1),topWEnergy_TTbarMassCalc->at(nTop*2+1));	        
+//                    testGenb.SetPtEtaPhiE(topbPt_TTbarMassCalc->at(nTop),topbEta_TTbarMassCalc->at(nTop),topbPhi_TTbarMassCalc->at(nTop),topbEnergy_TTbarMassCalc->at(nTop));
+//                }
+//            }
+//            BestTOPjet1 = v_GD_jets[tempBestTrijetIdx*3];
+//            BestTOPjet2 = v_GD_jets[tempBestTrijetIdx*3+1];
+//            BestTOPjet3 = v_GD_jets[tempBestTrijetIdx*3+2];
+//            DCSV_BestTOPjet1= v_GD_DCSV_jets[tempBestTrijetIdx*3];
+//            DCSV_BestTOPjet2= v_GD_DCSV_jets[tempBestTrijetIdx*3+1];
+//            DCSV_BestTOPjet3= v_GD_DCSV_jets[tempBestTrijetIdx*3+2];
+//        
+//            Mag_Trijet = (BestTOPjet1+BestTOPjet2+BestTOPjet3).Mag();
+//            trijetVectSumPt = TMath::Sqrt(pow((BestTOPjet1+BestTOPjet2+BestTOPjet3).Px(),2)+pow((BestTOPjet1+BestTOPjet2+BestTOPjet3).Py(),2));
+//            ScalarSumpT_Trijet = (BestTOPjet1.Pt()+BestTOPjet2.Pt()+BestTOPjet3.Pt());  
+//            GD_pTrat.push_back(trijetVectSumPt/ScalarSumpT_Trijet);                                            
+//            GD_Ttrijet_TopMass.push_back((BestTOPjet1+BestTOPjet2+BestTOPjet3).M());
+//            double v_dr[3];
+//            TLorentzVector dijet, jetNotdijet;     
+//            v_dr[0] = BestTOPjet1.DeltaR(BestTOPjet2);
+//            v_dr[1] = BestTOPjet1.DeltaR(BestTOPjet3);
+//            v_dr[2] = BestTOPjet2.DeltaR(BestTOPjet3); 
+//            int idx_minDR_jetCombo = std::min_element(v_dr, v_dr+3) - v_dr;
+//            if(idx_minDR_jetCombo==0){
+//             dijet = BestTOPjet1+BestTOPjet2;
+//             jetNotdijet = BestTOPjet3;
+//             GD_DCSV_jetNotdijet.push_back(DCSV_BestTOPjet3);
+//            }
+//            else if (idx_minDR_jetCombo==1){                                     
+//             dijet = BestTOPjet1+BestTOPjet3;
+//             jetNotdijet = BestTOPjet2;
+//             GD_DCSV_jetNotdijet.push_back(DCSV_BestTOPjet2);         
+//            }
+//            else if (idx_minDR_jetCombo==2){
+//             dijet = BestTOPjet2+BestTOPjet3;     
+//             jetNotdijet = BestTOPjet1;
+//             GD_DCSV_jetNotdijet.push_back(DCSV_BestTOPjet1);         
+//            }
+//            GD_Mass_minDR_dijet.push_back(dijet.M());
+//            GD_DR_Tridijet.push_back((BestTOPjet1+BestTOPjet2+BestTOPjet3).DeltaR(dijet));
+//            GD_DR_Trijet_jetNotdijet.push_back((BestTOPjet1+BestTOPjet2+BestTOPjet3).DeltaR(jetNotdijet));
+//            TLorentzVector totalSumJetVect, totalSumJetVect_noTrijet;
+//            for(unsigned int njet = 0; njet < v_allJets.size(); ++njet){
+//            totalSumJetVect += v_allJets[njet];
+//            }
+//            totalSumJetVect_noTrijet = totalSumJetVect-BestTOPjet1-BestTOPjet2-BestTOPjet3;
+//            MHRE = totalSumJetVect_noTrijet.M();
+//            HTx = AK4HT-BestTOPjet1.Pt()-BestTOPjet2.Pt()-BestTOPjet3.Pt();
+//        }
+//        else{
+//            GD_pTrat.clear();
+//            GD_Ttrijet_TopMass.clear();
+//            GD_DCSV_jetNotdijet.clear();
+//            GD_Mass_minDR_dijet.clear();           
+//            GD_DR_Tridijet.clear();
+//            GD_DR_Trijet_jetNotdijet.clear();
+//            MHRE = -10;
+//            HTx = -10;            
+//        }
+//        double DCSV_BADTOPjet1=0;
+//        double DCSV_BADTOPjet2=0;
+//        double DCSV_BADTOPjet3=0;
+//        trijetVectSumPt = 0;     
+//        BD_pTrat.clear();
+//        BD_DCSV_jetNotdijet.clear();
+//        for (unsigned int idx = 0; idx < v_BD_Trijets.size(); idx++){
+//            BADTOPjet1     = v_BD_jets[idx*3];
+//            BADTOPjet2     = v_BD_jets[idx*3+1];                
+//            BADTOPjet3     = v_BD_jets[idx*3+2];                            
+//            DCSV_BADTOPjet1     = v_BD_DCSV_jets[idx*3];
+//            DCSV_BADTOPjet2     = v_BD_DCSV_jets[idx*3+1];                
+//            DCSV_BADTOPjet3     = v_BD_DCSV_jets[idx*3+2];     
+//            BD_Ttrijet_TopMass.push_back((BADTOPjet1+BADTOPjet2+BADTOPjet3).M());        
+//            double v_BADdr[3];
+//            TLorentzVector BAD_dijet, jetNotdijet;     
+//            v_BADdr[0] = BADTOPjet1.DeltaR(BADTOPjet2);
+//            v_BADdr[1] = BADTOPjet2.DeltaR(BADTOPjet3);
+//            v_BADdr[2] = BADTOPjet2.DeltaR(BADTOPjet3); 
+//
+//            int idx_minDR_jetCombo = std::min_element(v_BADdr, v_BADdr+3) - v_BADdr;
+//            if(idx_minDR_jetCombo==0){
+//                BAD_dijet = BADTOPjet1+BADTOPjet2;
+//                jetNotdijet = BADTOPjet3;
+//                BD_DCSV_jetNotdijet.push_back(DCSV_BADTOPjet3);
+//            }
+//            else if (idx_minDR_jetCombo==1){                                     
+//                BAD_dijet = BADTOPjet1+BADTOPjet3;
+//                jetNotdijet = BADTOPjet2;
+//                BD_DCSV_jetNotdijet.push_back(DCSV_BADTOPjet2);
+//            } 
+//            else if (idx_minDR_jetCombo==2){ 
+//                BAD_dijet = BADTOPjet2+BADTOPjet3;     
+//                jetNotdijet = BADTOPjet1;
+//                BD_DCSV_jetNotdijet.push_back(DCSV_BADTOPjet1);
+//            }
+//            BD_Mass_minDR_dijet.push_back(BAD_dijet.M());
+//            trijetVectSumPt = TMath::Sqrt(pow((BADTOPjet1+BADTOPjet2+BADTOPjet3).Px(),2)+pow((BADTOPjet1+BADTOPjet2+BADTOPjet3).Py(),2));
+//            ScalarSumpT_Trijet = (BADTOPjet1.Pt()+BADTOPjet2.Pt()+BADTOPjet3.Pt());
+//            BD_pTrat.push_back(trijetVectSumPt/ScalarSumpT_Trijet);
+//            BD_DR_Tridijet.push_back((BADTOPjet1+BADTOPjet2+BADTOPjet3).DeltaR(BAD_dijet));                                                                            
+//            BD_DR_Trijet_jetNotdijet.push_back((BADTOPjet1+BADTOPjet2+BADTOPjet3).DeltaR(jetNotdijet));
+//        }
+//    }
+//    else{
+//        GD_pTrat.clear();
+//        GD_Ttrijet_TopMass.clear();
+//        GD_DCSV_jetNotdijet.clear();
+//        GD_Mass_minDR_dijet.clear();           
+//        GD_DR_Tridijet.clear();
+//        GD_DR_Trijet_jetNotdijet.clear();    
+//        num_GD_trijet = -10;
+//        num_BD_trijet = -10;            
+//        MHRE = -10;
+//        HTx = -10;            
+//    }
     
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -1018,14 +1050,14 @@ void step2::Loop()
       TLorentzVector jet1_W, jet2_W;
       // FIND LIGHT PAIRS
 	  for(unsigned int ijet = 0; ijet < theJetPt_JetSubCalc_PtOrdered->size(); ijet++){
-		if((theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet) > 0.4941)) continue; //without b-tag SFs
-
+//		if((theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet) > 0.4941)) continue; //without b-tag SFs
+		if(theJetBTag_JetSubCalc_PtOrdered->at(ijet) == 1 ) continue;
 		jet1.SetPtEtaPhiE(theJetPt_JetSubCalc_PtOrdered->at(ijet),theJetEta_JetSubCalc_PtOrdered->at(ijet),theJetPhi_JetSubCalc_PtOrdered->at(ijet),theJetEnergy_JetSubCalc_PtOrdered->at(ijet));
 
 		for(unsigned int jjet = ijet + 1; jjet < theJetPt_JetSubCalc_PtOrdered->size(); jjet++){
 		  if(jjet >= theJetPt_JetSubCalc_PtOrdered->size()) continue;
-		  if((theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet) > 0.4941)) continue; //without b-tag SFs
-	  
+//		  if((theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet) > 0.4941)) continue; //without b-tag SFs
+	          if(theJetBTag_JetSubCalc_PtOrdered->at(jjet) == 1 ) continue; 
 		  jet2.SetPtEtaPhiE(theJetPt_JetSubCalc_PtOrdered->at(jjet),theJetEta_JetSubCalc_PtOrdered->at(jjet),theJetPhi_JetSubCalc_PtOrdered->at(jjet),theJetEnergy_JetSubCalc_PtOrdered->at(jjet));
 
 		  double pairdr = (jet1).DeltaR(jet2);
@@ -1105,7 +1137,8 @@ void step2::Loop()
       PtFifthJet = -1;
       int fifthJetInd = 0;
       for(unsigned int ijet = 0; ijet < theJetPt_JetSubCalc_PtOrdered->size(); ijet++){
-		    if(theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet) > 0.4941){        
+//		    if(theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet) > 0.4941){        
+		    if(theJetBTag_JetSubCalc_PtOrdered->at(ijet) == 1 ) {
       		fifthJetInd+=1;
       		if(fifthJetInd==5){PtFifthJet=theJetPt_JetSubCalc_PtOrdered->at(ijet);}
       		if(fifthJetInd>=5) break;
@@ -1113,7 +1146,8 @@ void step2::Loop()
       	}
       if(fifthJetInd<5){
 		for(unsigned int ijet = 0; ijet < theJetPt_JetSubCalc_PtOrdered->size(); ijet++){
-	    	if(theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet) < 0.4941){        
+//	    	if(theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet) < 0.4941){        
+		if(!(theJetBTag_JetSubCalc_PtOrdered->at(ijet) == 1) ) {
 			fifthJetInd+=1;
 			if(fifthJetInd==5){PtFifthJet=theJetPt_JetSubCalc_PtOrdered->at(ijet);}
 			}
@@ -1155,113 +1189,115 @@ void step2::Loop()
 	  Aplanarity = 1.5 * ( (*_pv)[2] );	  
 //////////////////////////////////////////////////////////////////////////////////     	  
 	  
-	  b_isTraining->Fill();
-      b_xsecEff->Fill();
-	  b_deltaR_minBB->Fill();
-	  b_aveBBdr->Fill();
-	  b_deltaEta_maxBB->Fill();
-	  b_FW_momentum_2->Fill();
-	  b_centrality->Fill();
-	  b_aveCSVpt->Fill();
-	  b_mass_maxJJJpt->Fill();
-	  b_lepDR_minBBdr->Fill();
-	  b_HT_bjets->Fill();
-	  b_HT_ratio->Fill();
-	  b_HT_2m->Fill();
-	  b_firstcsvb_bb->Fill();
-	  b_secondcsvb_bb->Fill();
-	  b_thirdcsvb_bb->Fill();
-	  b_fourthcsvb_bb->Fill();
-	  b_PtFifthJet->Fill();
-      b_MHRE->Fill();
-      b_HTx->Fill();
-	  b_mass_lepJets0->Fill();
-	  b_mass_lepJets1->Fill();
-	  b_mass_lepJets2->Fill();	  	  
-	  b_mass_minBBdr->Fill();
-	  b_mass_minLLdr->Fill();
-	  b_mass_maxBBpt->Fill();
-	  b_mass_maxBBmass->Fill();
-	  b_theJetLeadPt->Fill();
-	  b_deltaR_lepBJets0->Fill();
-	  b_deltaR_lepBJets1->Fill();	  
-	  b_minDR_lepBJet->Fill();
-	  b_minBBdr->Fill();
-	  b_mass_lepBJet0->Fill();
-	  b_mass_lepBB_minBBdr->Fill();
-	  b_mass_lepJJ_minJJdr->Fill();
-	  b_mass_lepBJet_mindr->Fill();
-	  b_deltaR_lepBJet_maxpt->Fill();
-	  b_deltaPhi_maxBB->Fill();
-	  b_hemiout->Fill();
-	  b_corr_met->Fill();
-	  b_deltaPhi_lepMET->Fill();
-	  b_min_deltaPhi_METjets->Fill();
-	  b_deltaPhi_METjets->Fill();
-	  b_aveCSV->Fill();
-	  b_deltaPhi_j1j2->Fill();
-	  b_alphaT->Fill();
-	  b_FW_momentum_0->Fill();
-	  b_FW_momentum_1->Fill();
-	  b_FW_momentum_3->Fill();
-	  b_FW_momentum_4->Fill();
-	  b_FW_momentum_5->Fill();
-	  b_FW_momentum_6->Fill();
-      b_csvJet1->Fill();
-      b_csvJet2->Fill();
-      b_csvJet3->Fill();
-      b_csvJet4->Fill();      
-	  b_GD_pTrat->Fill();
-	  b_BD_pTrat->Fill();	  
-      b_GD_DR_Tridijet->Fill();
-	  b_BD_DR_Tridijet->Fill();
-	  b_GD_Ttrijet_TopMass->Fill();
-	  b_BD_Ttrijet_TopMass->Fill();
-      b_GD_DCSV_jetNotdijet->Fill();
-      b_BD_DCSV_jetNotdijet->Fill();      
-	  b_GD_Mass_minDR_dijet->Fill();	  
-	  b_BD_Mass_minDR_dijet->Fill();	  	  
-	  b_GD_DR_Trijet_jetNotdijet->Fill();
-	  b_BD_DR_Trijet_jetNotdijet->Fill();
-	  b_deltaR_lepbJetNotInMinMlb->Fill();
-	  b_deltaR_lepJetInMinMljet->Fill();
-	  b_deltaPhi_lepJetInMinMljet->Fill();	  
-	  b_deltaR_lepbJetInMinMlb->Fill();
-	  b_deltaPhi_lepbJetInMinMlb->Fill();	  
-	  b_HT_woBESTjet->Fill();	  
-	  b_MT_woBESTjet->Fill();	  
-	  b_PT_woBESTjet->Fill();	  
-	  b_M_woBESTjet->Fill();
-	  b_M_allJet_W->Fill();
-	  b_ratio_HTdHT4leadjets->Fill();
-	  b_W_PtdM->Fill();	 
-	  b_pTjet5_6->Fill(); 
-      b_mean_csv->Fill();
-	  b_invM_jet34->Fill(); 
-	  b_invM_jet35->Fill(); 
-	  b_invM_jet36->Fill(); 
-	  b_invM_jet45->Fill(); 
-	  b_invM_jet46->Fill(); 
-	  b_invM_jet56->Fill(); 
-      b_Sphericity->Fill(); 
-      b_Aplanarity->Fill(); 
-      b_pT_3rdcsvJet->Fill(); //added 31 March 2019
-      b_pT_4thcsvJet->Fill(); //added 31 March 2019
-      b_pt3HT->Fill();       // added 31 March 2019
-      b_pt4HT->Fill();      // added 31 March 2019
-      b_MT2bb->Fill();     // added 31 March 2019
-      b_minMleppJet->Fill(); //added 31 March 2019 //this is minimum lep jet mass for any jet, not specifically light
-      b_nGD_trijet->Fill();
-      b_is_genMissingDaughter->Fill();
-      b_is_genFourTopsOnelepton->Fill();      
-      b_secondJetPt->Fill(); 
-      b_fifthJetPt->Fill(); 
-      b_sixthJetPt->Fill(); 
+//	  b_isTraining->Fill();
+//      b_xsecEff->Fill();
+//	  b_deltaR_minBB->Fill();
+//	  b_aveBBdr->Fill();
+//	  b_deltaEta_maxBB->Fill();
+//	  b_FW_momentum_2->Fill();
+//	  b_centrality->Fill();
+//	  b_aveCSVpt->Fill();
+//	  b_mass_maxJJJpt->Fill();
+//	  b_lepDR_minBBdr->Fill();
+//	  b_HT_bjets->Fill();
+//	  b_HT_ratio->Fill();
+//	  b_HT_2m->Fill();
+//	  b_firstcsvb_bb->Fill();
+//	  b_secondcsvb_bb->Fill();
+//	  b_thirdcsvb_bb->Fill();
+//	  b_fourthcsvb_bb->Fill();
+//	  b_PtFifthJet->Fill();
+//      b_MHRE->Fill();
+//      b_HTx->Fill();
+//	  b_mass_lepJets0->Fill();
+//	  b_mass_lepJets1->Fill();
+//	  b_mass_lepJets2->Fill();	  	  
+//	  b_mass_minBBdr->Fill();
+//	  b_mass_minLLdr->Fill();
+//	  b_mass_maxBBpt->Fill();
+//	  b_mass_maxBBmass->Fill();
+//	  b_theJetLeadPt->Fill();
+//	  b_deltaR_lepBJets0->Fill();
+//	  b_deltaR_lepBJets1->Fill();	  
+//	  b_minDR_lepBJet->Fill();
+//	  b_minBBdr->Fill();
+//	  b_mass_lepBJet0->Fill();
+//	  b_mass_lepBB_minBBdr->Fill();
+//	  b_mass_lepJJ_minJJdr->Fill();
+//	  b_mass_lepBJet_mindr->Fill();
+//	  b_deltaR_lepBJet_maxpt->Fill();
+//	  b_deltaPhi_maxBB->Fill();
+//	  b_hemiout->Fill();
+//	  b_corr_met->Fill();
+//	  b_deltaPhi_lepMET->Fill();
+//	  b_min_deltaPhi_METjets->Fill();
+//	  b_deltaPhi_METjets->Fill();
+//	  b_aveCSV->Fill();
+//	  b_deltaPhi_j1j2->Fill();
+//	  b_alphaT->Fill();
+//	  b_FW_momentum_0->Fill();
+//	  b_FW_momentum_1->Fill();
+//	  b_FW_momentum_3->Fill();
+//	  b_FW_momentum_4->Fill();
+//	  b_FW_momentum_5->Fill();
+//	  b_FW_momentum_6->Fill();
+//      b_csvJet1->Fill();
+//      b_csvJet2->Fill();
+//      b_csvJet3->Fill();
+//      b_csvJet4->Fill();      
+//	  b_GD_pTrat->Fill();
+//	  b_BD_pTrat->Fill();	  
+//      b_GD_DR_Tridijet->Fill();
+//	  b_BD_DR_Tridijet->Fill();
+//	  b_GD_Ttrijet_TopMass->Fill();
+//	  b_BD_Ttrijet_TopMass->Fill();
+//      b_GD_DCSV_jetNotdijet->Fill();
+//      b_BD_DCSV_jetNotdijet->Fill();      
+//	  b_GD_Mass_minDR_dijet->Fill();	  
+//	  b_BD_Mass_minDR_dijet->Fill();	  	  
+//	  b_GD_DR_Trijet_jetNotdijet->Fill();
+//	  b_BD_DR_Trijet_jetNotdijet->Fill();
+//	  b_deltaR_lepbJetNotInMinMlb->Fill();
+//	  b_deltaR_lepJetInMinMljet->Fill();
+//	  b_deltaPhi_lepJetInMinMljet->Fill();	  
+//	  b_deltaR_lepbJetInMinMlb->Fill();
+//	  b_deltaPhi_lepbJetInMinMlb->Fill();	  
+//	  b_HT_woBESTjet->Fill();	  
+//	  b_MT_woBESTjet->Fill();	  
+//	  b_PT_woBESTjet->Fill();	  
+//	  b_M_woBESTjet->Fill();
+//	  b_M_allJet_W->Fill();
+//	  b_ratio_HTdHT4leadjets->Fill();
+//	  b_W_PtdM->Fill();	 
+//	  b_pTjet5_6->Fill(); 
+//      b_mean_csv->Fill();
+//	  b_invM_jet34->Fill(); 
+//	  b_invM_jet35->Fill(); 
+//	  b_invM_jet36->Fill(); 
+//	  b_invM_jet45->Fill(); 
+//	  b_invM_jet46->Fill(); 
+//	  b_invM_jet56->Fill(); 
+//      b_Sphericity->Fill(); 
+//      b_Aplanarity->Fill(); 
+//      b_pT_3rdcsvJet->Fill(); //added 31 March 2019
+//      b_pT_4thcsvJet->Fill(); //added 31 March 2019
+//      b_pt3HT->Fill();       // added 31 March 2019
+//      b_pt4HT->Fill();      // added 31 March 2019
+//      b_MT2bb->Fill();     // added 31 March 2019
+//      b_minMleppJet->Fill(); //added 31 March 2019 //this is minimum lep jet mass for any jet, not specifically light
+//      b_nGD_trijet->Fill();
+//      b_is_genMissingDaughter->Fill();
+//      b_is_genFourTopsOnelepton->Fill();      
+//      b_secondJetPt->Fill(); 
+//      b_fifthJetPt->Fill(); 
+//      b_sixthJetPt->Fill(); 
+    outputTree ->Fill(); // debug
       
    }
 
 std::cout<<"DONE "<<nentries<<std::endl;   
-outputFile->Write();
-delete outputFile;
-delete inputFile;
+outputTree->Write();  // debug
+//outputFile->Write();
+//delete outputFile;
+//delete inputFile;
 }

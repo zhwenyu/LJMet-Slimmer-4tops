@@ -5,10 +5,11 @@ using namespace std;
 
 void testStep1(){
   
-  //TString inputFile="root://cmseos.fnal.gov//store/user/lpcljm/FWLJMET102X_1lep2017_052219/SingleElectron/singleLep2017/190610_165959/0000/SingleElectronRun2017C_1-27.root" ;
-//  TString inputFile="/uscms/home/wzhang/nobackup/work/fwljmet_201905/CMSSW_10_2_10/src/FWLJMET/LJMet/JetHTC_hadtrg.root";
-   TString inputFile= "/uscms/home/wzhang/nobackup/work/fwljmet_201905/CMSSW_10_2_16_UL/src/FWLJMET/LJMet/TTToSemileptonic_erdON.root";
-  TString outputFile="test1_h20l10.root";
+//  TString inputFile="root://cmseos.fnal.gov//store/user/lpcljm/FWLJMET102X_1lep2017_Oct2019/TTTT_TuneCP5_PSweights_13TeV-amcatnlo-pythia8/singleLep2017/191029_235508/0000/TTTT_TuneCP5_PSweights_13TeV-amcatnlo-pythia8_1.root" ;
+ // TString inputFile="root://cmseos.fnal.gov//store/user/lpcljm/FWLJMET102X_1lep2017_Oct2019/TTToSemiLeptonic_TuneCP5_PSweights_13TeV-powheg-pythia8/singleLep2017/191031_222012/0000/TTToSemiLeptonic_TuneCP5_PSweights_13TeV-powheg-pythia8_1.root";
+  TString inputFile="/uscms_data/d3/wzhang/work/fwljmet_201905/CMSSW_10_2_16_UL/src/FWLJMET/LJMet/TTTo2L2Nu_erdON.root";
+//   TString inputFile= "/uscms_data/d3/wzhang/work/fwljmet_201905/CMSSW_10_2_16_UL/src/FWLJMET/LJMet/TTToSemileptonic.root";
+  TString outputFile="TTTo2L2NuerdON.root";
   
   gSystem->AddIncludePath("-I$CMSSW_BASE/src/");
   
