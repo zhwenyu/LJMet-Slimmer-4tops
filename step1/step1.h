@@ -116,6 +116,7 @@ public :
    Float_t         MuTrkSF;
    Float_t         EGammaGsfSF;
    Float_t         triggerSF;
+   Float_t         triggerHadSF;
    Float_t         triggerXSF;
    Float_t         JetSF_80X;
    Float_t         JetSFup_80X;
@@ -203,12 +204,15 @@ public :
    Float_t         minMleppJet;
    Float_t         deltaR_lepMinMlj;
    Float_t         minDR_lepJet;
+   Float_t         minDR_jetJet;
    Float_t         ptRel_lepJet;
    Float_t         ptRel_lepAK8;
    Float_t         minDPhi_MetJet;
    Float_t         MT_lepMet;
    Float_t         MT_lepMetmod;
+   double          deltaR_jetJets;
    vector<double>  deltaR_lepJets;
+   vector<double>  minDR_jetJets;
    vector<double>  deltaPhi_lepJets;
    vector<double>  mass_lepJets;
 
