@@ -29,34 +29,44 @@ public :
    TFile          *inputFile, *outputFile;
    Int_t           fCurrent; //!current Tree number in a TChain
 
-   Bool_t          isSig;
-   Bool_t          isTTTT;
-   Bool_t          isTpTp;
-   Bool_t          isBpBp;
-   Bool_t          isXX;
-   Bool_t          isTOP;
-   Bool_t          isMadgraphBkg;
-   Bool_t          isMC;
-   Bool_t          isSM;
-   Bool_t          isSE;
-   Bool_t          isTT;
-   Bool_t          isTTV;
-   Bool_t          isVV;
-   Bool_t          isSTt;
-   Bool_t          isSTtW;
-   Bool_t          isTTincMtt0to1000;
-   Bool_t          isTTincMtt0to700;
-   Bool_t          isTTincMtt700to1000;
-   Bool_t          isTTincMtt1000toInf;
-   Bool_t          isTTSemilepIncHT0Njet0;
-   Bool_t          isTTSemilepIncHT500Njet9;
-   Bool_t          isTTBB;
-   Bool_t          isTTCC;
-   Bool_t          isTTJJ;
-   Int_t           SigMass;
+   Bool_t          isSig=false;
+   Bool_t          isTTTT=false;
+   Bool_t          isTpTp=false;
+   Bool_t          isBpBp=false;
+   Bool_t          isXX=false;
+   Bool_t          isTOP=false;
+   Bool_t          isMadgraphBkg=false;
+   Bool_t          isMC=false;
+   Bool_t          isSM=false;
+   Bool_t          isSE=false;
+   Bool_t          isHad=false;
+   Bool_t          isTT=false;
+   Bool_t          isTTToSemiLeptonHT500Njet9=false;
+   Bool_t          isTTV=false;
+   Bool_t          isTTHbb=false;
+   Bool_t          isTTHnonbb=false;
+   Bool_t          isTTTX=false;
+   Bool_t          isTTVV=false;
+   Bool_t          isVV=false;
+   Bool_t          isST=false;
+   Bool_t          isSTt=false;
+   Bool_t          isSTtW=false;
+   Bool_t          isTTincMtt0to1000=false;
+   Bool_t          isTTincMtt0to700=false;
+   Bool_t          isTTincMtt700to1000=false;
+   Bool_t          isTTincMtt1000toInf=false;
+   Bool_t          isTTSemilepIncHT0Njet0=false;
+   Bool_t          isTTSemilepIncHT500Njet9=false;
+   Bool_t          outTTBB=false;
+   Bool_t          outTT2B=false;
+   Bool_t          outTT1B=false;
+   Bool_t          outTTCC=false;
+   Bool_t          outTTLF=false;
+   Int_t           SigMass=-1;
    Int_t           Year=2017;
-   TString         sample_;
-   std::string     sample;
+   TString         Era="";
+   TString         sample_="";
+   std::string     sample="";
    
    // Fixed size dimensions of array or collections stored in the TTree if any.
 
@@ -64,14 +74,37 @@ public :
    Int_t           isHTgt500Njetge9;
    Int_t           isElectron;
    Int_t           isMuon;
+   Int_t           MCPastTriggerX;
    Int_t           MCPastTrigger;
+   Int_t           MCLepPastTrigger;
+   Int_t           MCHadPastTrigger;
    Int_t           MCPastTriggerOR;
    Int_t           MCPastTriggerLepTight;
    Int_t           MCPastTriggerHTTight;
+   Int_t           DataPastTriggerX;
    Int_t           DataPastTrigger;
+   Int_t           DataLepPastTrigger;
+   Int_t           DataHadPastTrigger;
    Int_t           DataPastTriggerOR;
    Int_t           DataPastTriggerLepTight;
    Int_t           DataPastTriggerHTTight;
+
+   Int_t           HLT_Ele15_IsoVVVL_PFHT450 = 0;
+   Int_t           HLT_Ele28_eta2p1_WPTight_Gsf_HT150 = 0;
+   Int_t           HLT_Ele30_eta2p1_WPTight_Gsf_CentralPFJet35_EleCleaned = 0;
+   Int_t           HLT_Mu15_IsoVVVL_PFHT450 = 0;
+   Int_t           HLT_PFHT400_SixJet30_DoubleBTagCSV_p056 = 0;
+   Int_t           HLT_Ele32_WPTight_Gsf = 0;
+   Int_t           HLT_Ele35_WPTight_Gsf = 0;
+   Int_t           HLT_IsoMu24 = 0;
+   Int_t           HLT_IsoMu24_eta2p1 = 0;
+   Int_t           HLT_IsoMu27 = 0;
+   Int_t           HLT_PFHT380_SixJet32_DoubleBTagCSV_p075 = 0;
+   Int_t           HLT_PFHT380_SixPFJet32_DoublePFBTagDeepCSV_2p2 = 0;
+   Int_t           HLT_PFHT380_SixPFJet32_DoublePFBTagCSV_2p2 = 0;
+   Int_t           HLT_PFHT400_SixPFJet32_DoublePFBTagDeepCSV_2p94 = 0;
+
+
    Float_t         pileupWeight;
    Float_t         pileupWeightUp;
    Float_t         pileupWeightDown;
@@ -83,6 +116,7 @@ public :
    Float_t         MuTrkSF;
    Float_t         EGammaGsfSF;
    Float_t         triggerSF;
+   Float_t         triggerXSF;
    Float_t         JetSF_80X;
    Float_t         JetSFup_80X;
    Float_t         JetSFdn_80X;
@@ -117,6 +151,12 @@ public :
    Int_t           elTrigPresel_MultiLepCalc;
 
    Int_t           NJets_JetSubCalc;
+   Int_t           NJetsCSV_MultiLepCalc;
+   Int_t           NJetsCSVwithSF_MultiLepCalc;
+   Int_t           NJetsCSVwithSF_MultiLepCalc_bSFup;
+   Int_t           NJetsCSVwithSF_MultiLepCalc_bSFdn;
+   Int_t           NJetsCSVwithSF_MultiLepCalc_lSFup;
+   Int_t           NJetsCSVwithSF_MultiLepCalc_lSFdn;
    Int_t           NJetsCSV_JetSubCalc;
    Int_t           NJetsCSVwithSF_JetSubCalc;
    Int_t           NJetsCSVwithSF_JetSubCalc_bSFup;
@@ -140,10 +180,15 @@ public :
    vector<double>  theJetPhi_JetSubCalc_PtOrdered;
    vector<double>  theJetEnergy_JetSubCalc_PtOrdered;
    vector<double>  theJetDeepFlavB_JetSubCalc_PtOrdered;
-   // vector<double>  theJetDeepCSVb_JetSubCalc_PtOrdered;
-   // vector<double>  theJetDeepCSVbb_JetSubCalc_PtOrdered;
-   // vector<double>  theJetDeepCSVc_JetSubCalc_PtOrdered;
-   // vector<double>  theJetDeepCSVudsg_JetSubCalc_PtOrdered;
+   vector<double>  AK4JetDeepCSVb_MultiLepCalc_PtOrdered;
+   vector<double>  AK4JetDeepCSVbb_MultiLepCalc_PtOrdered;
+   vector<double>  AK4JetDeepCSVc_MultiLepCalc_PtOrdered;
+   vector<double>  AK4JetDeepCSVudsg_MultiLepCalc_PtOrdered;
+   vector<int>     AK4JetBTag_MultiLepCalc_PtOrdered;
+   vector<int>     AK4JetBTag_bSFup_MultiLepCalc_PtOrdered;
+   vector<int>     AK4JetBTag_bSFdn_MultiLepCalc_PtOrdered;
+   vector<int>     AK4JetBTag_lSFup_MultiLepCalc_PtOrdered;
+   vector<int>     AK4JetBTag_lSFdn_MultiLepCalc_PtOrdered;
    vector<int>     theJetHFlav_JetSubCalc_PtOrdered;
    vector<int>     theJetPFlav_JetSubCalc_PtOrdered;
    vector<int>     theJetBTag_JetSubCalc_PtOrdered;
@@ -264,15 +309,20 @@ public :
    Float_t         TJetLeadPt;
    vector<int>     NJetsTtagged_shifts;
    
-   Float_t         topPt;
-   Float_t         topPtGen;
-   Float_t         topMass;
+   Float_t         recLeptonicTopPt;
+   Float_t         recLeptonicTopEta;
+   Float_t         recLeptonicTopPhi;
+   Float_t         recLeptonicTopMass;
    Float_t         tmass;
    Float_t         wmass;
    Float_t         genTopPt;
    Float_t         genAntiTopPt;
    Float_t         topPtWeight13TeV;
 
+   Int_t           NresolvedTops1pFakeNoSF;
+   Int_t           NresolvedTops2pFakeNoSF;
+   Int_t           NresolvedTops5pFakeNoSF;
+   Int_t           NresolvedTops10pFakeNoSF;
    Int_t           NresolvedTops1pFake;
    Int_t           NresolvedTops2pFake;
    Int_t           NresolvedTops5pFake;
@@ -1190,7 +1240,7 @@ public :
    TBranch        *b_vsSelTriggersHad_MultiLepCalc;   //!
    TBranch        *b_vsSelTriggersMu_MultiLepCalc;   //!
  
-   step1(TString inputFileName, TString outputFileName);
+   step1(TString inputFileName, TString outputFileName, Int_t Year_);
    virtual ~step1();
    virtual Int_t    Cut(Long64_t entry);
    virtual Int_t    GetEntry(Long64_t entry);
@@ -1206,11 +1256,12 @@ public :
 #endif
 
 #ifdef step1_cxx
-step1::step1(TString inputFileName, TString outputFileName) : inputTree(0), inputFile(0), outputFile(0) 
+step1::step1(TString inputFileName, TString outputFileName, Int_t Year_) : inputTree(0), inputFile(0), outputFile(0) 
 {
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
 
+  Year = Year_;
   isSig  = (inputFileName.Contains("TTTT_Tune") || inputFileName.Contains("prime") || inputFileName.Contains("X53") || inputFileName.Contains("ChargedHiggs_Hplus"));
   if(isSig){
     if(inputFileName.Contains("Tprime")) isTpTp = true;
@@ -1234,27 +1285,49 @@ step1::step1(TString inputFileName, TString outputFileName) : inputTree(0), inpu
   }  
   else SigMass = -1;
   
+  if(inputFileName.Contains("17B")) Era = "17B";
+  else if(inputFileName.Contains("17C")) Era = "17C";
+  else if(inputFileName.Contains("17D")) Era = "17DEF";
+  else if(inputFileName.Contains("17E")) Era = "17DEF";
+  else if(inputFileName.Contains("17F")) Era = "17DEF";
+  else if(inputFileName.Contains("18A")) Era = "18AB";
+  else if(inputFileName.Contains("18B")) Era = "18AB";
+  else if(inputFileName.Contains("18C")) Era = "18CD";
+  else if(inputFileName.Contains("18D")) Era = "18CD";
+  else Era = "";
+  
+
   isMadgraphBkg = (inputFileName.Contains("QCD") || inputFileName.Contains("madgraphMLM"));
   isTOP = (inputFileName.Contains("Mtt") || inputFileName.Contains("ST") || inputFileName.Contains("ttZ") || inputFileName.Contains("ttW") || inputFileName.Contains("ttH") || inputFileName.Contains("TTTo"));
   isTT = (inputFileName.Contains("TT_Tune") || inputFileName.Contains("Mtt") || inputFileName.Contains("TTTo"));
   if(isSig) isTT = false;
+  isTTToSemiLeptonHT500Njet9 = inputFileName.Contains("TTToSemiLepton_HT500Njet9_Tune");
+  isST = (inputFileName.Contains("ST_t-channel") || inputFileName.Contains("ST_tW") || inputFileName.Contains("ST_s-channel"));
   isSTt = inputFileName.Contains("ST_t-channel");
   isSTtW = inputFileName.Contains("ST_tW");
-  isTTV = (inputFileName.Contains("ttZ") || inputFileName.Contains("ttW") || inputFileName.Contains("ttH"));
+  isTTV = (inputFileName.Contains("TTZTo") || inputFileName.Contains("TTWJetsTo"));
+  isTTHbb = inputFileName.Contains("ttHTobb_");
+  isTTHnonbb = inputFileName.Contains("ttHToNonbb_");
+  isTTTX = (inputFileName.Contains("TTTJ_Tune") || inputFileName.Contains("TTTW_Tune"));
+  isTTVV = (inputFileName.Contains("TTHH_Tune") || inputFileName.Contains("TTWH_Tune") || inputFileName.Contains("TTWW_Tune") || inputFileName.Contains("TTWZ_Tune") || inputFileName.Contains("TTZH_Tune") || inputFileName.Contains("TTZZ_Tune"));
   isVV = (inputFileName.Contains("WW_") || inputFileName.Contains("WZ_") || inputFileName.Contains("ZZ_"));
-  isMC = !(inputFileName.Contains("Single") || inputFileName.Contains("Data18"));
+  isMC = !(inputFileName.Contains("Single") || inputFileName.Contains("Data18") || inputFileName.Contains("JetHTRun20"));
   isSM = inputFileName.Contains("SingleMuon");
   isSE = (inputFileName.Contains("SingleElectron") || inputFileName.Contains("EGamma"));
-  
+  isHad = (inputFileName.Contains("JetHT") || inputFileName.Contains("HTMHT"));
+          	  
   isTTincMtt0to700    = outputFileName.Contains("Mtt0to700");
   isTTincMtt0to1000   = outputFileName.Contains("Mtt0to1000");
   isTTincMtt700to1000 = outputFileName.Contains("Mtt700to1000");
   isTTincMtt1000toInf = outputFileName.Contains("Mtt1000toInf");
   isTTSemilepIncHT0Njet0 = outputFileName.Contains("HT0Njet0");
   isTTSemilepIncHT500Njet9 = outputFileName.Contains("HT500Njet9");
-  isTTBB = outputFileName.Contains("_ttbb");
-  isTTCC = outputFileName.Contains("_ttcc");
-  isTTJJ = outputFileName.Contains("_ttjj");
+  if(inputFileName.Contains("HT500Njet9")) isTTSemilepIncHT500Njet9 = false;
+  outTTBB = outputFileName.Contains("_ttbb");
+  outTT2B = outputFileName.Contains("_tt2b");
+  outTT1B = outputFileName.Contains("_tt1b");
+  outTTCC = outputFileName.Contains("_ttcc");
+  outTTLF = outputFileName.Contains("_ttjj");
     
   std::cout<<"Opening file: "<<inputFileName<<std::endl;
   //Get the sample name from "inputFileName" for pileupWeights
@@ -2045,12 +2118,10 @@ void step1::Init(TTree *tree)
    inputTree->SetBranchAddress("genBSLPt_MultiLepCalc", &genBSLPt_MultiLepCalc, &b_genBSLPt_MultiLepCalc);
    inputTree->SetBranchAddress("genEnergy_MultiLepCalc", &genEnergy_MultiLepCalc, &b_genEnergy_MultiLepCalc);
    inputTree->SetBranchAddress("genEta_MultiLepCalc", &genEta_MultiLepCalc, &b_genEta_MultiLepCalc);
-   if(isTT){
-      inputTree->SetBranchAddress("genJetEnergyNoClean_MultiLepCalc", &genJetEnergyNoClean_MultiLepCalc, &b_genJetEnergyNoClean_MultiLepCalc);
-      inputTree->SetBranchAddress("genJetEtaNoClean_MultiLepCalc", &genJetEtaNoClean_MultiLepCalc, &b_genJetEtaNoClean_MultiLepCalc);
-      inputTree->SetBranchAddress("genJetPhiNoClean_MultiLepCalc", &genJetPhiNoClean_MultiLepCalc, &b_genJetPhiNoClean_MultiLepCalc);
-      inputTree->SetBranchAddress("genJetPtNoClean_MultiLepCalc", &genJetPtNoClean_MultiLepCalc, &b_genJetPtNoClean_MultiLepCalc);
-   }
+   inputTree->SetBranchAddress("genJetEnergyNoClean_MultiLepCalc", &genJetEnergyNoClean_MultiLepCalc, &b_genJetEnergyNoClean_MultiLepCalc);
+   inputTree->SetBranchAddress("genJetEtaNoClean_MultiLepCalc", &genJetEtaNoClean_MultiLepCalc, &b_genJetEtaNoClean_MultiLepCalc);
+   inputTree->SetBranchAddress("genJetPhiNoClean_MultiLepCalc", &genJetPhiNoClean_MultiLepCalc, &b_genJetPhiNoClean_MultiLepCalc);
+   inputTree->SetBranchAddress("genJetPtNoClean_MultiLepCalc", &genJetPtNoClean_MultiLepCalc, &b_genJetPtNoClean_MultiLepCalc);
    inputTree->SetBranchAddress("genJetEnergy_MultiLepCalc", &genJetEnergy_MultiLepCalc, &b_genJetEnergy_MultiLepCalc);
    inputTree->SetBranchAddress("genJetEta_MultiLepCalc", &genJetEta_MultiLepCalc, &b_genJetEta_MultiLepCalc);
    inputTree->SetBranchAddress("genJetPhi_MultiLepCalc", &genJetPhi_MultiLepCalc, &b_genJetPhi_MultiLepCalc);

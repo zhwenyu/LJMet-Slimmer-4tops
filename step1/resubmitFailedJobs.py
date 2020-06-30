@@ -2,9 +2,7 @@
 
 import os,sys,pickle
 
-#inputDir = '/user_data/ssagir/CMSSW_10_2_10/src/LJMet-Slimmer-4tops/step1/FWLJMET102X_1lep2017_4t_081019_step1/'
-inputDir = '/uscms_data/d3/ssagir/FWLJMET102X_1lep2017_4t_100719_step1/'
-inputRdir = '/mnt/hadoop/store/group/bruxljm/FWLJMET102X_1lep2017_4t_081019_step1/'
+inputDir = '/uscms_data/d3/ssagir/FWLJMET102X_1lep2018_Oct2019_4t_031520_step1/'
 resubmit_err = False
 resubmit_out = False
 resubmit_fail = False
@@ -15,12 +13,12 @@ samplesDone = []
 if os.path.exists(os.getcwd()+'/samplesDone.p'): pickle.load(open('samplesDone.p','rb'))
 N_totjobs = 0
 N_running = 0
-N_err = 0
-N_out = 0
+N_err  = 0
+N_out  = 0
 N_fail = 0
 samples = [x for x in os.walk(inputDir).next()[1]]
 for sample in sorted(samples):
-	#if 'TTTT' not in sample: continue
+	#if 'WJetsToLNu_HT-2500ToInf_' not in sample: continue
 	print "SAMPLE:",sample
 	if sample in samplesDone: continue
 	files = [x for x in os.listdir(inputDir+'/'+sample) if '.job' in x]

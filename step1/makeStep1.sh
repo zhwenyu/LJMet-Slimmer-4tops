@@ -9,6 +9,7 @@ inputDir=${3}
 outputDir=${4}
 idlist=${5}
 ID=${6}
+Year=${7}
 scratch=${PWD}
 
 source /cvmfs/cms.cern.ch/cmsset_default.sh
@@ -24,6 +25,10 @@ export PATH=$PATH:$macroDir
 root -l -b -q compileStep1.C
 
 XRDpath=root://cmseos.fnal.gov/$inputDir
+if [[ $inputDir == /isilon/hadoop/* ]] ;
+then
+XRDpath=root://brux11.hep.brown.edu:1094/$inputDir
+fi
 
 echo "Running step1 over list: ${idlist}"
 for iFile in $idlist; do
@@ -37,7 +42,7 @@ for iFile in $idlist; do
     fi
 
     echo "creating ${outfilename}_${iFile}.root by reading ${infilename}_${inFile}"
-    root -l -b -q makeStep1.C\(\"$macroDir\",\"$XRDpath/${infilename}_${inFile}.root\",\"${outfilename}_${iFile}.root\"\)
+    root -l -b -q makeStep1.C\(\"$macroDir\",\"$XRDpath/${infilename}_${inFile}.root\",\"${outfilename}_${iFile}.root\",${Year}\)
 done
 
 echo "ROOT Files:"
@@ -61,7 +66,7 @@ for SHIFT in nominal JECup JECdown JERup JERdown
   fi
   rm *${SHIFT}.root
   rm ${haddFile}
-  if [[ $haddFile == Single* ]]; then break; fi;
+  if [[ $haddFile == Single* || $haddFile == EGamma*  || $haddFile == JetHT* ]]; then break; fi;
 done
 
 echo "done"
