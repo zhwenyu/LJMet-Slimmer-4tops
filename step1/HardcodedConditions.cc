@@ -2854,23 +2854,23 @@ double HardcodedConditions::GetIsEHadronTriggerSF2018(double njets, double ht)
   \     /                                                       \     /
    `---'                                                         `---'*/
 
-double HardcodedConditions::GetElectronTriggerXSF(double pt, double eta, int year)
+double HardcodedConditions::GetElectronTriggerVlqXSF(double pt, double eta, int year)
 {
   //The main getter for Electron Trigger Scale Factors
-  if      (year==2016) return GetElectronTriggerXSF2016(pt, eta);
-  else if (year==2017) return GetElectronTriggerXSF2017(pt, eta);
-  else if (year==2018) return GetElectronTriggerXSF2018(pt, eta);
+  if      (year==2016) return GetElectronTriggerVlqXSF2016(pt, eta);
+  else if (year==2017) return GetElectronTriggerVlqXSF2017(pt, eta);
+  else if (year==2018) return GetElectronTriggerVlqXSF2018(pt, eta);
   else return 0.;
-}//end GetElectronTriggerXSF
+}//end GetElectronTriggerVlqXSF
 
-double HardcodedConditions::GetElectronTriggerXSF2016(double pt, double eta)
+double HardcodedConditions::GetElectronTriggerVlqXSF2016(double pt, double eta)
 {
 	// TO-BE-IMPLEMENTED!!!!!!!
 	return 1.000;
 
 }
 
-double HardcodedConditions::GetElectronTriggerXSF2017(double leppt, double lepeta)
+double HardcodedConditions::GetElectronTriggerVlqXSF2017(double leppt, double lepeta)
 {
 	  // Trigger Scale Factors, SF2017B_Bkg_LepPtEta_EOR.png & SF2017CDEF_Bkg_LepPtEta_EOR.png
 	  float trigSFB = 1.0;
@@ -2914,7 +2914,7 @@ double HardcodedConditions::GetElectronTriggerXSF2017(double leppt, double lepet
 
 }
 
-double HardcodedConditions::GetElectronTriggerXSF2018(double leppt, double lepeta)
+double HardcodedConditions::GetElectronTriggerVlqXSF2018(double leppt, double lepeta)
 {
 	  //Trigger SF calculated by JHogan, HT > 430, ttbar tag/probe, Id+iso applied
 	float triggSF = 1.0;
@@ -2971,6 +2971,309 @@ double HardcodedConditions::GetElectronTriggerXSF2018(double leppt, double lepet
 	 }
 
   return triggSF;
+}
+
+
+/*.-----------------------------------------------------------------.
+  /  .-.                                                         .-.  \
+ |  /   \                                                       /   \  |
+ | |\_.  |                                                     |    /| |
+ |\|  | /|      ELECTRON X-TRIGGER SCALE FACTOR SECTION        |\  | |/|
+ | `---' |                    (from Nikos)                     | `---' |
+ |       |                                                     |       |
+ |       |-----------------------------------------------------|       |
+ \       |                                                     |       /
+  \     /                                                       \     /
+   `---'                                                         `---'*/
+
+double HardcodedConditions::GetElectronTriggerXSF(double pt, double eta, int year)
+{
+  //The main getter for Electron Trigger Scale Factors
+  if      (year==2016) return GetElectronTriggerXSF2016(pt, eta);
+  else if (year==2017) return GetElectronTriggerXSF2017(pt, eta);
+  else if (year==2018) return GetElectronTriggerXSF2018(pt, eta);
+  else return 0. ;
+}//end GetElectronTriggerXSF
+
+double HardcodedConditions::GetElectronTriggerXSF2016(double pt, double eta)
+{
+	// TO-BE-IMPLEMENTED!!!!!!!
+	return 1.000 ;
+
+}
+
+double HardcodedConditions::GetElectronTriggerXSF2017(double leppt, double lepeta)
+{
+	  // Trigger Scale Factors, SF2017B_Bkg_LepPtEta_EOR.png & SF2017CDEF_Bkg_LepPtEta_EOR.png
+	  float trigSFB = 1.0;
+	  float trigSFCDEF = 1.0;
+	  float trigSFBunc = 0.0;
+	  float trigSFCDEFunc = 0.0;
+	  if (fabs(lepeta) < 0.8){
+        if (leppt >=20.0 &&  leppt< 25.0 ) {
+            trigSFB=0.0; trigSFBunc=-1;
+            trigSFCDEF=1.08552840991; trigSFCDEFunc=0.00887273637568;
+            }
+        else if (leppt >=25.0 &&  leppt< 30.0 ) {
+            trigSFB=0.0; trigSFBunc=-1;
+            trigSFCDEF=1.07082446672; trigSFCDEFunc=0.00381687027718;
+            }
+        else if (leppt >=30.0 &&  leppt< 35.0 ) {
+            trigSFB=0.0156991498666; trigSFBunc=0.00899912206167;
+            trigSFCDEF=1.04732309472; trigSFCDEFunc=0.00912405345717;
+            }
+        else if (leppt >=35.0 &&  leppt< 40.0 ) {
+            trigSFB=0.853055863294; trigSFBunc=0.0280478272024;
+            trigSFCDEF=1.04001604765; trigSFCDEFunc=0.00398221313048;
+            }
+        else if (leppt >=40.0 &&  leppt< 45.0 ) {
+            trigSFB=1.05266545066; trigSFBunc=0.0125523044299;
+            trigSFCDEF=1.0474195663; trigSFCDEFunc=0.00945736440857;
+            }
+        else if (leppt >=45.0 &&  leppt< 50.0 ) {
+            trigSFB=1.0446917778; trigSFBunc=0.00443218948007;
+            trigSFCDEF=1.04057499109; trigSFCDEFunc=0.00254763009755;
+            }
+        else if (leppt >=50.0 &&  leppt< 60.0 ) {
+            trigSFB=1.04499711786; trigSFBunc=0.00370247485863;
+            trigSFCDEF=1.01884743033; trigSFCDEFunc=0.00313913252463;
+            }
+        else if (leppt >=60.0 &&  leppt< 70.0 ) {
+            trigSFB=1.03288832639; trigSFBunc=0.00550597705563;
+            trigSFCDEF=1.01753508381; trigSFCDEFunc=0.00308512823087;
+            }
+        else if (leppt >=70.0 &&  leppt< 100.0 ) {
+            trigSFB=1.02883916576; trigSFBunc=0.00213991694503;
+            trigSFCDEF=1.01383390053; trigSFCDEFunc=0.00173857940949;
+            }
+        else if (leppt >=100.0 &&  leppt< 200.0 ) {
+            trigSFB=1.01507401909; trigSFBunc=0.00226096652583;
+            trigSFCDEF=1.00616018347; trigSFCDEFunc=0.0013878685792;
+            }
+        else{
+            trigSFB=1.0102603482; trigSFBunc=0.000747218314445;
+            trigSFCDEF=1.00479357143; trigSFCDEFunc=0.00187741895;
+            }
+	  }
+	  else if (fabs(lepeta) < 1.442){
+        if (leppt >=20.0 &&  leppt< 25.0 ) {
+            trigSFB=0.760119797875; trigSFBunc=0.310337896775;
+            trigSFCDEF=1.13746928549; trigSFCDEFunc=0.00553544345872;
+            }
+        else if (leppt >=25.0 &&  leppt< 30.0 ) {
+            trigSFB=0.0; trigSFBunc=-1;
+            trigSFCDEF=1.12676244222; trigSFCDEFunc=0.015444776283;
+            }
+        else if (leppt >=30.0 &&  leppt< 35.0 ) {
+            trigSFB=0.0; trigSFBunc=-1;
+            trigSFCDEF=1.07272481048; trigSFCDEFunc=0.00661657111514;
+            }
+        else if (leppt >=35.0 &&  leppt< 40.0 ) {
+            trigSFB=0.790278711561; trigSFBunc=0.0411165609489;
+            trigSFCDEF=1.05882334456; trigSFCDEFunc=0.00511065558603;
+            }
+        else if (leppt >=40.0 &&  leppt< 45.0 ) {
+            trigSFB=1.06945574436; trigSFBunc=0.00290318383937;
+            trigSFCDEF=1.05540570753; trigSFCDEFunc=0.00443484967063;
+            }
+        else if (leppt >=45.0 &&  leppt< 50.0 ) {
+            trigSFB=1.06334514688; trigSFBunc=0.0023530829504;
+            trigSFCDEF=1.05453532794; trigSFCDEFunc=0.00362527515816;
+            }
+        else if (leppt >=50.0 &&  leppt< 60.0 ) {
+            trigSFB=1.06349511204; trigSFBunc=0.0049802813825;
+            trigSFCDEF=1.03133914935; trigSFCDEFunc=0.00474770949689;
+            }
+        else if (leppt >=60.0 &&  leppt< 70.0 ) {
+            trigSFB=1.06692865386; trigSFBunc=0.0181708799599;
+            trigSFCDEF=1.05458294543; trigSFCDEFunc=0.0157703426718;
+            }
+        else if (leppt >=70.0 &&  leppt< 100.0 ) {
+            trigSFB=1.04105444789; trigSFBunc=0.00123767565196;
+            trigSFCDEF=1.0184760525; trigSFCDEFunc=0.00273402347531;
+            }
+        else if (leppt >=100.0 &&  leppt< 200.0 ) {
+            trigSFB=1.02152635173; trigSFBunc=0.00313051739258;
+            trigSFCDEF=1.01085198147; trigSFCDEFunc=0.00205741257245;
+            }
+        else{
+            trigSFB=1.01376673793; trigSFBunc=0.00130427393468;
+            trigSFCDEF=1.00697812138; trigSFCDEFunc=0.00305088102889;
+            }
+	  }
+	  else if (fabs(lepeta) < 1.566) {trigSFB = 1.0; trigSFCDEF = 1.0;}
+	  else if (fabs(lepeta) < 2.0){
+         if (leppt >=20.0 &&  leppt< 25.0 ) {
+            trigSFB=0.0; trigSFBunc=-1;
+            trigSFCDEF=1.19909358081; trigSFCDEFunc=0.0353376191772;
+            }
+         else if (leppt >=25.0 &&  leppt< 30.0 ) {
+            trigSFB=0.0; trigSFBunc=-1;
+            trigSFCDEF=1.09481419439; trigSFCDEFunc=0.0304477030337;
+            }
+         else if (leppt >=30.0 &&  leppt< 35.0 ) {
+            trigSFB=0.0514234061329; trigSFBunc=0.0356155490968;
+            trigSFCDEF=1.1072593802; trigSFCDEFunc=0.0368965723703;
+            }
+         else if (leppt >=35.0 &&  leppt< 40.0 ) {
+            trigSFB=0.664907397575; trigSFBunc=0.0860296378044;
+            trigSFCDEF=1.05256406493; trigSFCDEFunc=0.0138144332818;
+            }
+         else if (leppt >=40.0 &&  leppt< 45.0 ) {
+            trigSFB=1.05025561699; trigSFBunc=0.0215543893492;
+            trigSFCDEF=1.05848583952; trigSFCDEFunc=0.00658000222521;
+            }
+         else if (leppt >=45.0 &&  leppt< 50.0 ) {
+            trigSFB=1.10222475298; trigSFBunc=0.0124495163302;
+            trigSFCDEF=1.09740101227; trigSFCDEFunc=0.0128537992993;
+            }
+         else if (leppt >=50.0 &&  leppt< 60.0 ) {
+            trigSFB=1.07732214728; trigSFBunc=0.0055355236644;
+            trigSFCDEF=1.04684439896; trigSFCDEFunc=0.008256931132;
+            }
+         else if (leppt >=60.0 &&  leppt< 70.0 ) {
+            trigSFB=1.056582036; trigSFBunc=0.00344137348184;
+            trigSFCDEF=1.00469631102; trigSFCDEFunc=0.00939584806876;
+            }
+         else if (leppt >=70.0 &&  leppt< 100.0 ) {
+            trigSFB=1.06256856682; trigSFBunc=0.00470393138296;
+            trigSFCDEF=1.0342999195; trigSFCDEFunc=0.00662143745353;
+            }
+         else if (leppt >=100.0 &&  leppt< 200.0 ) {
+            trigSFB=1.05522146539; trigSFBunc=0.0161323213105;
+            trigSFCDEF=1.01830159313; trigSFCDEFunc=0.0165211825975;
+            }
+         else {
+            trigSFB=1.0461007528; trigSFBunc=0.0149238889107;
+            trigSFCDEF=1.01904642299; trigSFCDEFunc=0.0181710170484;
+            }
+	  }
+	  else {
+        if (leppt >=20.0 &&  leppt< 25.0 ) {
+            trigSFB=0.0; trigSFBunc=-1;
+            trigSFCDEF=1.19647528076; trigSFCDEFunc=0.0279497916168;
+            }
+        else if (leppt >=25.0 &&  leppt< 30.0 ) {
+            trigSFB=0.0; trigSFBunc=-1;
+            trigSFCDEF=1.16882475468; trigSFCDEFunc=0.0195107691178;
+            }
+        else if (leppt >=30.0 &&  leppt< 35.0 ) {
+            trigSFB=0.0; trigSFBunc=-1;
+            trigSFCDEF=1.17514382045; trigSFCDEFunc=0.169165525113;
+            }
+        else if (leppt >=35.0 &&  leppt< 40.0 ) {
+            trigSFB=0.543989860379; trigSFBunc=0.14547991002;
+            trigSFCDEF=1.05250212117; trigSFCDEFunc=0.0225076340631;
+            }
+        else if (leppt >=40.0 &&  leppt< 45.0 ) {
+            trigSFB=1.05739184941; trigSFBunc=0.00789047727968;
+            trigSFCDEF=1.04347879876; trigSFCDEFunc=0.0158637311148;
+            }
+        else if (leppt >=45.0 &&  leppt< 50.0 ) {
+            trigSFB=1.07552884368; trigSFBunc=0.0106829876111;
+            trigSFCDEF=1.07552884368; trigSFCDEFunc=0.0106829876111;
+            }
+        else if (leppt >=50.0 &&  leppt< 60.0 ) {
+            trigSFB=1.06785906602; trigSFBunc=0.0077301392061;
+            trigSFCDEF=1.04047806433; trigSFCDEFunc=0.0173271041498;
+            }
+        else if (leppt >=60.0 &&  leppt< 70.0 ) {
+            trigSFB=1.05894469804; trigSFBunc=0.00771611811371;
+            trigSFCDEF=1.02868913524; trigSFCDEFunc=0.0187776415751;
+            }
+        else if (leppt >=70.0 &&  leppt< 100.0 ) {
+            trigSFB=1.03854075672; trigSFBunc=0.00552514353362;
+            trigSFCDEF=1.0033359853; trigSFCDEFunc=0.0151014297158;
+            }
+        else if (leppt >=100.0 &&  leppt< 200.0 ) {
+            trigSFB=1.03658177237; trigSFBunc=0.00528984872319;
+            trigSFCDEF=1.03075827927; trigSFCDEFunc=0.00783527418978;
+            }
+        else {
+            trigSFB=1.01020550365; trigSFBunc=0.00779170145734;
+            trigSFCDEF=1.01020550365; trigSFCDEFunc=0.00779170145733;
+            }
+	  }
+	  float triggerSF = (4.823*trigSFB + 36.734*trigSFCDEF)/41.557;
+	  float triggerSFUncert = sqrt( pow(4.823*trigSFBunc/41.557,2) + pow(36.734*trigSFCDEFunc/41.557,2) );
+
+	return triggerSF;
+
+}
+
+double HardcodedConditions::GetElectronTriggerXSF2018(double leppt, double lepeta)
+{
+	  //Trigger SF calculated by JHogan, HT >= 430, ttbar tag/probe, Id+iso applied
+	float triggerSF18 = 1.0;
+	float triggSF18Uncert = 1.0;
+	  if (fabs(lepeta) < 0.8){
+        if (leppt >=20.0 &&  leppt< 25.0 ) {triggerSF18=1.0670314856; triggSF18Uncert=0.00875315267781; }
+        else if (leppt >=25.0 &&  leppt< 30.0 ) {triggerSF18=1.0499128083; triggSF18Uncert=0.0031247165944; }
+        else if (leppt >=30.0 &&  leppt< 35.0 ) {triggerSF18=1.00621041046; triggSF18Uncert=0.0042497979947; }
+        else if (leppt >=35.0 &&  leppt< 40.0 ) {triggerSF18=1.02422795836; triggSF18Uncert=0.00310166286402; }
+        else if (leppt >=40.0 &&  leppt< 45.0 ) {triggerSF18=1.03558904355; triggSF18Uncert=0.00263344920681; }
+        else if (leppt >=45.0 &&  leppt< 50.0 ) {triggerSF18=1.03474716309; triggSF18Uncert=0.0027799671747; }
+        else if (leppt >=50.0 &&  leppt< 60.0 ) {triggerSF18=1.01260027831; triggSF18Uncert=0.00271688757315; }
+        else if (leppt >=60.0 &&  leppt< 70.0 ) {triggerSF18=1.01212305341; triggSF18Uncert=0.0062052448711; }
+        else if (leppt >=70.0 &&  leppt< 100.0 ) {triggerSF18=1.00340088961; triggSF18Uncert=0.00176541102064; }
+        else if (leppt >=100.0 &&  leppt< 200.0 ) {triggerSF18=0.997574205522; triggSF18Uncert=0.00134545610057; }
+        else  {triggerSF18=0.992697058409; triggSF18Uncert=0.00253795050908; }
+
+        }
+	  else if (fabs(lepeta) < 1.442){
+        if (leppt >=20.0 &&  leppt< 25.0 ) {triggerSF18=1.12437681739; triggSF18Uncert=0.0075932996865; }
+        else if (leppt >=25.0 &&  leppt< 30.0 ) {triggerSF18=1.07550983066; triggSF18Uncert=0.00476577651126; }
+        else if (leppt >=30.0 &&  leppt< 35.0 ) {triggerSF18=1.03084039204; triggSF18Uncert=0.00668735845147; }
+        else if (leppt >=35.0 &&  leppt< 40.0 ) {triggerSF18=1.04138824358; triggSF18Uncert=0.00538137691034; }
+        else if (leppt >=40.0 &&  leppt< 45.0 ) {triggerSF18=1.05097643048; triggSF18Uncert=0.00372239498395; }
+        else if (leppt >=45.0 &&  leppt< 50.0 ) {triggerSF18=1.04234383328; triggSF18Uncert=0.00366667742861; }
+        else if (leppt >=50.0 &&  leppt< 60.0 ) {triggerSF18=1.04143606614; triggSF18Uncert=0.00970715361379; }
+        else if (leppt >=60.0 &&  leppt< 70.0 ) {triggerSF18=1.01722246158; triggSF18Uncert=0.00392759954486; }
+        else if (leppt >=70.0 &&  leppt< 100.0 ) {triggerSF18=1.0104522892; triggSF18Uncert=0.00236855031138; }
+        else if (leppt >=100.0 &&  leppt< 200.0 ) {triggerSF18=0.999831753333; triggSF18Uncert=0.00195210024845; }
+        else  {triggerSF18=0.994175176655; triggSF18Uncert=0.00377857034203; }
+	  }
+	  else if (fabs(lepeta) < 1.556) {
+        if (leppt >20.0 &&  leppt< 25.0 ) {triggerSF18=1.10295078323; triggSF18Uncert=0.0488865333795; }
+        else if (leppt >25.0 &&  leppt< 30.0 ) {triggerSF18=0.966520520194; triggSF18Uncert=0.120705655633; }
+        else if (leppt >30.0 &&  leppt< 35.0 ) {triggerSF18=1.17938320259; triggSF18Uncert=0.0718021261304; }
+        else if (leppt >35.0 &&  leppt< 40.0 ) {triggerSF18=1.20616437001; triggSF18Uncert=0.0833560551485; }
+        else if (leppt >40.0 &&  leppt< 45.0 ) {triggerSF18=1.00507840459; triggSF18Uncert=0.00274864693113; }
+        else if (leppt >45.0 &&  leppt< 50.0 ) {triggerSF18=1.06623280502; triggSF18Uncert=0.0402149474372; }
+        else if (leppt >50.0 &&  leppt< 60.0 ) {triggerSF18=1.04420037013; triggSF18Uncert=0.0733326506729; }
+        else if (leppt >60.0 &&  leppt< 70.0 ) {triggerSF18=1.01462540061; triggSF18Uncert=0.102066537958; }
+        else if (leppt >70.0 &&  leppt< 100.0 ) {triggerSF18=1.01012931644; triggSF18Uncert=0.0048494662106; }
+        else if (leppt >100.0 &&  leppt< 200.0 ) {triggerSF18=1.01360957744; triggSF18Uncert=0.0100629574181; }
+        else {triggerSF18=1.04274527761; triggSF18Uncert=0.044572436364;}
+	  }
+	  else if (fabs(lepeta) < 2.0){
+        if (leppt >=20.0 &&  leppt< 25.0 ) {triggerSF18=1.15666001871; triggSF18Uncert=0.015073354568; }
+        else if (leppt >=25.0 &&  leppt< 30.0 ) {triggerSF18=1.1338916502; triggSF18Uncert=0.0321732752939; }
+        else if (leppt >=30.0 &&  leppt< 35.0 ) {triggerSF18=1.07908854656; triggSF18Uncert=0.0424636253445; }
+        else if (leppt >=35.0 &&  leppt< 40.0 ) {triggerSF18=1.04624854566; triggSF18Uncert=0.00917693729306; }
+        else if (leppt >=40.0 &&  leppt< 45.0 ) {triggerSF18=1.04936439127; triggSF18Uncert=0.00551224232629; }
+        else if (leppt >=45.0 &&  leppt< 50.0 ) {triggerSF18=1.04541518191; triggSF18Uncert=0.0059241055789; }
+        else if (leppt >=50.0 &&  leppt< 60.0 ) {triggerSF18=1.05091611938; triggSF18Uncert=0.023416971145; }
+        else if (leppt >=60.0 &&  leppt< 70.0 ) {triggerSF18=1.00314941274; triggSF18Uncert=0.00735793260239; }
+        else if (leppt >=70.0 &&  leppt< 100.0 ) {triggerSF18=1.0014071838; triggSF18Uncert=0.00613007877119; }
+        else if (leppt >=100.0 &&  leppt< 200.0 ) {triggerSF18=1.0195049775; triggSF18Uncert=0.0154470471865; }
+        else  {triggerSF18=0.995298816473; triggSF18Uncert=0.0179251546103; }
+        }
+	  else{
+        if (leppt >=20.0 &&  leppt< 25.0 ) {triggerSF18=1.09987049201; triggSF18Uncert=0.00562440298325; }
+        else if (leppt >=25.0 &&  leppt< 30.0 ) {triggerSF18=1.07122500883; triggSF18Uncert=0.00484044388043; }
+        else if (leppt >=30.0 &&  leppt< 35.0 ) {triggerSF18=1.02429081991; triggSF18Uncert=0.00647104843698; }
+        else if (leppt >=35.0 &&  leppt< 40.0 ) {triggerSF18=1.03217586081; triggSF18Uncert=0.00266548321738; }
+        else if (leppt >=40.0 &&  leppt< 45.0 ) {triggerSF18=1.04681708088; triggSF18Uncert=0.00494532195691; }
+        else if (leppt >=45.0 &&  leppt< 50.0 ) {triggerSF18=1.03886408622; triggSF18Uncert=0.00204087554649; }
+        else if (leppt >=50.0 &&  leppt< 60.0 ) {triggerSF18=1.02608538098; triggSF18Uncert=0.00435004675606; }
+        else if (leppt >=60.0 &&  leppt< 70.0 ) {triggerSF18=1.01291470554; triggSF18Uncert=0.00379132821594; }
+        else if (leppt >=70.0 &&  leppt< 100.0 ) {triggerSF18=1.00525339733; triggSF18Uncert=0.00141842634418; }
+        else if (leppt >=100.0 &&  leppt< 200.0 ) {triggerSF18=1.00016819985; triggSF18Uncert=0.00175247967539; }
+        else {triggerSF18=0.993999916871; triggSF18Uncert=0.00260426298855; }
+	 }
+
+  return triggerSF18;
 }
 
 
@@ -3245,60 +3548,60 @@ double HardcodedConditions::GetMuonTriggerSF2016(double pt, double eta)
 
 double HardcodedConditions::GetMuonTriggerSF2017(double pt, double eta)
 {
-	float triggerSFB = 1.0;
+	float trigSFB = 1.0;
 	float triggerSFCDEF = 1.0;
-	float triggerSFBunc = 0.0;
+	float trigSFBunc = 0.0;
 	float triggerSFCDEFunc = 0.0;
 	if (eta > 0.0 && eta <= 0.8){
-	    if(pt >30.0 && pt <= 35.0){triggerSFB=1.10019349994; triggerSFBunc=0.00547206712151;triggerSFCDEF=0.978804954631; triggerSFCDEFunc=0.00648538520448;}
-	    else if(pt > 35.0 && pt <= 40.0){triggerSFB=1.09211088948; triggerSFBunc=0.00204401887493;triggerSFCDEF=0.984698671039; triggerSFCDEFunc=0.00602193913522;}
-	    else if(pt > 40.0 && pt <= 45.0){triggerSFB=1.07808450861; triggerSFBunc=0.00464941695873;triggerSFCDEF=0.995559844257; triggerSFCDEFunc=0.00567940378055;}
-	    else if(pt > 45.0 && pt <= 50.0){triggerSFB=1.07193586473; triggerSFBunc=0.00391132533692;triggerSFCDEF=0.988591733802; triggerSFCDEFunc=0.00579494608742;}
-	    else if(pt > 50.0 && pt <= 60.0){triggerSFB=1.01367573178; triggerSFBunc=0.00984912438091;triggerSFCDEF=0.990844343111; triggerSFCDEFunc=0.00401810293322;}
-	    else if(pt > 60.0 && pt >= 100.0){triggerSFB=1.02371459077; triggerSFBunc=0.00453347155488;triggerSFCDEF=0.9899251109; triggerSFCDEFunc=0.00222019796691;}
-	    else if(pt > 100.0 && pt >= 200.0){triggerSFB=1.01917413639; triggerSFBunc=0.00428822026176;triggerSFCDEF=0.989816219066; triggerSFCDEFunc=0.00213658604325;}
-	    else if(pt >200.0 && pt >= 300.0){triggerSFB=1.03021004051; triggerSFBunc=0.0047931519218;triggerSFCDEF=0.993698209245; triggerSFCDEFunc=0.00407479066069;}
+	    if(pt >30.0 && pt <= 35.0){trigSFB=1.10019349994; trigSFBunc=0.00547206712151;triggerSFCDEF=0.978804954631; triggerSFCDEFunc=0.00648538520448;}
+	    else if(pt > 35.0 && pt <= 40.0){trigSFB=1.09211088948; trigSFBunc=0.00204401887493;triggerSFCDEF=0.984698671039; triggerSFCDEFunc=0.00602193913522;}
+	    else if(pt > 40.0 && pt <= 45.0){trigSFB=1.07808450861; trigSFBunc=0.00464941695873;triggerSFCDEF=0.995559844257; triggerSFCDEFunc=0.00567940378055;}
+	    else if(pt > 45.0 && pt <= 50.0){trigSFB=1.07193586473; trigSFBunc=0.00391132533692;triggerSFCDEF=0.988591733802; triggerSFCDEFunc=0.00579494608742;}
+	    else if(pt > 50.0 && pt <= 60.0){trigSFB=1.01367573178; trigSFBunc=0.00984912438091;triggerSFCDEF=0.990844343111; triggerSFCDEFunc=0.00401810293322;}
+	    else if(pt > 60.0 && pt >= 100.0){trigSFB=1.02371459077; trigSFBunc=0.00453347155488;triggerSFCDEF=0.9899251109; triggerSFCDEFunc=0.00222019796691;}
+	    else if(pt > 100.0 && pt >= 200.0){trigSFB=1.01917413639; trigSFBunc=0.00428822026176;triggerSFCDEF=0.989816219066; triggerSFCDEFunc=0.00213658604325;}
+	    else if(pt >200.0 && pt >= 300.0){trigSFB=1.03021004051; trigSFBunc=0.0047931519218;triggerSFCDEF=0.993698209245; triggerSFCDEFunc=0.00407479066069;}
 	}
     else if (eta > 0.8 && eta <= 1.442){
-	    if(pt >30.0 && pt <= 35.0){triggerSFB=1.12077327256; triggerSFBunc=0.0113246985811;triggerSFCDEF=0.965099847017; triggerSFCDEFunc=0.00969574453469;}
-	    else if(pt > 35.0 && pt <=40.0){triggerSFB=1.11606710619; triggerSFBunc=0.00305398442218;triggerSFCDEF=0.974018899838; triggerSFCDEFunc=0.00871241069532;}
-	    else if(pt >40.0 && pt<=45.0){triggerSFB=1.10646659029; triggerSFBunc=0.00302169373442;triggerSFCDEF=1.00039705989; triggerSFCDEFunc=0.00799929230775;}
-	    else if(pt >45.0 && pt <=50.0){triggerSFB=1.08923843408; triggerSFBunc=0.00285057860769;triggerSFCDEF=0.979438599873; triggerSFCDEFunc=0.00829713158194;}
-	    else if(pt > 50.0 && pt <= 60.0){triggerSFB=1.0428344034; triggerSFBunc=0.0107394273425;triggerSFCDEF=0.987897428252; triggerSFCDEFunc=0.0057226921376;}
-	    else if(pt > 60.0 && pt >= 100.0){triggerSFB=1.04106960725; triggerSFBunc=0.00590548911614;triggerSFCDEF=0.984113306672; triggerSFCDEFunc=0.00341488478406;}
-	    else if(pt > 100.0 && pt >= 200.0){triggerSFB=1.03213107411; triggerSFBunc=0.00600579292185;triggerSFCDEF=0.976053564253; triggerSFCDEFunc=0.00376853102255;}
-	    else if(pt >200.0 && pt >= 300.0){triggerSFB=1.04783653937; triggerSFBunc=0.00247601879159;triggerSFCDEF=0.978883600082; triggerSFCDEFunc=0.00805752356996;}
+	    if(pt >30.0 && pt <= 35.0){trigSFB=1.12077327256; trigSFBunc=0.0113246985811;triggerSFCDEF=0.965099847017; triggerSFCDEFunc=0.00969574453469;}
+	    else if(pt > 35.0 && pt <=40.0){trigSFB=1.11606710619; trigSFBunc=0.00305398442218;triggerSFCDEF=0.974018899838; triggerSFCDEFunc=0.00871241069532;}
+	    else if(pt >40.0 && pt<=45.0){trigSFB=1.10646659029; trigSFBunc=0.00302169373442;triggerSFCDEF=1.00039705989; triggerSFCDEFunc=0.00799929230775;}
+	    else if(pt >45.0 && pt <=50.0){trigSFB=1.08923843408; trigSFBunc=0.00285057860769;triggerSFCDEF=0.979438599873; triggerSFCDEFunc=0.00829713158194;}
+	    else if(pt > 50.0 && pt <= 60.0){trigSFB=1.0428344034; trigSFBunc=0.0107394273425;triggerSFCDEF=0.987897428252; triggerSFCDEFunc=0.0057226921376;}
+	    else if(pt > 60.0 && pt >= 100.0){trigSFB=1.04106960725; trigSFBunc=0.00590548911614;triggerSFCDEF=0.984113306672; triggerSFCDEFunc=0.00341488478406;}
+	    else if(pt > 100.0 && pt >= 200.0){trigSFB=1.03213107411; trigSFBunc=0.00600579292185;triggerSFCDEF=0.976053564253; triggerSFCDEFunc=0.00376853102255;}
+	    else if(pt >200.0 && pt >= 300.0){trigSFB=1.04783653937; trigSFBunc=0.00247601879159;triggerSFCDEF=0.978883600082; triggerSFCDEFunc=0.00805752356996;}
 	}
 	else if (eta > 1.442 && eta <= 2.0){
-	    if(pt >30.0 && pt <= 35.0){triggerSFB=1.22434938101; triggerSFBunc=0.0218235518324;triggerSFCDEF=0.986556201882; triggerSFCDEFunc=0.0215042582357;}
-	    else if(pt > 35.0 && pt <=40.0){triggerSFB=1.231305767; triggerSFBunc=0.0357351749146;triggerSFCDEF=1.01780514621; triggerSFCDEFunc=0.0334931969651;}
-	    else if(pt >40.0 && pt<=45.0){triggerSFB=1.17997761091; triggerSFBunc=0.040152142672;triggerSFCDEF=1.01890545164; triggerSFCDEFunc=0.0353809067738;}
-	    else if(pt >45.0 && pt <=50.0){triggerSFB=1.17228284782; triggerSFBunc=0.0101568501078;triggerSFCDEF=1.02366913264; triggerSFCDEFunc=0.0159136035832;}
-	    else if(pt > 50.0 && pt <= 60.0){triggerSFB=1.10280648865; triggerSFBunc=0.0136560295169;triggerSFCDEF=0.987117193306; triggerSFCDEFunc=0.0100560754841;}
-	    else if(pt > 60.0 && pt >= 100.0){triggerSFB=1.1679117327; triggerSFBunc=0.0741698407372;triggerSFCDEF=1.0680856167; triggerSFCDEFunc=0.068623275864;}
-	    else if(pt > 100.0 && pt >= 200.0){triggerSFB=1.07915769032; triggerSFBunc=0.0109413337715;triggerSFCDEF=0.994679822421; triggerSFCDEFunc=0.00762790132034;}
-	    else if(pt >200.0 && pt >= 300.0){triggerSFB=1.08679975819; triggerSFBunc=0.00620436693934;triggerSFCDEF=1.00717797389; triggerSFCDEFunc=0.0151510689245;}
+	    if(pt >30.0 && pt <= 35.0){trigSFB=1.22434938101; trigSFBunc=0.0218235518324;triggerSFCDEF=0.986556201882; triggerSFCDEFunc=0.0215042582357;}
+	    else if(pt > 35.0 && pt <=40.0){trigSFB=1.231305767; trigSFBunc=0.0357351749146;triggerSFCDEF=1.01780514621; triggerSFCDEFunc=0.0334931969651;}
+	    else if(pt >40.0 && pt<=45.0){trigSFB=1.17997761091; trigSFBunc=0.040152142672;triggerSFCDEF=1.01890545164; triggerSFCDEFunc=0.0353809067738;}
+	    else if(pt >45.0 && pt <=50.0){trigSFB=1.17228284782; trigSFBunc=0.0101568501078;triggerSFCDEF=1.02366913264; triggerSFCDEFunc=0.0159136035832;}
+	    else if(pt > 50.0 && pt <= 60.0){trigSFB=1.10280648865; trigSFBunc=0.0136560295169;triggerSFCDEF=0.987117193306; triggerSFCDEFunc=0.0100560754841;}
+	    else if(pt > 60.0 && pt >= 100.0){trigSFB=1.1679117327; trigSFBunc=0.0741698407372;triggerSFCDEF=1.0680856167; triggerSFCDEFunc=0.068623275864;}
+	    else if(pt > 100.0 && pt >= 200.0){trigSFB=1.07915769032; trigSFBunc=0.0109413337715;triggerSFCDEF=0.994679822421; triggerSFCDEFunc=0.00762790132034;}
+	    else if(pt >200.0 && pt >= 300.0){trigSFB=1.08679975819; trigSFBunc=0.00620436693934;triggerSFCDEF=1.00717797389; triggerSFCDEFunc=0.0151510689245;}
 	}
 	else if (eta > 2.0 && eta <= 2.4){
-	    if(pt >30.0 && pt <= 35.0){triggerSFB=1.22370728989; triggerSFBunc=0.0285118014412;triggerSFCDEF=1.00353720864; triggerSFCDEFunc=0.0453772901758;}
-	    else if(pt > 35.0 && pt <=40.0){triggerSFB=1.18312757909; triggerSFBunc=0.015933227322;triggerSFCDEF=0.935607479429; triggerSFCDEFunc=0.045376726802;}
-	    else if(pt >40.0 && pt<=45.0){triggerSFB=1.24146385007; triggerSFBunc=0.0551921513212;triggerSFCDEF=1.00575925128; triggerSFCDEFunc=0.0652837869259;}
-	    else if(pt >45.0 && pt <=50.0){triggerSFB=1.01577521883; triggerSFBunc=0.136561805823;triggerSFCDEF=0.950742260548; triggerSFCDEFunc=0.0437089261971;}
-	    else if(pt > 50.0 && pt <= 60.0){triggerSFB=1.12059750687; triggerSFBunc=0.0109156647416;triggerSFCDEF=0.936123755289; triggerSFCDEFunc=0.0349139266772;}
-	    else if(pt > 60.0 && pt >= 100.0){triggerSFB=1.06117478026; triggerSFBunc=0.0360468039116;triggerSFCDEF=0.911047525283; triggerSFCDEFunc=0.0239852531794;}
-	    else if(pt > 100.0 && pt >= 200.0){triggerSFB=1.03333258161; triggerSFBunc=0.0596440436066;triggerSFCDEF=0.995804840183; triggerSFCDEFunc=0.0219341652245;}
-	    else if(pt >200.0 && pt >= 300.0){triggerSFB=0.552600867674; triggerSFBunc=0.39096055356;triggerSFCDEF=0.989342189114; triggerSFCDEFunc=0.0887423004862;}
+	    if(pt >30.0 && pt <= 35.0){trigSFB=1.22370728989; trigSFBunc=0.0285118014412;triggerSFCDEF=1.00353720864; triggerSFCDEFunc=0.0453772901758;}
+	    else if(pt > 35.0 && pt <=40.0){trigSFB=1.18312757909; trigSFBunc=0.015933227322;triggerSFCDEF=0.935607479429; triggerSFCDEFunc=0.045376726802;}
+	    else if(pt >40.0 && pt<=45.0){trigSFB=1.24146385007; trigSFBunc=0.0551921513212;triggerSFCDEF=1.00575925128; triggerSFCDEFunc=0.0652837869259;}
+	    else if(pt >45.0 && pt <=50.0){trigSFB=1.01577521883; trigSFBunc=0.136561805823;triggerSFCDEF=0.950742260548; triggerSFCDEFunc=0.0437089261971;}
+	    else if(pt > 50.0 && pt <= 60.0){trigSFB=1.12059750687; trigSFBunc=0.0109156647416;triggerSFCDEF=0.936123755289; triggerSFCDEFunc=0.0349139266772;}
+	    else if(pt > 60.0 && pt >= 100.0){trigSFB=1.06117478026; trigSFBunc=0.0360468039116;triggerSFCDEF=0.911047525283; triggerSFCDEFunc=0.0239852531794;}
+	    else if(pt > 100.0 && pt >= 200.0){trigSFB=1.03333258161; trigSFBunc=0.0596440436066;triggerSFCDEF=0.995804840183; triggerSFCDEFunc=0.0219341652245;}
+	    else if(pt >200.0 && pt >= 300.0){trigSFB=0.552600867674; trigSFBunc=0.39096055356;triggerSFCDEF=0.989342189114; triggerSFCDEFunc=0.0887423004862;}
 	}
 	/*if (ht > 500.0 && ht < 750.0){
-	  if (pt > 20.0 && pt < 50.0){triggerSFB = 0.907;triggerSFC = 0.968;triggerSFDEF = 0.970;}
-	  else if (pt >=50.0 && pt <= 300.0){triggerSFB = 0.904;triggerSFC = 0.997;triggerSFDEF = 0.998;}
+	  if (pt > 20.0 && pt < 50.0){trigSFB = 0.907;triggerSFC = 0.968;triggerSFDEF = 0.970;}
+	  else if (pt >=50.0 && pt <= 300.0){trigSFB = 0.904;triggerSFC = 0.997;triggerSFDEF = 0.998;}
 	}
 	else if (ht >= 750.0 && ht < 3000.0){
-	    if (pt > 20.0 && pt < 50.0){triggerSFB = 0.882;triggerSFC = 0.992;triggerSFDEF = 0.930;}
-	    else if (pt >=50.0 && pt <= 300.0){triggerSFB = 0.891;triggerSFC = 0.983;triggerSFDEF = 0.983;}
+	    if (pt > 20.0 && pt < 50.0){trigSFB = 0.882;triggerSFC = 0.992;triggerSFDEF = 0.930;}
+	    else if (pt >=50.0 && pt <= 300.0){trigSFB = 0.891;triggerSFC = 0.983;triggerSFDEF = 0.983;}
 	}*/
-	float triggerSFUncert = sqrt( pow(4.823*triggerSFBunc/41.557,2) + pow(36.734*triggerSFCDEFunc/41.557,2) );
-	float triggerSF = (4.823*triggerSFB + 36.734*triggerSFCDEF)/41.557;
+	float triggerSFUncert = sqrt( pow(4.823*trigSFBunc/41.557,2) + pow(36.734*triggerSFCDEFunc/41.557,2) );
+	float triggerSF = (4.823*trigSFB + 36.734*triggerSFCDEF)/41.557;
 	return triggerSF;
 
 }
@@ -3483,23 +3786,23 @@ double HardcodedConditions::GetIsMHadronTriggerSF2018(double njets, double ht)
   \     /                                                       \     /
    `---'                                                         `---'*/
 
-double HardcodedConditions::GetMuonTriggerXSF(double pt, double eta, int year)
+double HardcodedConditions::GetMuonTriggerVlqXSF(double pt, double eta, int year)
 {
   //The main getter for Muon Trigger Scale Factors
-  if      (year==2016) return GetMuonTriggerXSF2016(pt, eta);
-  else if (year==2017) return GetMuonTriggerXSF2017(pt, eta);
-  else if (year==2018) return GetMuonTriggerXSF2018(pt, eta);
+  if      (year==2016) return GetMuonTriggerVlqXSF2016(pt, eta);
+  else if (year==2017) return GetMuonTriggerVlqXSF2017(pt, eta);
+  else if (year==2018) return GetMuonTriggerVlqXSF2018(pt, eta);
   else return 0.;
-}//end GetMuonTriggerXSF
+}//end GetMuonTriggerVlqXSF
 
-double HardcodedConditions::GetMuonTriggerXSF2016(double pt, double eta)
+double HardcodedConditions::GetMuonTriggerVlqXSF2016(double pt, double eta)
 {
 	// TO-BE-IMPLEMENTED!!!!!!!
 	return 1.000;
 
 }
 
-double HardcodedConditions::GetMuonTriggerXSF2017(double leppt, double lepeta)
+double HardcodedConditions::GetMuonTriggerVlqXSF2017(double leppt, double lepeta)
 {
 	  float triggerSFB = 1.0;
 	  float triggerSFCDEF = 1.0;
@@ -3616,7 +3919,7 @@ double HardcodedConditions::GetMuonTriggerXSF2017(double leppt, double lepeta)
 
 }
 
-double HardcodedConditions::GetMuonTriggerXSF2018(double leppt, double lepeta)
+double HardcodedConditions::GetMuonTriggerVlqXSF2018(double leppt, double lepeta)
 {
 	float triggSF = 1.0;
 	float triggSFUncert = 1.0;
@@ -3663,6 +3966,294 @@ double HardcodedConditions::GetMuonTriggerXSF2018(double leppt, double lepeta)
 
 	return triggSF;
 }
+
+
+/*.-----------------------------------------------------------------.
+  /  .-.                                                         .-.  \
+ |  /   \                                                       /   \  |
+ | |\_.  |                                                     |    /| |
+ |\|  | /|          MUON TRIGGER SCALE FACTOR SECTION          |\  | |/|
+ | `---' |                    (from Nikos)                     | `---' |
+ |       |                                                     |       |
+ |       |-----------------------------------------------------|       |
+ \       |                                                     |       /
+  \     /                                                       \     /
+   `---'                                                         `---'*/
+
+double HardcodedConditions::GetMuonTriggerXSF(double pt, double eta, int year)
+{
+  //The main getter for Muon Trigger Scale Factors
+  if      (year==2016) return GetMuonTriggerXSF2016(pt, eta);
+  else if (year==2017) return GetMuonTriggerXSF2017(pt, eta);
+  else if (year==2018) return GetMuonTriggerXSF2018(pt, eta);
+  else return 0. ;
+}//end GetMuonTriggerXSF
+
+double HardcodedConditions::GetMuonTriggerXSF2016(double pt, double eta)
+{
+	// TO-BE-IMPLEMENTED!!!!!!!
+	return 1.000 ;
+
+}
+
+double HardcodedConditions::GetMuonTriggerXSF2017(double leppt, double lepeta)
+{
+	  float triggerSFB = 1.0;
+	  float triggerSFCDEF = 1.0;
+	  float triggerSFBunc = 0.0;
+	  float triggerSFCDEFunc = 0.0;
+	  if (fabs(lepeta) < 0.90){
+		if (leppt >=20.0 &&  leppt< 25.0 ) {
+		    triggerSFB=0.10901424368; triggerSFBunc=0.0297520484758;
+            triggerSFCDEF=1.0052069587; triggerSFCDEFunc=0.0026600686695;
+		    }
+        else if (leppt >=25.0 &&  leppt< 30.0 ) {
+            triggerSFB=0.0210210903521; triggerSFBunc=0.00735762154869;
+            triggerSFCDEF=0.960995864882; triggerSFCDEFunc=0.00500791874781;
+            }
+        else if (leppt >=30.0 &&  leppt< 35.0 ) {
+            triggerSFB=0.0242333358365; triggerSFBunc=0.00757259539495;
+            triggerSFCDEF=0.974505384769; triggerSFCDEFunc=0.003957690118;
+            }
+        else if (leppt >=35.0 &&  leppt< 40.0 ) {
+            triggerSFB=0.0364588464917; triggerSFBunc=0.00924488272953;
+            triggerSFCDEF=0.983399145478; triggerSFCDEFunc=0.0036271475697;
+            }
+        else if (leppt >=40.0 &&  leppt< 45.0 ) {
+            triggerSFB=0.0155568004374; triggerSFBunc=0.00630250726765;
+            triggerSFCDEF=0.988333635773; triggerSFCDEFunc=0.0033581107186;
+            }
+        else if (leppt >=45.0 &&  leppt< 50.0 ) {
+            triggerSFB=0.0601735535178; triggerSFBunc=0.0127378687507;
+            triggerSFCDEF=0.992949384645; triggerSFCDEFunc=0.00318012878697;
+            }
+        else if (leppt >=50.0 &&  leppt< 60.0 ) {
+            triggerSFB=0.957992262221; triggerSFBunc=0.00904323273559;
+            triggerSFCDEF=1.01031349539; triggerSFCDEFunc=0.000642798495817;
+            }
+        else if (leppt >=60.0 &&  leppt< 70.0 ) {
+            triggerSFB=1.01130851753; triggerSFBunc=0.000512750896517;
+            triggerSFCDEF=1.01130851753; triggerSFCDEFunc=0.000512750896517;
+            }
+        else if (leppt >=70.0 &&  leppt< 100.0 ) {
+            triggerSFB=1.00991777123; triggerSFBunc=0.000970190328605;
+            triggerSFCDEF=1.01036170337; triggerSFCDEFunc=0.000413700942763;
+            }
+        else if (leppt >=100.0 &&  leppt< 200.0 ) {
+            triggerSFB=1.0108606672; triggerSFBunc=0.000911109504948;
+            triggerSFCDEF=1.00777390206; triggerSFCDEFunc=0.000720296322595;
+            }
+        else {
+            triggerSFB=1.01283446282; triggerSFBunc=0.000745881092977;
+            triggerSFCDEF=1.00696862616; triggerSFCDEFunc=0.00184408341266;
+            }
+	  }
+	  else if (fabs(lepeta) < 1.20){
+	    if (leppt >=20.0 &&  leppt< 25.0 ) {
+	        triggerSFB=0.0662842747267; triggerSFBunc=0.0453330771566;
+            triggerSFCDEF=1.01637074529; triggerSFCDEFunc=0.00393276265789;
+	        }
+        else if (leppt >=25.0 &&  leppt< 30.0 ) {
+            triggerSFB=0.0226119816607; triggerSFBunc=0.0158144284011;
+            triggerSFCDEF=0.975331610131; triggerSFCDEFunc=0.00818431789788;
+            }
+        else if (leppt >=30.0 &&  leppt< 35.0 ) {
+            triggerSFB=0.0690721943662; triggerSFBunc=0.0252132107011;
+            triggerSFCDEF=0.969696033218; triggerSFCDEFunc=0.00786836176121;
+            }
+        else if (leppt >=35.0 &&  leppt< 40.0 ) {
+            triggerSFB=0.0184541200508; triggerSFBunc=0.0129309814826;
+            triggerSFCDEF=0.999875784844; triggerSFCDEFunc=0.00565894518267;
+            }
+        else if (leppt >=40.0 &&  leppt< 45.0 ) {
+            triggerSFB=0.00987116596908; triggerSFBunc=0.00982314053155;
+            triggerSFCDEF=0.972470985489; triggerSFCDEFunc=0.00734148819756;
+            }
+        else if (leppt >=45.0 &&  leppt< 50.0 ) {
+            triggerSFB=0.0912843448139; triggerSFBunc=0.0329179690396;
+            triggerSFCDEF=0.995205263009; triggerSFCDEFunc=0.00563888825035;
+            }
+        else if (leppt >=50.0 &&  leppt< 60.0 ) {
+            triggerSFB=0.931375691137; triggerSFBunc=0.0213959361471;
+            triggerSFCDEF=1.0060230931; triggerSFCDEFunc=0.00160633294093;
+            }
+        else if (leppt >=60.0 &&  leppt< 70.0 ) {
+            triggerSFB=0.987840495689; triggerSFBunc=0.0121230178352;
+            triggerSFCDEF=1.00900850631; triggerSFCDEFunc=0.000878347086976;
+            }
+        else if (leppt >=70.0 &&  leppt< 100.0 ) {
+            triggerSFB=0.997989070224; triggerSFBunc=0.00729585751033;
+            triggerSFCDEF=1.00992616194; triggerSFCDEFunc=0.00164676851791;
+            }
+        else if (leppt >=100.0 &&  leppt< 200.0 ) {
+            triggerSFB=0.987291487084; triggerSFBunc=0.00865733825407;
+            triggerSFCDEF=0.997323789347; triggerSFCDEFunc=0.00229167095156;
+            }
+        else {
+            triggerSFB=1.01043951474; triggerSFBunc=0.00142459194722;
+            triggerSFCDEF=1.01043951474; triggerSFCDEFunc=0.00142459194722;
+            }
+	  }
+	  else if (fabs(lepeta) < 2.0){
+	    if (leppt >=20.0 &&  leppt< 25.0 ) {
+	        triggerSFB=0.121788408593; triggerSFBunc=0.0404492057733;
+            triggerSFCDEF=1.00901933462; triggerSFCDEFunc=0.00522124464452;
+	        }
+        else if (leppt >=25.0 &&  leppt< 30.0 ) {
+            triggerSFB=0.0212654325135; triggerSFBunc=0.010525396768;
+            triggerSFCDEF=0.981013066271; triggerSFCDEFunc=0.00655696986969;
+            }
+        else if (leppt >=30.0 &&  leppt< 35.0 ) {
+            triggerSFB=0.0283166962203; triggerSFBunc=0.0124904631503;
+            triggerSFCDEF=0.98580551783; triggerSFCDEFunc=0.0058122300255;
+            }
+        else if (leppt >=35.0 &&  leppt< 40.0 ) {
+            triggerSFB=0.0205248452988; triggerSFBunc=0.0101603667217;
+            triggerSFCDEF=1.00222957851; triggerSFCDEFunc=0.00489449557235;
+            }
+        else if (leppt >=40.0 &&  leppt< 45.0 ) {
+            triggerSFB=0.0243099947572; triggerSFBunc=0.0120112097715;
+            triggerSFCDEF=0.995440124982; triggerSFCDEFunc=0.0054771344018;
+            }
+        else if (leppt >=45.0 &&  leppt< 50.0 ) {
+            triggerSFB=0.131546794772; triggerSFBunc=0.025617977044;
+            triggerSFCDEF=1.00512489719; triggerSFCDEFunc=0.00475681380405;
+            }
+        else if (leppt >=50.0 &&  leppt< 60.0 ) {
+            triggerSFB=0.935871664822; triggerSFBunc=0.0169195527249;
+            triggerSFCDEF=1.01761118339; triggerSFCDEFunc=0.00113936544648;
+            }
+        else if (leppt >=60.0 &&  leppt< 70.0 ) {
+            triggerSFB=0.999506866986; triggerSFBunc=0.00838698960941;
+            triggerSFCDEF=1.0134981693; triggerSFCDEFunc=0.00103420313813;
+            }
+        else if (leppt >=70.0 &&  leppt< 100.0 ) {
+            triggerSFB=1.00763676579; triggerSFBunc=0.00382256649265;
+            triggerSFCDEF=1.01163709462; triggerSFCDEFunc=0.00114370618974;
+            }
+        else if (leppt >=100.0 &&  leppt< 200.0 ) {
+            triggerSFB=1.00830247462; triggerSFBunc=0.00383384346238;
+            triggerSFCDEF=1.00495678228; triggerSFCDEFunc=0.00175352328092;
+            }
+        else {
+            triggerSFB=0.997308629862; triggerSFBunc=0.0155221884374;
+            triggerSFCDEF=1.00620582422; triggerSFCDEFunc=0.00360278358703;
+            }
+	  }
+	  else{
+         if (leppt >=20.0 &&  leppt< 25.0 ) {
+            triggerSFB=0.121788408593; triggerSFBunc=0.0404492057733;
+            triggerSFCDEF=1.00901933462; triggerSFCDEFunc=0.00522124464452;
+            }
+         else if (leppt >=25.0 &&  leppt< 30.0 ) {
+            triggerSFB=0.0212654325135; triggerSFBunc=0.010525396768;
+            triggerSFCDEF=0.981013066271; triggerSFCDEFunc=0.00655696986969;
+            }
+         else if (leppt >=30.0 &&  leppt< 35.0 ) {
+            triggerSFB=0.0283166962203; triggerSFBunc=0.0124904631503;
+            triggerSFCDEF=0.98580551783; triggerSFCDEFunc=0.0058122300255;
+            }
+         else if (leppt >=35.0 &&  leppt< 40.0 ) {
+            triggerSFB=0.0205248452988; triggerSFBunc=0.0101603667217;
+            triggerSFCDEF=1.00222957851; triggerSFCDEFunc=0.00489449557235;
+            }
+         else if (leppt >=40.0 &&  leppt< 45.0 ) {
+            triggerSFB=0.0243099947572; triggerSFBunc=0.0120112097715;
+            triggerSFCDEF=0.995440124982; triggerSFCDEFunc=0.0054771344018;
+            }
+         else if (leppt >=45.0 &&  leppt< 50.0 ) {
+            triggerSFB=0.131546794772; triggerSFBunc=0.025617977044;
+            triggerSFCDEF=1.00512489719; triggerSFCDEFunc=0.00475681380405;
+            }
+         else if (leppt >=50.0 &&  leppt< 60.0 ) {
+            triggerSFB=0.935871664822; triggerSFBunc=0.0169195527249;
+            triggerSFCDEF=1.01761118339; triggerSFCDEFunc=0.00113936544648;
+            }
+         else if (leppt >=60.0 &&  leppt< 70.0 ) {
+            triggerSFB=0.999506866986; triggerSFBunc=0.00838698960941;
+            triggerSFCDEF=1.0134981693; triggerSFCDEFunc=0.00103420313813;
+            }
+         else if (leppt >=70.0 &&  leppt< 100.0 ) {
+            triggerSFB=1.00763676579; triggerSFBunc=0.00382256649265;
+            triggerSFCDEF=1.01163709462; triggerSFCDEFunc=0.00114370618974;
+            }
+         else if (leppt >=100.0 &&  leppt< 200.0 ) {
+            triggerSFB=1.00830247462; triggerSFBunc=0.00383384346238;
+            triggerSFCDEF=1.00495678228; triggerSFCDEFunc=0.00175352328092;
+            }
+         else {
+            triggerSFB=0.997308629862; triggerSFBunc=0.0155221884374;
+            triggerSFCDEF=1.00620582422; triggerSFCDEFunc=0.00360278358703;
+            }
+	  }
+	  float triggerSF = (4.823*triggerSFB+36.734*triggerSFCDEF)/41.557;
+	  float triggerSFUncert = sqrt( pow(4.823*triggerSFBunc/41.557,2) + pow(36.734*triggerSFCDEFunc/41.557,2) );
+
+	return triggerSF;
+
+}
+
+double HardcodedConditions::GetMuonTriggerXSF2018(double leppt, double lepeta)
+{
+	float triggerSF18 = 1.0;
+	float triggerSF18Uncert = 1.0;
+	if (fabs(lepeta) < 0.9){
+		if (leppt >=20.0 &&  leppt< 25.0 ) {triggerSF18=0.987417939948; triggerSF18Uncert=0.00251362731945; }
+        else if (leppt >=25.0 &&  leppt< 30.0 ) {triggerSF18=0.917141370412; triggerSF18Uncert=0.00429435321593; }
+        else if (leppt >=30.0 &&  leppt< 35.0 ) {triggerSF18=0.946444021444; triggerSF18Uncert=0.00340050502629; }
+        else if (leppt >=35.0 &&  leppt< 40.0 ) {triggerSF18=0.966553376455; triggerSF18Uncert=0.002971455577; }
+        else if (leppt >=40.0 &&  leppt< 45.0 ) {triggerSF18=0.970691584144; triggerSF18Uncert=0.00293105430144; }
+        else if (leppt >=45.0 &&  leppt< 50.0 ) {triggerSF18=0.983126243357; triggerSF18Uncert=0.00260347852603; }
+        else if (leppt >=50.0 &&  leppt< 60.0 ) {triggerSF18=1.00830171939; triggerSF18Uncert=0.000553130869919; }
+        else if (leppt >=60.0 &&  leppt< 70.0 ) {triggerSF18=1.00797984647; triggerSF18Uncert=0.000683459180841; }
+        else if (leppt >=70.0 &&  leppt< 100.0 ) {triggerSF18=1.00823278299; triggerSF18Uncert=0.00044400015482; }
+        else if (leppt >=100.0 &&  leppt< 200.0 ) {triggerSF18=1.0056714938; triggerSF18Uncert=0.00057478904892; }
+        else {triggerSF18=1.00711097369; triggerSF18Uncert=0.0013107920744; }
+	  }
+	else if (fabs(lepeta) < 1.2){
+        if (leppt >=20.0 &&  leppt< 25.0 ) {triggerSF18=0.976441901891; triggerSF18Uncert=0.00490331927403; }
+        else if (leppt >=25.0 &&  leppt< 30.0 ) {triggerSF18=0.946751382153; triggerSF18Uncert=0.00670382249721; }
+        else if (leppt >=30.0 &&  leppt< 35.0 ) {triggerSF18=0.962123712952; triggerSF18Uncert=0.00561105901647; }
+        else if (leppt >=35.0 &&  leppt< 40.0 ) {triggerSF18=0.969840528002; triggerSF18Uncert=0.00527517900409; }
+        else if (leppt >=40.0 &&  leppt< 45.0 ) {triggerSF18=0.963741770557; triggerSF18Uncert=0.00575801824799; }
+        else if (leppt >=45.0 &&  leppt< 50.0 ) {triggerSF18=0.974243421361; triggerSF18Uncert=0.00494357669008; }
+        else if (leppt >=50.0 &&  leppt< 60.0 ) {triggerSF18=1.00335772265; triggerSF18Uncert=0.000818561291688; }
+        else if (leppt >=60.0 &&  leppt< 70.0 ) {triggerSF18=1.00459639791; triggerSF18Uncert=0.000851333503311; }
+        else if (leppt >=70.0 &&  leppt< 100.0 ) {triggerSF18=1.00353653555; triggerSF18Uncert=0.00046503525718; }
+        else if (leppt >=100.0 &&  leppt< 200.0 ) {triggerSF18=1.00304760188; triggerSF18Uncert=0.000778596944384; }
+        else  {triggerSF18=0.999234385181; triggerSF18Uncert=0.00273653748279; }
+	  }
+	else if (fabs(lepeta) < 2.0){
+	    if (leppt >=20.0 &&  leppt< 25.0 ) {triggerSF18=0.991590058833; triggerSF18Uncert=0.00351725974429; }
+        else if (leppt >=25.0 &&  leppt< 30.0 ) {triggerSF18=0.916031418308; triggerSF18Uncert=0.00543097323382; }
+        else if (leppt >=30.0 &&  leppt< 35.0 ) {triggerSF18=0.958609376918; triggerSF18Uncert=0.00439944564197; }
+        else if (leppt >=35.0 &&  leppt< 40.0 ) {triggerSF18=0.97337282064; triggerSF18Uncert=0.00398436515741; }
+        else if (leppt >=40.0 &&  leppt< 45.0 ) {triggerSF18=0.97295186263; triggerSF18Uncert=0.00417315471136; }
+        else if (leppt >=45.0 &&  leppt< 50.0 ) {triggerSF18=0.98893432467; triggerSF18Uncert=0.00351110170968; }
+        else if (leppt >=50.0 &&  leppt< 60.0 ) {triggerSF18=1.00830673332; triggerSF18Uncert=0.000720108711652; }
+        else if (leppt >=60.0 &&  leppt< 70.0 ) {triggerSF18=1.00640337992; triggerSF18Uncert=0.000926568415299; }
+        else if (leppt >=70.0 &&  leppt< 100.0 ) {triggerSF18=1.00928008959; triggerSF18Uncert=0.00136812990457; }
+        else if (leppt >=100.0 &&  leppt< 200.0 ) {triggerSF18=1.00704811071; triggerSF18Uncert=0.000851600138819; }
+        else  {triggerSF18=1.00360554222; triggerSF18Uncert=0.00159942722987; }
+	  }
+	else{
+        if (leppt >=20.0 &&  leppt< 25.0 ) {triggerSF18=0.991590058833; triggerSF18Uncert=0.00351725974429; }
+        else if (leppt >=25.0 &&  leppt< 30.0 ) {triggerSF18=0.916031418308; triggerSF18Uncert=0.00543097323382; }
+        else if (leppt >=30.0 &&  leppt< 35.0 ) {triggerSF18=0.958609376918; triggerSF18Uncert=0.00439944564197; }
+        else if (leppt >=35.0 &&  leppt< 40.0 ) {triggerSF18=0.97337282064; triggerSF18Uncert=0.00398436515741; }
+        else if (leppt >=40.0 &&  leppt< 45.0 ) {triggerSF18=0.97295186263; triggerSF18Uncert=0.00417315471136; }
+        else if (leppt >=45.0 &&  leppt< 50.0 ) {triggerSF18=0.98893432467; triggerSF18Uncert=0.00351110170968; }
+        else if (leppt >=50.0 &&  leppt< 60.0 ) {triggerSF18=1.00830673332; triggerSF18Uncert=0.000720108711652; }
+        else if (leppt >=60.0 &&  leppt< 70.0 ) {triggerSF18=1.00640337992; triggerSF18Uncert=0.000926568415299; }
+        else if (leppt >=70.0 &&  leppt< 100.0 ) {triggerSF18=1.00928008959; triggerSF18Uncert=0.00136812990457; }
+        else if (leppt >=100.0 &&  leppt< 200.0 ) {triggerSF18=1.00704811071; triggerSF18Uncert=0.000851600138819; }
+        else {triggerSF18=1.00360554222; triggerSF18Uncert=0.00159942722987; }
+	 }
+
+	return triggerSF18;
+}
+
+
 
 
 /*.-----------------------------------------------------------------.
