@@ -14,6 +14,7 @@
 #include <vector>
 #include <TH3.h>
 #include "HardcodedConditions.h"
+#include "BtagCSVReshaping.h"
 
 using namespace std;
 
@@ -367,6 +368,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    outputTree->Branch("triggerSF",&triggerSF,"triggerSF/F");
    outputTree->Branch("triggerXSF",&triggerXSF,"triggerXSF/F");
    outputTree->Branch("isoSF",&isoSF,"isoSF/F");
+   outputTree->Branch("btagCSVWeight",&btagCSVWeight,"btagCSVWeight/D");
    
    //ttbar generator
    outputTree->Branch("ttbarMass_TTbarMassCalc",&ttbarMass_TTbarMassCalc,"ttbarMass_TTbarMassCalc/D");
@@ -673,6 +675,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
   // ----------------------------------------------------------------------------
   // RUN THE EVENT LOOP
   // ----------------------------------------------------------------------------
+   btagCSVTool = new CSVReshaping(Year, "DeepCSV");
 
    cout << "RUN CONFIG: YEAR = " << Year << endl;
    cout << "Era = " << Era << endl;
@@ -706,7 +709,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
       nb = inputTree->GetEntry(jentry);   nbytes += nb;
       if (Cut(ientry) != 1) continue;
       
-      //  if (ientry > 5000) continue;
+        if (ientry > 100) continue; // 5000 -wz
       
       if(jentry % 1000 ==0) std::cout<<"Completed "<<jentry<<" out of "<<nentries<<" events"<<std::endl;
 
@@ -1054,6 +1057,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
       NJets_JetSubCalc = 0;
       AK4HT = 0;
       vector<pair<double,int>> jetptindpair;
+      btagCSVWeight = 1.0;
 
       for(unsigned int ijet=0; ijet < theJetPt_JetSubCalc->size(); ijet++){
 	// ----------------------------------------------------------------------------
@@ -1061,7 +1065,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
 	// ----------------------------------------------------------------------------
 
 	if(theJetPt_JetSubCalc->at(ijet) < jetPtCut || fabs(theJetEta_JetSubCalc->at(ijet)) > jetEtaCut) continue;
-	
+
 	// ----------------------------------------------------------------------------
 	// B TAGGING fix
 	// ----------------------------------------------------------------------------
@@ -1129,8 +1133,15 @@ void step1::Loop(TString inTreeName, TString outTreeName )
 	jetptindpair.push_back(std::make_pair(theJetPt_JetSubCalc->at(ijet),ijet));
 	NJets_JetSubCalc+=1;
 	AK4HT+=theJetPt_JetSubCalc->at(ijet);
-      }
 
+        // --------- CSV reshaping, generate event wgt --------------------------------   // only MC --wz ??
+	double csv = AK4JetDeepCSVb_MultiLepCalc->at(ijet) + AK4JetDeepCSVbb_MultiLepCalc->at(ijet);
+        double csvWgt = btagCSVTool ->getCSVWeight(ijetPt, ijetEta, csv, ijetHFlv, "central");
+        if (csvWgt != 0) btagCSVWeight *= csvWgt;
+       
+
+      }
+	cout << " btagCSVWeight "<< btagCSVWeight; // wz 
 
       // ----------------------------------------------------------------------------
       // Loop over AK8 jets for calculations and pt ordering pair
