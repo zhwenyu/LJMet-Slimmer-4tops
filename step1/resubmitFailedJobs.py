@@ -6,7 +6,7 @@ inputDir = '/uscms_data/d3/ssagir/FWLJMET102X_1lep2018_Oct2019_4t_031520_step1/'
 resubmit_err = False
 resubmit_out = False
 resubmit_fail = False
-resubmit_running = False #Make sure you know what you are doing with this option!
+resubmit_running = False  # Make sure you know what you are doing with this option!
 resubmit = False
 
 samplesDone = []

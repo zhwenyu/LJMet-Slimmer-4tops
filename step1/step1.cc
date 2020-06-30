@@ -365,6 +365,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    outputTree->Branch("EGammaGsfSF",&EGammaGsfSF,"EGammaGsfSF/F");
    outputTree->Branch("lepIdSF",&lepIdSF,"lepIdSF/F");
    outputTree->Branch("triggerSF",&triggerSF,"triggerSF/F");
+   outputTree->Branch("triggerHadSF",&triggerHadSF,"triggerHadSF/F");
    outputTree->Branch("triggerXSF",&triggerXSF,"triggerXSF/F");
    outputTree->Branch("isoSF",&isoSF,"isoSF/F");
    
@@ -465,6 +466,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    outputTree->Branch("minMleppJet",&minMleppJet,"mixnMleppJet/F");
    outputTree->Branch("minDR_lepJet",&minDR_lepJet,"minDR_lepJet/F");
    outputTree->Branch("ptRel_lepJet",&ptRel_lepJet,"ptRel_lepJet/F");
+   outputTree->Branch("minDR_jetJets",&minDR_jetJets);
    outputTree->Branch("deltaR_lepJets",&deltaR_lepJets);
    outputTree->Branch("deltaR_lepBJets",&deltaR_lepBJets);
    outputTree->Branch("deltaR_lepBJets_bSFup",&deltaR_lepBJets_bSFup);
@@ -625,6 +627,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
 
    // Lorentz vectors
    TLorentzVector jet_lv;
+   TLorentzVector kjet_lv;
    TLorentzVector bjet_lv;
    TLorentzVector wjet1_lv;
    TLorentzVector tjet1_lv;
@@ -729,8 +732,8 @@ void step1::Loop(TString inTreeName, TString outTreeName )
       double genHT = 0;
       int Ngenjet = 0;
       for(unsigned int ijet=0; ijet < genJetPtNoClean_MultiLepCalc->size(); ijet++){
-	if(genJetPtNoClean_MultiLepCalc->at(ijet) > 30) Ngenjet+=1;
-	if(genJetPtNoClean_MultiLepCalc->at(ijet) > 30 && fabs(genJetEtaNoClean_MultiLepCalc->at(ijet)) < 2.4) genHT+=genJetPtNoClean_MultiLepCalc->at(ijet);
+	    if(genJetPtNoClean_MultiLepCalc->at(ijet) > 30) Ngenjet+=1;
+	    if(genJetPtNoClean_MultiLepCalc->at(ijet) > 30 && fabs(genJetEtaNoClean_MultiLepCalc->at(ijet)) < 2.4) genHT+=genJetPtNoClean_MultiLepCalc->at(ijet);
       }
       if(genHT>500 && Ngenjet>=9) {isHTgt500Njetge9 = 1;}
       }
@@ -818,201 +821,6 @@ void step1::Loop(TString inTreeName, TString outTreeName )
       }
 
       // ----------------------------------------------------------------------------
-      // Assign Lepton scale factor or efficiency weights, save trigger pass/fail
-      // ----------------------------------------------------------------------------
- 
-      // Triggers Initialised to ZERO
-      HLT_Ele15_IsoVVVL_PFHT450 = 0;
-      HLT_Ele28_eta2p1_WPTight_Gsf_HT150 = 0;
-      HLT_Ele30_eta2p1_WPTight_Gsf_CentralPFJet35_EleCleaned = 0;
-      HLT_Mu15_IsoVVVL_PFHT450 = 0;
-      HLT_PFHT400_SixJet30_DoubleBTagCSV_p056 = 0;
-      HLT_Ele32_WPTight_Gsf = 0;
-      HLT_Ele35_WPTight_Gsf = 0;
-      HLT_IsoMu24 = 0;
-      HLT_IsoMu24_eta2p1 = 0;
-      HLT_IsoMu27 = 0;
-      HLT_PFHT380_SixJet32_DoubleBTagCSV_p075 = 0; // only data for 17B
-      HLT_PFHT380_SixPFJet32_DoublePFBTagDeepCSV_2p2 = 0; // only MC for 17B
-      HLT_PFHT380_SixPFJet32_DoublePFBTagCSV_2p2 = 0;
-      HLT_PFHT400_SixPFJet32_DoublePFBTagDeepCSV_2p94 = 0; // in 2018
-
-      DataPastTriggerX = 0;
-      MCPastTriggerX = 0;
-      DataPastTrigger = 0;
-      MCPastTrigger = 0;
-      DataLepPastTrigger = 0;
-      MCLepPastTrigger = 0;
-      DataHadPastTrigger = 0;
-      MCHadPastTrigger = 0;
-      EGammaGsfSF = 1.0;
-      lepIdSF = 1.0;
-      triggerSF = 1.0;
-      triggerXSF = 1.0;
-      isoSF = 1.0;
-      std::vector<std::string> eltriggersX;
-      std::vector<std::string> mutriggersX;
-      if(Year==2017){
-      eltriggersX = {"Ele15_IsoVVVL_PFHT450","Ele50_IsoVVVL_PFHT450","Ele15_IsoVVVL_PFHT600","Ele35_WPTight_Gsf","Ele38_WPTight_Gsf"};
-      mutriggersX = {"Mu15_IsoVVVL_PFHT450","Mu50_IsoVVVL_PFHT450","Mu15_IsoVVVL_PFHT600","Mu50"};
-      }
-      else if(Year==2018){
-      eltriggersX = {"Ele15_IsoVVVL_PFHT450","Ele50_IsoVVVL_PFHT450","Ele15_IsoVVVL_PFHT600","Ele35_WPTight_Gsf","Ele38_WPTight_Gsf","Ele15_IsoVVVL_PFHT450_PFMET50"};
-      mutriggersX = {"Mu15_IsoVVVL_PFHT450","Mu50_IsoVVVL_PFHT450","Mu15_IsoVVVL_PFHT600","Mu50","TkMu50","Mu15_IsoVVVL_PFHT450_PFMET50"};
-      }
-      std::string eltrigger;
-      std::string mutrigger;
-      std::string hadtrigger;
-      std::vector<std::string> eltriggers;
-      std::vector<std::string> mutriggers;
-      std::vector<std::string> hadtriggers;
-      std::map<TString, std::vector<std::string>> mctriggers;
-      mctriggers = {{"17B", {"Ele35_WPTight_Gsf", "IsoMu24_eta2p1" , "PFHT380_SixPFJet32_DoublePFBTagDeepCSV_2p2" }},
-		    {"17C",{"Ele35_WPTight_Gsf", "IsoMu27" , "PFHT380_SixPFJet32_DoublePFBTagCSV_2p2" }},
-		    {"17DEF",{"Ele32_WPTight_Gsf", "IsoMu27" , "PFHT380_SixPFJet32_DoublePFBTagDeepCSV_2p2" }},
-		    {"18",{"Ele32_WPTight_Gsf", "IsoMu24" , "PFHT400_SixPFJet32_DoublePFBTagDeep_CSV_2p94" }}};
-
-
-      std::map<TString, std::vector<std::string>> datatriggers;
-      datatriggers = {{"17B", {"Ele35_WPTight_Gsf", "IsoMu24_eta2p1" , "PFHT380_SixJet32_DoubleBTagCSV_p075" }},
-		      {"17C",{"Ele35_WPTight_Gsf", "IsoMu27" , "PFHT380_SixPFJet32_DoublePFBTagCSV_2p2" }},
-		      {"17DEF",{"Ele32_WPTight_Gsf", "IsoMu27" , "PFHT380_SixPFJet32_DoublePFBTagDeepCSV_2p2" }},
-		      {"18AB", {"Ele32_WPTight_Gsf", "IsoMu24" , "PFHT380_SixPFJet32_DoublePFBTagDeep_CSV_2p2" }},
-		      {"18CD",{"Ele32_WPTight_Gsf", "IsoMu24" , "PFHT400_SixPFJet32_DoublePFBTagDeep_CSV_2p94" }}};
-      if (!isMC){
-	eltrigger = datatriggers.at(Era).at(0);
-	mutrigger =  datatriggers.at(Era).at(1);
-	hadtrigger = datatriggers.at(Era).at(2);
-      }
-      else{
-	if (Year==2017){
-	  TRandom3 r;
-	  //TRandom3 *r = new TRandom3();
-	  float randLumi = r.Uniform(1.);    
-	  //Double_t randLumi = r->Rndm();
-	  TString Era17;
-	  float eraBupperLumi = (4.823/41.557);
-	  float eraCupperLumi = (14.487/41.557);
-	  if(randLumi>=0 && randLumi<= eraBupperLumi) Era17="17B";
-	  else if(randLumi>eraBupperLumi && randLumi<=eraCupperLumi) Era17="17C";
-	  else Era17="17DEF";
-	  eltrigger = mctriggers.at(Era17).at(0);
-	  mutrigger =  mctriggers.at(Era17).at(1);
-	  hadtrigger = mctriggers.at(Era17).at(2);
-	}
-	else if (Year==2018){
-	  eltrigger = mctriggers.at("18").at(0);
-	  mutrigger =  mctriggers.at("18").at(1);
-	  hadtrigger = mctriggers.at("18").at(2);
-	}
-      }
-      
-      if(isMC){
-	for(unsigned int itrig=0; itrig < vsSelMCTriggersHad_MultiLepCalc->size(); itrig++){
-	  if(vsSelMCTriggersHad_MultiLepCalc->at(itrig).find(hadtrigger) != std::string::npos && viSelMCTriggersHad_MultiLepCalc->at(itrig) > 0) MCHadPastTrigger = 1;
-	  if(vsSelMCTriggersHad_MultiLepCalc->at(itrig).find("HLT_PFHT380_SixPFJet32_DoublePFBTagDeepCSV_2p2") != std::string::npos && viSelMCTriggersHad_MultiLepCalc->at(itrig) > 0) HLT_PFHT380_SixPFJet32_DoublePFBTagDeepCSV_2p2 = 1;
-	  if(vsSelMCTriggersHad_MultiLepCalc->at(itrig).find("HLT_PFHT380_SixPFJet32_DoublePFBTagCSV_2p2") != std::string::npos && viSelMCTriggersHad_MultiLepCalc->at(itrig) > 0) HLT_PFHT380_SixPFJet32_DoublePFBTagCSV_2p2 = 1;
-	  if(vsSelMCTriggersHad_MultiLepCalc->at(itrig).find("HLT_PFHT400_SixPFJet32_DoublePFBTagDeepCSV_2p94") != std::string::npos && viSelMCTriggersHad_MultiLepCalc->at(itrig) > 0) HLT_PFHT400_SixPFJet32_DoublePFBTagDeepCSV_2p94 = 1;
-	  if(vsSelMCTriggersHad_MultiLepCalc->at(itrig).find("HLT_PFHT400_SixJet30_DoubleBTagCSV_p056") != std::string::npos && viSelMCTriggersHad_MultiLepCalc->at(itrig) > 0) HLT_PFHT400_SixJet30_DoubleBTagCSV_p056 = 1;	
-	}
-	if(isElectron){
-	  for(unsigned int itrig=0; itrig < vsSelMCTriggersEl_MultiLepCalc->size(); itrig++){
-	    if(vsSelMCTriggersEl_MultiLepCalc->at(itrig).find(eltrigger) != std::string::npos && viSelMCTriggersEl_MultiLepCalc->at(itrig) > 0) MCLepPastTrigger = 1;
-	    if(vsSelMCTriggersEl_MultiLepCalc->at(itrig).find("HLT_Ele15_IsoVVVL_PFHT450") != std::string::npos && viSelMCTriggersEl_MultiLepCalc->at(itrig) > 0) HLT_Ele15_IsoVVVL_PFHT450 = 1;
-	    if(vsSelMCTriggersEl_MultiLepCalc->at(itrig).find("HLT_Ele28_eta2p1_WPTight_Gsf_HT150") != std::string::npos && viSelMCTriggersEl_MultiLepCalc->at(itrig) > 0) HLT_Ele28_eta2p1_WPTight_Gsf_HT150 = 1;
-	    if(vsSelMCTriggersEl_MultiLepCalc->at(itrig).find("HLT_Ele30_eta2p1_WPTight_Gsf_CentralPFJet35_EleCleaned") != std::string::npos && viSelMCTriggersEl_MultiLepCalc->at(itrig) > 0) HLT_Ele30_eta2p1_WPTight_Gsf_CentralPFJet35_EleCleaned = 1;
-	    if(vsSelMCTriggersEl_MultiLepCalc->at(itrig).find("HLT_Ele32_WPTight_Gsf") != std::string::npos && viSelMCTriggersEl_MultiLepCalc->at(itrig) > 0) HLT_Ele32_WPTight_Gsf = 1;
-	    if(vsSelMCTriggersEl_MultiLepCalc->at(itrig).find("HLT_Ele35_WPTight_Gsf") != std::string::npos && viSelMCTriggersEl_MultiLepCalc->at(itrig) > 0) HLT_Ele35_WPTight_Gsf = 1;
-	    for(unsigned int jtrig=0; jtrig < eltriggersX.size(); jtrig++){
-	      if(vsSelMCTriggersEl_MultiLepCalc->at(itrig).find(eltriggersX.at(jtrig)) != std::string::npos && viSelMCTriggersEl_MultiLepCalc->at(itrig) > 0) MCPastTriggerX = 1;
-	    }
-	  }
-          EGammaGsfSF = hardcodedConditions.GetEGammaGsfSF(leppt, lepeta, Year);
-          lepIdSF = hardcodedConditions.GetElectronIdSF(leppt, lepeta, Year);
-          isoSF = hardcodedConditions.GetElectronIsoSF(leppt, lepeta, Year);
-          triggerSF = hardcodedConditions.GetElectronTriggerSF(leppt, AK4HT, Year);
-          triggerXSF = hardcodedConditions.GetElectronTriggerXSF(leppt, lepeta, Year);
-	}
-	if(isMuon){
-	  for(unsigned int itrig=0; itrig < vsSelMCTriggersMu_MultiLepCalc->size(); itrig++){
-	    if(vsSelMCTriggersMu_MultiLepCalc->at(itrig).find(mutrigger) != std::string::npos && viSelMCTriggersMu_MultiLepCalc->at(itrig) > 0) MCLepPastTrigger = 1;
- 	    if(vsSelMCTriggersMu_MultiLepCalc->at(itrig).find("HLT_IsoMu24") != std::string::npos && viSelMCTriggersMu_MultiLepCalc->at(itrig) > 0) HLT_IsoMu24 = 1;
-	    if(vsSelMCTriggersMu_MultiLepCalc->at(itrig).find("HLT_IsoMu24_eta2p1") != std::string::npos && viSelMCTriggersMu_MultiLepCalc->at(itrig) > 0) HLT_IsoMu24_eta2p1 = 1;
-	    if(vsSelMCTriggersMu_MultiLepCalc->at(itrig).find("HLT_IsoMu27") != std::string::npos && viSelMCTriggersMu_MultiLepCalc->at(itrig) > 0) HLT_IsoMu27 = 1;
-	    if(vsSelMCTriggersMu_MultiLepCalc->at(itrig).find("HLT_Mu15_IsoVVVL_PFHT450") != std::string::npos && viSelMCTriggersMu_MultiLepCalc->at(itrig) > 0) HLT_Mu15_IsoVVVL_PFHT450 = 1;
-	    for(unsigned int jtrig=0; jtrig < mutriggersX.size(); jtrig++){
-	    	if(vsSelMCTriggersMu_MultiLepCalc->at(itrig).find(mutriggersX.at(jtrig)) != std::string::npos && viSelMCTriggersMu_MultiLepCalc->at(itrig) > 0) MCPastTriggerX = 1;
-	    }
-	  }
-	  lepIdSF = hardcodedConditions.GetMuonIdSF(leppt, lepeta, Year);
-	  isoSF = hardcodedConditions.GetMuonIsoSF(leppt, lepeta, Year);	  
-	  triggerSF = hardcodedConditions.GetMuonTriggerSF(leppt, AK4HT, Year); 
-	  triggerXSF = hardcodedConditions.GetMuonTriggerXSF(leppt, lepeta, Year); 
-	}
-	if (MCLepPastTrigger == 1 || MCHadPastTrigger == 1){
-	  MCPastTrigger = 1;
-	}
-
-	DataPastTrigger = 1;
-	DataPastTriggerX = 1;
-	DataLepPastTrigger = 1;
-	DataHadPastTrigger = 1;
-      }
-      else{ //Data triggers check
-	for(unsigned int itrig=0; itrig < vsSelTriggersHad_MultiLepCalc->size(); itrig++){
-	  if(vsSelTriggersHad_MultiLepCalc->at(itrig).find(hadtrigger) != std::string::npos && viSelTriggersHad_MultiLepCalc->at(itrig) > 0) DataHadPastTrigger = 1;
-	  if(vsSelTriggersHad_MultiLepCalc->at(itrig).find("HLT_PFHT380_SixJet32_DoubleBTagCSV_p075") != std::string::npos && viSelTriggersHad_MultiLepCalc->at(itrig) > 0) HLT_PFHT380_SixJet32_DoubleBTagCSV_p075 = 1;
-	  if(vsSelTriggersHad_MultiLepCalc->at(itrig).find("HLT_PFHT380_SixPFJet32_DoublePFBTagDeepCSV_2p2") != std::string::npos && viSelTriggersHad_MultiLepCalc->at(itrig) > 0) HLT_PFHT380_SixPFJet32_DoublePFBTagDeepCSV_2p2 = 1;
-	  if(vsSelTriggersHad_MultiLepCalc->at(itrig).find("HLT_PFHT380_SixPFJet32_DoublePFBTagCSV_2p2") != std::string::npos && viSelTriggersHad_MultiLepCalc->at(itrig) > 0) HLT_PFHT380_SixPFJet32_DoublePFBTagCSV_2p2 = 1;
-	  if(vsSelTriggersHad_MultiLepCalc->at(itrig).find("HLT_PFHT400_SixPFJet32_DoublePFBTagDeepCSV_2p94") != std::string::npos && viSelTriggersHad_MultiLepCalc->at(itrig) > 0) HLT_PFHT400_SixPFJet32_DoublePFBTagDeepCSV_2p94 = 1;
-	  if(vsSelTriggersHad_MultiLepCalc->at(itrig).find("HLT_PFHT400_SixJet30_DoubleBTagCSV_p056") != std::string::npos && viSelTriggersHad_MultiLepCalc->at(itrig) > 0) HLT_PFHT400_SixJet30_DoubleBTagCSV_p056 = 1;	
-	}
-	if(isElectron){
-	  //if(isSE){
-	  for(unsigned int itrig=0; itrig < vsSelTriggersEl_MultiLepCalc->size(); itrig++){
-	    if(vsSelTriggersEl_MultiLepCalc->at(itrig).find(eltrigger) != std::string::npos && viSelTriggersEl_MultiLepCalc->at(itrig) > 0) DataLepPastTrigger = 1;
-	    if(vsSelTriggersEl_MultiLepCalc->at(itrig).find("HLT_Ele15_IsoVVVL_PFHT450") != std::string::npos && viSelTriggersEl_MultiLepCalc->at(itrig) > 0) HLT_Ele15_IsoVVVL_PFHT450 = 1;
-	    if(vsSelTriggersEl_MultiLepCalc->at(itrig).find("HLT_Ele28_eta2p1_WPTight_Gsf_HT150") != std::string::npos && viSelTriggersEl_MultiLepCalc->at(itrig) > 0) HLT_Ele28_eta2p1_WPTight_Gsf_HT150 = 1;
-	    if(vsSelTriggersEl_MultiLepCalc->at(itrig).find("HLT_Ele30_eta2p1_WPTight_Gsf_CentralPFJet35_EleCleaned") != std::string::npos && viSelTriggersEl_MultiLepCalc->at(itrig) > 0) HLT_Ele30_eta2p1_WPTight_Gsf_CentralPFJet35_EleCleaned = 1;
-	    if(vsSelTriggersEl_MultiLepCalc->at(itrig).find("HLT_Ele32_WPTight_Gsf") != std::string::npos && viSelTriggersEl_MultiLepCalc->at(itrig) > 0) HLT_Ele32_WPTight_Gsf = 1;
-	    if(vsSelTriggersEl_MultiLepCalc->at(itrig).find("HLT_Ele35_WPTight_Gsf") != std::string::npos && viSelTriggersEl_MultiLepCalc->at(itrig) > 0) HLT_Ele35_WPTight_Gsf = 1;
-	    for(unsigned int jtrig=0; jtrig < eltriggersX.size(); jtrig++){
-	      if(vsSelTriggersEl_MultiLepCalc->at(itrig).find(eltriggersX.at(jtrig)) != std::string::npos && viSelTriggersEl_MultiLepCalc->at(itrig) > 0) DataPastTriggerX = 1;
-	    }
-	  }
-	  //else if(isHad){
-	  if (DataLepPastTrigger == 1 || DataHadPastTrigger == 1){
-	    DataPastTrigger = 1; 
-	  }
-	    //}
-	}
-	if(isMuon){
-	  //if(isSM){
-	  for(unsigned int itrig=0; itrig < vsSelTriggersMu_MultiLepCalc->size(); itrig++){
-	    if(vsSelTriggersMu_MultiLepCalc->at(itrig).find(mutrigger) != std::string::npos && viSelTriggersMu_MultiLepCalc->at(itrig) > 0) DataLepPastTrigger = 1;
- 	    if(vsSelTriggersMu_MultiLepCalc->at(itrig).find("HLT_IsoMu24") != std::string::npos && viSelTriggersMu_MultiLepCalc->at(itrig) > 0) HLT_IsoMu24 = 1;
-	    if(vsSelTriggersMu_MultiLepCalc->at(itrig).find("HLT_IsoMu24_eta2p1") != std::string::npos && viSelTriggersMu_MultiLepCalc->at(itrig) > 0) HLT_IsoMu24_eta2p1 = 1;
-	    if(vsSelTriggersMu_MultiLepCalc->at(itrig).find("HLT_IsoMu27") != std::string::npos && viSelTriggersMu_MultiLepCalc->at(itrig) > 0) HLT_IsoMu27 = 1;
-	    if(vsSelTriggersMu_MultiLepCalc->at(itrig).find("HLT_Mu15_IsoVVVL_PFHT450") != std::string::npos && viSelTriggersMu_MultiLepCalc->at(itrig) > 0) HLT_Mu15_IsoVVVL_PFHT450 = 1;
-	    for(unsigned int jtrig=0; jtrig < mutriggersX.size(); jtrig++){
-	      if(vsSelTriggersMu_MultiLepCalc->at(itrig).find(mutriggersX.at(jtrig)) != std::string::npos && viSelTriggersMu_MultiLepCalc->at(itrig) > 0) DataPastTriggerX = 1;
-	    }
-	  }
-	  if (DataLepPastTrigger == 1 || DataHadPastTrigger == 1){
-	    DataPastTrigger = 1;
-	  }
-	  //}
-	}
-	MCPastTrigger = 1;
-	MCPastTriggerX = 1;
-	MCLepPastTrigger = 1;
-	MCHadPastTrigger = 1;
-      }
-      
-      if(isMC && MCPastTrigger) npass_trigger+=1;
-      if(!isMC && DataPastTrigger) npass_trigger+=1;
-
-      // ----------------------------------------------------------------------------
       // Generator-level HT correction
       // ----------------------------------------------------------------------------      
 
@@ -1021,10 +829,10 @@ void step1::Loop(TString inTreeName, TString outTreeName )
       HTSF_PolDn = 1;
 
       if(isMadgraphBkg){
-	// Piece-wise splice with a flat line. Uncertainty from upper/lower error bar fits
-	HTSF_Pol = poly2->Eval(HTfromHEPUEP_MultiLepCalc);
-	HTSF_PolUp = poly2U->Eval(HTfromHEPUEP_MultiLepCalc);
-	HTSF_PolDn = poly2D->Eval(HTfromHEPUEP_MultiLepCalc);
+	    // Piece-wise splice with a flat line. Uncertainty from upper/lower error bar fits
+	    HTSF_Pol = poly2->Eval(HTfromHEPUEP_MultiLepCalc);
+	    HTSF_PolUp = poly2U->Eval(HTfromHEPUEP_MultiLepCalc);
+	    HTSF_PolDn = poly2D->Eval(HTfromHEPUEP_MultiLepCalc);
       }
 
       // ----------------------------------------------------------------------------
@@ -1035,14 +843,14 @@ void step1::Loop(TString inTreeName, TString outTreeName )
       double lepM;
       double lepphi;
       if (isMuon){ 
-	lepM = 0.105658367;
-	lepphi = muPhi_MultiLepCalc->at(0);
-	lepton_lv.SetPtEtaPhiM(muPt_MultiLepCalc->at(0),muEta_MultiLepCalc->at(0),muPhi_MultiLepCalc->at(0),lepM);
+	    lepM = 0.105658367;
+	    lepphi = muPhi_MultiLepCalc->at(0);
+	    lepton_lv.SetPtEtaPhiM(muPt_MultiLepCalc->at(0),muEta_MultiLepCalc->at(0),muPhi_MultiLepCalc->at(0),lepM);
       }
       else{
-	lepM = 0.00051099891;
-	lepphi = elPhi_MultiLepCalc->at(0);
-	lepton_lv.SetPtEtaPhiM(elPt_MultiLepCalc->at(0),elEta_MultiLepCalc->at(0),elPhi_MultiLepCalc->at(0),lepM);
+	    lepM = 0.00051099891;
+	    lepphi = elPhi_MultiLepCalc->at(0);
+	    lepton_lv.SetPtEtaPhiM(elPt_MultiLepCalc->at(0),elEta_MultiLepCalc->at(0),elPhi_MultiLepCalc->at(0),lepM);
       }      
 
       MT_lepMet = sqrt(2*leppt*corr_met_MultiLepCalc*(1 - cos(lepphi - corr_met_phi_MultiLepCalc)));
@@ -1130,6 +938,212 @@ void step1::Loop(TString inTreeName, TString outTreeName )
 	NJets_JetSubCalc+=1;
 	AK4HT+=theJetPt_JetSubCalc->at(ijet);
       }
+
+
+
+       // ----------------------------------------------------------------------------
+      // Assign Lepton scale factor or efficiency weights, save trigger pass/fail
+      // ----------------------------------------------------------------------------
+
+      // Triggers Initialised to ZERO
+      HLT_Ele15_IsoVVVL_PFHT450 = 0;
+      HLT_Ele28_eta2p1_WPTight_Gsf_HT150 = 0;
+      HLT_Ele30_eta2p1_WPTight_Gsf_CentralPFJet35_EleCleaned = 0;
+      HLT_Mu15_IsoVVVL_PFHT450 = 0;
+      HLT_PFHT400_SixJet30_DoubleBTagCSV_p056 = 0;
+      HLT_Ele32_WPTight_Gsf = 0;
+      HLT_Ele35_WPTight_Gsf = 0;
+      HLT_IsoMu24 = 0;
+      HLT_IsoMu24_eta2p1 = 0;
+      HLT_IsoMu27 = 0;
+      HLT_PFHT380_SixJet32_DoubleBTagCSV_p075 = 0; // only data for 17B
+      HLT_PFHT380_SixPFJet32_DoublePFBTagDeepCSV_2p2 = 0; // only MC for 17B
+      HLT_PFHT380_SixPFJet32_DoublePFBTagCSV_2p2 = 0;
+      HLT_PFHT400_SixPFJet32_DoublePFBTagDeepCSV_2p94 = 0; // in 2018
+
+      DataPastTriggerX = 0;
+      MCPastTriggerX = 0;
+      DataPastTrigger = 0;
+      MCPastTrigger = 0;
+      DataLepPastTrigger = 0;
+      MCLepPastTrigger = 0;
+      DataHadPastTrigger = 0;
+      MCHadPastTrigger = 0;
+      EGammaGsfSF = 1.0;
+      lepIdSF = 1.0;
+      triggerSF = 1.0;
+      triggerHadSF = 1.0;
+      triggerXSF = 1.0;
+      isoSF = 1.0;
+      std::vector<std::string> eltriggersX;
+      std::vector<std::string> mutriggersX;
+      if(Year==2017){
+      eltriggersX = {"Ele15_IsoVVVL_PFHT450","Ele50_IsoVVVL_PFHT450","Ele15_IsoVVVL_PFHT600","Ele35_WPTight_Gsf","Ele38_WPTight_Gsf"};
+      mutriggersX = {"Mu15_IsoVVVL_PFHT450","Mu50_IsoVVVL_PFHT450","Mu15_IsoVVVL_PFHT600","Mu50"};
+      }
+      else if(Year==2018){
+      eltriggersX = {"Ele15_IsoVVVL_PFHT450","Ele50_IsoVVVL_PFHT450","Ele15_IsoVVVL_PFHT600","Ele35_WPTight_Gsf","Ele38_WPTight_Gsf","Ele15_IsoVVVL_PFHT450_PFMET50"};
+      mutriggersX = {"Mu15_IsoVVVL_PFHT450","Mu50_IsoVVVL_PFHT450","Mu15_IsoVVVL_PFHT600","Mu50","TkMu50","Mu15_IsoVVVL_PFHT450_PFMET50"};
+      }
+      std::string eltrigger;
+      std::string mutrigger;
+      std::string hadtrigger;
+      std::vector<std::string> eltriggers;
+      std::vector<std::string> mutriggers;
+      std::vector<std::string> hadtriggers;
+      std::map<TString, std::vector<std::string>> mctriggers;
+      mctriggers = {{"17B", {"Ele35_WPTight_Gsf", "IsoMu24_eta2p1" , "PFHT380_SixPFJet32_DoublePFBTagCSV_2p2" }},
+		    {"17C",{"Ele35_WPTight_Gsf", "IsoMu27" , "PFHT380_SixPFJet32_DoublePFBTagCSV_2p2" }},
+		    {"17DEF",{"Ele32_WPTight_Gsf", "IsoMu27" , "PFHT380_SixPFJet32_DoublePFBTagDeepCSV_2p2" }},
+		    {"18",{"Ele32_WPTight_Gsf", "IsoMu24" , "PFHT400_SixPFJet32_DoublePFBTagDeepCSV_2p94" }}};
+
+
+      std::map<TString, std::vector<std::string>> datatriggers;
+      datatriggers = {{"17B", {"Ele35_WPTight_Gsf", "IsoMu24_eta2p1" , "PFHT380_SixJet32_DoubleBTagCSV_p075" }},
+		      {"17C",{"Ele35_WPTight_Gsf", "IsoMu27" , "PFHT380_SixPFJet32_DoublePFBTagCSV_2p2" }},
+		      {"17DEF",{"Ele32_WPTight_Gsf", "IsoMu27" , "PFHT380_SixPFJet32_DoublePFBTagDeepCSV_2p2" }},
+		      {"18AB", {"Ele32_WPTight_Gsf", "IsoMu24" , "PFHT380_SixPFJet32_DoublePFBTagDeepCSV_2p2" }},
+		      {"18CD",{"Ele32_WPTight_Gsf", "IsoMu24" , "PFHT400_SixPFJet32_DoublePFBTagDeepCSV_2p94" }}};
+      if (!isMC){
+	eltrigger = datatriggers.at(Era).at(0);
+	mutrigger =  datatriggers.at(Era).at(1);
+	hadtrigger = datatriggers.at(Era).at(2);
+      }
+      else{
+	if (Year==2017){
+	  TRandom3 r;
+	  //TRandom3 *r = new TRandom3();
+	  float randLumi = r.Uniform(1.);
+	  //Double_t randLumi = r->Rndm();
+	  TString Era17;
+	  float eraBupperLumi = (4.823/41.557);
+	  float eraCupperLumi = (14.487/41.557);
+	  if(randLumi>=0 && randLumi<= eraBupperLumi) Era17="17B";
+	  else if(randLumi>eraBupperLumi && randLumi<=eraCupperLumi) Era17="17C";
+	  else Era17="17DEF";
+	  eltrigger = mctriggers.at(Era17).at(0);
+	  mutrigger =  mctriggers.at(Era17).at(1);
+	  hadtrigger = mctriggers.at(Era17).at(2);
+	}
+	else if (Year==2018){
+	  eltrigger = mctriggers.at("18").at(0);
+	  mutrigger =  mctriggers.at("18").at(1);
+	  hadtrigger = mctriggers.at("18").at(2);
+	}
+      }
+
+      if(isMC){
+	for(unsigned int itrig=0; itrig < vsSelMCTriggersHad_MultiLepCalc->size(); itrig++){
+	  if(vsSelMCTriggersHad_MultiLepCalc->at(itrig).find(hadtrigger) != std::string::npos && viSelMCTriggersHad_MultiLepCalc->at(itrig) > 0) MCHadPastTrigger = 1;
+	  if(vsSelMCTriggersHad_MultiLepCalc->at(itrig).find("HLT_PFHT380_SixPFJet32_DoublePFBTagDeepCSV_2p2") != std::string::npos && viSelMCTriggersHad_MultiLepCalc->at(itrig) > 0) HLT_PFHT380_SixPFJet32_DoublePFBTagDeepCSV_2p2 = 1;
+	  if(vsSelMCTriggersHad_MultiLepCalc->at(itrig).find("HLT_PFHT380_SixPFJet32_DoublePFBTagCSV_2p2") != std::string::npos && viSelMCTriggersHad_MultiLepCalc->at(itrig) > 0) HLT_PFHT380_SixPFJet32_DoublePFBTagCSV_2p2 = 1;
+	  if(vsSelMCTriggersHad_MultiLepCalc->at(itrig).find("HLT_PFHT400_SixPFJet32_DoublePFBTagDeepCSV_2p94") != std::string::npos && viSelMCTriggersHad_MultiLepCalc->at(itrig) > 0) HLT_PFHT400_SixPFJet32_DoublePFBTagDeepCSV_2p94 = 1;
+	  if(vsSelMCTriggersHad_MultiLepCalc->at(itrig).find("HLT_PFHT400_SixJet30_DoubleBTagCSV_p056") != std::string::npos && viSelMCTriggersHad_MultiLepCalc->at(itrig) > 0) HLT_PFHT400_SixJet30_DoubleBTagCSV_p056 = 1;
+	}
+	if(isElectron){
+	  for(unsigned int itrig=0; itrig < vsSelMCTriggersEl_MultiLepCalc->size(); itrig++){
+	    if(vsSelMCTriggersEl_MultiLepCalc->at(itrig).find(eltrigger) != std::string::npos && viSelMCTriggersEl_MultiLepCalc->at(itrig) > 0) MCLepPastTrigger = 1;
+	    if(vsSelMCTriggersEl_MultiLepCalc->at(itrig).find("HLT_Ele15_IsoVVVL_PFHT450") != std::string::npos && viSelMCTriggersEl_MultiLepCalc->at(itrig) > 0) HLT_Ele15_IsoVVVL_PFHT450 = 1;
+	    if(vsSelMCTriggersEl_MultiLepCalc->at(itrig).find("HLT_Ele28_eta2p1_WPTight_Gsf_HT150") != std::string::npos && viSelMCTriggersEl_MultiLepCalc->at(itrig) > 0) HLT_Ele28_eta2p1_WPTight_Gsf_HT150 = 1;
+	    if(vsSelMCTriggersEl_MultiLepCalc->at(itrig).find("HLT_Ele30_eta2p1_WPTight_Gsf_CentralPFJet35_EleCleaned") != std::string::npos && viSelMCTriggersEl_MultiLepCalc->at(itrig) > 0) HLT_Ele30_eta2p1_WPTight_Gsf_CentralPFJet35_EleCleaned = 1;
+	    if(vsSelMCTriggersEl_MultiLepCalc->at(itrig).find("HLT_Ele32_WPTight_Gsf") != std::string::npos && viSelMCTriggersEl_MultiLepCalc->at(itrig) > 0) HLT_Ele32_WPTight_Gsf = 1;
+	    if(vsSelMCTriggersEl_MultiLepCalc->at(itrig).find("HLT_Ele35_WPTight_Gsf") != std::string::npos && viSelMCTriggersEl_MultiLepCalc->at(itrig) > 0) HLT_Ele35_WPTight_Gsf = 1;
+	    for(unsigned int jtrig=0; jtrig < eltriggersX.size(); jtrig++){
+	      if(vsSelMCTriggersEl_MultiLepCalc->at(itrig).find(eltriggersX.at(jtrig)) != std::string::npos && viSelMCTriggersEl_MultiLepCalc->at(itrig) > 0) MCPastTriggerX = 1;
+	    }
+	  }
+          EGammaGsfSF = hardcodedConditions.GetEGammaGsfSF(leppt, lepeta, Year);
+          lepIdSF = hardcodedConditions.GetElectronIdSF(leppt, lepeta, Year);
+          isoSF = hardcodedConditions.GetElectronIsoSF(leppt, lepeta, Year);
+          triggerSF = hardcodedConditions.GetElectronTriggerSF(leppt, lepeta, Year);
+          triggerHadSF = hardcodedConditions.GetIsEHadronTriggerSF(NJets_JetSubCalc, AK4HT, Year);
+          triggerXSF = hardcodedConditions.GetElectronTriggerXSF(leppt, lepeta, Year);
+	}
+	if(isMuon){
+	  for(unsigned int itrig=0; itrig < vsSelMCTriggersMu_MultiLepCalc->size(); itrig++){
+	    if(vsSelMCTriggersMu_MultiLepCalc->at(itrig).find(mutrigger) != std::string::npos && viSelMCTriggersMu_MultiLepCalc->at(itrig) > 0) MCLepPastTrigger = 1;
+ 	    if(vsSelMCTriggersMu_MultiLepCalc->at(itrig).find("HLT_IsoMu24") != std::string::npos && viSelMCTriggersMu_MultiLepCalc->at(itrig) > 0) HLT_IsoMu24 = 1;
+	    if(vsSelMCTriggersMu_MultiLepCalc->at(itrig).find("HLT_IsoMu24_eta2p1") != std::string::npos && viSelMCTriggersMu_MultiLepCalc->at(itrig) > 0) HLT_IsoMu24_eta2p1 = 1;
+	    if(vsSelMCTriggersMu_MultiLepCalc->at(itrig).find("HLT_IsoMu27") != std::string::npos && viSelMCTriggersMu_MultiLepCalc->at(itrig) > 0) HLT_IsoMu27 = 1;
+	    if(vsSelMCTriggersMu_MultiLepCalc->at(itrig).find("HLT_Mu15_IsoVVVL_PFHT450") != std::string::npos && viSelMCTriggersMu_MultiLepCalc->at(itrig) > 0) HLT_Mu15_IsoVVVL_PFHT450 = 1;
+	    for(unsigned int jtrig=0; jtrig < mutriggersX.size(); jtrig++){
+	    	if(vsSelMCTriggersMu_MultiLepCalc->at(itrig).find(mutriggersX.at(jtrig)) != std::string::npos && viSelMCTriggersMu_MultiLepCalc->at(itrig) > 0) MCPastTriggerX = 1;
+	    }
+	  }
+	  lepIdSF = hardcodedConditions.GetMuonIdSF(leppt, lepeta, Year);
+	  isoSF = hardcodedConditions.GetMuonIsoSF(leppt, lepeta, Year);
+	  triggerSF = hardcodedConditions.GetMuonTriggerSF(leppt, lepeta, Year);
+	  triggerHadSF = hardcodedConditions.GetIsMHadronTriggerSF(NJets_JetSubCalc, AK4HT, Year);
+	  triggerXSF = hardcodedConditions.GetMuonTriggerXSF(leppt, lepeta, Year);
+	}
+	if (MCLepPastTrigger == 1 || MCHadPastTrigger == 1){
+	  MCPastTrigger = 1;
+	}
+
+	DataPastTrigger = 1;
+	DataPastTriggerX = 1;
+	DataLepPastTrigger = 1;
+	DataHadPastTrigger = 1;
+      }
+      else{ //Data triggers check
+	for(unsigned int itrig=0; itrig < vsSelTriggersHad_MultiLepCalc->size(); itrig++){
+	  if(vsSelTriggersHad_MultiLepCalc->at(itrig).find(hadtrigger) != std::string::npos && viSelTriggersHad_MultiLepCalc->at(itrig) > 0) DataHadPastTrigger = 1;
+	  if(vsSelTriggersHad_MultiLepCalc->at(itrig).find("HLT_PFHT380_SixJet32_DoubleBTagCSV_p075") != std::string::npos && viSelTriggersHad_MultiLepCalc->at(itrig) > 0) HLT_PFHT380_SixJet32_DoubleBTagCSV_p075 = 1;
+	  if(vsSelTriggersHad_MultiLepCalc->at(itrig).find("HLT_PFHT380_SixPFJet32_DoublePFBTagDeepCSV_2p2") != std::string::npos && viSelTriggersHad_MultiLepCalc->at(itrig) > 0) HLT_PFHT380_SixPFJet32_DoublePFBTagDeepCSV_2p2 = 1;
+	  if(vsSelTriggersHad_MultiLepCalc->at(itrig).find("HLT_PFHT380_SixPFJet32_DoublePFBTagCSV_2p2") != std::string::npos && viSelTriggersHad_MultiLepCalc->at(itrig) > 0) HLT_PFHT380_SixPFJet32_DoublePFBTagCSV_2p2 = 1;
+	  if(vsSelTriggersHad_MultiLepCalc->at(itrig).find("HLT_PFHT400_SixPFJet32_DoublePFBTagDeepCSV_2p94") != std::string::npos && viSelTriggersHad_MultiLepCalc->at(itrig) > 0) HLT_PFHT400_SixPFJet32_DoublePFBTagDeepCSV_2p94 = 1;
+	  if(vsSelTriggersHad_MultiLepCalc->at(itrig).find("HLT_PFHT400_SixJet30_DoubleBTagCSV_p056") != std::string::npos && viSelTriggersHad_MultiLepCalc->at(itrig) > 0) HLT_PFHT400_SixJet30_DoubleBTagCSV_p056 = 1;
+	}
+	if(isElectron){
+	  //if(isSE){
+	  for(unsigned int itrig=0; itrig < vsSelTriggersEl_MultiLepCalc->size(); itrig++){
+	    if(vsSelTriggersEl_MultiLepCalc->at(itrig).find(eltrigger) != std::string::npos && viSelTriggersEl_MultiLepCalc->at(itrig) > 0) DataLepPastTrigger = 1;
+	    if(vsSelTriggersEl_MultiLepCalc->at(itrig).find("HLT_Ele15_IsoVVVL_PFHT450") != std::string::npos && viSelTriggersEl_MultiLepCalc->at(itrig) > 0) HLT_Ele15_IsoVVVL_PFHT450 = 1;
+	    if(vsSelTriggersEl_MultiLepCalc->at(itrig).find("HLT_Ele28_eta2p1_WPTight_Gsf_HT150") != std::string::npos && viSelTriggersEl_MultiLepCalc->at(itrig) > 0) HLT_Ele28_eta2p1_WPTight_Gsf_HT150 = 1;
+	    if(vsSelTriggersEl_MultiLepCalc->at(itrig).find("HLT_Ele30_eta2p1_WPTight_Gsf_CentralPFJet35_EleCleaned") != std::string::npos && viSelTriggersEl_MultiLepCalc->at(itrig) > 0) HLT_Ele30_eta2p1_WPTight_Gsf_CentralPFJet35_EleCleaned = 1;
+	    if(vsSelTriggersEl_MultiLepCalc->at(itrig).find("HLT_Ele32_WPTight_Gsf") != std::string::npos && viSelTriggersEl_MultiLepCalc->at(itrig) > 0) HLT_Ele32_WPTight_Gsf = 1;
+	    if(vsSelTriggersEl_MultiLepCalc->at(itrig).find("HLT_Ele35_WPTight_Gsf") != std::string::npos && viSelTriggersEl_MultiLepCalc->at(itrig) > 0) HLT_Ele35_WPTight_Gsf = 1;
+	    for(unsigned int jtrig=0; jtrig < eltriggersX.size(); jtrig++){
+	      if(vsSelTriggersEl_MultiLepCalc->at(itrig).find(eltriggersX.at(jtrig)) != std::string::npos && viSelTriggersEl_MultiLepCalc->at(itrig) > 0) DataPastTriggerX = 1;
+	    }
+	  }
+	  //else if(isHad){
+	  if (DataLepPastTrigger == 1 || DataHadPastTrigger == 1){
+	    DataPastTrigger = 1;
+	  }
+	    //}
+	}
+	if(isMuon){
+	  //if(isSM){
+	  for(unsigned int itrig=0; itrig < vsSelTriggersMu_MultiLepCalc->size(); itrig++){
+	    if(vsSelTriggersMu_MultiLepCalc->at(itrig).find(mutrigger) != std::string::npos && viSelTriggersMu_MultiLepCalc->at(itrig) > 0) DataLepPastTrigger = 1;
+ 	    if(vsSelTriggersMu_MultiLepCalc->at(itrig).find("HLT_IsoMu24") != std::string::npos && viSelTriggersMu_MultiLepCalc->at(itrig) > 0) HLT_IsoMu24 = 1;
+	    if(vsSelTriggersMu_MultiLepCalc->at(itrig).find("HLT_IsoMu24_eta2p1") != std::string::npos && viSelTriggersMu_MultiLepCalc->at(itrig) > 0) HLT_IsoMu24_eta2p1 = 1;
+	    if(vsSelTriggersMu_MultiLepCalc->at(itrig).find("HLT_IsoMu27") != std::string::npos && viSelTriggersMu_MultiLepCalc->at(itrig) > 0) HLT_IsoMu27 = 1;
+	    if(vsSelTriggersMu_MultiLepCalc->at(itrig).find("HLT_Mu15_IsoVVVL_PFHT450") != std::string::npos && viSelTriggersMu_MultiLepCalc->at(itrig) > 0) HLT_Mu15_IsoVVVL_PFHT450 = 1;
+	    for(unsigned int jtrig=0; jtrig < mutriggersX.size(); jtrig++){
+	      if(vsSelTriggersMu_MultiLepCalc->at(itrig).find(mutriggersX.at(jtrig)) != std::string::npos && viSelTriggersMu_MultiLepCalc->at(itrig) > 0) DataPastTriggerX = 1;
+	    }
+	  }
+	  if (DataLepPastTrigger == 1 || DataHadPastTrigger == 1){
+	    DataPastTrigger = 1;
+	  }
+	  //}
+	}
+	MCPastTrigger = 1;
+	MCPastTriggerX = 1;
+	MCLepPastTrigger = 1;
+	MCHadPastTrigger = 1;
+      }
+
+      if(isMC && MCPastTrigger) npass_trigger+=1;
+      if(!isMC && DataPastTrigger) npass_trigger+=1;
+
+
+
+
+
+
 
 
       // ----------------------------------------------------------------------------
@@ -1289,6 +1303,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
       minDPhi_MetJet = 1e8;
       minDR_lepJet = 1e8;
       ptRel_lepJet = -99;
+      minDR_jetJets.clear();
       deltaR_lepJets.clear();
       deltaR_lepBJets.clear();
       deltaR_lepBJets_bSFup.clear();
@@ -1410,6 +1425,18 @@ void step1::Loop(TString inTreeName, TString outTreeName )
 	  minDR_lepJet = deltaR_lepJets[ijet];
 	  ptRel_lepJet = lepton_lv.P()*(jet_lv.Vect().Cross(lepton_lv.Vect()).Mag()/jet_lv.P()/lepton_lv.P());
 	}
+
+	minDR_jetJet = 1e8;
+	for(unsigned int kjet=0; kjet < theJetPt_JetSubCalc_PtOrdered.size(); kjet++){
+	    if(ijet == kjet){continue;}
+	    kjet_lv.SetPtEtaPhiE(theJetPt_JetSubCalc_PtOrdered.at(kjet),theJetEta_JetSubCalc_PtOrdered.at(kjet),theJetPhi_JetSubCalc_PtOrdered.at(kjet),theJetEnergy_JetSubCalc_PtOrdered.at(kjet));
+	    deltaR_jetJets = jet_lv.DeltaR(kjet_lv);
+	    if(deltaR_jetJets < minDR_jetJet) {
+	        minDR_jetJet = deltaR_jetJets;
+	    }
+	}
+	minDR_jetJets.push_back(minDR_jetJet);
+
       }
 
       // ----------------------------------------------------------------------------
