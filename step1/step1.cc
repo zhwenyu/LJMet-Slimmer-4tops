@@ -1065,7 +1065,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
 	// ----------------------------------------------------------------------------
 	// B TAGGING fix
 	// ----------------------------------------------------------------------------
-	
+	if(isMC){
 	// First fix b tagging for DeepFlv
 	double btagSF = 1.0;
 	double btagSFerr = 0.0;
@@ -1121,7 +1121,12 @@ void step1::Loop(TString inTreeName, TString outTreeName )
 		AK4JetBTag_lSFup_MultiLepCalc->at(ijet) = applySF(istagged,btagSF+btagSFerr,btagEff);
 		AK4JetBTag_lSFdn_MultiLepCalc->at(ijet) = applySF(istagged,btagSF-btagSFerr,btagEff);
 		}
-	  	  	
+	}
+	else{
+	// In Data, AK4JetBTag_MultiLepCalc variable is still using DeepJet,
+	// so we need to change it to DeepCSV
+	AK4JetBTag_MultiLepCalc->at(ijet) = AK4JetDeepCSVb_MultiLepCalc->at(ijet) + AK4JetDeepCSVbb_MultiLepCalc->at(ijet) > btagWPdcsv;
+	}
 	// ----------------------------------------------------------------------------
 	// Counts and pt ordering pair
 	// ----------------------------------------------------------------------------
