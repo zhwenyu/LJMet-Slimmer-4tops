@@ -3125,6 +3125,8 @@ double HardcodedConditions::GetElectronTriggerXSF2017(double leppt, double lepet
 	  float trigSFCDEF = 1.0;
 	  float trigSFBunc = 0.0;
 	  float trigSFCDEFunc = 0.0;
+	  float triggerSF;
+	  float triggerSFUncert;
 	  if (fabs(lepeta) < 0.8){
         if (leppt >=20.0 &&  leppt< 25.0 ) {
             trigSFB=0.0; trigSFBunc=-1;
@@ -3310,8 +3312,15 @@ double HardcodedConditions::GetElectronTriggerXSF2017(double leppt, double lepet
             trigSFCDEF=1.01020550365; trigSFCDEFunc=0.00779170145733;
             }
 	  }
-	  float triggerSF = (4.823*trigSFB + 36.734*trigSFCDEF)/41.557;
-	  float triggerSFUncert = sqrt( pow(4.823*trigSFBunc/41.557,2) + pow(36.734*trigSFCDEFunc/41.557,2) );
+	  if (trigSFB < 0.1){
+	  triggerSF = trigSFCDEF;
+	  triggerSFUncert = trigSFCDEFunc;
+	  }
+	  else{
+	  triggerSF = (4.823*trigSFB + 36.734*trigSFCDEF)/41.557;
+	  triggerSFUncert = sqrt( pow(4.823*trigSFBunc/41.557,2) + pow(36.734*trigSFCDEFunc/41.557,2) );
+	  }
+
 
 	return triggerSF;
 
@@ -4118,6 +4127,8 @@ double HardcodedConditions::GetMuonTriggerXSF2017(double leppt, double lepeta)
 	  float triggerSFCDEF = 1.0;
 	  float triggerSFBunc = 0.0;
 	  float triggerSFCDEFunc = 0.0;
+	  float triggerSF;
+	  float triggerSFUncert;
 	  if (fabs(lepeta) < 0.90){
 		if (leppt >=20.0 &&  leppt< 25.0 ) {
 		    triggerSFB=0.10901424368; triggerSFBunc=0.0297520484758;
@@ -4302,8 +4313,14 @@ double HardcodedConditions::GetMuonTriggerXSF2017(double leppt, double lepeta)
             triggerSFCDEF=1.00620582422; triggerSFCDEFunc=0.00360278358703;
             }
 	  }
-	  float triggerSF = (4.823*triggerSFB+36.734*triggerSFCDEF)/41.557;
-	  float triggerSFUncert = sqrt( pow(4.823*triggerSFBunc/41.557,2) + pow(36.734*triggerSFCDEFunc/41.557,2) );
+	  if (triggerSFB < 0.1){
+	  triggerSF = triggerSFCDEF;
+	  triggerSFUncert = triggerSFCDEFunc;
+	  }
+	  else{
+	  triggerSF = (4.823*triggerSFB + 36.734*triggerSFCDEF)/41.557;
+	  triggerSFUncert = sqrt( pow(4.823*triggerSFBunc/41.557,2) + pow(36.734*triggerSFCDEFunc/41.557,2) );
+	  }
 
 	return triggerSF;
 
