@@ -118,6 +118,7 @@ public :
    Float_t         triggerSF;
    Float_t         triggerHadSF;
    Float_t         triggerXSF;
+   Float_t         triggerVlqXSF;
    Float_t         JetSF_80X;
    Float_t         JetSFup_80X;
    Float_t         JetSFdn_80X;

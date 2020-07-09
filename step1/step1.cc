@@ -367,6 +367,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    outputTree->Branch("triggerSF",&triggerSF,"triggerSF/F");
    outputTree->Branch("triggerHadSF",&triggerHadSF,"triggerHadSF/F");
    outputTree->Branch("triggerXSF",&triggerXSF,"triggerXSF/F");
+   outputTree->Branch("triggerVlqXSF",&triggerVlqXSF,"triggerVlqXSF/F");
    outputTree->Branch("isoSF",&isoSF,"isoSF/F");
    
    //ttbar generator
@@ -979,6 +980,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
       triggerSF = 1.0;
       triggerHadSF = 1.0;
       triggerXSF = 1.0;
+      triggerVlqXSF = 1.0;
       isoSF = 1.0;
       std::vector<std::string> eltriggersX;
       std::vector<std::string> mutriggersX;
@@ -1063,6 +1065,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
           triggerSF = hardcodedConditions.GetElectronTriggerSF(leppt, lepeta, Year);
           triggerHadSF = hardcodedConditions.GetIsEHadronTriggerSF(NJets_JetSubCalc, AK4HT, Year);
           triggerXSF = hardcodedConditions.GetElectronTriggerXSF(leppt, lepeta, Year);
+          triggerVlqXSF = hardcodedConditions.GetElectronTriggerVlqXSF(leppt, lepeta, Year);
 	}
 	if(isMuon){
 	  for(unsigned int itrig=0; itrig < vsSelMCTriggersMu_MultiLepCalc->size(); itrig++){
@@ -1080,6 +1083,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
 	  triggerSF = hardcodedConditions.GetMuonTriggerSF(leppt, lepeta, Year);
 	  triggerHadSF = hardcodedConditions.GetIsMHadronTriggerSF(NJets_JetSubCalc, AK4HT, Year);
 	  triggerXSF = hardcodedConditions.GetMuonTriggerXSF(leppt, lepeta, Year);
+	  triggerVlqXSF = hardcodedConditions.GetMuonTriggerVlqXSF(leppt, lepeta, Year);
 	}
 	if (MCLepPastTrigger == 1 || MCHadPastTrigger == 1){
 	  MCPastTrigger = 1;
