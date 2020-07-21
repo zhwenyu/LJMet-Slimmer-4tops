@@ -64,6 +64,10 @@ public :
    Float_t         secondcsvb_bb;        
    Float_t         thirdcsvb_bb;        
    Float_t         fourthcsvb_bb;  
+   Float_t 	   thirdcsvb_bb_BTagBHad;
+   Float_t         thirdcsvb_bb_BTagNBHad;
+   Float_t         thirdcsvb_bb_NBTagBHad;
+   Float_t         thirdcsvb_bb_NBTagNBHad;
    Float_t         PtFifthJet;
    Float_t         deltaR_lepJetInMinMljet;      
    Float_t         deltaPhi_lepJetInMinMljet;         
