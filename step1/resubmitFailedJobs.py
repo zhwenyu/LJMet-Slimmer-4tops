@@ -2,11 +2,11 @@
 
 import os,sys,pickle
 
-inputDir = '/uscms_data/d3/ssagir/FWLJMET102X_1lep2018_Oct2019_4t_031520_step1/'
+inputDir = '/uscms_data/d3/ssagir/FWLJMET102X_1lep2018_Oct2019_4t_042520_step1/'
 resubmit_err = False
 resubmit_out = False
 resubmit_fail = False
-resubmit_running = False #Make sure you know what you are doing with this option!
+resubmit_running = False  # Make sure you know what you are doing with this option!
 resubmit = False
 
 samplesDone = []
@@ -49,6 +49,7 @@ for sample in sorted(samples):
 		if isOutFileExist: 
 			outFdata = open(oFile).read()
 			if 'Npassed_ALL' in outFdata and 'done' in outFdata and 'error' not in outFdata: isOutFileOK = True
+			if 'WARNING! Event does not have defined ttbar category!!!' in outFdata: print outFdata
 		
 		if os.path.exists(eFile): isErrFileExist = True
 		if isErrFileExist: 
