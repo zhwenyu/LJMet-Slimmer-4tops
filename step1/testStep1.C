@@ -1,5 +1,7 @@
 #include "step1.cc"
 #include "HardcodedConditions.cc"
+#include "BTagCalibrationStandalone.h"
+#include "BTagCalibrationStandalone.cpp"
 #include "BtagCSVReshaping.cc"
 #include<vector>
 using namespace std;

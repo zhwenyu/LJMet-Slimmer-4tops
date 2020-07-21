@@ -1,6 +1,5 @@
 #include "BtagCSVReshaping.h"
 #include "BTagCalibrationStandalone.h"
-#include "BTagCalibrationStandalone.cpp"
 
 CSVReshaping::CSVReshaping(int year, TString tagger) {
 
