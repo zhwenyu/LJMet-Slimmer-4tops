@@ -14,6 +14,7 @@
 #include <vector>
 #include <TH3.h>
 #include "HardcodedConditions.h"
+#include "BtagCSVReshaping.h"
 
 using namespace std;
 
@@ -369,6 +370,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    outputTree->Branch("triggerXSF",&triggerXSF,"triggerXSF/F");
    outputTree->Branch("triggerVlqXSF",&triggerVlqXSF,"triggerVlqXSF/F");
    outputTree->Branch("isoSF",&isoSF,"isoSF/F");
+   outputTree->Branch("btagCSVWeight",&btagCSVWeight,"btagCSVWeight/D");
    
    //ttbar generator
    outputTree->Branch("ttbarMass_TTbarMassCalc",&ttbarMass_TTbarMassCalc,"ttbarMass_TTbarMassCalc/D");
@@ -677,6 +679,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
   // ----------------------------------------------------------------------------
   // RUN THE EVENT LOOP
   // ----------------------------------------------------------------------------
+   btagCSVTool = new CSVReshaping(Year, "DeepCSV");
 
    cout << "RUN CONFIG: YEAR = " << Year << endl;
    cout << "Era = " << Era << endl;
@@ -710,7 +713,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
       nb = inputTree->GetEntry(jentry);   nbytes += nb;
       if (Cut(ientry) != 1) continue;
       
-      //  if (ientry > 5000) continue;
+        if (ientry > 100) continue; // 5000 -wz
       
       if(jentry % 1000 ==0) std::cout<<"Completed "<<jentry<<" out of "<<nentries<<" events"<<std::endl;
 
@@ -863,6 +866,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
       NJets_JetSubCalc = 0;
       AK4HT = 0;
       vector<pair<double,int>> jetptindpair;
+      btagCSVWeight = 1.0;
 
       for(unsigned int ijet=0; ijet < theJetPt_JetSubCalc->size(); ijet++){
 	// ----------------------------------------------------------------------------
@@ -931,6 +935,14 @@ void step1::Loop(TString inTreeName, TString outTreeName )
 		AK4JetBTag_lSFdn_MultiLepCalc->at(ijet) = applySF(istagged,btagSF-btagSFerr,btagEff);
 		}
 	}
+
+        // --------- CSV reshaping, generate event wgt --------------------------------   
+        double csv = AK4JetDeepCSVb_MultiLepCalc->at(ijet) + AK4JetDeepCSVbb_MultiLepCalc->at(ijet);
+        double csvWgt = btagCSVTool ->getCSVWeight(ijetPt, ijetEta, csv, ijetHFlv, "central");
+        if (csvWgt != 0) btagCSVWeight *= csvWgt;
+        cout << " btagCSVWeight "<< btagCSVWeight; // wz 
+
+
 	else{
 	// In Data, AK4JetBTag_MultiLepCalc variable is still using DeepJet,
 	// so we need to change it to DeepCSV
@@ -1147,11 +1159,6 @@ void step1::Loop(TString inTreeName, TString outTreeName )
 
       if(isMC && MCPastTrigger) npass_trigger+=1;
       if(!isMC && DataPastTrigger) npass_trigger+=1;
-
-
-
-
-
 
 
       // ----------------------------------------------------------------------------
