@@ -17,6 +17,12 @@
     Please download `BTagCalibrationStandalone.h(cpp)` from https://github.com/cms-sw/cmssw/tree/CMSSW_10_0_X/CondTools/BTau/test 
 
 ## What to run for :
+  ### Run step1 without CMSSW:
+   ```
+        source /cvmfs/sft.cern.ch/lcg/views/LCG_96/x86_64-centos7-gcc8-opt/setup.csh
+        root -l testStep1.C
+   ```
+
   ### Condor (BRU or lxplus or UoB):
    ``` 
         condor_submit <file> 
