@@ -2128,9 +2128,16 @@ void step1::Loop(TString inTreeName, TString outTreeName )
       // 2 = isrRedHi isr:muRfac=0.707, 3 = fsrRedHi fsr:muRfac=0.707, 4 = isrRedLo isr:muRfac=1.414, 5 = fsrRedLo fsr:muRfac=1.414, 
       // 6 = isrDefHi isr:muRfac=0.5, 7 = fsrDefHi fsr:muRfac=0.5,  8 = isrDefLo isr:muRfac=2.0,   9 = fsrDefLo fsr:muRfac=2.0, 
       // 10 = isrConHi isr:muRfac=0.25, 11 = fsrConHi fsr:muRfac=0.25, 12 = isrConLo isr:muRfac=4.0, 13 = fsrConLo fsr:muRfac=4.0
+      double the_ps_weight=1.0;
       if (evtWeightsMC_MultiLepCalc->size()>=14)
          for(auto & i: {6,7,8,9})
-            renormPSWeights.push_back(evtWeightsMC_MultiLepCalc->at(i)/evtWeightsMC_MultiLepCalc->at(0));
+         {
+            the_ps_weight = evtWeightsMC_MultiLepCalc->at(i)/evtWeightsMC_MultiLepCalc->at(0);
+            if (fabs(the_ps_weight)>100)
+               renormPSWeights.push_back(1.0);
+            else
+               renormPSWeights.push_back(the_ps_weight);
+         }
       else renormPSWeights={1,1,1,1};
 
       //ME-PS
