@@ -713,7 +713,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
       nb = inputTree->GetEntry(jentry);   nbytes += nb;
       if (Cut(ientry) != 1) continue;
       
-        if (ientry > 100) break; // 5000 -wz
+        if (ientry > 5000) break; // 5000 -wz
       
       if(jentry % 1000 ==0) std::cout<<"Completed "<<jentry<<" out of "<<nentries<<" events"<<std::endl;
 
@@ -939,7 +939,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
         double csv = AK4JetDeepCSVb_MultiLepCalc->at(ijet) + AK4JetDeepCSVbb_MultiLepCalc->at(ijet);
         double csvWgt = btagCSVTool ->getCSVWeight(ijetPt, ijetEta, csv, ijetHFlv, "central");
         if (csvWgt != 0) btagCSVWeight *= csvWgt;
-        cout << " btagCSVWeight "<< btagCSVWeight; // wz 
+       // cout << "jetPt " << ijetPt << " jetEta "<< ijetEta << " btagCSVWeight "<< btagCSVWeight << endl; // wz 
 
 	}
 
@@ -957,7 +957,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
 	NJets_JetSubCalc+=1;
 	AK4HT+=theJetPt_JetSubCalc->at(ijet);
       }
-
+	//cout << " btagCSVWeight "<< btagCSVWeight << endl; // wz
 
 
        // ----------------------------------------------------------------------------
