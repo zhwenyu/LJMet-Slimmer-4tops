@@ -84,6 +84,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
   if (Year== 2018) {
       btagcsvfile = "DeepCSV_102XSF_V2.csv"; 
   }
+  cout << "CSV reshaping file " << btagcsvfile << endl;
   BTagCalibrationForLJMet calib("DeepCSV", btagcsvfile);
   BTagCalibrationForLJMetReader reader(BTagEntryForLJMet::OP_RESHAPING,  // operating point
 			       "central",             // central sys type
@@ -91,7 +92,6 @@ void step1::Loop(TString inTreeName, TString outTreeName )
 				   "up_hfstats2", "down_hfstats2", "up_cferr1", "down_cferr1", "up_cferr2",
 				   "down_cferr2", "up_hf", "down_hf", "up_lfstats1", "down_lfstats1",
 				   "up_lfstats2", "down_lfstats2"});      // other sys types
-  //C-only: cferr*. L-only: hf, lfstats*. B-only: lf, hfstats*
   
   reader.load(calib,                 // calibration instance
 	      BTagEntryForLJMet::FLAV_B,     // btag flavour
@@ -736,7 +736,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
       nb = inputTree->GetEntry(jentry);   nbytes += nb;
       if (Cut(ientry) != 1) continue;
       
-        if (ientry > 500) break;
+        if (ientry > 5000) break;
       
       if(jentry % 1000 ==0) std::cout<<"Completed "<<jentry<<" out of "<<nentries<<" events"<<std::endl;
 
