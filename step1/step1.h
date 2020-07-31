@@ -337,6 +337,8 @@ public :
    vector<int>     NresolvedTops5pFake_shifts;
    vector<int>     NresolvedTops10pFake_shifts;
 
+   float	   btagCSVWeight;
+
    // Declaration of leaf types
    Bool_t          flagBadMu_MultiLepCalc;
    Bool_t          flagDupMu_MultiLepCalc;
