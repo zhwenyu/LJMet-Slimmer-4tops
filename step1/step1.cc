@@ -80,10 +80,11 @@ wgthist->Write();
 void step1::Loop(TString inTreeName, TString outTreeName ) 
 {
   // btagCalibration initialization -csv reshaping
-  BTagCalibrationForLJMet calib("DeepCSV", "data/era2017/DeepCSV_94XSF_V5_B_F.csv");
+  std::string btagcsvfile("DeepCSV_94XSF_V5_B_F.csv");
   if (Year== 2018) {
-
+      btagcsvfile = "DeepCSV_102XSF_V2.csv"; 
   }
+  BTagCalibrationForLJMet calib("DeepCSV", btagcsvfile);
   BTagCalibrationForLJMetReader reader(BTagEntryForLJMet::OP_RESHAPING,  // operating point
 			       "central",             // central sys type
 			       {"up_jes", "down_jes", "up_lf", "down_lf", "up_hfstats1", "down_hfstats1",

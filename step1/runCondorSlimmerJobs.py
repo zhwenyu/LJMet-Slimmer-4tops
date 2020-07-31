@@ -20,8 +20,9 @@ nFilesPerJob=30
 inputLoc='lpc'
 if inputDir.startswith('/isilon/hadoop/'): inputLoc='brux'
 
-csvFilename='data/era2017/DeepCSV_94XSF_V5_B_F.csv'
-#if YEAR==2018: csvFilename=
+csvFilename='DeepCSV_94XSF_V5_B_F.csv'
+if YEAR==2018: 
+    csvFilename='DeepCSV_102XSF_V2.csv'
 runDir=os.getcwd()
 inDir=inputDir[10:]
 if inputLoc=='brux': inDir=inputDir
