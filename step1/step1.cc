@@ -395,6 +395,10 @@ void step1::Loop(TString inTreeName, TString outTreeName )
    outputTree->Branch("btagCSVWeight_HFdn",&btagCSVWeight_HFdn,"btagCSVWeight_HFdn/F");
    outputTree->Branch("btagCSVWeight_LFup",&btagCSVWeight_LFup,"btagCSVWeight_LFup/F");
    outputTree->Branch("btagCSVWeight_LFdn",&btagCSVWeight_LFdn,"btagCSVWeight_LFdn/F");
+   outputTree->Branch("njetsWeight",&njetsWeight,"njetsWeight/F");
+   outputTree->Branch("njetsWeightUp",&njetsWeightUp,"njetsWeightUp/F");
+   outputTree->Branch("njetsWeightDown",&njetsWeightDown,"njetsWeightDown/F");
+   outputTree->Branch("tthfWeight",&tthfWeight,"tthfWeight/F");
    
    //ttbar generator
    outputTree->Branch("ttbarMass_TTbarMassCalc",&ttbarMass_TTbarMassCalc,"ttbarMass_TTbarMassCalc/D");
@@ -736,7 +740,7 @@ void step1::Loop(TString inTreeName, TString outTreeName )
       nb = inputTree->GetEntry(jentry);   nbytes += nb;
       if (Cut(ientry) != 1) continue;
       
-        if (ientry > 5000) break;
+        //if (ientry > 5000) break;
       
       if(jentry % 1000 ==0) std::cout<<"Completed "<<jentry<<" out of "<<nentries<<" events"<<std::endl;
 
@@ -846,6 +850,20 @@ void step1::Loop(TString inTreeName, TString outTreeName )
 		hardcodedConditions.GetPileupWeight(nTrueInteractions_MultiLepCalc, &pileupWeight, &pileupWeightUp, &pileupWeightDown, Year, sample);
 		}
       }
+
+
+      // ----------------------------------------------------------------------------
+      // ttHF weight calculation
+      // ----------------------------------------------------------------------------
+      njetsWeight = hardcodedConditions.GetNjetSF(NJets_JetSubCalc, Year, "nominal", isTT);
+      njetsWeightUp = hardcodedConditions.GetNjetSF(NJets_JetSubCalc, Year, "up", isTT);
+      njetsWeightDown = hardcodedConditions.GetNjetSF(NJets_JetSubCalc, Year, "down", isTT);
+
+
+      // ----------------------------------------------------------------------------
+      // njet weight calculation
+      // ----------------------------------------------------------------------------
+      tthfWeight = hardcodedConditions.GetTtHfSF(isTT, outTTBB, outTT2B||outTT1B||outTTCC||outTTLF);
 
       // ----------------------------------------------------------------------------
       // Generator-level HT correction

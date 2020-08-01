@@ -139,6 +139,10 @@ public :
    vector<double>  pdfWeights;
    vector<double>  pdfNewWeights;
    float_t         pdfNewNominalWeight;
+   Float_t         njetsWeight;
+   Float_t         njetsWeightUp;
+   Float_t         njetsWeightDown;
+   Float_t         tthfWeight;
 
    Float_t         leptonPt_MultiLepCalc;
    Float_t         leptonEta_MultiLepCalc;
