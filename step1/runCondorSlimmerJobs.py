@@ -11,8 +11,8 @@ start_time = time.time()
 
 Year = 2018 # or 2018
 finalStateYear = 'singleLep'+str(Year)
-#inputDir='/eos/uscms/store/user/lpcljm/FWLJMET102X_1lep'+str(Year)+'_Oct2019/' # or 2018
-inputDir='/isilon/hadoop/store/group/bruxljm/FWLJMET102X_1lep'+str(Year)+'_Oct2019/' # or 2018
+inputDir='/eos/uscms/store/user/lpcljm/FWLJMET102X_1lep'+str(Year)+'_Oct2019/' # or 2018
+#inputDir='/isilon/hadoop/store/group/bruxljm/FWLJMET102X_1lep'+str(Year)+'_Oct2019/' # or 2018
 outputDir='/eos/uscms/store/user/wzhang/FWLJMET102X_1lep'+str(Year)+'_Oct2019_4t_06162020_step1/nominal/' # or 2018
 condorDir='/uscms/home/wzhang/nobackup/work/fwljmet_201905/CMSSW_10_2_10/src/LJMet-Slimmer-4tops/step1/FWLJMET102X_1lep'+str(Year)+'_Oct2019_4t_06162020_step1/' # or 2018
 shifts = [] #['JECup','JECdown','JERup','JERdown']
@@ -55,22 +55,22 @@ dirList17 = [
 #'SingleMuon',
 #'TTHH_TuneCP5_13TeV-madgraph-pythia8',
 #'TTTJ_TuneCP5_13TeV-madgraph-pythia8',
-'TTTT_TuneCP5_PSweights_13TeV-amcatnlo-pythia8',
+#'TTTT_TuneCP5_PSweights_13TeV-amcatnlo-pythia8',
 #'TTTW_TuneCP5_13TeV-madgraph-pythia8',
-#'TTTo2L2Nu_TuneCP5_PSweights_13TeV-powheg-pythia8',
+'TTTo2L2Nu_TuneCP5_PSweights_13TeV-powheg-pythia8',
 ## 'TTTo2L2Nu_TuneCP5_erdON_13TeV-powheg-pythia8',
 #'TTTo2L2Nu_TuneCP5down_PSweights_13TeV-powheg-pythia8',
 #'TTTo2L2Nu_TuneCP5up_PSweights_13TeV-powheg-pythia8',
 #'TTTo2L2Nu_hdampDOWN_TuneCP5_PSweights_13TeV-powheg-pythia8',
 #'TTTo2L2Nu_hdampUP_TuneCP5_PSweights_13TeV-powheg-pythia8',
-#'TTToHadronic_TuneCP5_PSweights_13TeV-powheg-pythia8',
+'TTToHadronic_TuneCP5_PSweights_13TeV-powheg-pythia8',
 ## 'TTToHadronic_TuneCP5_erdON_13TeV-powheg-pythia8',
 #'TTToHadronic_TuneCP5down_PSweights_13TeV-powheg-pythia8',
 #'TTToHadronic_TuneCP5up_PSweights_13TeV-powheg-pythia8',
 #'TTToHadronic_hdampDOWN_TuneCP5_PSweights_13TeV-powheg-pythia8',
 #'TTToHadronic_hdampUP_TuneCP5_PSweights_13TeV-powheg-pythia8',
-#'TTToSemiLepton_HT500Njet9_TuneCP5_PSweights_13TeV-powheg-pythia8',
-#'TTToSemiLeptonic_TuneCP5_PSweights_13TeV-powheg-pythia8',
+'TTToSemiLepton_HT500Njet9_TuneCP5_PSweights_13TeV-powheg-pythia8',
+'TTToSemiLeptonic_TuneCP5_PSweights_13TeV-powheg-pythia8',
 ## 'TTToSemiLeptonic_TuneCP5_erdON_13TeV-powheg-pythia8',
 #'TTToSemiLeptonic_TuneCP5down_PSweights_13TeV-powheg-pythia8',
 #'TTToSemiLeptonic_TuneCP5up_PSweights_13TeV-powheg-pythia8',
@@ -121,17 +121,17 @@ dirList18lpc = [
 #'JetHT',
 #'EGamma',
 #'SingleMuon',
-#'TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8',
+'TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8',
 ## 'TTTo2L2Nu_TuneCP5_erdON_13TeV-powheg-pythia8',
 #'TTTo2L2Nu_TuneCP5down_13TeV-powheg-pythia8',
 #'TTTo2L2Nu_hdampDOWN_TuneCP5_13TeV-powheg-pythia8',
 #'TTTo2L2Nu_hdampUP_TuneCP5_13TeV-powheg-pythia8',
-#'TTToHadronic_TuneCP5_13TeV-powheg-pythia8',
+'TTToHadronic_TuneCP5_13TeV-powheg-pythia8',
 ## 'TTToHadronic_TuneCP5_erdON_13TeV-powheg-pythia8',
 #'TTToHadronic_hdampDOWN_TuneCP5_13TeV-powheg-pythia8',
 #'TTToHadronic_hdampUP_TuneCP5_13TeV-powheg-pythia8',
-#'TTToSemiLepton_HT500Njet9_TuneCP5_13TeV-powheg-pythia8',
-#'TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8',
+'TTToSemiLepton_HT500Njet9_TuneCP5_13TeV-powheg-pythia8',
+'TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8',
 ## 'TTToSemiLeptonic_TuneCP5_erdON_13TeV-powheg-pythia8',
 #'TTToSemiLeptonic_TuneCP5up_13TeV-powheg-pythia8',
 #'TTWJetsToLNu_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8',
@@ -154,7 +154,7 @@ dirList18lpc = [
 dirList18brux = [
 #'TTHH_TuneCP5_13TeV-madgraph-pythia8',
 #'TTTJ_TuneCP5_13TeV-madgraph-pythia8',
-'TTTT_TuneCP5_13TeV-amcatnlo-pythia8',
+#'TTTT_TuneCP5_13TeV-amcatnlo-pythia8',
 #'TTTW_TuneCP5_13TeV-madgraph-pythia8',
 #'TTTo2L2Nu_TuneCP5up_13TeV-powheg-pythia8',
 #'TTToHadronic_TuneCP5down_13TeV-powheg-pythia8',
@@ -179,16 +179,16 @@ for sample in dirList:
     outList = ['none']
     if 'Tprime' in sample: outList = ['BWBW','TZBW','THBW','TZTH','TZTZ','THTH']
     elif 'Bprime' in sample: outList = ['TWTW','BZTW','BHTW','BZBH','BZBZ','BHBH']
-    elif 'TTToSemiLeptonic' in sample: outList = ['HT0Njet0','HT500Njet9']
+#    elif 'TTToSemiLeptonic' in sample: outList = ['HT0Njet0','HT500Njet9']  # comment out for simple run
     #elif 'TTTo' in sample: outList = ['Mtt0to700','Mtt700to1000','Mtt1000toInf']
     if 'TuneCP5down' in sample or 'TuneCP5up' in sample or 'hdampDOWN' in sample or 'hdampUP' in sample: outList = ['none']
-    if 'TTTo' in sample or 'TT_Mtt' in sample: 
-    	if outList==['none']: outList = ['ttbb','tt2b','tt1b','ttcc','ttjj']
-    	else:
-    		outList_ = outList[:]
-    		outList = []
-    		for outlabel in outList_:
-    			for flv in ['ttbb','tt2b','tt1b','ttcc','ttjj']: outList.append(outlabel+'_'+flv)
+#    if 'TTTo' in sample or 'TT_Mtt' in sample: 
+#    	if outList==['none']: outList = ['ttbb','tt2b','tt1b','ttcc','ttjj']
+#    	else:
+#    		outList_ = outList[:]
+#    		outList = []
+#    		for outlabel in outList_:
+#    			for flv in ['ttbb','tt2b','tt1b','ttcc','ttjj']: outList.append(outlabel+'_'+flv)
 
     isData = False
     if 'Single' in sample or 'EGamma' in sample or 'JetHT' in sample: isData = True
