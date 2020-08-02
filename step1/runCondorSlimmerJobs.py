@@ -21,7 +21,7 @@ inputLoc='lpc'
 if inputDir.startswith('/isilon/hadoop/'): inputLoc='brux'
 
 csvFilename='DeepCSV_94XSF_V5_B_F.csv'
-if YEAR==2018: 
+if Year==2018: 
     csvFilename='DeepCSV_102XSF_V2.csv'
 runDir=os.getcwd()
 inDir=inputDir[10:]
