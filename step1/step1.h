@@ -139,6 +139,10 @@ public :
    vector<double>  pdfWeights;
    vector<double>  pdfNewWeights;
    float_t         pdfNewNominalWeight;
+   Float_t         njetsWeight;
+   Float_t         njetsWeightUp;
+   Float_t         njetsWeightDown;
+   Float_t         tthfWeight;
 
    Float_t         leptonPt_MultiLepCalc;
    Float_t         leptonEta_MultiLepCalc;
@@ -336,6 +340,12 @@ public :
    vector<int>     NresolvedTops2pFake_shifts;
    vector<int>     NresolvedTops5pFake_shifts;
    vector<int>     NresolvedTops10pFake_shifts;
+
+   float	   btagCSVWeight;
+   float 	   btagCSVWeight_HFup;
+   float           btagCSVWeight_HFdn;
+   float           btagCSVWeight_LFup;
+   float           btagCSVWeight_LFdn;
 
    // Declaration of leaf types
    Bool_t          flagBadMu_MultiLepCalc;
