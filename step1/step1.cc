@@ -77,15 +77,18 @@ wgthist->Write();
 // MAIN EVENT LOOP
 // ----------------------------------------------------------------------------
 
-void step1::Loop(TString inTreeName, TString outTreeName ) 
+void step1::Loop(TString inTreeName, TString outTreeName, const BTagCalibrationForLJMet* calib = NULL)
 {
   // btagCalibration initialization -csv reshaping
-  std::string btagcsvfile("DeepCSV_94XSF_V5_B_F.csv");
-  if (Year== 2018) {
+  if (calib == NULL)
+  {
+    std::string btagcsvfile("DeepCSV_94XSF_V5_B_F.csv");
+    if (Year== 2018) {
       btagcsvfile = "DeepCSV_102XSF_V2.csv"; 
+    }
+    cout << "CSV reshaping file " << btagcsvfile << endl;
+    calib = new const BTagCalibrationForLJMet("DeepCSV", btagcsvfile); 
   }
-  cout << "CSV reshaping file " << btagcsvfile << endl;
-  BTagCalibrationForLJMet calib("DeepCSV", btagcsvfile);
   BTagCalibrationForLJMetReader reader(BTagEntryForLJMet::OP_RESHAPING,  // operating point
 			       "central",             // central sys type
 			       {"up_jes", "down_jes", "up_lf", "down_lf", "up_hfstats1", "down_hfstats1",
@@ -93,11 +96,11 @@ void step1::Loop(TString inTreeName, TString outTreeName )
 				   "down_cferr2", "up_hf", "down_hf", "up_lfstats1", "down_lfstats1",
 				   "up_lfstats2", "down_lfstats2"});      // other sys types
   
-  reader.load(calib,                 // calibration instance
+  reader.load(*calib,                 // calibration instance
 	      BTagEntryForLJMet::FLAV_B,     // btag flavour
 	      "iterativefit");       // measurement type
-  reader.load(calib, BTagEntryForLJMet::FLAV_C, "iterativefit");     // for FLAV_C
-  reader.load(calib, BTagEntryForLJMet::FLAV_UDSG, "iterativefit");     // for FLAV_UDSG
+  reader.load(*calib, BTagEntryForLJMet::FLAV_C, "iterativefit");     // for FLAV_C
+  reader.load(*calib, BTagEntryForLJMet::FLAV_UDSG, "iterativefit");     // for FLAV_UDSG
 
 
   HardcodedConditions hardcodedConditions;
