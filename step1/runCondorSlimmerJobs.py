@@ -13,15 +13,15 @@ Year = 2017 # or 2018
 finalStateYear = 'singleLep'+str(Year)
 inputDir='/eos/uscms/store/user/lpcljm/FWLJMET102X_1lep'+str(Year)+'_Oct2019/' # or 2018
 #inputDir='/isilon/hadoop/store/group/bruxljm/FWLJMET102X_1lep'+str(Year)+'_Oct2019/' # or 2018
-outputDir='/eos/uscms/store/user/wzhang/FWLJMET102X_1lep'+str(Year)+'_Oct2019_4t_07302020_step1/nominal/' # or 2018
-condorDir='/uscms/home/wzhang/nobackup/work/fwljmet_201905/CMSSW_10_2_10/src/LJMet-Slimmer-4tops_csvReshaping/step1/FWLJMET102X_1lep'+str(Year)+'_Oct2019_4t_07302020_step1/' # or 2018
+outputDir='/eos/uscms/store/user/wzhang/FWLJMET102X_1lep'+str(Year)+'_Oct2019_4t_08102020_step1/nominal/' # or 2018
+condorDir='/uscms/home/wzhang/nobackup/work/fwljmet_201905/CMSSW_10_2_10/src/LJMet-Slimmer-4tops/step1/FWLJMET102X_1lep'+str(Year)+'_Oct2019_4t_08102020_step1/' # or 2018
 shifts = [] #['JECup','JECdown','JERup','JERdown']
 nFilesPerJob=30
 inputLoc='lpc'
 if inputDir.startswith('/isilon/hadoop/'): inputLoc='brux'
 
 csvFilename='DeepCSV_94XSF_V5_B_F.csv'
-if YEAR==2018: 
+if Year==2018: 
     csvFilename='DeepCSV_102XSF_V2.csv'
 runDir=os.getcwd()
 inDir=inputDir[10:]
@@ -60,8 +60,8 @@ dirList17 = [
 #'TTTJ_TuneCP5_13TeV-madgraph-pythia8',
 'TTTT_TuneCP5_PSweights_13TeV-amcatnlo-pythia8',
 #'TTTW_TuneCP5_13TeV-madgraph-pythia8',
-## 'TTTo2L2Nu_TuneCP5_PSweights_13TeV-powheg-pythia8',
-#'TTTo2L2Nu_TuneCP5_erdON_13TeV-powheg-pythia8',
+#'TTTo2L2Nu_TuneCP5_PSweights_13TeV-powheg-pythia8',
+##'TTTo2L2Nu_TuneCP5_erdON_13TeV-powheg-pythia8',
 #'TTTo2L2Nu_TuneCP5down_PSweights_13TeV-powheg-pythia8',
 #'TTTo2L2Nu_TuneCP5up_PSweights_13TeV-powheg-pythia8',
 #'TTTo2L2Nu_hdampDOWN_TuneCP5_PSweights_13TeV-powheg-pythia8',
@@ -182,16 +182,16 @@ for sample in dirList:
     outList = ['none']
     if 'Tprime' in sample: outList = ['BWBW','TZBW','THBW','TZTH','TZTZ','THTH']
     elif 'Bprime' in sample: outList = ['TWTW','BZTW','BHTW','BZBH','BZBZ','BHBH']
-#    elif 'TTToSemiLeptonic' in sample: outList = ['HT0Njet0','HT500Njet9']  # comment out for simple run
+    elif 'TTToSemiLeptonic' in sample: outList = ['HT0Njet0','HT500Njet9']  # comment out for simple run
     #elif 'TTTo' in sample: outList = ['Mtt0to700','Mtt700to1000','Mtt1000toInf']
     if 'TuneCP5down' in sample or 'TuneCP5up' in sample or 'hdampDOWN' in sample or 'hdampUP' in sample: outList = ['none']
-#    if 'TTTo' in sample or 'TT_Mtt' in sample: 
-#    	if outList==['none']: outList = ['ttbb','tt2b','tt1b','ttcc','ttjj']
-#    	else:
-#    		outList_ = outList[:]
-#    		outList = []
-#    		for outlabel in outList_:
-#    			for flv in ['ttbb','tt2b','tt1b','ttcc','ttjj']: outList.append(outlabel+'_'+flv)
+    if 'TTTo' in sample or 'TT_Mtt' in sample: 
+    	if outList==['none']: outList = ['ttbb','tt2b','tt1b','ttcc','ttjj']
+    	else:
+    		outList_ = outList[:]
+    		outList = []
+    		for outlabel in outList_:
+    			for flv in ['ttbb','tt2b','tt1b','ttcc','ttjj']: outList.append(outlabel+'_'+flv)
 
     isData = False
     if 'Single' in sample or 'EGamma' in sample or 'JetHT' in sample: isData = True
