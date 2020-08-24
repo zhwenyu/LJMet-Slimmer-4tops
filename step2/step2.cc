@@ -470,7 +470,7 @@ void step2::Loop()
      if (ientry < 0) break;
      nb = inputTree->GetEntry(jentry);   nbytes += nb;
      if (Cut(ientry) != 1) continue;
-     if (jentry > 5000 ) break;  // debug
+//     if (jentry > 5000 ) break;  // debug
 //     cout << "\n start event # " << jentry << endl;
      if(jentry % 1000 ==0) std::cout<<"Completed "<<jentry<<" out of "<<nentries<<" events"<<std::endl;      
 
@@ -493,13 +493,13 @@ void step2::Loop()
      fourthcsvb_bb = 0;
      MT2bb = 0;      
      deltaR_minBB = 20.;
-     aveBBdr = -1;      
+     aveBBdr = 0;      
      deltaEta_maxBB = 10;                  
      lepDR_minBBdr = -1;
      mass_maxJJJpt = -1;      
      FW_momentum_0=0; FW_momentum_1=0; FW_momentum_2=0; FW_momentum_3=0; FW_momentum_4=0; FW_momentum_5=0; FW_momentum_6=0;
      centrality = -1;      
-     HT_bjets = -10;
+     HT_bjets = 0;
      HT_ratio = -1; //for ratio of HT(j1,2,3,4)/HT(other jets)     
      HT_2m = -10;
      theJetLeadPt = -1000; 
