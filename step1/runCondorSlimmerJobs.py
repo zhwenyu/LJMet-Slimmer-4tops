@@ -13,10 +13,10 @@ Year = 2017 # or 2018
 finalStateYear = 'singleLep'+str(Year)
 inputDir='/eos/uscms/store/user/lpcljm/FWLJMET102X_1lep'+str(Year)+'_Oct2019/' # or 2018
 #inputDir='/isilon/hadoop/store/group/bruxljm/FWLJMET102X_1lep'+str(Year)+'_Oct2019/' # or 2018
-outputDir='/eos/uscms/store/user/wzhang/FWLJMET102X_1lep'+str(Year)+'_Oct2019_4t_08102020_step1/nominal/' # or 2018
-condorDir='/uscms/home/wzhang/nobackup/work/fwljmet_201905/CMSSW_10_2_10/src/LJMet-Slimmer-4tops/step1/FWLJMET102X_1lep'+str(Year)+'_Oct2019_4t_08102020_step1/' # or 2018
+outputDir='/eos/uscms/store/user/wzhang/FWLJMET102X_1lep'+str(Year)+'_Oct2019_4t_08192020_step1/nominal/' # or 2018
+condorDir='/uscms/home/wzhang/nobackup/work/fwljmet_201905/CMSSW_10_2_10/src/LJMet-Slimmer-4tops/step1/FWLJMET102X_1lep'+str(Year)+'_Oct2019_4t_08192020_step1/' # or 2018
 shifts = [] #['JECup','JECdown','JERup','JERdown']
-nFilesPerJob=30
+nFilesPerJob=1
 inputLoc='lpc'
 if inputDir.startswith('/isilon/hadoop/'): inputLoc='brux'
 
