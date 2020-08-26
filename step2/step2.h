@@ -55,7 +55,8 @@ public :
    Float_t         FW_momentum_2;
    Float_t         centrality;
    Float_t         aveCSVpt;
-   Float_t         mass_maxJJJpt; 
+   Float_t         mass_maxJJJpt;
+   Float_t         maxJJJpt; 
    Float_t         lepDR_minBBdr;
    Float_t         HT_bjets;
    Float_t         HT_ratio;        

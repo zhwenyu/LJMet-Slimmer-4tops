@@ -288,6 +288,7 @@ void step2::Loop()
    TBranch *b_centrality            = outputTree->Branch("centrality",&centrality,"centrality/F");
    TBranch *b_aveCSVpt              = outputTree->Branch("aveCSVpt",&aveCSVpt,"aveCSVpt/F");
    TBranch *b_mass_maxJJJpt         = outputTree->Branch("mass_maxJJJpt",&mass_maxJJJpt,"mass_maxJJJpt/F");
+   TBranch *b_maxJJJpt              = outputTree->Branch("maxJJJpt",&maxJJJpt,"maxJJJpt/F");
    TBranch *b_lepDR_minBBdr         = outputTree->Branch("lepDR_minBBdr",&lepDR_minBBdr,"lepDR_minBBdr/F");  
    TBranch *b_HT_bjets              = outputTree->Branch("HT_bjets",&HT_bjets,"HT_bjets/F");     
    TBranch *b_HT_ratio              = outputTree->Branch("HT_ratio",&HT_ratio,"HT_ratio/F");        
@@ -470,7 +471,7 @@ void step2::Loop()
      if (ientry < 0) break;
      nb = inputTree->GetEntry(jentry);   nbytes += nb;
      if (Cut(ientry) != 1) continue;
-//     if (jentry > 5000 ) break;  // debug
+     if (jentry > 5000 ) break;  // debug
 //     cout << "\n start event # " << jentry << endl;
      if(jentry % 1000 ==0) std::cout<<"Completed "<<jentry<<" out of "<<nentries<<" events"<<std::endl;      
 
@@ -496,7 +497,8 @@ void step2::Loop()
      aveBBdr = 0;      
      deltaEta_maxBB = 10;                  
      lepDR_minBBdr = -1;
-     mass_maxJJJpt = -1;      
+     mass_maxJJJpt = -1;     
+     maxJJJpt = 0; 
      FW_momentum_0=0; FW_momentum_1=0; FW_momentum_2=0; FW_momentum_3=0; FW_momentum_4=0; FW_momentum_5=0; FW_momentum_6=0;
      centrality = -1;      
      HT_bjets = 0;
@@ -525,7 +527,6 @@ void step2::Loop()
      double HT_4jets = 0; //for ratio of HT(j1,2,3,4)/HT(other jets)     
      double HT_other = 0; //for ratio of HT(j1,2,3,4)/HT(other jets)          
      double npairs = 0;     
-     double maxJJJpt = 0;
      double BjetSecondPt = 0;
      int num_GD_trijet = 0;
      int num_BD_trijet = 0;    
@@ -1246,7 +1247,7 @@ void step2::Loop()
 			}
 		  }
 		}
-	  }
+      }
 
       PtFifthJet = -1;
       int fifthJetInd = 0;
@@ -1257,7 +1258,7 @@ void step2::Loop()
       		if(fifthJetInd==5){PtFifthJet=theJetPt_JetSubCalc_PtOrdered->at(ijet);}
       		if(fifthJetInd>=5) break;
       		}
-      	}
+      }
       if(fifthJetInd<5){
 		for(unsigned int ijet = 0; ijet < theJetPt_JetSubCalc_PtOrdered->size(); ijet++){
 //	    	if(theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet) < 0.4941){        
@@ -1523,6 +1524,7 @@ void step2::Loop()
       b_centrality->Fill();
       b_aveCSVpt->Fill();
       b_mass_maxJJJpt->Fill();
+      b_maxJJJpt->Fill();
       b_lepDR_minBBdr->Fill();
       b_HT_bjets->Fill();
       b_HT_ratio->Fill();
