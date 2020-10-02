@@ -18,6 +18,7 @@
 #include "vector"
 #include "TLorentzVector.h"
 #include "HardcodedConditions.h"
+#include "BTagCalibForLJMet.h"
 
 enum shift:char;
 
@@ -1261,7 +1262,7 @@ public :
    virtual Int_t    GetEntry(Long64_t entry);
    virtual Long64_t LoadTree(Long64_t entry);
    virtual void     Init(TTree *tree);
-   virtual void     Loop(TString inTreeName, TString outTreeName);
+   virtual void     Loop(TString inTreeName, TString outTreeName, const BTagCalibrationForLJMet* calib);
    virtual Bool_t   Notify();
    virtual void     Show(Long64_t entry = -1);
    virtual void     saveHistograms();
