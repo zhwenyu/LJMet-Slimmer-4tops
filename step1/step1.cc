@@ -744,7 +744,7 @@ void step1::Loop(TString inTreeName, TString outTreeName, const BTagCalibrationF
       nb = inputTree->GetEntry(jentry);   nbytes += nb;
       if (Cut(ientry) != 1) continue;
       
-      if (ientry >= 50) break;
+      //if (ientry >= 50) break;
       
       if(jentry % 1000 ==0) std::cout<<"Completed "<<jentry<<" out of "<<nentries<<" events"<<std::endl;
 
@@ -878,7 +878,7 @@ void step1::Loop(TString inTreeName, TString outTreeName, const BTagCalibrationF
       if (isMC) {
           btagCSVRenormWeight = hardcodedConditions.GetCSVRenormSF(Year, isElectron, NJets_JetSubCalc, sampleType);  
       }	
-      cout << "isE? " << isElectron << " njet " << NJets_JetSubCalc << " btagCSVRenormWeight " << btagCSVRenormWeight << endl; 
+      // cout << "isE? " << isElectron << " njet " << NJets_JetSubCalc << " btagCSVRenormWeight " << btagCSVRenormWeight << endl; 
 
       // ----------------------------------------------------------------------------
       // ttHF weight calculation
