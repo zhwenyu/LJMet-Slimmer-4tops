@@ -11,7 +11,9 @@ void makeStep2(TString macroDir, TString inputFile, TString outputFile){
   incl+=macroDir;
   gSystem->AddIncludePath(incl);
 
+  std::cout << " start makeStep2.C "; 
   step2 t(inputFile,outputFile);
+  std::cout << " End of constructor ";
   t.Loop();
 
 }

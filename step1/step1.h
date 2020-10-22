@@ -144,6 +144,7 @@ public :
    Float_t         njetsWeightUp;
    Float_t         njetsWeightDown;
    Float_t         tthfWeight;
+   Float_t 	   btagCSVRenormWeight;
 
    Float_t         leptonPt_MultiLepCalc;
    Float_t         leptonEta_MultiLepCalc;
