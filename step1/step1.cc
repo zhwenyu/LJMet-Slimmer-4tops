@@ -402,6 +402,7 @@ void step1::Loop(TString inTreeName, TString outTreeName, const BTagCalibrationF
    outputTree->Branch("njetsWeightUp",&njetsWeightUp,"njetsWeightUp/F");
    outputTree->Branch("njetsWeightDown",&njetsWeightDown,"njetsWeightDown/F");
    outputTree->Branch("tthfWeight",&tthfWeight,"tthfWeight/F");
+   outputTree->Branch("btagCSVRenormWeight",&btagCSVRenormWeight,"btagCSVRenormWeight/F");
    
    //ttbar generator
    outputTree->Branch("ttbarMass_TTbarMassCalc",&ttbarMass_TTbarMassCalc,"ttbarMass_TTbarMassCalc/D");
@@ -743,7 +744,7 @@ void step1::Loop(TString inTreeName, TString outTreeName, const BTagCalibrationF
       nb = inputTree->GetEntry(jentry);   nbytes += nb;
       if (Cut(ientry) != 1) continue;
       
-        //if (ientry > 5000) break;
+      //if (ientry >= 50) break;
       
       if(jentry % 1000 ==0) std::cout<<"Completed "<<jentry<<" out of "<<nentries<<" events"<<std::endl;
 
@@ -854,6 +855,30 @@ void step1::Loop(TString inTreeName, TString outTreeName, const BTagCalibrationF
 		}
       }
 
+
+	// csv re-normalization weight
+      btagCSVRenormWeight = 1.0;
+
+      std::string sampleType = "";
+      if (isTTTT) sampleType = "tttt";
+      else if (outTTLF) sampleType = "ttjj";
+      else if (outTTCC) sampleType = "ttcc";
+      else if (outTTBB) sampleType = "ttbb";
+      else if (outTT1B) sampleType = "tt1b";
+      else if (outTT2B) sampleType = "tt2b";
+      else if (isST) sampleType = "T";
+      else if (isTTV || isTTHbb || isTTHnonbb) sampleType = "TTV";
+      else if (isTTTX || isTTVV) sampleType = "TTXY";
+      else if (isVV) sampleType = "VV";
+      else if (sample.find("WJetsToLNu_") != std::string::npos) sampleType = "WJets";
+      else if (sample.find("DYJetsToLL_") != std::string::npos) sampleType = "ZJets";
+      else if (sample.find("QCD_") != std::string::npos) sampleType = "qcd";
+
+
+      if (isMC) {
+          btagCSVRenormWeight = hardcodedConditions.GetCSVRenormSF(Year, isElectron, NJets_JetSubCalc, sampleType);  
+      }	
+      // cout << "isE? " << isElectron << " njet " << NJets_JetSubCalc << " btagCSVRenormWeight " << btagCSVRenormWeight << endl; 
 
       // ----------------------------------------------------------------------------
       // ttHF weight calculation

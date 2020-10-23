@@ -7,8 +7,8 @@ start_time = time.time()
 #IO directories must be full paths
 shift = sys.argv[1]
 Year = 2017
-inputDir='/eos/uscms/store/user/ssagir/FWLJMET102X_1lep'+str(Year)+'_Oct2019_4t_041220_step1/'+shift+'/'
-outputDir='/eos/uscms/store/user/ssagir/FWLJMET102X_1lep'+str(Year)+'_Oct2019_4t_041220_step1hadds/'+shift+'/'
+inputDir='/eos/uscms/store/user/wzhang/FWLJMET102X_1lep'+str(Year)+'_Oct2019_4t_08012020_step1/'+shift+'/'
+outputDir='/eos/uscms/store/user/wzhang/FWLJMET102X_1lep'+str(Year)+'_Oct2019_4t_08012020_step1hadds/'+shift+'/'
 
 inDir=inputDir[10:]
 outDir=outputDir[10:]
