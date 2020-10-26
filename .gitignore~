@@ -1,2 +1,3 @@
 *.root
-testStep1.C
+step1/testStep1.C
+.gitignore
