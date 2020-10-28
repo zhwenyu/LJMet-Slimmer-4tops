@@ -115,6 +115,7 @@ public :
    Float_t         isoSF;
    Float_t         lepIdSF;
    Float_t         MuTrkSF;
+   Float_t         MuPtSF;
    Float_t         EGammaGsfSF;
    Float_t         triggerSF;
    Float_t         triggerHadSF;
