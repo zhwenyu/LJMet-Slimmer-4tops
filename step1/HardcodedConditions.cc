@@ -217,11 +217,11 @@ void HardcodedConditions::GetLtaggingSF2017(double pt, double eta, double *btags
 	if(pt > 1000.) pt_ = 1000.;
     if(tagger == "DeepCSVMEDIUM"){ // https://twiki.cern.ch/twiki/pub/CMS/BtagRecommendation94X/DeepCSV_94XSF_WP_V4_B_F.csv
       *btagsf = 0.972902+0.000201811*pt_+3.96396e-08*pt_*pt_+-4.53965e-10*pt_*pt_*pt_;
-      *btagsfunc = 0.101236+0.000212696*pt_+-1.71672e-07*pt_*pt_;
+      *btagsfunc = (0.972902+0.000201811*pt_+3.96396e-08*pt_*pt_+-4.53965e-10*pt_*pt_*pt_)*(0.101236+0.000212696*pt_+-1.71672e-07*pt_*pt_);
     }
     else if( tagger == "DeepJetMEDIUM") { // https://twiki.cern.ch/twiki/pub/CMS/BtagRecommendation94X/DeepFlavour_94XSF_WP_V3_B_F.csv
       *btagsf = 1.40779+-0.00094558*pt_+8.74982e-07*pt_*pt_+-4.67814/pt_;
-      *btagsfunc = 0.100661+0.000294578*pt_+-3.2739e-07*pt_*pt_;
+      *btagsfunc = (1.40779+-0.00094558*pt_+8.74982e-07*pt_*pt_+-4.67814/pt_)*(0.100661+0.000294578*pt_+-3.2739e-07*pt_*pt_);
     }else{ std::cerr << "Tagger " << tagger << " not coded into HardcodedConditions::GetLtaggingSF2017! Aborting ..." << std::endl; std::abort();}
 
     if(pt > 1000){*btagsfunc *= 2.0;}
@@ -303,11 +303,11 @@ void HardcodedConditions::GetLtaggingSF2018(double pt, double eta, double *btags
 	if(pt > 1000.) pt_ = 1000.;
     if(tagger == "DeepCSVMEDIUM"){ // https://twiki.cern.ch/twiki/pub/CMS/BtagRecommendation102X/DeepCSV_102XSF_WP_V1.csv
       *btagsf = 1.6329+-0.00160255*pt_+1.9899e-06*pt_*pt_+-6.72613e-10*pt_*pt_*pt_;
-      *btagsfunc = 0.122811+0.000162564*pt_+-1.66422e-07*pt_*pt_;
+      *btagsfunc = (1.6329+-0.00160255*pt_+1.9899e-06*pt_*pt_+-6.72613e-10*pt_*pt_*pt_)*(0.122811+0.000162564*pt_+-1.66422e-07*pt_*pt_);
     }
     else if( tagger == "DeepJetMEDIUM") { // https://twiki.cern.ch/twiki/pub/CMS/BtagRecommendation102X/DeepJet_102XSF_WP_V1.csv
       *btagsf = 1.59373+-0.00113028*pt_+8.66631e-07*pt_*pt_+-1.10505/pt_;
-      *btagsfunc = 0.142253+0.000227323*pt_+-2.71704e-07*pt_*pt_;
+      *btagsfunc = (1.59373+-0.00113028*pt_+8.66631e-07*pt_*pt_+-1.10505/pt_)*(0.142253+0.000227323*pt_+-2.71704e-07*pt_*pt_);
     }else{ std::cerr << "Tagger " << tagger << " not coded into HardcodedConditions::GetLtaggingSF2018! Aborting ..." << std::endl; std::abort();}
 
     if(pt > 1000){*btagsfunc *= 2.0;}
