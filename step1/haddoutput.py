@@ -7,9 +7,8 @@ start_time = time.time()
 #IO directories must be full paths
 shift = sys.argv[1]
 Year = 2017
-inputDir='/eos/uscms/store/user/wzhang/FWLJMET102X_1lep'+str(Year)+'_Oct2019_4t_08012020_step1/'+shift+'/'
-outputDir='/eos/uscms/store/user/wzhang/FWLJMET102X_1lep'+str(Year)+'_Oct2019_4t_08012020_step1hadds/'+shift+'/'
-
+inputDir='/eos/uscms/store/user/ssagir/FWLJMET102X_1lep'+str(Year)+'_Oct2019_4t_080420_step1/'+shift+'/'
+outputDir='/eos/uscms/store/user/ssagir/FWLJMET102X_1lep'+str(Year)+'_Oct2019_4t_080420_step1hadds/'+shift+'/'
 inDir=inputDir[10:]
 outDir=outputDir[10:]
 
@@ -118,7 +117,7 @@ if Year==2018: dirList = dirList18[:]
 if shift=='nominal' and Year==2017:
 	dirList.append('SingleElectron')
 	dirList.append('SingleMuon')
-	dirList.append('JetHT')
+	#dirList.append('JetHT')
 	dirList.append('TTTo2L2Nu_TuneCP5down_PSweights_13TeV-powheg-pythia8')
 	dirList.append('TTTo2L2Nu_TuneCP5up_PSweights_13TeV-powheg-pythia8')
 	dirList.append('TTTo2L2Nu_hdampDOWN_TuneCP5_PSweights_13TeV-powheg-pythia8')
@@ -134,7 +133,7 @@ if shift=='nominal' and Year==2017:
 if shift=='nominal' and Year==2018:
 	dirList.append('EGamma')
 	dirList.append('SingleMuon')
-	dirList.append('JetHT')
+	#dirList.append('JetHT')
 	dirList.append('TTTo2L2Nu_TuneCP5down_13TeV-powheg-pythia8')
 	dirList.append('TTTo2L2Nu_TuneCP5up_13TeV-powheg-pythia8')
 	dirList.append('TTTo2L2Nu_hdampDOWN_TuneCP5_13TeV-powheg-pythia8')
