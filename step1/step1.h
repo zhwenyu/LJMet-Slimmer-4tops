@@ -115,6 +115,7 @@ public :
    Float_t         isoSF;
    Float_t         lepIdSF;
    Float_t         MuTrkSF;
+   Float_t         MuPtSF;
    Float_t         EGammaGsfSF;
    Float_t         triggerSF;
    Float_t         triggerHadSF;
@@ -144,6 +145,7 @@ public :
    Float_t         njetsWeightUp;
    Float_t         njetsWeightDown;
    Float_t         tthfWeight;
+   Float_t 	   btagCSVRenormWeight;
 
    Float_t         leptonPt_MultiLepCalc;
    Float_t         leptonEta_MultiLepCalc;

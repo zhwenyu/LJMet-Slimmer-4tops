@@ -55,7 +55,8 @@ public :
    Float_t         FW_momentum_2;
    Float_t         centrality;
    Float_t         aveCSVpt;
-   Float_t         mass_maxJJJpt; 
+   Float_t         mass_maxJJJpt;
+   Float_t         maxJJJpt; 
    Float_t         lepDR_minBBdr;
    Float_t         HT_bjets;
    Float_t         HT_ratio;        
@@ -64,6 +65,10 @@ public :
    Float_t         secondcsvb_bb;        
    Float_t         thirdcsvb_bb;        
    Float_t         fourthcsvb_bb;  
+   Float_t 	   thirdcsvb_bb_BTagBHad;
+   Float_t         thirdcsvb_bb_BTagNBHad;
+   Float_t         thirdcsvb_bb_NBTagBHad;
+   Float_t         thirdcsvb_bb_NBTagNBHad;
    Float_t         PtFifthJet;
    Float_t         deltaR_lepJetInMinMljet;      
    Float_t         deltaPhi_lepJetInMinMljet;         

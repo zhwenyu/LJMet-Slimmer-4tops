@@ -288,6 +288,7 @@ void step2::Loop()
    TBranch *b_centrality            = outputTree->Branch("centrality",&centrality,"centrality/F");
    TBranch *b_aveCSVpt              = outputTree->Branch("aveCSVpt",&aveCSVpt,"aveCSVpt/F");
    TBranch *b_mass_maxJJJpt         = outputTree->Branch("mass_maxJJJpt",&mass_maxJJJpt,"mass_maxJJJpt/F");
+   TBranch *b_maxJJJpt              = outputTree->Branch("maxJJJpt",&maxJJJpt,"maxJJJpt/F");
    TBranch *b_lepDR_minBBdr         = outputTree->Branch("lepDR_minBBdr",&lepDR_minBBdr,"lepDR_minBBdr/F");  
    TBranch *b_HT_bjets              = outputTree->Branch("HT_bjets",&HT_bjets,"HT_bjets/F");     
    TBranch *b_HT_ratio              = outputTree->Branch("HT_ratio",&HT_ratio,"HT_ratio/F");        
@@ -297,6 +298,10 @@ void step2::Loop()
    TBranch *b_secondcsvb_bb         = outputTree->Branch("secondcsvb_bb",&secondcsvb_bb,"secondcsvb_bb/F");        
    TBranch *b_thirdcsvb_bb          = outputTree->Branch("thirdcsvb_bb",&thirdcsvb_bb,"thirdcsvb_bb/F");        
    TBranch *b_fourthcsvb_bb         = outputTree->Branch("fourthcsvb_bb",&fourthcsvb_bb,"fourthcsvb_bb/F");
+   TBranch *b_thirdcsvb_bb_BTagBHad          = outputTree->Branch("thirdcsvb_bb_BTagBHad",&thirdcsvb_bb_BTagBHad,"thirdcsvb_bb_BTagBHad/F");
+   TBranch *b_thirdcsvb_bb_BTagNBHad          = outputTree->Branch("thirdcsvb_bb_BTagNBHad",&thirdcsvb_bb_BTagNBHad,"thirdcsvb_bb_BTagNBHad/F");
+   TBranch *b_thirdcsvb_bb_NBTagBHad          = outputTree->Branch("thirdcsvb_bb_NBTagBHad",&thirdcsvb_bb_NBTagBHad,"thirdcsvb_bb_NBTagBHad/F");
+   TBranch *b_thirdcsvb_bb_NBTagNBHad          = outputTree->Branch("thirdcsvb_bb_NBTagNBHad",&thirdcsvb_bb_NBTagNBHad,"thirdcsvb_bb_NBTagNBHad/F");
 
    TBranch *b_secondJetPt           = outputTree->Branch("secondJetPt",&secondJetPt,"secondJetPt/F");        
    TBranch *b_fifthJetPt            = outputTree->Branch("fifthJetPt",&fifthJetPt,"fifthJetPt/F");        
@@ -466,7 +471,7 @@ void step2::Loop()
      if (ientry < 0) break;
      nb = inputTree->GetEntry(jentry);   nbytes += nb;
      if (Cut(ientry) != 1) continue;
-//     if (jentry > 500 ) break;  // debug
+     if (jentry > 5000 ) break;  // debug
 //     cout << "\n start event # " << jentry << endl;
      if(jentry % 1000 ==0) std::cout<<"Completed "<<jentry<<" out of "<<nentries<<" events"<<std::endl;      
 
@@ -483,15 +488,20 @@ void step2::Loop()
      minMleppJet = 1e9;     
      tmp_minMleppBjet = 1e9;          
      aveCSVpt = 0;
+     firstcsvb_bb = 0;
+     secondcsvb_bb = 0;
+     thirdcsvb_bb = 0;
+     fourthcsvb_bb = 0;
      MT2bb = 0;      
      deltaR_minBB = 20.;
-     aveBBdr = -1;      
+     aveBBdr = 0;      
      deltaEta_maxBB = 10;                  
      lepDR_minBBdr = -1;
-     mass_maxJJJpt = -1;      
+     mass_maxJJJpt = -1;     
+     maxJJJpt = 0; 
      FW_momentum_0=0; FW_momentum_1=0; FW_momentum_2=0; FW_momentum_3=0; FW_momentum_4=0; FW_momentum_5=0; FW_momentum_6=0;
      centrality = -1;      
-     HT_bjets = -10;
+     HT_bjets = 0;
      HT_ratio = -1; //for ratio of HT(j1,2,3,4)/HT(other jets)     
      HT_2m = -10;
      theJetLeadPt = -1000; 
@@ -508,6 +518,7 @@ void step2::Loop()
      NresolvedTops1pFake_float = (float) NresolvedTops1pFake;
      NJetsTtagged_float = (float) NJetsTtagged;
      NJetsWtagged_float = (float) NJetsWtagged;
+//     thirdcsvb_bb_BTagBHad = 0; thirdcsvb_bb_BTagNBHad = 0; thirdcsvb_bb_NBTagBHad= 0; thirdcsvb_bb_NBTagNBHad = 0;
  
      int njetscsv = 0;      
      double maxBBdeta = 0;
@@ -516,7 +527,6 @@ void step2::Loop()
      double HT_4jets = 0; //for ratio of HT(j1,2,3,4)/HT(other jets)     
      double HT_other = 0; //for ratio of HT(j1,2,3,4)/HT(other jets)          
      double npairs = 0;     
-     double maxJJJpt = 0;
      double BjetSecondPt = 0;
      int num_GD_trijet = 0;
      int num_BD_trijet = 0;    
@@ -529,7 +539,7 @@ void step2::Loop()
      for(unsigned int ijet = 4; ijet < theJetPt_JetSubCalc_PtOrdered->size(); ijet++){
          HT_other += theJetPt_JetSubCalc_PtOrdered->at(ijet);
      }
-     if (NJets_JetSubCalc > 4){
+     if (NJets_JetSubCalc >= 4){  // was >
          HT_ratio = HT_4jets/HT_other;
          ratio_HTdHT4leadjets = AK4HT/HT_4jets;
      }
@@ -607,6 +617,7 @@ void step2::Loop()
      std::vector<TLorentzVector> v_allJets;
      std::vector<TLorentzVector> v_trijet;
      std::vector<double> v_DCSV_allJets;          
+//     std::vector<pair<double, int>> v_DCSV_jettype_allJets;
      std::vector<double> v_DCSV_trijet;     
      std::vector<TLorentzVector> v_BADtrijet;  
      std::vector<std::pair<TLorentzVector, double>> v_pair_jet_CSV;
@@ -631,7 +642,18 @@ void step2::Loop()
      unsigned int tmpJetInd = 0;
      TLorentzVector bestJetinWjet;
 
+     int jettype(0);
      for(unsigned int ijet = 0; ijet < theJetPt_JetSubCalc_PtOrdered->size(); ijet++){
+//	cout << " event # " << jentry << " ijet " << ijet << endl;
+	if (  (AK4JetBTag_MultiLepCalc_PtOrdered->at(ijet)==1) && (theJetHFlav_JetSubCalc_PtOrdered->at(ijet)==5)  ) // for study of csv related values -wz, 2020 May
+	   jettype = 1;
+	else if (  (AK4JetBTag_MultiLepCalc_PtOrdered->at(ijet)==1) && (theJetHFlav_JetSubCalc_PtOrdered->at(ijet) !=5) )
+	   jettype = 2;
+	else if (  (AK4JetBTag_MultiLepCalc_PtOrdered->at(ijet)!=1) && (theJetHFlav_JetSubCalc_PtOrdered->at(ijet) ==5) ) 
+	   jettype = 3;
+        else if (  (AK4JetBTag_MultiLepCalc_PtOrdered->at(ijet)!=1) && (theJetHFlav_JetSubCalc_PtOrdered->at(ijet) !=5) ) 
+           jettype = 4;
+
 //		if(theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet) > 0.4941){
  	if(AK4JetBTag_MultiLepCalc_PtOrdered->at(ijet) == 1) {
 	   //changed to > in line above because we want jets that pass the csv cut 
@@ -717,10 +739,19 @@ void step2::Loop()
 //	    csvJet4 = theJetDeepCSVb_JetSubCalc_PtOrdered->at(3)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(3);	    
 
 	v_DCSV_allJets.push_back(AK4JetDeepCSVb_MultiLepCalc_PtOrdered->at(ijet)+AK4JetDeepCSVbb_MultiLepCalc_PtOrdered->at(ijet));
-	csvJet1 = AK4JetDeepCSVb_MultiLepCalc_PtOrdered->at(0)+AK4JetDeepCSVbb_MultiLepCalc_PtOrdered->at(0);
-        csvJet2 = AK4JetDeepCSVb_MultiLepCalc_PtOrdered->at(1)+AK4JetDeepCSVbb_MultiLepCalc_PtOrdered->at(1);
-        csvJet3 = AK4JetDeepCSVb_MultiLepCalc_PtOrdered->at(2)+AK4JetDeepCSVbb_MultiLepCalc_PtOrdered->at(2);
-        csvJet4 = AK4JetDeepCSVb_MultiLepCalc_PtOrdered->at(3)+AK4JetDeepCSVbb_MultiLepCalc_PtOrdered->at(3);
+//	v_DCSV_jettype_allJets.push_back(make_pair(AK4JetDeepCSVb_MultiLepCalc_PtOrdered->at(ijet)+AK4JetDeepCSVbb_MultiLepCalc_PtOrdered->at(ijet), jettype) );	
+	if (ijet==0) {
+	    csvJet1 = AK4JetDeepCSVb_MultiLepCalc_PtOrdered->at(ijet)+AK4JetDeepCSVbb_MultiLepCalc_PtOrdered->at(ijet);
+	}
+	else if (ijet==1) {
+            csvJet2 = AK4JetDeepCSVb_MultiLepCalc_PtOrdered->at(ijet)+AK4JetDeepCSVbb_MultiLepCalc_PtOrdered->at(ijet);
+	}
+	else if (ijet==2) {
+            csvJet3 = AK4JetDeepCSVb_MultiLepCalc_PtOrdered->at(ijet)+AK4JetDeepCSVbb_MultiLepCalc_PtOrdered->at(ijet);
+	}
+	else if (ijet==3) {
+            csvJet4 = AK4JetDeepCSVb_MultiLepCalc_PtOrdered->at(ijet)+AK4JetDeepCSVbb_MultiLepCalc_PtOrdered->at(ijet);
+	}
 
 
 //	v_DCSV_allJets.push_back(theJetDeepFlavB_JetSubCalc_PtOrdered->at(ijet));
@@ -803,6 +834,8 @@ void step2::Loop()
 	}
      }  // jet loop     
 
+//     cout << " End of jet loop ";
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////HT without the best jet where best jet is the one used in leptonic top reconstruction//////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -825,9 +858,9 @@ void step2::Loop()
       M_woBESTjet = (totalJetVectSum-bestJetinWjet).M();      
 
 
-////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////// trijet selection ///////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////// trijet selection ///////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////
      bool mom_W = false;
      bool WfromTop = false;
      bool WnotFromTop = false;
@@ -1091,11 +1124,25 @@ void step2::Loop()
 //////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////
      std::sort(v_DCSV_allJets.rbegin(), v_DCSV_allJets.rend());
-     
      firstcsvb_bb = v_DCSV_allJets.at(0);
      secondcsvb_bb = v_DCSV_allJets.at(1);
      thirdcsvb_bb = v_DCSV_allJets.at(2);
      fourthcsvb_bb = v_DCSV_allJets.at(3);
+
+//     std::sort(v_DCSV_jettype_allJets.rbegin(), v_DCSV_jettype_allJets.rend());
+//     if (v_DCSV_jettype_allJets[2].second ==1) {
+//       thirdcsvb_bb_BTagBHad = v_DCSV_jettype_allJets[2].first;
+//     }
+//     if (v_DCSV_jettype_allJets[2].second ==2) {
+//       thirdcsvb_bb_BTagNBHad = v_DCSV_jettype_allJets[2].first;
+//     }
+//     if (v_DCSV_jettype_allJets[2].second ==3) {
+//       thirdcsvb_bb_NBTagBHad = v_DCSV_jettype_allJets[2].first;
+//     }
+//     if (v_DCSV_jettype_allJets[2].second ==4) {
+//       thirdcsvb_bb_NBTagNBHad = v_DCSV_jettype_allJets[2].first;
+//     }
+
      if (BJetLeadPt>0) HT_2m = AK4HT - (BJetLeadPt+BjetSecondPt);
      else{HT_2m=-100;}
 
@@ -1185,7 +1232,7 @@ void step2::Loop()
 /////////////////////////
 // build JJJ variables //
 /////////////////////////
-	  for(unsigned int ijet = 0; ijet < theJetPt_JetSubCalc_PtOrdered->size(); ijet++){
+      for(unsigned int ijet = 0; ijet < theJetPt_JetSubCalc_PtOrdered->size(); ijet++){
 		jet1.SetPtEtaPhiE(theJetPt_JetSubCalc_PtOrdered->at(ijet),theJetEta_JetSubCalc_PtOrdered->at(ijet),theJetPhi_JetSubCalc_PtOrdered->at(ijet),theJetEnergy_JetSubCalc_PtOrdered->at(ijet));
 		for(unsigned int jjet = ijet + 1; jjet < theJetPt_JetSubCalc_PtOrdered->size(); jjet++){
 		  if(jjet >= theJetPt_JetSubCalc_PtOrdered->size()) continue;
@@ -1200,7 +1247,7 @@ void step2::Loop()
 			}
 		  }
 		}
-	  }
+      }
 
       PtFifthJet = -1;
       int fifthJetInd = 0;
@@ -1211,7 +1258,7 @@ void step2::Loop()
       		if(fifthJetInd==5){PtFifthJet=theJetPt_JetSubCalc_PtOrdered->at(ijet);}
       		if(fifthJetInd>=5) break;
       		}
-      	}
+      }
       if(fifthJetInd<5){
 		for(unsigned int ijet = 0; ijet < theJetPt_JetSubCalc_PtOrdered->size(); ijet++){
 //	    	if(theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet) < 0.4941){        
@@ -1477,6 +1524,7 @@ void step2::Loop()
       b_centrality->Fill();
       b_aveCSVpt->Fill();
       b_mass_maxJJJpt->Fill();
+      b_maxJJJpt->Fill();
       b_lepDR_minBBdr->Fill();
       b_HT_bjets->Fill();
       b_HT_ratio->Fill();
@@ -1629,6 +1677,11 @@ void step2::Loop()
       b_NJetsTtagged_float->Fill();
       b_NJetsWtagged_float->Fill();         
 
+      // for csv study
+      b_thirdcsvb_bb_BTagBHad->Fill();
+      b_thirdcsvb_bb_BTagNBHad->Fill();
+      b_thirdcsvb_bb_NBTagBHad->Fill();
+      b_thirdcsvb_bb_NBTagNBHad->Fill();
    }
 
 std::cout<<"DONE "<<nentries<<std::endl;   
