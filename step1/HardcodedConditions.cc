@@ -494,73 +494,20 @@ void HardcodedConditions::GetCtaggingEff2016(double pt, double *eff, std::string
 
 void HardcodedConditions::GetLtaggingEff2016(double pt, double *eff, std::string tagger)
 {
-	// ***** DEEPCSV VALUES ARE REALLY FOR 2017!!!!! ******
-    if(tagger == "DeepCSVMEDIUM" || tagger == "SJDeepCSVMEDIUM"){
-      if(pt < 30)        *eff = 0.004377;
-      else if(pt < 50)   *eff = 0.010659;
-      else if(pt < 70)   *eff = 0.009622;
-      else if(pt < 100)  *eff = 0.009726;
-      else if(pt < 140)  *eff = 0.010565;
-      else if(pt < 200)  *eff = 0.011395;
-      else if(pt < 300)  *eff = 0.011618;
-      else if(pt < 400)  *eff = 0.011412;
-      else if(pt < 500)  *eff = 0.011566;
-      else if(pt < 600)  *eff = 0.010326;
-      else if(pt < 800)  *eff = 0.007474;
-      else if(pt < 1000) *eff = 0.005215;
-      else if(pt < 1200) *eff = 0.001746;
-      else               *eff = 0.001182;
-    }
-    else if( tagger == "DeepCSVLOOSE" || tagger == "SJDeepCSVLOOSE") {
-      if(pt < 30)        *eff = 0.076955;
-      else if(pt < 50)   *eff = 0.104639;
-      else if(pt < 70)   *eff = 0.099754;
-      else if(pt < 100)  *eff = 0.103881;
-      else if(pt < 140)  *eff = 0.113770;
-      else if(pt < 200)  *eff = 0.126487;
-      else if(pt < 300)  *eff = 0.139755;
-      else if(pt < 400)  *eff = 0.149181;
-      else if(pt < 500)  *eff = 0.158620;
-      else if(pt < 600)  *eff = 0.161799;
-      else if(pt < 800)  *eff = 0.161169;
-      else if(pt < 1000) *eff = 0.159885;
-      else if(pt < 1200) *eff = 0.143730;
-      else               *eff = 0.131501;
-    }
-    else if( tagger == "DeepJetLOOSE") {
-      if(pt < 30)        *eff = 0.446756;
-      else if(pt < 50)   *eff = 0.158561;
-      else if(pt < 70)   *eff = 0.109936;
-      else if(pt < 100)  *eff = 0.098146;
-      else if(pt < 140)  *eff = 0.096993;
-      else if(pt < 200)  *eff = 0.108170;
-      else if(pt < 300)  *eff = 0.137391;
-      else if(pt < 400)  *eff = 0.186428;
-      else if(pt < 500)  *eff = 0.233441;
-      else if(pt < 600)  *eff = 0.270899;
-      else if(pt < 800)  *eff = 0.313911;
-      else if(pt < 1000) *eff = 0.396140;
-      else if(pt < 1200) *eff = 0.461929;
-      else if(pt < 1600) *eff = 0.552249;
-      else               *eff = 0.682292;
-    }
-    else if( tagger == "DeepJetMEDIUM") {
-      if(pt < 30)        *eff = 0.013025;
-      else if(pt < 50)   *eff = 0.015275;
-      else if(pt < 70)   *eff = 0.010233;
-      else if(pt < 100)  *eff = 0.009397;
-      else if(pt < 140)  *eff = 0.009666;
-      else if(pt < 200)  *eff = 0.011638;
-      else if(pt < 300)  *eff = 0.016291;
-      else if(pt < 400)  *eff = 0.025791;
-      else if(pt < 500)  *eff = 0.037945;
-      else if(pt < 600)  *eff = 0.049457;
-      else if(pt < 800)  *eff = 0.065214;
-      else if(pt < 1000) *eff = 0.091311;
-      else if(pt < 1200) *eff = 0.100395;
-      else if(pt < 1600) *eff = 0.122354;
-      else				 *eff = 0.156250;
-    }else{ std::cerr << "Tagger " << tagger << " not coded into HardcodedConditions::GetLtaggingEff2016! Aborting ..." << std::endl; std::abort();}
+  if(pt < 30)    *eff = 0.003385;
+  else if(pt < 50)   *eff = 0.009673;
+  else if(pt < 70)   *eff = 0.008316;
+  else if(pt < 100)  *eff = 0.008524;
+  else if(pt < 140)  *eff = 0.009092;
+  else if(pt < 200)  *eff = 0.011431;
+  else if(pt < 300)  *eff = 0.013666;
+  else if(pt < 400)  *eff = 0.020405;
+  else if(pt < 500)  *eff = 0.023609;
+  else if(pt < 600)  *eff = 0.025348;
+  else if(pt < 800)  *eff = 0.028858;
+  else if(pt < 1000) *eff = 0.030427;
+  else if(pt < 1200) *eff = 0.034091;
+  else *eff = 0.047619;
 }
 
 void HardcodedConditions::GetBtaggingEff2017(double pt, double *eff, std::string tagger)
@@ -2172,51 +2119,46 @@ double HardcodedConditions::GetEGammaGsfSF(double pt, double eta, int year)
   else return 0.;
 }//end GetEGammaGsfSF
 
-double HardcodedConditions::GetEGammaGsfSF2016(double pt, double eta)
+double HardcodedConditions::GetEGammaGsfSF2016(double leppt, double lepeta)
 {
-	// Gsf Tracking scale factor: http://fcouderc.web.cern.ch/fcouderc/EGamma/scaleFactors/Moriond17/approval/RECO/passingRECO/egammaEffi.txt_egammaPlots.pdf
-	if (pt < 45) {
-		if (eta < -2.0) return 0.977;
-		else if (eta < -1.566) return 0.982;
-		else if (eta < -1.442) return 0.948;
-		else if (eta < -1.0) return 0.969;
-		else if (eta < -0.5) return 0.977;
-		else if (eta < 0.5) return 0.970;
-		else if (eta < 1.0) return 0.972;
-		else if (eta < 1.442) return 0.970;
-		else if (eta < 1.566) return 0.958;
-		else return 0.980; }
-	else if (pt < 75) {
-		if (eta < -2.0) return 0.984;
-		else if (eta < -1.566) return 0.982;
-		else if (eta < -1.442) return 0.971;
-		else if (eta < -1.0) return 0.976;
-		else if (eta < 0.0) return 0.980;
-		else if (eta < 0.5) return 0.978;
-		else if (eta < 1.0) return 0.979;
-		else if (eta < 1.442) return 0.977;
-		else if (eta < 1.566) return 0.964;
-		else if (eta < 2.0) return 0.983;
-		else return 0.984; }
-	else if (pt < 100) {
-		if (eta < -1.566) return 0.997;
-		else if (eta < -1.442) return 1.003;
-		else if (eta < -1.0) return 0.996;
-		else if (eta < 1.0) return 0.992;
-		else if (eta < 1.442) return 0.996;
-		else if (eta < 1.566) return 1.003;
-		else return 0.997; }
-	else {
-		if (eta < -1.566) return 0.990;
-		else if (eta < -1.442) return 1.010;
-		else if (eta < -1.0) return 0.985;
-		else if (eta < -0.5) return 0.988;
-		else if (eta < 0.5) return 0.994;
-		else if (eta < 1.0) return 0.988;
-		else if (eta < 1.442) return 0.985;
-		else if (eta < 1.566) return 1.010;
-		else return 0.990; }
-
+  float EGammaGsfSF = 1.0;
+  if (leppt < 45) 
+    {
+      if (fabs(lepeta) < 0.5) EGammaGsfSF = 0.984;
+      else if (fabs(lepeta) < 1) EGammaGsfSF = 0.987;
+      else if (fabs(lepeta) < 1.442) EGammaGsfSF = 0.992;
+      else if (fabs(lepeta) < 1.556) EGammaGsfSF = 0.991;
+      else if (fabs(lepeta) < 2) EGammaGsfSF = 0.998;
+      else EGammaGsfSF = 1.016;
+    }
+  else if (leppt < 75) 
+    {
+      if (fabs(lepeta) < 0.5) EGammaGsfSF = 0.987;
+      else if (fabs(lepeta) < 1) EGammaGsfSF = 0.998;
+      else if (fabs(lepeta) < 1.442) EGammaGsfSF = 0.992;
+      else if (fabs(lepeta) < 1.556) EGammaGsfSF = 0.962;
+      else if (fabs(lepeta) < 2) EGammaGsfSF = 0.997;
+      else EGammaGsfSF = 1.002;
+    }
+  else if (leppt < 100) 
+    {
+      if (fabs(lepeta) < 0.5) EGammaGsfSF = 0.997;
+      else if (fabs(lepeta) < 1) EGammaGsfSF = 1.005;
+      else if (fabs(lepeta) < 1.442) EGammaGsfSF = 1.008;
+      else if (fabs(lepeta) < 1.556) EGammaGsfSF = 1.033;
+      else if (fabs(lepeta) < 2) EGammaGsfSF = 1.015;
+      else EGammaGsfSF = 1.018; 
+    }
+  else  
+    {
+      if (fabs(lepeta) < 0.5) EGammaGsfSF = 0.986;
+      else if (fabs(lepeta) < 1) EGammaGsfSF = 0.994;
+      else if (fabs(lepeta) < 1.442) EGammaGsfSF = 0.987;
+      else if (fabs(lepeta) < 1.556) EGammaGsfSF = 1.002;
+      else if (fabs(lepeta) < 2) EGammaGsfSF = 1.000;
+      else EGammaGsfSF = 0.984;
+    }
+  return EGammaGsfSF;
 }
 
 double HardcodedConditions::GetEGammaGsfSF2017(double pt, double eta)
@@ -2344,37 +2286,11 @@ double HardcodedConditions::GetElectronIdSF(double pt, double eta, int year)
   else return 0.;
 }//end GetElectronIdSF
 
-double HardcodedConditions::GetElectronIdSF2016(double pt, double eta)
+double HardcodedConditions::GetElectronIdSF2016(double leppt, double lepeta)
 {
   float lepIdSF = 1.0;
-  // updated to 2016 Egamma scale factors: https://twiki.cern.ch/twiki/pub/CMS/EgammaIDRecipesRun2/2016LegacyReReco_ElectronMVA90noiso_Fall17V2.pdf
-  if (leppt < 20) 
-    {
-      if (lepeta < -2.0) lepIdSF = 1.017;
-      else if (lepeta < -1.566) lepIdSF =0.949 ;
-      else if (lepeta < -1.442) lepIdSF = 1.000;
-      else if (lepeta < -0.8) lepIdSF = 0.967;
-      else if (lepeta < 0.0) lepIdSF = 0.955;
-      else if (lepeta < 0.8) lepIdSF = 0.976;
-      else if (lepeta < 1.442) lepIdSF = 0.945;
-      else if (lepeta < 1.566) lepIdSF = 1.000;
-      else if (lepeta < 2.0) lepIdSF = 0.959;
-      else lepIdSF = 0.971; 
-    }
-  else if (leppt < 35) 
-    {
-      if (lepeta < -2.0) lepIdSF = 0.994;
-      else if (lepeta < -1.566) lepIdSF = 0.950;
-      else if (lepeta < -1.442) lepIdSF = 1.000;
-      else if (lepeta < -0.8) lepIdSF = 0.940;
-      else if (lepeta < 0.0) lepIdSF = 0.946;
-      else if (lepeta < 0.8) lepIdSF = 0.976;
-      else if (lepeta < 1.442) lepIdSF = 0.948;
-      else if (lepeta < 1.566) lepIdSF = 1.000;
-      else if (lepeta < 2.0) lepIdSF = 0.927;
-      else lepIdSF = 0.951; 
-    }
-  else if (leppt < 50) 
+  // JH corrected 10/27/20: Egamma ID scale factors: https://twiki.cern.ch/twiki/pub/CMS/EgammaIDRecipesRun2/2016LegacyReReco_ElectronMVA90noiso_Fall17V2.pdf (bug in pt range! 110 instead of 200)
+  if (leppt < 50) 
     {
       if (lepeta < -2.0) lepIdSF = 0.996;
       else if (lepeta < -1.566) lepIdSF = 0.962;
@@ -2400,7 +2316,7 @@ double HardcodedConditions::GetElectronIdSF2016(double pt, double eta)
       else if (lepeta < 2.0) lepIdSF = 0.965;
       else lepIdSF = 0.969; 
     }
-  else if (leppt < 110) 
+  else if (leppt < 200) 
     {
       if (lepeta < -2.0) lepIdSF = 1.005;
       else if (lepeta < -1.566) lepIdSF = 0.988;
@@ -4006,7 +3922,7 @@ double HardcodedConditions::GetMuonIdSF(double pt, double eta, int year)
   else return 0.;
 }//end GetMuonIdSF
 
-double HardcodedConditions::GetMuonIdSF2016(double pt, double eta)
+double HardcodedConditions::GetMuonIdSF2016(double leppt, double lepeta)
 {
   float lepIdSF = 1.0;
   float mu_BCDEF = 1.0;
@@ -4443,7 +4359,7 @@ double HardcodedConditions::GetMuonTriggerSF2016(double pt, double eta)
   float triggerSFGH = 1.0;
   float lum_RunsBCDEF = 15.658183109;
   float lum_RunsGH = 15.199167277;
-  if (eta > 0.000 && eta <= 0.900){
+  if (abs(eta) > 0.000 && abs(eta) <= 0.900){
     if(pt > 26.000 && pt <= 30.000){triggerSFBCDEF = 0.968116283417; triggerSFGH = 0.986980736256;}
     else if(pt > 30.000 && pt <= 40.000){triggerSFBCDEF = 0.973368346691; triggerSFGH = 0.991047501564;}
     else if(pt > 40.000 && pt <= 50.000){triggerSFBCDEF = 0.974264264107; triggerSFGH = 0.992595553398;}
@@ -4451,8 +4367,9 @@ double HardcodedConditions::GetMuonTriggerSF2016(double pt, double eta)
     else if(pt > 60.000 && pt <= 120.000){triggerSFBCDEF = 0.973526299000; triggerSFGH = 0.993243277073;}
     else if(pt > 120.000 && pt <= 200.000){triggerSFBCDEF = 0.972118735313; triggerSFGH = 0.981392562389;}
     else if(pt > 200.000 && pt <= 500.000){triggerSFBCDEF = 0.971257746220; triggerSFGH = 0.993893802166;}
+    else if(pt > 500.000){triggerSFBCDEF = 0.971257746220; triggerSFGH = 0.993893802166;}
   }
-  else if (eta > 0.900 && eta <= 1.200){
+  else if (abs(eta) > 0.900 && abs(eta) <= 1.200){
     if(pt > 26.000 && pt <= 30.000){triggerSFBCDEF = 0.952969312668; triggerSFGH = 0.962840259075;}
     else if(pt > 30.000 && pt <= 40.000){triggerSFBCDEF = 0.963177621365; triggerSFGH = 0.971895813942;}
     else if(pt > 40.000 && pt <= 50.000){triggerSFBCDEF = 0.964307963848; triggerSFGH = 0.974604427814;}
@@ -4460,8 +4377,9 @@ double HardcodedConditions::GetMuonTriggerSF2016(double pt, double eta)
     else if(pt > 60.000 && pt <= 120.000){triggerSFBCDEF = 0.966033637524; triggerSFGH = 0.970948219299;}
     else if(pt > 120.000 && pt <= 200.000){triggerSFBCDEF = 0.938959360123; triggerSFGH = 0.954439282417;}
     else if(pt > 200.000 && pt <= 500.000){triggerSFBCDEF = 0.934328913689; triggerSFGH = 0.977128326893;}
+    else if(pt > 500.000){triggerSFBCDEF = 0.934328913689; triggerSFGH = 0.977128326893;}
   }
-  else if (eta > 1.200 && eta <= 2.100){
+  else if (abs(eta) > 1.200 && abs(eta) <= 2.100){
     if(pt > 26.000 && pt <= 30.000){triggerSFBCDEF = 0.976249217987; triggerSFGH = 0.983919560909;}
     else if(pt > 30.000 && pt <= 40.000){triggerSFBCDEF = 0.995422542095; triggerSFGH = 0.996549844742;}
     else if(pt > 40.000 && pt <= 50.000){triggerSFBCDEF = 0.997932732105; triggerSFGH = 1.002132534981;}
@@ -4469,8 +4387,9 @@ double HardcodedConditions::GetMuonTriggerSF2016(double pt, double eta)
     else if(pt > 60.000 && pt <= 120.000){triggerSFBCDEF = 0.998927235603; triggerSFGH = 1.003164172173;}
     else if(pt > 120.000 && pt <= 200.000){triggerSFBCDEF = 1.006426811218; triggerSFGH = 1.005091547966;}
     else if(pt > 200.000 && pt <= 500.000){triggerSFBCDEF = 1.000392317772; triggerSFGH = 0.998426139355;}
+    else if(pt > 500.000){triggerSFBCDEF = 1.000392317772; triggerSFGH = 0.998426139355;}
   }
-  else if (eta > 2.100 && eta <= 2.400){
+  else if (abs(eta) > 2.100 && abs(eta) <= 2.400){
     if(pt > 26.000 && pt <= 30.000){triggerSFBCDEF = 0.907747089863; triggerSFGH = 0.913884937763;}
     else if(pt > 30.000 && pt <= 40.000){triggerSFBCDEF = 0.943600058556; triggerSFGH = 0.948634445667;}
     else if(pt > 40.000 && pt <= 50.000){triggerSFBCDEF = 0.958550512791; triggerSFGH = 0.962963759899;}
@@ -4478,6 +4397,7 @@ double HardcodedConditions::GetMuonTriggerSF2016(double pt, double eta)
     else if(pt > 60.000 && pt <= 120.000){triggerSFBCDEF = 0.953565478325; triggerSFGH = 0.962784349918;}
     else if(pt > 120.000 && pt <= 200.000){triggerSFBCDEF = 1.009902954102; triggerSFGH = 0.983114957809;}
     else if(pt > 200.000 && pt <= 500.000){triggerSFBCDEF = 0.791778862476; triggerSFGH = 0.935948610306;}
+    else if(pt > 500.000){triggerSFBCDEF = 0.791778862476; triggerSFGH = 0.935948610306;}
   }
   return (lum_RunsBCDEF*triggerSFBCDEF + lum_RunsGH*triggerSFGH)/(lum_RunsBCDEF + lum_RunsGH);
 

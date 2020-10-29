@@ -393,6 +393,8 @@ void step1::Loop(TString inTreeName, TString outTreeName, const BTagCalibrationF
    outputTree->Branch("triggerXSF",&triggerXSF,"triggerXSF/F");
    outputTree->Branch("triggerVlqXSF",&triggerVlqXSF,"triggerVlqXSF/F");
    outputTree->Branch("isoSF",&isoSF,"isoSF/F");
+   outputTree->Branch("muTrkSF",&MuTrkSF,"muTrkSF/F");
+   outputTree->Branch("muPtSF",&MuPtSF,"muPtSF/F");
    outputTree->Branch("btagCSVWeight",&btagCSVWeight,"btagCSVWeight/F");
    outputTree->Branch("btagCSVWeight_HFup",&btagCSVWeight_HFup,"btagCSVWeight_HFup/F");
    outputTree->Branch("btagCSVWeight_HFdn",&btagCSVWeight_HFdn,"btagCSVWeight_HFdn/F");
@@ -1088,16 +1090,45 @@ void step1::Loop(TString inTreeName, TString outTreeName, const BTagCalibrationF
       triggerXSF = 1.0;
       triggerVlqXSF = 1.0;
       isoSF = 1.0;
+      MuTrkSF = 1.0;
+      MuPtSF = 1.0;
+      int ebin = -1;
+
+      if(Year==2016){
+	float tracksf[15] = {0.991237,0.994853,0.996413,0.997157,0.997512,0.99756,0.996745,0.996996,0.99772,0.998604,0.998321,0.997682,0.995252,0.994919,0.987334};
+	// Muon tracking SF -- https://twiki.cern.ch/twiki/bin/viewauth/CMS/MuonWorkInProgressAndPagResults#Results_on_the_full_2016_data, Feb 16 version for full data
+	if(lepeta < -2.1) ebin = 0;
+	else if(lepeta < -1.6) ebin = 1;
+	else if(lepeta < -1.2) ebin = 2;
+	else if(lepeta < -0.9) ebin = 3;
+	else if(lepeta < -0.6) ebin = 4;
+	else if(lepeta < -0.3) ebin = 5;
+	else if(lepeta < -0.2) ebin = 6;
+	else if(lepeta <  0.2) ebin = 7;
+	else if(lepeta <  0.3) ebin = 8;
+	else if(lepeta <  0.6) ebin = 9;
+	else if(lepeta <  0.9) ebin = 10;
+	else if(lepeta <  1.2) ebin = 11;
+	else if(lepeta <  1.6) ebin = 12;
+	else if(lepeta <  2.1) ebin = 13;
+	else if(lepeta <  2.4) ebin = 14;
+	MuTrkSF = tracksf[ebin];
+	
+	// isGlobal SF from 2016 analysis task force
+	if(lepton_lv.P() > 100 && fabs(lepeta) < 1.6) MuPtSF = (0.9828 - 1.947e-5*lepton_lv.P())/(0.989 - 2.399e-6*lepton_lv.P());
+	else if(lepton_lv.P() > 275 && fabs(lepeta) > 1.6) MuPtSF = (0.9893 - 3.666e-5*lepton_lv.P())/(0.9974 - 1.721e-5*lepton_lv.Pt());
+      }
+
       std::vector<std::string> eltriggersX;
       std::vector<std::string> mutriggersX;
       //No cross triggers in 2016 AN
       if(Year==2017){
-      eltriggersX = {"Ele15_IsoVVVL_PFHT450","Ele50_IsoVVVL_PFHT450","Ele15_IsoVVVL_PFHT600","Ele35_WPTight_Gsf","Ele38_WPTight_Gsf"};
-      mutriggersX = {"Mu15_IsoVVVL_PFHT450","Mu50_IsoVVVL_PFHT450","Mu15_IsoVVVL_PFHT600","Mu50"};
+	eltriggersX = {"Ele15_IsoVVVL_PFHT450","Ele50_IsoVVVL_PFHT450","Ele15_IsoVVVL_PFHT600","Ele35_WPTight_Gsf","Ele38_WPTight_Gsf"};
+	mutriggersX = {"Mu15_IsoVVVL_PFHT450","Mu50_IsoVVVL_PFHT450","Mu15_IsoVVVL_PFHT600","Mu50"};
       }
       else if(Year==2018){
-      eltriggersX = {"Ele15_IsoVVVL_PFHT450","Ele50_IsoVVVL_PFHT450","Ele15_IsoVVVL_PFHT600","Ele35_WPTight_Gsf","Ele38_WPTight_Gsf","Ele15_IsoVVVL_PFHT450_PFMET50"};
-      mutriggersX = {"Mu15_IsoVVVL_PFHT450","Mu50_IsoVVVL_PFHT450","Mu15_IsoVVVL_PFHT600","Mu50","TkMu50","Mu15_IsoVVVL_PFHT450_PFMET50"};
+	eltriggersX = {"Ele15_IsoVVVL_PFHT450","Ele50_IsoVVVL_PFHT450","Ele15_IsoVVVL_PFHT600","Ele35_WPTight_Gsf","Ele38_WPTight_Gsf","Ele15_IsoVVVL_PFHT450_PFMET50"};
+	mutriggersX = {"Mu15_IsoVVVL_PFHT450","Mu50_IsoVVVL_PFHT450","Mu15_IsoVVVL_PFHT600","Mu50","TkMu50","Mu15_IsoVVVL_PFHT450_PFMET50"};
       }
       std::string eltrigger;
       std::string mutrigger;
