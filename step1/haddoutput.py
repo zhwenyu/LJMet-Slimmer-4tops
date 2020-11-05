@@ -130,8 +130,6 @@ dirList16 = [
 'ST_t-channel_top_4f_inclusiveDecays_13TeV_PSweights-powhegV2-madspin',
 'ST_tW_antitop_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M2T4',
 'ST_tW_top_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M2T4',
-'SingleElectron',
-'SingleMuon',
 'TTHH_TuneCUETP8M2T4_13TeV-madgraph-pythia8',
 'TTTJ_TuneCUETP8M2T4_13TeV-madgraph-pythia8',
 'TTTT_TuneCUETP8M2T4_PSweights_13TeV-amcatnlo-pythia8',
@@ -164,6 +162,9 @@ dirList = dirList17[:]
 if Year==2018: dirList = dirList18[:]
 if Year==2016: dirList = dirList16[:]
 
+if shift=='nominal' and Year==2016:
+        dirList.append('SingleElectron')
+        dirList.append('SingleMuon')
 if shift=='nominal' and Year==2017:
 	dirList.append('SingleElectron')
 	dirList.append('SingleMuon')

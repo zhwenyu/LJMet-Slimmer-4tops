@@ -23,6 +23,8 @@ if inputDir.startswith('/isilon/hadoop/'): inputLoc='brux'
 csvFilename='DeepCSV_94XSF_V5_B_F.csv'
 if Year==2018: 
     csvFilename='DeepCSV_102XSF_V2.csv'
+if Year==2016: 
+    csvFilename='DeepCSV_2016LegacySF_WP_V1.csv'
 runDir=os.getcwd()
 inDir=inputDir[10:]
 if inputLoc=='brux': inDir=inputDir
