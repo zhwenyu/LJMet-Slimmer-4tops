@@ -9,14 +9,14 @@ start_time = time.time()
 
 #IO directories must be full paths
 
-Year = 2017 # or 2018
+Year = 2016 # or 2018
 finalStateYear = 'singleLep'+str(Year)
-inputDir='/eos/uscms/store/user/lpcljm/FWLJMET102X_1lep'+str(Year)+'_Oct2019/' # or 2018
-#inputDir='/isilon/hadoop/store/group/bruxljm/FWLJMET102X_1lep'+str(Year)+'_Oct2019/' # or 2018
-outputDir='/eos/uscms/store/user/ssagir/FWLJMET102X_1lep'+str(Year)+'_Oct2019_4t_080420_step1/nominal/' # or 2018
-condorDir='/uscms_data/d3/ssagir/FWLJMET102X_1lep'+str(Year)+'_Oct2019_4t_080420_step1/' # or 2018
+#inputDir='/eos/uscms/store/user/lpcljm/FWLJMET102X_1lep'+str(Year)+'_Oct2019/' # or 2018
+inputDir='/isilon/hadoop/store/group/bruxljm/FWLJMET102X_1lep'+str(Year)+'_Oct2019/' # or 2018
+outputDir='/eos/uscms/store/user/npervan/FWLJMET102X_1lep'+str(Year)+'_Oct2019_4t_080420_step1/nominal/' # or 2018
+condorDir='/uscms_data/d3/npervan/TTTT/CMSSW_10_2_16_UL/src/LJMet-Slimmer-4tops/step1/FWLJMET102X_1lep'+str(Year)+'_Oct2019_4t_080420_step1/' # or 2018
 shifts = [] #['JECup','JECdown','JERup','JERdown']
-nFilesPerJob=1
+nFilesPerJob=30 #1
 inputLoc='lpc'
 if inputDir.startswith('/isilon/hadoop/'): inputLoc='brux'
 
@@ -291,7 +291,7 @@ for sample in dirList:
                     count+=1
                     tmpcount += 1
 
-                    if tmpcount > 1: continue
+                    #if tmpcount > 1: continue
 
                     segment1 = (rootfiles[i].split('.')[0]).split('_')[-1] ## 1-1
                     segment2 = (rootfiles[i].split('.')[0]).split('_')[-2] ## SingleElectronRun2017C
