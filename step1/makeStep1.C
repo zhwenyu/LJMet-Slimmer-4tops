@@ -62,7 +62,7 @@ void makeStep1(TString macroDir, string filelist, Int_t Year){
       btagcsvfile = "DeepCSV_102XSF_V2.csv"; 
     }
     if (Year== 2016) {
-      btagcsvfile = "DeepCSV_2016LegacySF_WP_V1.csv";
+      btagcsvfile = "DeepCSV_2016LegacySF_V1.csv";
     }
     cout << "CSV reshaping file " << btagcsvfile << endl;
     auto calib = new const BTagCalibrationForLJMet("DeepCSV", btagcsvfile); 
