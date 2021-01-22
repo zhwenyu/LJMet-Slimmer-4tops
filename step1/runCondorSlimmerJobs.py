@@ -9,17 +9,20 @@ start_time = time.time()
 
 #IO directories must be full paths
 
-Year = 2018 # or 2018
+Year = 2017 # or 2018
 finalStateYear = 'singleLep'+str(Year)
-#inputDir='/eos/uscms/store/user/lpcljm/FWLJMET102X_1lep'+str(Year)+'_Oct2019/' # or 2018
-inputDir='/isilon/hadoop/store/group/bruxljm/FWLJMET102X_1lep'+str(Year)+'_Oct2019/' # or 2018
-outputDir='/eos/uscms/store/user/wzhang/FWLJMET102X_1lep'+str(Year)+'_Oct2019_4t_06162020_step1/nominal/' # or 2018
-condorDir='/uscms/home/wzhang/nobackup/work/fwljmet_201905/CMSSW_10_2_10/src/LJMet-Slimmer-4tops/step1/FWLJMET102X_1lep'+str(Year)+'_Oct2019_4t_06162020_step1/' # or 2018
+inputDir='/eos/uscms/store/user/lpcljm/FWLJMET102X_1lep'+str(Year)+'_Oct2019/' # or 2018
+#inputDir='/isilon/hadoop/store/group/bruxljm/FWLJMET102X_1lep'+str(Year)+'_Oct2019/' # or 2018
+outputDir='/eos/uscms/store/user/wzhang/FWLJMET102X_1lep'+str(Year)+'_Oct2019_4t_08192020_step1/nominal/' # or 2018
+condorDir='/uscms/home/wzhang/nobackup/work/fwljmet_201905/CMSSW_10_2_10/src/LJMet-Slimmer-4tops/step1/FWLJMET102X_1lep'+str(Year)+'_Oct2019_4t_08192020_step1/' # or 2018
 shifts = [] #['JECup','JECdown','JERup','JERdown']
-nFilesPerJob=30
+nFilesPerJob=1
 inputLoc='lpc'
 if inputDir.startswith('/isilon/hadoop/'): inputLoc='brux'
 
+csvFilename='DeepCSV_94XSF_V5_B_F.csv'
+if Year==2018: 
+    csvFilename='DeepCSV_102XSF_V2.csv'
 runDir=os.getcwd()
 inDir=inputDir[10:]
 if inputLoc=='brux': inDir=inputDir
@@ -58,7 +61,7 @@ dirList17 = [
 'TTTT_TuneCP5_PSweights_13TeV-amcatnlo-pythia8',
 #'TTTW_TuneCP5_13TeV-madgraph-pythia8',
 #'TTTo2L2Nu_TuneCP5_PSweights_13TeV-powheg-pythia8',
-## 'TTTo2L2Nu_TuneCP5_erdON_13TeV-powheg-pythia8',
+##'TTTo2L2Nu_TuneCP5_erdON_13TeV-powheg-pythia8',
 #'TTTo2L2Nu_TuneCP5down_PSweights_13TeV-powheg-pythia8',
 #'TTTo2L2Nu_TuneCP5up_PSweights_13TeV-powheg-pythia8',
 #'TTTo2L2Nu_hdampDOWN_TuneCP5_PSweights_13TeV-powheg-pythia8',
@@ -121,17 +124,17 @@ dirList18lpc = [
 #'JetHT',
 #'EGamma',
 #'SingleMuon',
-#'TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8',
+'TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8',
 ## 'TTTo2L2Nu_TuneCP5_erdON_13TeV-powheg-pythia8',
 #'TTTo2L2Nu_TuneCP5down_13TeV-powheg-pythia8',
 #'TTTo2L2Nu_hdampDOWN_TuneCP5_13TeV-powheg-pythia8',
 #'TTTo2L2Nu_hdampUP_TuneCP5_13TeV-powheg-pythia8',
-#'TTToHadronic_TuneCP5_13TeV-powheg-pythia8',
+'TTToHadronic_TuneCP5_13TeV-powheg-pythia8',
 ## 'TTToHadronic_TuneCP5_erdON_13TeV-powheg-pythia8',
 #'TTToHadronic_hdampDOWN_TuneCP5_13TeV-powheg-pythia8',
 #'TTToHadronic_hdampUP_TuneCP5_13TeV-powheg-pythia8',
-#'TTToSemiLepton_HT500Njet9_TuneCP5_13TeV-powheg-pythia8',
-#'TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8',
+'TTToSemiLepton_HT500Njet9_TuneCP5_13TeV-powheg-pythia8',
+'TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8',
 ## 'TTToSemiLeptonic_TuneCP5_erdON_13TeV-powheg-pythia8',
 #'TTToSemiLeptonic_TuneCP5up_13TeV-powheg-pythia8',
 #'TTWJetsToLNu_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8',
@@ -154,7 +157,7 @@ dirList18lpc = [
 dirList18brux = [
 #'TTHH_TuneCP5_13TeV-madgraph-pythia8',
 #'TTTJ_TuneCP5_13TeV-madgraph-pythia8',
-'TTTT_TuneCP5_13TeV-amcatnlo-pythia8',
+#'TTTT_TuneCP5_13TeV-amcatnlo-pythia8',
 #'TTTW_TuneCP5_13TeV-madgraph-pythia8',
 #'TTTo2L2Nu_TuneCP5up_13TeV-powheg-pythia8',
 #'TTToHadronic_TuneCP5down_13TeV-powheg-pythia8',
@@ -179,7 +182,7 @@ for sample in dirList:
     outList = ['none']
     if 'Tprime' in sample: outList = ['BWBW','TZBW','THBW','TZTH','TZTZ','THTH']
     elif 'Bprime' in sample: outList = ['TWTW','BZTW','BHTW','BZBH','BZBZ','BHBH']
-    elif 'TTToSemiLeptonic' in sample: outList = ['HT0Njet0','HT500Njet9']
+    elif 'TTToSemiLeptonic' in sample: outList = ['HT0Njet0','HT500Njet9']  # comment out for simple run
     #elif 'TTTo' in sample: outList = ['Mtt0to700','Mtt700to1000','Mtt1000toInf']
     if 'TuneCP5down' in sample or 'TuneCP5up' in sample or 'hdampDOWN' in sample or 'hdampUP' in sample: outList = ['none']
     if 'TTTo' in sample or 'TT_Mtt' in sample: 
@@ -235,7 +238,7 @@ for sample in dirList:
                     count+=1
                     tmpcount += 1
 
-                    #if tmpcount > 1: continue
+                    if tmpcount > 1: continue
 
                     segment1 = (rootfiles[i].split('.')[0]).split('_')[-1] ## 1-1
                     segment2 = (rootfiles[i].split('.')[0]).split('_')[-2] ## SingleElectronRun2017C
@@ -266,7 +269,7 @@ for sample in dirList:
                     		idlist = idlist.replace(id_,'').replace('  ',' ')
                     print "Running IDs",idlist
                 
-                    dict={'RUNDIR':runDir, 'SAMPLE':sample, 'INPATHSUFFIX':pathsuffix, 'INPUTDIR':inDir, 'FILENAME':basefilename, 'OUTFILENAME':outsample, 'OUTPUTDIR':outDir, 'LIST':idlist, 'ID':tmpcount, 'YEAR':Year}
+                    dict={'RUNDIR':runDir, 'SAMPLE':sample, 'INPATHSUFFIX':pathsuffix, 'INPUTDIR':inDir, 'FILENAME':basefilename, 'OUTFILENAME':outsample, 'OUTPUTDIR':outDir, 'LIST':idlist, 'ID':tmpcount, 'YEAR':Year, 'CSVFILE':csvFilename}
                     jdfName=condorDir+'/%(OUTFILENAME)s/%(OUTFILENAME)s_%(ID)s.job'%dict
                     print jdfName
                     jdf=open(jdfName,'w')
@@ -276,7 +279,7 @@ universe = vanilla
 Executable = %(RUNDIR)s/makeStep1.sh
 Should_Transfer_Files = YES
 WhenToTransferOutput = ON_EXIT
-Transfer_Input_Files = %(RUNDIR)s/compileStep1.C, %(RUNDIR)s/makeStep1.C, %(RUNDIR)s/step1.cc, %(RUNDIR)s/step1.h, %(RUNDIR)s/HardcodedConditions.cc, %(RUNDIR)s/HardcodedConditions.h
+Transfer_Input_Files = %(RUNDIR)s/compileStep1.C, %(RUNDIR)s/makeStep1.C, %(RUNDIR)s/step1.cc, %(RUNDIR)s/step1.h, %(RUNDIR)s/HardcodedConditions.cc, %(RUNDIR)s/HardcodedConditions.h, %(RUNDIR)s/BTagCalibForLJMet.cpp, %(RUNDIR)s/BTagCalibForLJMet.h, %(RUNDIR)s/%(CSVFILE)s
 Output = %(OUTFILENAME)s_%(ID)s.out
 Error = %(OUTFILENAME)s_%(ID)s.err
 Log = %(OUTFILENAME)s_%(ID)s.log
