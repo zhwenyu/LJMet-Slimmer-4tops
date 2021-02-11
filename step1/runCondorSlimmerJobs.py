@@ -23,6 +23,8 @@ if inputDir.startswith('/isilon/hadoop/'): inputLoc='brux'
 csvFilename='DeepCSV_94XSF_V5_B_F.csv'
 if Year==2018: 
     csvFilename='DeepCSV_102XSF_V2.csv'
+if Year==2016: 
+    csvFilename='DeepCSV_2016LegacySF_V1.csv'
 runDir=os.getcwd()
 inDir=inputDir[10:]
 if inputLoc=='brux': inDir=inputDir
@@ -53,15 +55,26 @@ dirList17 = [
 'ST_t-channel_top_4f_InclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8',
 'ST_tW_antitop_5f_inclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8',
 'ST_tW_top_5f_inclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8',
+<<<<<<< HEAD
 'JetHT',
+=======
+# 'JetHT',
+>>>>>>> 9c22dfc9ac33278bf396e112e7db86da265a7b6e
 'SingleElectron',
 'SingleMuon',
 'TTHH_TuneCP5_13TeV-madgraph-pythia8',
 'TTTJ_TuneCP5_13TeV-madgraph-pythia8',
+<<<<<<< HEAD
 #'TTTT_TuneCP5_PSweights_13TeV-amcatnlo-pythia8',
 'TTTW_TuneCP5_13TeV-madgraph-pythia8',
 'TTTo2L2Nu_TuneCP5_PSweights_13TeV-powheg-pythia8',
 #'TTTo2L2Nu_TuneCP5_erdON_13TeV-powheg-pythia8',
+=======
+'TTTT_TuneCP5_PSweights_13TeV-amcatnlo-pythia8',
+'TTTW_TuneCP5_13TeV-madgraph-pythia8',
+'TTTo2L2Nu_TuneCP5_PSweights_13TeV-powheg-pythia8',
+# 'TTTo2L2Nu_TuneCP5_erdON_13TeV-powheg-pythia8',
+>>>>>>> 9c22dfc9ac33278bf396e112e7db86da265a7b6e
 'TTTo2L2Nu_TuneCP5down_PSweights_13TeV-powheg-pythia8',
 'TTTo2L2Nu_TuneCP5up_PSweights_13TeV-powheg-pythia8',
 'TTTo2L2Nu_hdampDOWN_TuneCP5_PSweights_13TeV-powheg-pythia8',
@@ -121,7 +134,11 @@ dirList18lpc = [
 'ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8',
 'ST_tW_antitop_5f_inclusiveDecays_TuneCP5_13TeV-powheg-pythia8',
 'ST_tW_top_5f_inclusiveDecays_TuneCP5_13TeV-powheg-pythia8',
+<<<<<<< HEAD
 'JetHT',
+=======
+# 'JetHT',
+>>>>>>> 9c22dfc9ac33278bf396e112e7db86da265a7b6e
 'EGamma',
 'SingleMuon',
 'TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8',
@@ -170,12 +187,66 @@ dirList18brux = [
 'TTWZ_TuneCP5_13TeV-madgraph-pythia8',
 'TTZH_TuneCP5_13TeV-madgraph-pythia8',
 'TTZZ_TuneCP5_13TeV-madgraph-pythia8',
+<<<<<<< HEAD
+=======
+]
+
+dirList16 = [
+#'DYJetsToLL_M-50_HT-1200to2500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8',
+#'DYJetsToLL_M-50_HT-200to400_TuneCUETP8M1_13TeV-madgraphMLM-pythia8',
+#'DYJetsToLL_M-50_HT-2500toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8',
+#'DYJetsToLL_M-50_HT-400to600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8',
+#'DYJetsToLL_M-50_HT-600to800_TuneCUETP8M1_13TeV-madgraphMLM-pythia8',
+#'DYJetsToLL_M-50_HT-800to1200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8',
+#'QCD_HT1000to1500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8',
+#'QCD_HT1500to2000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8',
+#'QCD_HT2000toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8',
+#'QCD_HT200to300_TuneCUETP8M1_13TeV-madgraphMLM-pythia8',
+#'QCD_HT300to500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8',
+#'QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8',
+#'QCD_HT700to1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8',
+#'ST_s-channel_4f_leptonDecays_13TeV-amcatnlo-pythia8',
+#'ST_t-channel_antitop_4f_inclusiveDecays_13TeV_PSweights-powhegV2-madspin',
+#'ST_t-channel_top_4f_inclusiveDecays_13TeV_PSweights-powhegV2-madspin',
+#'ST_tW_antitop_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M2T4',
+#'ST_tW_top_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M2T4',
+#'SingleElectron',
+#'SingleMuon',
+#'TTHH_TuneCUETP8M2T4_13TeV-madgraph-pythia8',
+#'TTTJ_TuneCUETP8M2T4_13TeV-madgraph-pythia8',
+#'TTTT_TuneCUETP8M2T4_PSweights_13TeV-amcatnlo-pythia8',
+#'TTTW_TuneCUETP8M2T4_13TeV-madgraph-pythia8',
+#'TTTo2L2Nu_TuneCP5_PSweights_13TeV-powheg-pythia8',
+#'TTToHadronic_TuneCP5_PSweights_13TeV-powheg-pythia8',
+#'TTToSemiLepton_HT500Njet9_TuneCUETP8M2T4_13TeV-powheg-pythia8',
+#'TTToSemiLeptonic_TuneCP5_PSweights_13TeV-powheg-pythia8',
+#'TTWH_TuneCUETP8M2T4_13TeV-madgraph-pythia8',
+#'TTWJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8',
+#'TTWW_TuneCUETP8M2T4_13TeV-madgraph-pythia8',
+#'TTWZ_TuneCUETP8M2T4_13TeV-madgraph-pythia8',
+#'TTZH_TuneCUETP8M2T4_13TeV-madgraph-pythia8',
+#'TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8',
+#'TTZZ_TuneCUETP8M2T4_13TeV-madgraph-pythia8',
+#'WJetsToLNu_HT-1200To2500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8',
+'WJetsToLNu_HT-200To400_TuneCUETP8M1_13TeV-madgraphMLM-pythia8',
+#'WJetsToLNu_HT-2500ToInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8',
+#'WJetsToLNu_HT-400To600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8',
+'WJetsToLNu_HT-600To800_TuneCUETP8M1_13TeV-madgraphMLM-pythia8',
+'WJetsToLNu_HT-800To1200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8',
+#'WW_TuneCUETP8M1_13TeV-pythia8',
+#'WZ_TuneCUETP8M1_13TeV-pythia8',
+#'ZZ_TuneCUETP8M1_13TeV-pythia8',
+#'ttHTobb_M125_13TeV_powheg_pythia8',
+#'ttHToNonbb_M125_TuneCUETP8M2_ttHtranche3_13TeV-powheg-pythia8',
+>>>>>>> 9c22dfc9ac33278bf396e112e7db86da265a7b6e
 ]
 
 dirList = dirList17[:]
 if Year==2018: 
-	dirList = dirList18lpc[:]
-	if inputLoc=='brux': dirList = dirList18brux[:]
+    dirList = dirList18lpc[:]
+    if inputLoc=='brux': dirList = dirList18brux[:]
+if Year==2016:
+    dirList = dirList16[:]
 
 for sample in dirList:
     print "------------ Sample:",sample,"---------------"
@@ -230,6 +301,8 @@ for sample in dirList:
                 elif inputLoc=='brux':
                 	status, fileList = xrdClient.dirlist(inDir+'/'+sample+'/'+finalStateYear+'/'+run+'/'+num+'/')
                 	rootfiles = [item.name for item in fileList if item.name.endswith('.root')]
+                if not rootfiles: #Check if rootfiles is empty list (remove failed jobs)
+                    continue
                 basefilename = (rootfiles[0].split('.')[0]).split('_')[:-1]
                 basefilename = '_'.join(basefilename)
                 print "Running path:",pathsuffix,"\tBase filenames:",basefilename
@@ -238,7 +311,11 @@ for sample in dirList:
                     count+=1
                     tmpcount += 1
 
+<<<<<<< HEAD
                   #  if tmpcount > 1: continue
+=======
+                    #if tmpcount > 1: continue
+>>>>>>> 9c22dfc9ac33278bf396e112e7db86da265a7b6e
 
                     segment1 = (rootfiles[i].split('.')[0]).split('_')[-1] ## 1-1
                     segment2 = (rootfiles[i].split('.')[0]).split('_')[-2] ## SingleElectronRun2017C

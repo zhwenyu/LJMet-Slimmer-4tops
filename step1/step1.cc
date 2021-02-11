@@ -86,6 +86,9 @@ void step1::Loop(TString inTreeName, TString outTreeName, const BTagCalibrationF
     if (Year== 2018) {
       btagcsvfile = "DeepCSV_102XSF_V2.csv"; 
     }
+    if (Year == 2016) {
+      btagcsvfile = "DeepCSV_2016LegacySF_V1.csv";
+    }
     cout << "CSV reshaping file " << btagcsvfile << endl;
     calib = new const BTagCalibrationForLJMet("DeepCSV", btagcsvfile); 
   }
@@ -393,6 +396,8 @@ void step1::Loop(TString inTreeName, TString outTreeName, const BTagCalibrationF
    outputTree->Branch("triggerXSF",&triggerXSF,"triggerXSF/F");
    outputTree->Branch("triggerVlqXSF",&triggerVlqXSF,"triggerVlqXSF/F");
    outputTree->Branch("isoSF",&isoSF,"isoSF/F");
+   outputTree->Branch("muTrkSF",&muTrkSF,"muTrkSF/F");
+   outputTree->Branch("muPtSF",&muPtSF,"muPtSF/F");
    outputTree->Branch("btagCSVWeight",&btagCSVWeight,"btagCSVWeight/F");
    outputTree->Branch("btagCSVWeight_HFup",&btagCSVWeight_HFup,"btagCSVWeight_HFup/F");
    outputTree->Branch("btagCSVWeight_HFdn",&btagCSVWeight_HFdn,"btagCSVWeight_HFdn/F");
@@ -668,6 +673,9 @@ void step1::Loop(TString inTreeName, TString outTreeName, const BTagCalibrationF
    TLorentzVector tjet1_lv;
    TLorentzVector lepton_lv;
    TLorentzVector ak8_lv;
+
+   // Muon tracking efficiencies, https://twiki.cern.ch/twiki/bin/viewauth/CMS/MuonWorkInProgressAndPagResults#Results_on_the_full_2016_data, Feb 16 release for full data
+   float tracksf[15] = {0.991237,0.994853,0.996413,0.997157,0.997512,0.99756,0.996745,0.996996,0.99772,0.998604,0.998321,0.997682,0.995252,0.994919,0.987334};
 
    // Polynominals for WJets HT scaling
    TF1 *poly2 = new TF1("poly2","max([6],[0] + [1]*x + [2]*x*x + [3]*x*x*x + [4]*x*x*x*x + [5]*x*x*x*x*x)",100,5000);
@@ -1088,39 +1096,73 @@ void step1::Loop(TString inTreeName, TString outTreeName, const BTagCalibrationF
       triggerXSF = 1.0;
       triggerVlqXSF = 1.0;
       isoSF = 1.0;
+      muTrkSF = 1.0;
+      muPtSF = 1.0;
+
+      if(Year==2016){
+	int ebin = -1;
+	if(lepeta < -2.1) ebin = 0;
+	else if(lepeta < -1.6) ebin = 1;
+	else if(lepeta < -1.2) ebin = 2;
+	else if(lepeta < -0.9) ebin = 3;
+	else if(lepeta < -0.6) ebin = 4;
+	else if(lepeta < -0.3) ebin = 5;
+	else if(lepeta < -0.2) ebin = 6;
+	else if(lepeta <  0.2) ebin = 7;
+	else if(lepeta <  0.3) ebin = 8;
+	else if(lepeta <  0.6) ebin = 9;
+	else if(lepeta <  0.9) ebin = 10;
+	else if(lepeta <  1.2) ebin = 11;
+	else if(lepeta <  1.6) ebin = 12;
+	else if(lepeta <  2.1) ebin = 13;
+	else if(lepeta <  2.4) ebin = 14;
+	muTrkSF = tracksf[ebin];
+	
+	// isGlobal SF from 2016 analysis task force
+	if(lepton_lv.P() > 100 && fabs(lepeta) < 1.6) muPtSF = (0.9828 - 1.947e-5*lepton_lv.P())/(0.989 - 2.399e-6*lepton_lv.P());
+	else if(lepton_lv.P() > 275 && fabs(lepeta) > 1.6) muPtSF = (0.9893 - 3.666e-5*lepton_lv.P())/(0.9974 - 1.721e-5*lepton_lv.Pt());
+      }
+
       std::vector<std::string> eltriggersX;
       std::vector<std::string> mutriggersX;
-      if(Year==2017){
-      eltriggersX = {"Ele15_IsoVVVL_PFHT450","Ele50_IsoVVVL_PFHT450","Ele15_IsoVVVL_PFHT600","Ele35_WPTight_Gsf","Ele38_WPTight_Gsf"};
-      mutriggersX = {"Mu15_IsoVVVL_PFHT450","Mu50_IsoVVVL_PFHT450","Mu15_IsoVVVL_PFHT600","Mu50"};
+      if(Year==2016){ //No cross triggers in 2016 AN, for now putting triggers in cross trigger branches to make it compatible with 2017 and 2018. This way we can use the same branch names in singleLepAnalyzer
+	eltriggersX = {"Ele32_eta2p1_WPTight_Gsf"};
+	mutriggersX = {"IsoMu24", "IsoTkMu24"};
+      }
+      else if(Year==2017){
+	eltriggersX = {"Ele15_IsoVVVL_PFHT450","Ele50_IsoVVVL_PFHT450","Ele15_IsoVVVL_PFHT600","Ele35_WPTight_Gsf","Ele38_WPTight_Gsf"};
+	mutriggersX = {"Mu15_IsoVVVL_PFHT450","Mu50_IsoVVVL_PFHT450","Mu15_IsoVVVL_PFHT600","Mu50"};
       }
       else if(Year==2018){
-      eltriggersX = {"Ele15_IsoVVVL_PFHT450","Ele50_IsoVVVL_PFHT450","Ele15_IsoVVVL_PFHT600","Ele35_WPTight_Gsf","Ele38_WPTight_Gsf","Ele15_IsoVVVL_PFHT450_PFMET50"};
-      mutriggersX = {"Mu15_IsoVVVL_PFHT450","Mu50_IsoVVVL_PFHT450","Mu15_IsoVVVL_PFHT600","Mu50","TkMu50","Mu15_IsoVVVL_PFHT450_PFMET50"};
+	eltriggersX = {"Ele15_IsoVVVL_PFHT450","Ele50_IsoVVVL_PFHT450","Ele15_IsoVVVL_PFHT600","Ele35_WPTight_Gsf","Ele38_WPTight_Gsf","Ele15_IsoVVVL_PFHT450_PFMET50"};
+	mutriggersX = {"Mu15_IsoVVVL_PFHT450","Mu50_IsoVVVL_PFHT450","Mu15_IsoVVVL_PFHT600","Mu50","TkMu50","Mu15_IsoVVVL_PFHT450_PFMET50"};
       }
       std::string eltrigger;
       std::string mutrigger;
+      std::string mutrigger2;
       std::string hadtrigger;
       std::vector<std::string> eltriggers;
       std::vector<std::string> mutriggers;
       std::vector<std::string> hadtriggers;
       std::map<TString, std::vector<std::string>> mctriggers;
-      mctriggers = {{"17B", {"Ele35_WPTight_Gsf", "IsoMu24_eta2p1" , "PFHT380_SixPFJet32_DoublePFBTagCSV_2p2" }},
+      mctriggers = {
+		    {"17B", {"Ele35_WPTight_Gsf", "IsoMu24_eta2p1" , "PFHT380_SixPFJet32_DoublePFBTagCSV_2p2" }},
 		    {"17C",{"Ele35_WPTight_Gsf", "IsoMu27" , "PFHT380_SixPFJet32_DoublePFBTagCSV_2p2" }},
 		    {"17DEF",{"Ele32_WPTight_Gsf", "IsoMu27" , "PFHT380_SixPFJet32_DoublePFBTagDeepCSV_2p2" }},
 		    {"18",{"Ele32_WPTight_Gsf", "IsoMu24" , "PFHT400_SixPFJet32_DoublePFBTagDeepCSV_2p94" }}};
 
 
       std::map<TString, std::vector<std::string>> datatriggers;
-      datatriggers = {{"17B", {"Ele35_WPTight_Gsf", "IsoMu24_eta2p1" , "PFHT380_SixJet32_DoubleBTagCSV_p075" }},
+      datatriggers = {
+		      {"17B", {"Ele35_WPTight_Gsf", "IsoMu24_eta2p1" , "PFHT380_SixJet32_DoubleBTagCSV_p075" }},
 		      {"17C",{"Ele35_WPTight_Gsf", "IsoMu27" , "PFHT380_SixPFJet32_DoublePFBTagCSV_2p2" }},
 		      {"17DEF",{"Ele32_WPTight_Gsf", "IsoMu27" , "PFHT380_SixPFJet32_DoublePFBTagDeepCSV_2p2" }},
 		      {"18AB", {"Ele32_WPTight_Gsf", "IsoMu24" , "PFHT380_SixPFJet32_DoublePFBTagDeepCSV_2p2" }},
 		      {"18CD",{"Ele32_WPTight_Gsf", "IsoMu24" , "PFHT400_SixPFJet32_DoublePFBTagDeepCSV_2p94" }}};
       if (!isMC){
-	eltrigger = datatriggers.at(Era).at(0);
-	mutrigger =  datatriggers.at(Era).at(1);
-	hadtrigger = datatriggers.at(Era).at(2);
+	  eltrigger = datatriggers.at(Era).at(0);
+	  mutrigger =  datatriggers.at(Era).at(1);
+	  hadtrigger = datatriggers.at(Era).at(2);
       }
       else{
 	if (Year==2017){
@@ -1144,6 +1186,12 @@ void step1::Loop(TString inTreeName, TString outTreeName, const BTagCalibrationF
 	  hadtrigger = mctriggers.at("18").at(2);
 	}
       }
+      
+      if (Year==2016){ // There is no era dependent triggers in 2016 AN
+          eltrigger = "Ele32_eta2p1_WPTight_Gsf";
+          mutrigger = "IsoMu24";
+          mutrigger2 = "IsoTkMu24";
+        }
 
       if(isMC){
 	for(unsigned int itrig=0; itrig < vsSelMCTriggersHad_MultiLepCalc->size(); itrig++){
@@ -1176,6 +1224,7 @@ void step1::Loop(TString inTreeName, TString outTreeName, const BTagCalibrationF
 	if(isMuon){
 	  for(unsigned int itrig=0; itrig < vsSelMCTriggersMu_MultiLepCalc->size(); itrig++){
 	    if(vsSelMCTriggersMu_MultiLepCalc->at(itrig).find(mutrigger) != std::string::npos && viSelMCTriggersMu_MultiLepCalc->at(itrig) > 0) MCLepPastTrigger = 1;
+	    if(Year==2016 && vsSelMCTriggersMu_MultiLepCalc->at(itrig).find(mutrigger2) != std::string::npos && viSelMCTriggersMu_MultiLepCalc->at(itrig) > 0) MCLepPastTrigger = 1;
  	    if(vsSelMCTriggersMu_MultiLepCalc->at(itrig).find("HLT_IsoMu24") != std::string::npos && viSelMCTriggersMu_MultiLepCalc->at(itrig) > 0) HLT_IsoMu24 = 1;
 	    if(vsSelMCTriggersMu_MultiLepCalc->at(itrig).find("HLT_IsoMu24_eta2p1") != std::string::npos && viSelMCTriggersMu_MultiLepCalc->at(itrig) > 0) HLT_IsoMu24_eta2p1 = 1;
 	    if(vsSelMCTriggersMu_MultiLepCalc->at(itrig).find("HLT_IsoMu27") != std::string::npos && viSelMCTriggersMu_MultiLepCalc->at(itrig) > 0) HLT_IsoMu27 = 1;
@@ -1232,6 +1281,7 @@ void step1::Loop(TString inTreeName, TString outTreeName, const BTagCalibrationF
 	  //if(isSM){
 	  for(unsigned int itrig=0; itrig < vsSelTriggersMu_MultiLepCalc->size(); itrig++){
 	    if(vsSelTriggersMu_MultiLepCalc->at(itrig).find(mutrigger) != std::string::npos && viSelTriggersMu_MultiLepCalc->at(itrig) > 0) DataLepPastTrigger = 1;
+	    if(Year==2016 && vsSelTriggersMu_MultiLepCalc->at(itrig).find(mutrigger2) != std::string::npos && viSelTriggersMu_MultiLepCalc->at(itrig) > 0) DataLepPastTrigger =1;
  	    if(vsSelTriggersMu_MultiLepCalc->at(itrig).find("HLT_IsoMu24") != std::string::npos && viSelTriggersMu_MultiLepCalc->at(itrig) > 0) HLT_IsoMu24 = 1;
 	    if(vsSelTriggersMu_MultiLepCalc->at(itrig).find("HLT_IsoMu24_eta2p1") != std::string::npos && viSelTriggersMu_MultiLepCalc->at(itrig) > 0) HLT_IsoMu24_eta2p1 = 1;
 	    if(vsSelTriggersMu_MultiLepCalc->at(itrig).find("HLT_IsoMu27") != std::string::npos && viSelTriggersMu_MultiLepCalc->at(itrig) > 0) HLT_IsoMu27 = 1;
@@ -1257,9 +1307,6 @@ void step1::Loop(TString inTreeName, TString outTreeName, const BTagCalibrationF
 
 
 
-
-
-
       // ----------------------------------------------------------------------------
       // Loop over AK8 jets for calculations and pt ordering pair
       // ----------------------------------------------------------------------------
@@ -1270,7 +1317,7 @@ void step1::Loop(TString inTreeName, TString outTreeName, const BTagCalibrationF
         // ----------------------------------------------------------------------------                                  
         // Basic cuts                                                                                                    
         // ----------------------------------------------------------------------------                                  
-	
+
         if(fabs(theJetAK8Eta_JetSubCalc->at(ijet)) > ak8EtaCut) continue;
         if(theJetAK8Pt_JetSubCalc->at(ijet) < ak8PtCut) continue;
         if(theJetAK8NjettinessTau1_JetSubCalc->at(ijet)==0) continue;
@@ -1279,7 +1326,7 @@ void step1::Loop(TString inTreeName, TString outTreeName, const BTagCalibrationF
         // ----------------------------------------------------------------------------                                  
         // Counter and pt ordering pair                                                                                  
         // ----------------------------------------------------------------------------                                  
-	
+
         NJetsAK8_JetSubCalc += 1;
         jetak8ptindpair.push_back(std::make_pair(theJetAK8Pt_JetSubCalc->at(ijet),ijet));
 	
@@ -1288,7 +1335,7 @@ void step1::Loop(TString inTreeName, TString outTreeName, const BTagCalibrationF
       // ----------------------------------------------------------------------------
       // Apply kinematic cuts
       // ----------------------------------------------------------------------------
-	                
+
       int isPastHTCut = 0;
       if(AK4HT >= htCut){npass_ht+=1;isPastHTCut=1;}
       
@@ -1314,19 +1361,18 @@ void step1::Loop(TString inTreeName, TString outTreeName, const BTagCalibrationF
       // ----------------------------------------------------------------------------
       // Skip failing events
       // ----------------------------------------------------------------------------
-            
+
       if(!(isPastMETcut && isPastHTCut && isPastNAK8JetsCut && isPastNjetsCut && isPastLepPtCut && (isPastElEtaCut || isPastMuEtaCut))) continue;
       npass_all+=1;
-      
 
       ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
       ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
       /////////////// ONLY ON SELECTED EVENTS ////////////////////////////////////////////////////////////////////////////////////
       ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
       ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////      
-
-      AK4HTpMETpLepPt = AK4HT + corr_met_MultiLepCalc + leppt; //ST
       
+      AK4HTpMETpLepPt = AK4HT + corr_met_MultiLepCalc + leppt; //ST
+
       // ----------------------------------------------------------------------------
       // Combine lepton variables into one set
       // ----------------------------------------------------------------------------
@@ -1651,6 +1697,7 @@ void step1::Loop(TString inTreeName, TString outTreeName, const BTagCalibrationF
 	else Wlv_1 = Wlv_2;
       }
       
+
       // ----------------------------------------------------------------------------
       // top --> W b --> l nu b using W from above
       // ----------------------------------------------------------------------------
@@ -1808,6 +1855,7 @@ void step1::Loop(TString inTreeName, TString outTreeName, const BTagCalibrationF
 	  }
 	}
 
+
 	// ----------------------------------------------------------------------------
 	// W & top tagging on MC
 	// ----------------------------------------------------------------------------
@@ -1829,7 +1877,6 @@ void step1::Loop(TString inTreeName, TString outTreeName, const BTagCalibrationF
 	// ------------------------------------------------------------------------------------------------------------------
 
 	if(isMC){
-	  
 	  // ------------------------------------------------------------------------------------------------------------------
 	  // TRUTH MATCHING
 	  // ------------------------------------------------------------------------------------------------------------------
@@ -2333,6 +2380,7 @@ void step1::Loop(TString inTreeName, TString outTreeName, const BTagCalibrationF
 	  pdfWeights.push_back(1.0);
 	}
       }
+
 
       // ----------------------------------------------------------------------------
       // DONE!! Write the tree
