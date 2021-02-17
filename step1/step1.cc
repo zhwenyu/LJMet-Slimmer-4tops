@@ -86,11 +86,11 @@ void step1::Loop(TString inTreeName, TString outTreeName, const BTagCalibrationF
     std::string btagDeepJetfile("DeepFlavour_94XSF_V4_B_F.csv");
     if (Year== 2018) {
       btagcsvfile = "DeepCSV_102XSF_V2.csv"; 
-      btagDeepJetfile = "";
+      btagDeepJetfile = "DeepJet_102XSF_V2.csv";
     }
     if (Year == 2016) {
       btagcsvfile = "DeepCSV_2016LegacySF_V1.csv";
-      btagDeepJetfile = "";
+      btagDeepJetfile = "DeepJet_2016LegacySF_V1.csv";
     }
     cout << "CSV reshaping file " << btagcsvfile << endl;
     calib = new const BTagCalibrationForLJMet("DeepCSV", btagcsvfile); 
@@ -696,7 +696,7 @@ void step1::Loop(TString inTreeName, TString outTreeName, const BTagCalibrationF
    float elEtaCut=2.1;
    float muEtaCut=2.1;
    int   njetsCut=4;
-   int   nbjetsCut=2; // events with # of b-tags <nbjetsCut (incl. btag shifts) are removed!
+   int   nbjetsCut=0; // events with # of b-tags <nbjetsCut (incl. btag shifts) are removed!
    float jetPtCut=30;
    float jetEtaCut=2.4;
    float ak8EtaCut=2.4;
