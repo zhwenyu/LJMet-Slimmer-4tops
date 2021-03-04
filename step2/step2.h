@@ -30,6 +30,7 @@ public :
    Bool_t          isTTbar;
    Bool_t          isTTTT;   
    Float_t         xsecEff; //this is the weight actually!! so (Lumi * xsec)/nEvents, but keeping the naming the same to be consistent with TMVA setup
+   Int_t	   Year;
 
    Float_t         tmp_minMleppBjet;
    vector<double>  GD_DR_Tridijet;
@@ -705,6 +706,7 @@ step2::step2(TString inputFileName, TString outputFileName)// : inputTree(0), in
    // TT bkg divided into TTToSemiLep, TTToHadronic, TT high mass appear below
 
    if (inputFileName.Contains("1lep2016")) {
+       Year = 2016;
        if (inputFileName.Contains("TTToSemiLeptonic_TuneCP5_PSweights_13TeV-powheg-pythia8_HT0Njet0")) xsecEff = 0.122534147435;
        else if (inputFileName.Contains("TTToSemiLepton_HT500Njet9_TuneCP5_PSweights_13TeV-powheg-pythia8")) xsecEff = 0.00784077021207;
        else if (inputFileName.Contains("TTToSemiLeptonic_TuneCP5_PSweights_13TeV-powheg-pythia8_HT500Njet9")) xsecEff = 0.00784077021207;
@@ -715,6 +717,7 @@ step2::step2(TString inputFileName, TString outputFileName)// : inputTree(0), in
    }
 
    else if (inputFileName.Contains("1lep2017")) {
+       Year = 2017;
        if (inputFileName.Contains("TTToSemiLeptonic_TuneCP5_PSweights_13TeV-powheg-pythia8_HT0Njet0")) xsecEff = 0.138647459815;
        else if (inputFileName.Contains("TTToSemiLepton_HT500Njet9_TuneCP5_PSweights_13TeV-powheg-pythia8")) xsecEff = 0.00930297719566;
        else if (inputFileName.Contains("TTToSemiLeptonic_TuneCP5_PSweights_13TeV-powheg-pythia8_HT500Njet9")) xsecEff = 0.00930297719566;
@@ -724,6 +727,7 @@ step2::step2(TString inputFileName, TString outputFileName)// : inputTree(0), in
    }
    
    else if (inputFileName.Contains("1lep2018")) {
+       Year = 2018;
        if (inputFileName.Contains("TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8_HT0Njet0")) xsecEff = 0.217217486269; 
        else if (inputFileName.Contains("TTToSemiLepton_HT500Njet9_TuneCP5_13TeV-powheg-pythia8")) xsecEff = 0.0138805494029; 
        else if (inputFileName.Contains("TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8_HT500Njet9")) xsecEff = 0.0138805494029; 

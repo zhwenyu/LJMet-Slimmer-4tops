@@ -477,13 +477,25 @@ void step2::Loop()
    int allLeptonicWcount = 0;
    int allMatchingCount = 0;   
    float topdiscriminator = 0.95;
-             
+        
+   cout << " Run year " << Year << endl; 
+   float btagWPdjet = 0.3033; // 2017 WP
+   float btagWPdcsv = 0.4941; // 2017 WP
+   if(Year==2016){
+   	btagWPdjet = 0.3093; // 2016 WP
+   	btagWPdcsv = 0.6321; // 2016 WP
+   }
+   if(Year==2018){
+   	btagWPdjet = 0.2770; // 2018 WP
+   	btagWPdcsv = 0.4184; // 2018 WP
+   }
+     
    for (Long64_t jentry=0; jentry<nentries;jentry++) {
      Long64_t ientry = LoadTree(jentry);
      if (ientry < 0) break;
      nb = inputTree->GetEntry(jentry);   nbytes += nb;
      if (Cut(ientry) != 1) continue;
-     //if (jentry > 5000 ) break;  // debug
+     if (jentry > 5000 ) break;  // debug
 //     cout << "\n start event # " << jentry << endl;
      if(jentry % 1000 ==0) std::cout<<"Completed "<<jentry<<" out of "<<nentries<<" events"<<std::endl;      
 
@@ -675,8 +687,9 @@ void step2::Loop()
         else if (  (AK4JetBTag_MultiLepCalc_PtOrdered->at(ijet)!=1) && (theJetHFlav_JetSubCalc_PtOrdered->at(ijet) !=5) ) 
            jettype = 4;
 
-//		if(theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet) > 0.4941){
- 	if(AK4JetBTag_MultiLepCalc_PtOrdered->at(ijet) == 1) {
+//	if(theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet) > btagWPdcsv){
+	if(AK4JetDeepCSVb_MultiLepCalc_PtOrdered->at(ijet) + AK4JetDeepCSVbb_MultiLepCalc_PtOrdered->at(ijet) > btagWPdcsv){
+// 	if(AK4JetBTag_MultiLepCalc_PtOrdered->at(ijet) == 1) {
 	   //changed to > in line above because we want jets that pass the csv cut 
 	   njetscsv+=1;
 	   totalPtCSV += theJetPt_JetSubCalc_PtOrdered->at(ijet);
@@ -684,9 +697,9 @@ void step2::Loop()
 //	   aveCSVpt += (theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet))*theJetPt_JetSubCalc_PtOrdered->at(ijet);
 	   aveCSV += AK4JetDeepCSVb_MultiLepCalc_PtOrdered->at(ijet)+ AK4JetDeepCSVbb_MultiLepCalc_PtOrdered->at(ijet);
 	   aveCSVpt += (AK4JetDeepCSVb_MultiLepCalc_PtOrdered->at(ijet)+ AK4JetDeepCSVbb_MultiLepCalc_PtOrdered->at(ijet))*theJetPt_JetSubCalc_PtOrdered->at(ijet);
-
 //	   aveCSVpt += theJetDeepFlavB_JetSubCalc_PtOrdered->at(ijet)*theJetPt_JetSubCalc_PtOrdered->at(ijet);
 	}
+
 	if (ijet==1){
             secondJetPt = theJetPt_JetSubCalc_PtOrdered->at(ijet);
         }
@@ -708,8 +721,10 @@ void step2::Loop()
           deltaR_lepJetInMinMljet  = jetTmp.DeltaR(lep);
           deltaPhi_lepJetInMinMljet = jetTmp.DeltaPhi(lep);
         }		
-//		if(theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet) > 0.4941){        
-	if(AK4JetBTag_MultiLepCalc_PtOrdered->at(ijet) == 1) {
+
+//	if(theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet) > btagWPdcsv){        
+	if(AK4JetDeepCSVb_MultiLepCalc_PtOrdered->at(ijet) + AK4JetDeepCSVbb_MultiLepCalc_PtOrdered->at(ijet) > btagWPdcsv){
+//	if(AK4JetBTag_MultiLepCalc_PtOrdered->at(ijet) == 1) {
           if((lep + jetTmp).M() < tmp_minMleppBjet) {
             tmp_minMleppBjet = fabs((lep + jetTmp).M() );
             deltaR_lepbJetInMinMlb = jetTmp.DeltaR(lep);
@@ -722,8 +737,9 @@ void step2::Loop()
         if (tmpJetInd==0){
           bjetTmp.SetPtEtaPhiE(theJetPt_JetSubCalc_PtOrdered->at(tmpJetInd),theJetEta_JetSubCalc_PtOrdered->at(tmpJetInd),theJetPhi_JetSubCalc_PtOrdered->at(tmpJetInd),theJetEnergy_JetSubCalc_PtOrdered->at(tmpJetInd)); 
           for(unsigned int ijet = 1; ijet < theJetPt_JetSubCalc_PtOrdered->size(); ijet++){        
-//          if((theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet) > 0.4941) && stop == 0 ){
-	    if((AK4JetBTag_MultiLepCalc_PtOrdered->at(ijet) == 1) && stop == 0 ){
+//          if((theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet) > btagWPdcsv) && stop == 0 ){
+	    if((AK4JetDeepCSVb_MultiLepCalc_PtOrdered->at(ijet) + AK4JetDeepCSVbb_MultiLepCalc_PtOrdered->at(ijet) > btagWPdcsv) && stop == 0 ){ 
+//	    if((AK4JetBTag_MultiLepCalc_PtOrdered->at(ijet) == 1) && stop == 0 ){
               stop = 1;
               bjetTmp.SetPtEtaPhiE(theJetPt_JetSubCalc_PtOrdered->at(ijet),theJetEta_JetSubCalc_PtOrdered->at(ijet),theJetPhi_JetSubCalc_PtOrdered->at(ijet),theJetEnergy_JetSubCalc_PtOrdered->at(ijet)); 
               deltaR_lepbJetNotInMinMlb = bjetTmp.DeltaR(lep);        
@@ -733,8 +749,9 @@ void step2::Loop()
         if (tmpJetInd>0){        
           stop = 0;
           for(unsigned int ijet = 0; ijet < tmpJetInd; ijet++){        
-//                if((theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet) > 0.4941) && stop == 0 ){
-            if((AK4JetBTag_MultiLepCalc_PtOrdered->at(ijet) == 1) && stop == 0 ){
+//          if((theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet) > btagWPdcsv) && stop == 0 ){
+            if((AK4JetDeepCSVb_MultiLepCalc_PtOrdered->at(ijet) + AK4JetDeepCSVbb_MultiLepCalc_PtOrdered->at(ijet) > btagWPdcsv) && stop == 0 ){
+//            if((AK4JetBTag_MultiLepCalc_PtOrdered->at(ijet) == 1) && stop == 0 ){
               stop = 1;
               bjetTmp.SetPtEtaPhiE(theJetPt_JetSubCalc_PtOrdered->at(ijet),theJetEta_JetSubCalc_PtOrdered->at(ijet),theJetPhi_JetSubCalc_PtOrdered->at(ijet),theJetEnergy_JetSubCalc_PtOrdered->at(ijet)); 
               deltaR_lepbJetNotInMinMlb = bjetTmp.DeltaR(lep);        
@@ -742,8 +759,9 @@ void step2::Loop()
           }
           if (stop == 0){
             for(unsigned int ijet = tmpJetInd+1; ijet < theJetPt_JetSubCalc_PtOrdered->size(); ijet++){        
-//                    if((theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet) > 0.4941) && stop == 0 ){
-	      if((AK4JetBTag_MultiLepCalc_PtOrdered->at(ijet) == 1) && stop == 0 ){	
+//            if((theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet) > btagWPdcsv) && stop == 0 ){
+              if((AK4JetDeepCSVb_MultiLepCalc_PtOrdered->at(ijet) + AK4JetDeepCSVbb_MultiLepCalc_PtOrdered->at(ijet) > btagWPdcsv) && stop == 0 ){
+//	      if((AK4JetBTag_MultiLepCalc_PtOrdered->at(ijet) == 1) && stop == 0 ){	
                 stop = 1;
                 bjetTmp.SetPtEtaPhiE(theJetPt_JetSubCalc_PtOrdered->at(ijet),theJetEta_JetSubCalc_PtOrdered->at(ijet),theJetPhi_JetSubCalc_PtOrdered->at(ijet),theJetEnergy_JetSubCalc_PtOrdered->at(ijet)); 
                 deltaR_lepbJetNotInMinMlb = bjetTmp.DeltaR(lep);        
@@ -788,8 +806,9 @@ void step2::Loop()
 	if(min_deltaPhi_METjets>fabs(deltaPhifromMET_)){min_deltaPhi_METjets=fabs(deltaPhifromMET_);}
 	if(abs(deltaPhifromMET_)>TMath::Pi()/2){hemiout+=theJetPt_JetSubCalc_PtOrdered->at(ijet);}				
 	
-//		if(!(theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet) > 0.4941)) continue; //without b-tag SFs
-	if(!(AK4JetBTag_MultiLepCalc_PtOrdered->at(ijet) == 1) ) continue;
+//	if(!(theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet) > btagWPdcsv)) continue; //without b-tag SFs
+        if(!(AK4JetDeepCSVb_MultiLepCalc_PtOrdered->at(ijet) + AK4JetDeepCSVbb_MultiLepCalc_PtOrdered->at(ijet) > btagWPdcsv)) continue;
+//	if(!(AK4JetBTag_MultiLepCalc_PtOrdered->at(ijet) == 1) ) continue;
 	
 	bjet1.SetPtEtaPhiE(theJetPt_JetSubCalc_PtOrdered->at(ijet),theJetEta_JetSubCalc_PtOrdered->at(ijet),theJetPhi_JetSubCalc_PtOrdered->at(ijet),theJetEnergy_JetSubCalc_PtOrdered->at(ijet));	
 	HT_bjets+=theJetPt_JetSubCalc_PtOrdered->at(ijet);
@@ -816,8 +835,9 @@ void step2::Loop()
 		        
 	for(unsigned int jjet = ijet + 1; jjet < theJetPt_JetSubCalc_PtOrdered->size(); jjet++){
 	  if(jjet >= theJetPt_JetSubCalc_PtOrdered->size()) continue;
-//		  if(!(theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet) > 0.4941)) continue; //without b-tag SFs	  
-	  if(!(AK4JetBTag_MultiLepCalc_PtOrdered->at(jjet) == 1) ) continue;
+//	  if(!(theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet) > btagWPdcsv)) continue; //without b-tag SFs	  
+	  if(!(AK4JetDeepCSVb_MultiLepCalc_PtOrdered->at(ijet) + AK4JetDeepCSVbb_MultiLepCalc_PtOrdered->at(ijet) > btagWPdcsv)) continue;
+//	  if(!(AK4JetBTag_MultiLepCalc_PtOrdered->at(jjet) == 1) ) continue;
 	  bjet2.SetPtEtaPhiE(theJetPt_JetSubCalc_PtOrdered->at(jjet),theJetEta_JetSubCalc_PtOrdered->at(jjet),theJetPhi_JetSubCalc_PtOrdered->at(jjet),theJetEnergy_JetSubCalc_PtOrdered->at(jjet));		  
           MT2bb = mt2(bjet1,bjet2,met);
           deltaR_lepBJets1 = (bjet2).DeltaR(lep);		  
@@ -1190,15 +1210,17 @@ void step2::Loop()
       double diff_temppairmass = 1e9;
       TLorentzVector jet1_W, jet2_W;
       // FIND LIGHT PAIRS
-	  for(unsigned int ijet = 0; ijet < theJetPt_JetSubCalc_PtOrdered->size(); ijet++){
-//		if((theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet) > 0.4941)) continue; //without b-tag SFs
-		if(AK4JetBTag_MultiLepCalc_PtOrdered->at(ijet) == 1 ) continue;
-		jet1.SetPtEtaPhiE(theJetPt_JetSubCalc_PtOrdered->at(ijet),theJetEta_JetSubCalc_PtOrdered->at(ijet),theJetPhi_JetSubCalc_PtOrdered->at(ijet),theJetEnergy_JetSubCalc_PtOrdered->at(ijet));
+      for(unsigned int ijet = 0; ijet < theJetPt_JetSubCalc_PtOrdered->size(); ijet++){
+//	  if((theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet) > btagWPdcsv)) continue; //without b-tag SFs
+	  if(AK4JetDeepCSVb_MultiLepCalc_PtOrdered->at(ijet) + AK4JetDeepCSVbb_MultiLepCalc_PtOrdered->at(ijet) > btagWPdcsv) continue;
+//	  if(AK4JetBTag_MultiLepCalc_PtOrdered->at(ijet) == 1 ) continue;
+	  jet1.SetPtEtaPhiE(theJetPt_JetSubCalc_PtOrdered->at(ijet),theJetEta_JetSubCalc_PtOrdered->at(ijet),theJetPhi_JetSubCalc_PtOrdered->at(ijet),theJetEnergy_JetSubCalc_PtOrdered->at(ijet));
 
-		for(unsigned int jjet = ijet + 1; jjet < theJetPt_JetSubCalc_PtOrdered->size(); jjet++){
+ 	  for(unsigned int jjet = ijet + 1; jjet < theJetPt_JetSubCalc_PtOrdered->size(); jjet++){
 		  if(jjet >= theJetPt_JetSubCalc_PtOrdered->size()) continue;
-//		  if((theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet) > 0.4941)) continue; //without b-tag SFs
-	          if(AK4JetBTag_MultiLepCalc_PtOrdered->at(jjet) == 1 ) continue; 
+//		  if((theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet) > btagWPdcsv)) continue; //without b-tag SFs
+		  if(AK4JetDeepCSVb_MultiLepCalc_PtOrdered->at(ijet) + AK4JetDeepCSVbb_MultiLepCalc_PtOrdered->at(ijet) > btagWPdcsv) continue;
+//	          if(AK4JetBTag_MultiLepCalc_PtOrdered->at(jjet) == 1 ) continue; 
 		  jet2.SetPtEtaPhiE(theJetPt_JetSubCalc_PtOrdered->at(jjet),theJetEta_JetSubCalc_PtOrdered->at(jjet),theJetPhi_JetSubCalc_PtOrdered->at(jjet),theJetEnergy_JetSubCalc_PtOrdered->at(jjet));
 
 		  double pairdr = (jet1).DeltaR(jet2);
@@ -1278,22 +1300,24 @@ void step2::Loop()
       PtFifthJet = -1;
       int fifthJetInd = 0;
       for(unsigned int ijet = 0; ijet < theJetPt_JetSubCalc_PtOrdered->size(); ijet++){
-//		    if(theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet) > 0.4941){        
-		    if(AK4JetBTag_MultiLepCalc_PtOrdered->at(ijet) == 1 ) {
+//        if(theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet) > btagWPdcsv){        
+	  if(AK4JetDeepCSVb_MultiLepCalc_PtOrdered->at(ijet) + AK4JetDeepCSVbb_MultiLepCalc_PtOrdered->at(ijet) > btagWPdcsv){
+//	  if(AK4JetBTag_MultiLepCalc_PtOrdered->at(ijet) == 1 ) {
       		fifthJetInd+=1;
       		if(fifthJetInd==5){PtFifthJet=theJetPt_JetSubCalc_PtOrdered->at(ijet);}
       		if(fifthJetInd>=5) break;
-      		}
+      	  }
       }
       if(fifthJetInd<5){
-		for(unsigned int ijet = 0; ijet < theJetPt_JetSubCalc_PtOrdered->size(); ijet++){
-//	    	if(theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet) < 0.4941){        
-		if(!(AK4JetBTag_MultiLepCalc_PtOrdered->at(ijet) == 1) ) {
+	  for(unsigned int ijet = 0; ijet < theJetPt_JetSubCalc_PtOrdered->size(); ijet++){
+//	    	if(theJetDeepCSVb_JetSubCalc_PtOrdered->at(ijet)+theJetDeepCSVbb_JetSubCalc_PtOrdered->at(ijet) < btagWPdcsv){        
+                if(AK4JetDeepCSVb_MultiLepCalc_PtOrdered->at(ijet) + AK4JetDeepCSVbb_MultiLepCalc_PtOrdered->at(ijet) < btagWPdcsv){
+//		if(!(AK4JetBTag_MultiLepCalc_PtOrdered->at(ijet) == 1) ) {
 			fifthJetInd+=1;
 			if(fifthJetInd==5){PtFifthJet=theJetPt_JetSubCalc_PtOrdered->at(ijet);}
-			}
-		   }
-		}      	
+		}
+	  }
+      }      	
 	 
 /////////////////////////
 // Fox-Wolfram moments //
