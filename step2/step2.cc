@@ -19,6 +19,7 @@
 #include "TROOT.h"
 #include "Davismt2.h"
 #include <bits/stdc++.h> 
+#include "S2HardcodedConditions.h"
 
 using namespace std;
 
@@ -279,6 +280,8 @@ void step2::Loop()
     TTree *outputTree = inputTree->CloneTree(); //Copy of Input Tree
 //    TTree *outputTree = new TTree("ljmet","ljmet"); //No Copy of Input Tree   
 
+   TBranch *b_btagDeepJet2DWeight_HTnj   = outputTree->Branch("btagDeepJet2DWeight_HTnj", &btagDeepJet2DWeight_HTnj, "btagDeepJet2DWeight_HTnj/F");
+   TBranch *b_btagCSV2DWeight_HTnj   = outputTree->Branch("btagCSV2DWeight_HTnj", &btagCSV2DWeight_HTnj, "btagCSV2DWeight_HTnj/F");
    TBranch *b_isTraining            = outputTree->Branch("isTraining",&isTraining,"isTraining/I");
    TBranch *b_xsecEff               = outputTree->Branch("xsecEff",&xsecEff,"xsecEff/F");
    TBranch *b_deltaR_minBB          = outputTree->Branch("deltaR_minBB",&deltaR_minBB,"deltaR_minBB/F");
@@ -489,13 +492,33 @@ void step2::Loop()
    	btagWPdjet = 0.2770; // 2018 WP
    	btagWPdcsv = 0.4184; // 2018 WP
    }
+
+   std::string sampleType = "";
+   if(isTTTT) sampleType = "tttt";
+   if(isTTBB) sampleType = "ttbb";
+   if(isTT2B) sampleType = "tt2b";
+   if(isTT1B) sampleType = "tt1b";
+   if(isTTCC) sampleType = "ttcc";
+   if(isTTLF) sampleType = "ttjj";
+   if(isTTBB_HT500Njet9) sampleType = "HT500Njet9_ttbb";
+   if(isTT2B_HT500Njet9) sampleType = "HT500Njet9_tt2b";
+   if(isTT1B_HT500Njet9) sampleType = "HT500Njet9_tt1b";
+   if(isTTCC_HT500Njet9) sampleType = "HT500Njet9_ttcc";
+   if(isTTLF_HT500Njet9) sampleType = "HT500Njet9_ttjj";
+   if(isSTs) sampleType = "STs";
+   if(isSTt) sampleType = "STt";
+   if(isSTtw) sampleType = "STtw";
+   if(isWJets) sampleType = "WJets";
+
+   std::cout << sampleType << std::endl;
+
      
    for (Long64_t jentry=0; jentry<nentries;jentry++) {
      Long64_t ientry = LoadTree(jentry);
      if (ientry < 0) break;
      nb = inputTree->GetEntry(jentry);   nbytes += nb;
      if (Cut(ientry) != 1) continue;
-     if (jentry > 5000 ) break;  // debug
+     //if (jentry > 5000 ) break;  // debug
 //     cout << "\n start event # " << jentry << endl;
      if(jentry % 1000 ==0) std::cout<<"Completed "<<jentry<<" out of "<<nentries<<" events"<<std::endl;      
 
@@ -559,7 +582,32 @@ void step2::Loop()
      int num_GD_trijet = 0;
      int num_BD_trijet = 0;    
 
-//////////////////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////////////////
+// CSV renorm weight /////////////////////////////////////////
+// ////////////////////////////////////////////////////////////
+
+
+    // initialize -1 if not calculated 
+    btagCSV2DWeight_HTnj = -1.;
+    btagDeepJet2DWeight_HTnj = -1.;
+//    int nljets = 0; 
+//    int nhjets = 0;
+//    int nljets_pt120 = 0; 
+//    int nhjets_pt120 = 0;
+//    
+//    for(unsigned int ijet = 0; ijet<theJetPt_JetSubCalc_PtOrdered->size(); ijet++){
+//        if(theJetPt_JetSubCalc_PtOrdered->at(ijet)>40 && theJetPt_JetSubCalc_PtOrdered->at(ijet)<100) nljets+=1;
+//        if(theJetPt_JetSubCalc_PtOrdered->at(ijet)>=100) nhjets+=1;
+//        if(theJetPt_JetSubCalc_PtOrdered->at(ijet)>40 && theJetPt_JetSubCalc_PtOrdered->at(ijet)<120) nljets_pt120+=1;
+//        if(theJetPt_JetSubCalc_PtOrdered->at(ijet)>=120) nhjets_pt120+=1;
+//    } 
+    
+    btagCSV2DWeight_HTnj = hardcodedConditions.GetCSVRenorm2DSF_HTnj(AK4HT, NJets_JetSubCalc, sampleType);
+  //  btagDeepJet2DWeight_HTnj = hardcodedConditions.GetDeepJetRenorm2DSF_HTnj(AK4HT, NJets_JetSubCalc, sampleType); 
+
+
+/////////////////////////////////////////////////////////////////
 // build BB PAIR variables, aveCSVpt, HT_bjets, HT_ratio, HT_2m //
 //////////////////////////////////////////////////////////////////
 
@@ -1566,7 +1614,9 @@ void step2::Loop()
 
 /////////////////////////////////////////////////////////////////////////////////
 
-	  
+
+      b_btagCSV2DWeight_HTnj->Fill();
+      b_btagDeepJet2DWeight_HTnj->Fill(); 	  
       b_isTraining->Fill();
       b_xsecEff->Fill();
       b_deltaR_minBB->Fill();

@@ -17,6 +17,7 @@
 #include "vector"
 #include "TLorentzVector.h"
 #include "Davismt2.h"
+#include "S2HardcodedConditions.h"
 
 class step2 {
 public :
@@ -25,12 +26,34 @@ public :
    TFile          *inputFile, *outputFile;
    Int_t           fCurrent; //!current Tree number in a TChain
 
-// Fixed size dimensions of array or collections stored in the TTree if any.
+   //Load Scale Factors
+   S2HardcodedConditions hardcodedConditions;
+
+   // Fixed size dimensions of array or collections stored in the TTree if any.
    Int_t           isTraining;
    Bool_t          isTTbar;
    Bool_t          isTTTT;   
    Float_t         xsecEff; //this is the weight actually!! so (Lumi * xsec)/nEvents, but keeping the naming the same to be consistent with TMVA setup
    Int_t	   Year;
+
+   Bool_t          isST = false;
+   Bool_t          isSTs = false;
+   Bool_t          isSTt = false;
+   Bool_t          isSTtw = false; 
+   Bool_t          isTTBB = false;
+   Bool_t          isTT2B = false; 
+   Bool_t          isTT1B = false; 
+   Bool_t          isTTCC = false; 
+   Bool_t          isTTLF = false; 
+   Bool_t          isWJets = false; 
+   Bool_t          isTTBB_HT500Njet9 = false;
+   Bool_t          isTT2B_HT500Njet9 = false;
+   Bool_t          isTT1B_HT500Njet9 = false;
+   Bool_t          isTTCC_HT500Njet9 = false;
+   Bool_t          isTTLF_HT500Njet9 = false;
+
+   Float_t         btagCSV2DWeight_HTnj;
+   Float_t         btagDeepJet2DWeight_HTnj;
 
    Float_t         tmp_minMleppBjet;
    vector<double>  GD_DR_Tridijet;
@@ -703,6 +726,8 @@ public :
 step2::step2(TString inputFileName, TString outputFileName)// : inputTree(0), inputFile(0), outputFile(0) 
 {   //weight branches to be used in the BDT training, xsecEff is the weight
 
+   hardcodedConditions = S2HardcodedConditions();
+
    // TT bkg divided into TTToSemiLep, TTToHadronic, TT high mass appear below
 
    if (inputFileName.Contains("1lep2016")) {
@@ -763,6 +788,22 @@ step2::step2(TString inputFileName, TString outputFileName)// : inputTree(0), in
    if (inputFileName.Contains("TT_")) isTTbar = true;      
    else if (inputFileName.Contains("TTTo")) isTTbar = true;      
    else if (inputFileName.Contains("TTTT")) isTTTT = true;         
+
+   isSTs = inputFileName.Contains("ST_s-channel");
+   isSTt = inputFileName.Contains("ST_t-channel");
+   isSTtw = inputFileName.Contains("ST_tW");
+   isTTBB = inputFileName.Contains("_ttbb");
+   isTT2B = inputFileName.Contains("_tt2b");
+   isTT1B = inputFileName.Contains("_tt1b");
+   isTTCC = inputFileName.Contains("_ttcc");
+   isTTLF = inputFileName.Contains("_ttjj");
+   isWJets = inputFileName.Contains("WJetsToLNu_HT-");
+   isTTBB_HT500Njet9 = (inputFileName.Contains("_ttbb") && inputFileName.Contains("TTToSemiLepton_HT500Njet9_")); 
+   isTT2B_HT500Njet9 = (inputFileName.Contains("_tt2b") && inputFileName.Contains("TTToSemiLepton_HT500Njet9_"));
+   isTT1B_HT500Njet9 = (inputFileName.Contains("_tt1b") && inputFileName.Contains("TTToSemiLepton_HT500Njet9_"));
+   isTTCC_HT500Njet9 = (inputFileName.Contains("_ttcc") && inputFileName.Contains("TTToSemiLepton_HT500Njet9_"));
+   isTTLF_HT500Njet9 = (inputFileName.Contains("_ttjj") && inputFileName.Contains("TTToSemiLepton_HT500Njet9_"));
+
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
 //    if (tree == 0) {
